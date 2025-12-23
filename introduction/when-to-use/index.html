@@ -12,9 +12,13 @@
         <meta name="author" content="Mabel Dev">
       
       
-        <link rel="canonical" href="https://docs.opteryx.app/getting-started/quick-start/">
+        <link rel="canonical" href="https://docs.opteryx.app/introduction/when-to-use/">
       
       
+        <link rel="prev" href="../what-is-opteryx/">
+      
+      
+        <link rel="next" href="../design-principles/">
       
       
         
@@ -25,7 +29,7 @@
     
     
       
-        <title>Quick Start - Opteryx Documentation</title>
+        <title>When to use Opteryx - Opteryx Documentation</title>
       
     
     
@@ -76,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start" class="md-skip">
+        <a href="#when-to-use-opteryx" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick Start
+              When to use Opteryx
             
           </span>
         </div>
@@ -240,11 +244,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../introduction/what-is-opteryx/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../what-is-opteryx/" class="md-tabs__link">
           
   
   
@@ -264,7 +270,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../installation/" class="md-tabs__link">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
           
   
   
@@ -471,28 +477,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -510,7 +519,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -528,7 +537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../introduction/what-is-opteryx/" class="md-nav__link">
+      <a href="../what-is-opteryx/" class="md-nav__link">
         
   
   
@@ -553,10 +562,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../introduction/when-to-use/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    When to use Opteryx
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -572,6 +608,165 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ideal-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ideal Scenarios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ideal Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large-Scale Data Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-source-data-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Source Data Queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ad-hoc-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ad-Hoc Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Not to Use
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When Not to Use">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-time-transactional-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Transactional Systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extremely-low-latency-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extremely Low Latency Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-alternatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison with Alternatives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison with Alternatives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traditional-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traditional Databases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-query-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Query Engines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -584,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../introduction/design-principles/" class="md-nav__link">
+      <a href="../design-principles/" class="md-nav__link">
         
   
   
@@ -673,7 +868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -701,7 +896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../first-query/" class="md-nav__link">
+      <a href="../../getting-started/first-query/" class="md-nav__link">
         
   
   
@@ -729,7 +924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reading-data/" class="md-nav__link">
+      <a href="../../getting-started/reading-data/" class="md-nav__link">
         
   
   
@@ -1592,33 +1787,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#your-first-query" class="md-nav__link">
+  <a href="#ideal-scenarios" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your First Query
+        Ideal Scenarios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ideal Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large-Scale Data Analysis
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#working-with-data" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#multi-source-data-queries" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Working with Data
+        Multi-Source Data Queries
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Working with Data">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#querying-in-memory-data" class="md-nav__link">
+  <a href="#ad-hoc-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Querying In-Memory Data
+        Ad-Hoc Analysis
       
     </span>
   </a>
@@ -1631,22 +1837,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#basic-sql-operations" class="md-nav__link">
+  <a href="#when-not-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic SQL Operations
+        When Not to Use
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic SQL Operations">
+    <nav class="md-nav" aria-label="When Not to Use">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#select-queries" class="md-nav__link">
+  <a href="#real-time-transactional-systems" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SELECT Queries
+        Real-Time Transactional Systems
       
     </span>
   </a>
@@ -1654,10 +1860,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#filtering-data" class="md-nav__link">
+  <a href="#extremely-low-latency-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Filtering Data
+        Extremely Low Latency Requirements
       
     </span>
   </a>
@@ -1670,21 +1876,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+  <a href="#comparison-with-alternatives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Steps
+        Comparison with Alternatives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison with Alternatives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traditional-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traditional Databases
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#need-help" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#other-query-engines" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Need Help?
+        Other Query Engines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
       
     </span>
   </a>
@@ -1711,68 +1945,35 @@
   
 
 
-<h1 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h1>
-<p>This guide will help you get started with Opteryx quickly.</p>
-<h2 id="your-first-query">Your First Query<a class="headerlink" href="#your-first-query" title="Permanent link">&para;</a></h2>
-<p>Here's a simple example to get you started with Opteryx:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Execute a simple query</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT &#39;Hello, Opteryx!&#39; AS greeting&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Display the results</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="working-with-data">Working with Data<a class="headerlink" href="#working-with-data" title="Permanent link">&para;</a></h2>
-<h3 id="querying-in-memory-data">Querying In-Memory Data<a class="headerlink" href="#querying-in-memory-data" title="Permanent link">&para;</a></h3>
-<p>You can query data from Python data structures:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Create sample data</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">}</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">]</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Query the data</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s2">    SELECT name, age </span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s2">    FROM $data </span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s2">    WHERE age &gt; 25</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Print results</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> years old&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="basic-sql-operations">Basic SQL Operations<a class="headerlink" href="#basic-sql-operations" title="Permanent link">&para;</a></h2>
-<h3 id="select-queries">SELECT Queries<a class="headerlink" href="#select-queries" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Simple SELECT</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT 1 AS number, &#39;test&#39; AS text&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="filtering-data">Filtering Data<a class="headerlink" href="#filtering-data" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Using WHERE clause</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s2">    SELECT * </span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s2">    FROM my_data </span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s2">    WHERE column_name = &#39;value&#39;</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
-<p>Now that you've learned the basics, you can:</p>
-<ul>
-<li>Explore more complex SQL queries</li>
-<li>Learn about connecting to different data sources</li>
-<li>Check out advanced features and optimizations</li>
-</ul>
-<h2 id="need-help">Need Help?<a class="headerlink" href="#need-help" title="Permanent link">&para;</a></h2>
-<p>If you encounter any issues, please visit our <a href="https://github.com/mabel-dev/opteryx">GitHub repository</a> or check the documentation for more detailed information.</p>
+<h1 id="when-to-use-opteryx">When to Use Opteryx<a class="headerlink" href="#when-to-use-opteryx" title="Permanent link">&para;</a></h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<h2 id="ideal-scenarios">Ideal Scenarios<a class="headerlink" href="#ideal-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="large-scale-data-analysis">Large-Scale Data Analysis<a class="headerlink" href="#large-scale-data-analysis" title="Permanent link">&para;</a></h3>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<h3 id="multi-source-data-queries">Multi-Source Data Queries<a class="headerlink" href="#multi-source-data-queries" title="Permanent link">&para;</a></h3>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+<h3 id="ad-hoc-analysis">Ad-Hoc Analysis<a class="headerlink" href="#ad-hoc-analysis" title="Permanent link">&para;</a></h3>
+<p>Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+<h2 id="when-not-to-use">When Not to Use<a class="headerlink" href="#when-not-to-use" title="Permanent link">&para;</a></h2>
+<h3 id="real-time-transactional-systems">Real-Time Transactional Systems<a class="headerlink" href="#real-time-transactional-systems" title="Permanent link">&para;</a></h3>
+<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+<h3 id="extremely-low-latency-requirements">Extremely Low Latency Requirements<a class="headerlink" href="#extremely-low-latency-requirements" title="Permanent link">&para;</a></h3>
+<p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+<h2 id="comparison-with-alternatives">Comparison with Alternatives<a class="headerlink" href="#comparison-with-alternatives" title="Permanent link">&para;</a></h2>
+<h3 id="traditional-databases">Traditional Databases<a class="headerlink" href="#traditional-databases" title="Permanent link">&para;</a></h3>
+<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+<h3 id="other-query-engines">Other Query Engines<a class="headerlink" href="#other-query-engines" title="Permanent link">&para;</a></h3>
+<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.</p>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+<li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+<li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</li>
+<li>Duis aute irure dolor in reprehenderit in voluptate velit esse</li>
+<li>Excepteur sint occaecat cupidatat non proident</li>
+</ol>
 
 
 

@@ -1,0 +1,3599 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Official documentation for Opteryx">
+      
+      
+        <meta name="author" content="Mabel Dev">
+      
+      
+        <link rel="canonical" href="https://docs.opteryx.app/roadmap-guarantees/known-limits/">
+      
+      
+        <link rel="prev" href="../compatibility/">
+      
+      
+        <link rel="next" href="../../about/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Known limits - Opteryx Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#known-limits" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Opteryx Documentation" class="md-header__button md-logo" aria-label="Opteryx Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Opteryx Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Known limits
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mabel-dev/opteryx" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mabel-dev/opteryx
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../introduction/what-is-opteryx/" class="md-tabs__link">
+          
+  
+  
+  Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../core-concepts/execution-model/" class="md-tabs__link">
+          
+  
+  
+  Core Concepts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql-reference/supported-sql/" class="md-tabs__link">
+          
+  
+  
+  SQL Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/planner/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operations/running-locally/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../stability-promises/" class="md-tabs__link">
+          
+  
+  
+  Roadmap & Guarantees
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Opteryx Documentation" class="md-nav__button md-logo" aria-label="Opteryx Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Opteryx Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mabel-dev/opteryx" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mabel-dev/opteryx
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/what-is-opteryx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is Opteryx
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/when-to-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    When to use Opteryx
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/design-principles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design principles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-query/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First query
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/reading-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/execution-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execution model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/morsels-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Morsels & vectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/cost-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/storage-formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage & formats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SQL Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql-reference/supported-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supported SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql-reference/functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql-reference/semantics-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantics & edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/planner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Planner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/optimizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/execution-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execution engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/internal-components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/running-locally/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running locally
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/cloud-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/security-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap & Guarantees
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap & Guarantees
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stability-promises/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stability promises
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compatibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compatibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known limits
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known limits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-query-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Query Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buffer-pool-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffer Pool Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrency-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrency Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concurrency Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-concurrent-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Concurrent Queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-pool-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread Pool Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Size Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Size Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table Size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Table Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-rows-per-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Rows per Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-columns-per-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Columns per Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Size Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Size Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-file-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single File Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partition-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partition Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string-and-binary-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String and Binary Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String and Binary Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-string-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum String Length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-binary-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Binary Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Complexity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Complexity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-join-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Join Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-subquery-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Subquery Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-expression-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Expression Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-query-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Query Length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregation-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregation Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregation Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-by-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GROUP BY Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GROUP BY Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-group-by-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Group By Columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-distinct-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Distinct Groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#window-function-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Window Function Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Window Function Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-window-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Window Partitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-concurrent-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Concurrent Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request Size Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transfer Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transfer Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-result-set-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Result Set Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Size Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporary-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporary Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#s3-object-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 Object Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metadata Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schema Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statistics-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistics Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistics Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#histogram-buckets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Buckets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-defined-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Defined Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User-Defined Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-udf-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum UDF Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-aggregation-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Aggregation State
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalability-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-performance-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Performance Bottlenecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workarounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workarounds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workarounds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exceeding-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceeding Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-query-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Query Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buffer-pool-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffer Pool Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrency-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrency Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concurrency Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-concurrent-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Concurrent Queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-pool-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread Pool Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Size Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Size Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table Size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Table Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-rows-per-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Rows per Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-columns-per-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Columns per Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Size Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Size Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-file-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single File Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partition-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partition Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string-and-binary-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String and Binary Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String and Binary Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-string-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum String Length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-binary-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Binary Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Complexity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Complexity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-join-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Join Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-subquery-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Subquery Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-expression-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Expression Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-query-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Query Length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregation-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregation Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregation Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-by-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GROUP BY Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GROUP BY Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-group-by-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Group By Columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-distinct-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Distinct Groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#window-function-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Window Function Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Window Function Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-window-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Window Partitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-concurrent-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Concurrent Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request Size Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transfer Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transfer Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-result-set-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Result Set Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-size-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Size Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporary-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporary Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#s3-object-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 Object Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metadata Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schema Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statistics-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistics Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistics Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#histogram-buckets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Buckets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-defined-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Defined Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User-Defined Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-udf-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum UDF Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maximum-aggregation-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Aggregation State
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalability-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-performance-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Performance Bottlenecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workarounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workarounds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workarounds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exceeding-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceeding Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="known-limits">Known Limits<a class="headerlink" href="#known-limits" title="Permanent link">&para;</a></h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<h2 id="system-limits">System Limits<a class="headerlink" href="#system-limits" title="Permanent link">&para;</a></h2>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h3 id="memory-limits">Memory Limits<a class="headerlink" href="#memory-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-query-memory">Maximum Query Memory<a class="headerlink" href="#maximum-query-memory" title="Permanent link">&para;</a></h4>
+<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<ul>
+<li>Default: Lorem ipsum 4GB per query</li>
+<li>Configurable: Dolor sit amet up to system memory</li>
+<li>Spill to disk: Consectetur adipiscing when memory exceeded</li>
+</ul>
+<h4 id="buffer-pool-size">Buffer Pool Size<a class="headerlink" href="#buffer-pool-size" title="Permanent link">&para;</a></h4>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+<h3 id="concurrency-limits">Concurrency Limits<a class="headerlink" href="#concurrency-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-concurrent-queries">Maximum Concurrent Queries<a class="headerlink" href="#maximum-concurrent-queries" title="Permanent link">&para;</a></h4>
+<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore.</p>
+<ul>
+<li>Default: Lorem ipsum 10 concurrent queries</li>
+<li>Configurable: Dolor sit amet based on resources</li>
+<li>Queue management: Consectetur adipiscing for excess queries</li>
+</ul>
+<h4 id="thread-pool-size">Thread Pool Size<a class="headerlink" href="#thread-pool-size" title="Permanent link">&para;</a></h4>
+<p>Magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+<h2 id="data-size-limits">Data Size Limits<a class="headerlink" href="#data-size-limits" title="Permanent link">&para;</a></h2>
+<h3 id="table-size">Table Size<a class="headerlink" href="#table-size" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-rows-per-table">Maximum Rows per Table<a class="headerlink" href="#maximum-rows-per-table" title="Permanent link">&para;</a></h4>
+<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<ul>
+<li>Practical limit: Lorem ipsum billions of rows</li>
+<li>Performance: Dolor sit amet optimal under 100M rows per partition</li>
+<li>Recommendation: Consectetur adipiscing use partitioning for larger datasets</li>
+</ul>
+<h4 id="maximum-columns-per-table">Maximum Columns per Table<a class="headerlink" href="#maximum-columns-per-table" title="Permanent link">&para;</a></h4>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati.</p>
+<ul>
+<li>Hard limit: 10,000 columns</li>
+<li>Recommended: Under 1,000 columns for optimal performance</li>
+</ul>
+<h3 id="file-size-limits">File Size Limits<a class="headerlink" href="#file-size-limits" title="Permanent link">&para;</a></h3>
+<h4 id="single-file-size">Single File Size<a class="headerlink" href="#single-file-size" title="Permanent link">&para;</a></h4>
+<p>Cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+<ul>
+<li>Minimum: No practical minimum</li>
+<li>Maximum: Lorem ipsum limited by storage system</li>
+<li>Optimal: Dolor sit amet 128MB to 1GB per file</li>
+</ul>
+<h4 id="partition-size">Partition Size<a class="headerlink" href="#partition-size" title="Permanent link">&para;</a></h4>
+<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+<h3 id="string-and-binary-limits">String and Binary Limits<a class="headerlink" href="#string-and-binary-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-string-length">Maximum String Length<a class="headerlink" href="#maximum-string-length" title="Permanent link">&para;</a></h4>
+<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+<ul>
+<li>Default: Lorem ipsum 1MB per string</li>
+<li>Configurable: Dolor sit amet up to 100MB</li>
+<li>Recommendation: Consectetur adipiscing use external storage for large strings</li>
+</ul>
+<h4 id="maximum-binary-size">Maximum Binary Size<a class="headerlink" href="#maximum-binary-size" title="Permanent link">&para;</a></h4>
+<p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+<h2 id="query-limits">Query Limits<a class="headerlink" href="#query-limits" title="Permanent link">&para;</a></h2>
+<h3 id="query-complexity">Query Complexity<a class="headerlink" href="#query-complexity" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-join-operations">Maximum Join Operations<a class="headerlink" href="#maximum-join-operations" title="Permanent link">&para;</a></h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+<ul>
+<li>Practical limit: 32 tables in a single query</li>
+<li>Performance: Best with under 10 joins</li>
+<li>Recommendation: Break complex queries into CTEs</li>
+</ul>
+<h4 id="maximum-subquery-depth">Maximum Subquery Depth<a class="headerlink" href="#maximum-subquery-depth" title="Permanent link">&para;</a></h4>
+<p>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+<ul>
+<li>Hard limit: Lorem ipsum 10 levels of nesting</li>
+<li>Recommended: Dolor sit amet 3-4 levels maximum</li>
+</ul>
+<h4 id="maximum-expression-depth">Maximum Expression Depth<a class="headerlink" href="#maximum-expression-depth" title="Permanent link">&para;</a></h4>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
+<ul>
+<li>Parser limit: 100 nested expressions</li>
+<li>Practical: Keep expressions simple for readability</li>
+</ul>
+<h3 id="query-size">Query Size<a class="headerlink" href="#query-size" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-query-length">Maximum Query Length<a class="headerlink" href="#maximum-query-length" title="Permanent link">&para;</a></h4>
+<p>Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<ul>
+<li>Character limit: Lorem ipsum 1MB query text</li>
+<li>Practical: Dolor sit amet keep queries under 10KB</li>
+</ul>
+<h4 id="maximum-parameters">Maximum Parameters<a class="headerlink" href="#maximum-parameters" title="Permanent link">&para;</a></h4>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+<ul>
+<li>Prepared statements: 1,000 parameters</li>
+<li>Query variables: 100 variables</li>
+</ul>
+<h2 id="aggregation-limits">Aggregation Limits<a class="headerlink" href="#aggregation-limits" title="Permanent link">&para;</a></h2>
+<h3 id="group-by-limits">GROUP BY Limits<a class="headerlink" href="#group-by-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-group-by-columns">Maximum Group By Columns<a class="headerlink" href="#maximum-group-by-columns" title="Permanent link">&para;</a></h4>
+<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
+<ul>
+<li>Hard limit: Lorem ipsum 100 columns</li>
+<li>Practical: Dolor sit amet 20 columns for performance</li>
+</ul>
+<h4 id="maximum-distinct-groups">Maximum Distinct Groups<a class="headerlink" href="#maximum-distinct-groups" title="Permanent link">&para;</a></h4>
+<p>Aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+<ul>
+<li>Memory-dependent: Lorem ipsum millions of groups possible</li>
+<li>Performance: Dolor sit amet best under 10M distinct groups</li>
+</ul>
+<h3 id="window-function-limits">Window Function Limits<a class="headerlink" href="#window-function-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-window-partitions">Maximum Window Partitions<a class="headerlink" href="#maximum-window-partitions" title="Permanent link">&para;</a></h4>
+<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<ul>
+<li>Practical: Lorem ipsum hundreds of millions</li>
+<li>Performance: Dolor sit amet depends on partition size</li>
+</ul>
+<h2 id="network-limits">Network Limits<a class="headerlink" href="#network-limits" title="Permanent link">&para;</a></h2>
+<h3 id="connection-limits">Connection Limits<a class="headerlink" href="#connection-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-concurrent-connections">Maximum Concurrent Connections<a class="headerlink" href="#maximum-concurrent-connections" title="Permanent link">&para;</a></h4>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate.</p>
+<ul>
+<li>Default: 100 connections</li>
+<li>Configurable: Up to 10,000 connections</li>
+</ul>
+<h4 id="request-size-limits">Request Size Limits<a class="headerlink" href="#request-size-limits" title="Permanent link">&para;</a></h4>
+<p>Non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+<ul>
+<li>HTTP request: Lorem ipsum 10MB</li>
+<li>gRPC message: Dolor sit amet 4MB default</li>
+</ul>
+<h3 id="transfer-limits">Transfer Limits<a class="headerlink" href="#transfer-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-result-set-size">Maximum Result Set Size<a class="headerlink" href="#maximum-result-set-size" title="Permanent link">&para;</a></h4>
+<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.</p>
+<ul>
+<li>Streaming: Lorem ipsum unlimited</li>
+<li>Buffered: Dolor sit amet 100MB default</li>
+<li>Recommendation: Consectetur adipiscing use streaming for large results</li>
+</ul>
+<h2 id="storage-limits">Storage Limits<a class="headerlink" href="#storage-limits" title="Permanent link">&para;</a></h2>
+<h3 id="local-storage">Local Storage<a class="headerlink" href="#local-storage" title="Permanent link">&para;</a></h3>
+<h4 id="cache-size-limits">Cache Size Limits<a class="headerlink" href="#cache-size-limits" title="Permanent link">&para;</a></h4>
+<p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+<ul>
+<li>Default: 10GB cache</li>
+<li>Maximum: Limited by disk space</li>
+<li>Management: LRU eviction policy</li>
+</ul>
+<h4 id="temporary-storage">Temporary Storage<a class="headerlink" href="#temporary-storage" title="Permanent link">&para;</a></h4>
+<p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+<ul>
+<li>Spill directory: Lorem ipsum system-dependent</li>
+<li>Cleanup: Dolor sit amet automatic on query completion</li>
+</ul>
+<h3 id="remote-storage">Remote Storage<a class="headerlink" href="#remote-storage" title="Permanent link">&para;</a></h3>
+<h4 id="s3-object-limits">S3 Object Limits<a class="headerlink" href="#s3-object-limits" title="Permanent link">&para;</a></h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+<ul>
+<li>Maximum object size: 5TB (AWS limit)</li>
+<li>Maximum objects per query: Unlimited</li>
+<li>Request rate: Subject to AWS throttling</li>
+</ul>
+<h2 id="metadata-limits">Metadata Limits<a class="headerlink" href="#metadata-limits" title="Permanent link">&para;</a></h2>
+<h3 id="schema-limits">Schema Limits<a class="headerlink" href="#schema-limits" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-tables">Maximum Tables<a class="headerlink" href="#maximum-tables" title="Permanent link">&para;</a></h4>
+<p>Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+<ul>
+<li>Catalog: Lorem ipsum 100,000 tables</li>
+<li>Performance: Dolor sit amet best under 10,000 tables</li>
+</ul>
+<h4 id="maximum-indexes">Maximum Indexes<a class="headerlink" href="#maximum-indexes" title="Permanent link">&para;</a></h4>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.</p>
+<ul>
+<li>Per table: 64 indexes</li>
+<li>Recommended: 5-10 indexes per table</li>
+</ul>
+<h3 id="statistics-limits">Statistics Limits<a class="headerlink" href="#statistics-limits" title="Permanent link">&para;</a></h3>
+<h4 id="histogram-buckets">Histogram Buckets<a class="headerlink" href="#histogram-buckets" title="Permanent link">&para;</a></h4>
+<p>Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<ul>
+<li>Default: Lorem ipsum 256 buckets</li>
+<li>Maximum: Dolor sit amet 1,024 buckets</li>
+</ul>
+<h2 id="function-limits">Function Limits<a class="headerlink" href="#function-limits" title="Permanent link">&para;</a></h2>
+<h3 id="user-defined-functions">User-Defined Functions<a class="headerlink" href="#user-defined-functions" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-udf-size">Maximum UDF Size<a class="headerlink" href="#maximum-udf-size" title="Permanent link">&para;</a></h4>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+<ul>
+<li>Code size: 1MB per function</li>
+<li>Number of UDFs: 1,000 per session</li>
+</ul>
+<h3 id="aggregate-functions">Aggregate Functions<a class="headerlink" href="#aggregate-functions" title="Permanent link">&para;</a></h3>
+<h4 id="maximum-aggregation-state">Maximum Aggregation State<a class="headerlink" href="#maximum-aggregation-state" title="Permanent link">&para;</a></h4>
+<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam.</p>
+<ul>
+<li>Per group: Lorem ipsum 10MB</li>
+<li>Total: Dolor sit amet memory-dependent</li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="scalability-limits">Scalability Limits<a class="headerlink" href="#scalability-limits" title="Permanent link">&para;</a></h3>
+<p>Quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+<ul>
+<li>Vertical: Lorem ipsum up to 1TB RAM tested</li>
+<li>Horizontal: Dolor sit amet distributed execution available</li>
+<li>Data size: Consectetur adipiscing petabyte-scale supported</li>
+</ul>
+<h3 id="known-performance-bottlenecks">Known Performance Bottlenecks<a class="headerlink" href="#known-performance-bottlenecks" title="Permanent link">&para;</a></h3>
+<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<ol>
+<li>Lorem ipsum - Highly skewed data distributions</li>
+<li>Dolor sit amet - Extremely wide tables (1000+ columns)</li>
+<li>Consectetur adipiscing - Very deep query nesting</li>
+<li>Sed do eiusmod - Large string operations</li>
+</ol>
+<h2 id="workarounds">Workarounds<a class="headerlink" href="#workarounds" title="Permanent link">&para;</a></h2>
+<h3 id="exceeding-limits">Exceeding Limits<a class="headerlink" href="#exceeding-limits" title="Permanent link">&para;</a></h3>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati.</p>
+<ul>
+<li><strong>Partitioning</strong>: Cupiditate non provident split large datasets</li>
+<li><strong>Streaming</strong>: Similique sunt process data in batches</li>
+<li><strong>External storage</strong>: In culpa use for large objects</li>
+<li><strong>Query optimization</strong>: Qui officia break complex queries</li>
+</ul>
+<h2 id="future-improvements">Future Improvements<a class="headerlink" href="#future-improvements" title="Permanent link">&para;</a></h2>
+<p>Deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.</p>
+<p>Many of these limits will be increased or removed in future versions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

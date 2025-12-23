@@ -12,9 +12,13 @@
         <meta name="author" content="Mabel Dev">
       
       
-        <link rel="canonical" href="https://docs.opteryx.app/getting-started/quick-start/">
+        <link rel="canonical" href="https://docs.opteryx.app/core-concepts/cost-model/">
       
       
+        <link rel="prev" href="../morsels-vectors/">
+      
+      
+        <link rel="next" href="../storage-formats/">
       
       
         
@@ -25,7 +29,7 @@
     
     
       
-        <title>Quick Start - Opteryx Documentation</title>
+        <title>Cost model - Opteryx Documentation</title>
       
     
     
@@ -76,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start" class="md-skip">
+        <a href="#cost-model" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick Start
+              Cost model
             
           </span>
         </div>
@@ -264,7 +268,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../installation/" class="md-tabs__link">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
           
   
   
@@ -280,11 +284,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../core-concepts/execution-model/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../execution-model/" class="md-tabs__link">
           
   
   
@@ -673,7 +679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -701,7 +707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../first-query/" class="md-nav__link">
+      <a href="../../getting-started/first-query/" class="md-nav__link">
         
   
   
@@ -729,7 +735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reading-data/" class="md-nav__link">
+      <a href="../../getting-started/reading-data/" class="md-nav__link">
         
   
   
@@ -761,28 +767,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -800,7 +809,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -818,7 +827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/execution-model/" class="md-nav__link">
+      <a href="../execution-model/" class="md-nav__link">
         
   
   
@@ -846,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/morsels-vectors/" class="md-nav__link">
+      <a href="../morsels-vectors/" class="md-nav__link">
         
   
   
@@ -871,10 +880,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../core-concepts/cost-model/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost model
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -890,6 +926,388 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cost-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost Components
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-cost-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Cost Estimation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Cost Estimation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpu-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CPU Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operator-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#working-set-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working Set Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spill-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spill Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#io-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I/O Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I/O Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Transfer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost-based-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost-Based Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost-Based Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Join Ordering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistics-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistics Collection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistics Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table Statistics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column Statistics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptive-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adaptive Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adaptive Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plan-re-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan Re-optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning Guidelines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tuning Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameter-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workload-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workload Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -902,7 +1320,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/storage-formats/" class="md-nav__link">
+      <a href="../storage-formats/" class="md-nav__link">
         
   
   
@@ -1592,33 +2010,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#your-first-query" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your First Query
+        Overview
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#working-with-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Working with Data
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Working with Data">
+    <nav class="md-nav" aria-label="Overview">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#querying-in-memory-data" class="md-nav__link">
+  <a href="#cost-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Querying In-Memory Data
+        Cost Components
       
     </span>
   </a>
@@ -1631,22 +2038,34 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#basic-sql-operations" class="md-nav__link">
+  <a href="#query-cost-estimation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic SQL Operations
+        Query Cost Estimation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic SQL Operations">
+    <nav class="md-nav" aria-label="Query Cost Estimation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#select-queries" class="md-nav__link">
+  <a href="#cpu-cost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SELECT Queries
+        CPU Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CPU Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operator-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator Costs
       
     </span>
   </a>
@@ -1654,10 +2073,143 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#filtering-data" class="md-nav__link">
+  <a href="#function-costs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Filtering Data
+        Function Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#working-set-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working Set Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spill-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spill Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#io-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I/O Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I/O Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Transfer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost-based-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost-Based Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost-Based Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Join Ordering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Selection
       
     </span>
   </a>
@@ -1670,24 +2222,152 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+  <a href="#statistics-collection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Steps
+        Statistics Collection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistics Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table Statistics
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#need-help" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#column-statistics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Need Help?
+        Column Statistics
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptive-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adaptive Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adaptive Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plan-re-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan Re-optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning Guidelines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tuning Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameter-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workload-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workload Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1711,68 +2391,59 @@
   
 
 
-<h1 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h1>
-<p>This guide will help you get started with Opteryx quickly.</p>
-<h2 id="your-first-query">Your First Query<a class="headerlink" href="#your-first-query" title="Permanent link">&para;</a></h2>
-<p>Here's a simple example to get you started with Opteryx:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Execute a simple query</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT &#39;Hello, Opteryx!&#39; AS greeting&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Display the results</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="working-with-data">Working with Data<a class="headerlink" href="#working-with-data" title="Permanent link">&para;</a></h2>
-<h3 id="querying-in-memory-data">Querying In-Memory Data<a class="headerlink" href="#querying-in-memory-data" title="Permanent link">&para;</a></h3>
-<p>You can query data from Python data structures:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Create sample data</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">}</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">]</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Query the data</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s2">    SELECT name, age </span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s2">    FROM $data </span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s2">    WHERE age &gt; 25</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Print results</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> years old&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="basic-sql-operations">Basic SQL Operations<a class="headerlink" href="#basic-sql-operations" title="Permanent link">&para;</a></h2>
-<h3 id="select-queries">SELECT Queries<a class="headerlink" href="#select-queries" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Simple SELECT</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT 1 AS number, &#39;test&#39; AS text&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="filtering-data">Filtering Data<a class="headerlink" href="#filtering-data" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">opteryx</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Using WHERE clause</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">opteryx</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s2">    SELECT * </span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s2">    FROM my_data </span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s2">    WHERE column_name = &#39;value&#39;</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
-<p>Now that you've learned the basics, you can:</p>
-<ul>
-<li>Explore more complex SQL queries</li>
-<li>Learn about connecting to different data sources</li>
-<li>Check out advanced features and optimizations</li>
-</ul>
-<h2 id="need-help">Need Help?<a class="headerlink" href="#need-help" title="Permanent link">&para;</a></h2>
-<p>If you encounter any issues, please visit our <a href="https://github.com/mabel-dev/opteryx">GitHub repository</a> or check the documentation for more detailed information.</p>
+<h1 id="cost-model">Cost Model<a class="headerlink" href="#cost-model" title="Permanent link">&para;</a></h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h3 id="cost-components">Cost Components<a class="headerlink" href="#cost-components" title="Permanent link">&para;</a></h3>
+<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<h2 id="query-cost-estimation">Query Cost Estimation<a class="headerlink" href="#query-cost-estimation" title="Permanent link">&para;</a></h2>
+<h3 id="cpu-cost">CPU Cost<a class="headerlink" href="#cpu-cost" title="Permanent link">&para;</a></h3>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+<h4 id="operator-costs">Operator Costs<a class="headerlink" href="#operator-costs" title="Permanent link">&para;</a></h4>
+<p>Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+<h4 id="function-costs">Function Costs<a class="headerlink" href="#function-costs" title="Permanent link">&para;</a></h4>
+<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<h3 id="memory-cost">Memory Cost<a class="headerlink" href="#memory-cost" title="Permanent link">&para;</a></h3>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</p>
+<h4 id="working-set-size">Working Set Size<a class="headerlink" href="#working-set-size" title="Permanent link">&para;</a></h4>
+<p>Id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
+<h4 id="spill-costs">Spill Costs<a class="headerlink" href="#spill-costs" title="Permanent link">&para;</a></h4>
+<p>Omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+<h3 id="io-cost">I/O Cost<a class="headerlink" href="#io-cost" title="Permanent link">&para;</a></h3>
+<p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+<h4 id="network-transfer">Network Transfer<a class="headerlink" href="#network-transfer" title="Permanent link">&para;</a></h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<h4 id="disk-access">Disk Access<a class="headerlink" href="#disk-access" title="Permanent link">&para;</a></h4>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h2 id="cost-based-optimization">Cost-Based Optimization<a class="headerlink" href="#cost-based-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="plan-comparison">Plan Comparison<a class="headerlink" href="#plan-comparison" title="Permanent link">&para;</a></h3>
+<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<h3 id="join-ordering">Join Ordering<a class="headerlink" href="#join-ordering" title="Permanent link">&para;</a></h3>
+<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
+<h3 id="index-selection">Index Selection<a class="headerlink" href="#index-selection" title="Permanent link">&para;</a></h3>
+<p>Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+<h2 id="statistics-collection">Statistics Collection<a class="headerlink" href="#statistics-collection" title="Permanent link">&para;</a></h2>
+<h3 id="table-statistics">Table Statistics<a class="headerlink" href="#table-statistics" title="Permanent link">&para;</a></h3>
+<p>Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+<h3 id="column-statistics">Column Statistics<a class="headerlink" href="#column-statistics" title="Permanent link">&para;</a></h3>
+<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+<h3 id="histogram-maintenance">Histogram Maintenance<a class="headerlink" href="#histogram-maintenance" title="Permanent link">&para;</a></h3>
+<p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+<h2 id="adaptive-optimization">Adaptive Optimization<a class="headerlink" href="#adaptive-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="runtime-feedback">Runtime Feedback<a class="headerlink" href="#runtime-feedback" title="Permanent link">&para;</a></h3>
+<p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+<h3 id="plan-re-optimization">Plan Re-optimization<a class="headerlink" href="#plan-re-optimization" title="Permanent link">&para;</a></h3>
+<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.</p>
+<h3 id="learning-mechanisms">Learning Mechanisms<a class="headerlink" href="#learning-mechanisms" title="Permanent link">&para;</a></h3>
+<p>Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<h2 id="tuning-guidelines">Tuning Guidelines<a class="headerlink" href="#tuning-guidelines" title="Permanent link">&para;</a></h2>
+<h3 id="parameter-selection">Parameter Selection<a class="headerlink" href="#parameter-selection" title="Permanent link">&para;</a></h3>
+<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+<h3 id="workload-characteristics">Workload Characteristics<a class="headerlink" href="#workload-characteristics" title="Permanent link">&para;</a></h3>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+<h3 id="resource-constraints">Resource Constraints<a class="headerlink" href="#resource-constraints" title="Permanent link">&para;</a></h3>
+<p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
 
 
 
