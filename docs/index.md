@@ -1,6 +1,39 @@
-# Welcome to Opteryx Documentation
+<section class="opteryx-hero">
+	<div class="hero-inner" style="max-width:1100px;margin:0 auto;padding:0 16px;display:flex;gap:32px;align-items:center;">
+		<div class="hero-copy" style="flex:1;">
+			<h1 class="hero-title">Welcome to Opteryx Documentation</h1>
+			<p class="hero-lead">Fast, lightweight SQL analytics for your data — run queries locally or in the cloud with minimal fuss.</p>
+			<p><a class="md-button md-button--primary" href="getting-started/quick-start.md">Get started</a></p>
+		</div>
+		<div class="hero-art" style="flex:0 0 420px;text-align:right;">
+			<img src="assets/images/hero-illustration.svg" alt="Opteryx illustration" style="max-width:420px;width:100%;height:auto;" loading="lazy">
+		</div>
+	</div>
+</section>
 
-Welcome to the official documentation for Opteryx, a powerful and flexible SQL query engine.
+<section class="featured" aria-labelledby="featured-resources" style="padding-top:28px;">
+	<div style="max-width:1100px;margin:0 auto;padding:0 16px;">
+		<h2 id="featured-resources">Featured resources</h2>
+		<p style="color:#6b7280;margin-top:4px;margin-bottom:12px;">Dive into our top picks</p>
+	</div>
+	<div class="opteryx-card-grid">
+		<article class="opteryx-card">
+			<img src="assets/images/icon-getting-started.svg" class="icon" alt="Getting started icon">
+			<h3 class="opteryx-card__title"><a href="getting-started/quick-start.md">Quick start</a></h3>
+			<p class="opteryx-card__desc">Run your first query in minutes and explore Opteryx capabilities.</p>
+		</article>
+		<article class="opteryx-card">
+			<img src="assets/images/icon-architecture.svg" class="icon" alt="Architecture icon">
+			<h3 class="opteryx-card__title"><a href="architecture/execution-engine.md">Architecture</a></h3>
+			<p class="opteryx-card__desc">Read about the execution engine, planner, and optimizer internals.</p>
+		</article>
+		<article class="opteryx-card">
+			<img src="assets/images/icon-security.svg" class="icon" alt="Security icon">
+			<h3 class="opteryx-card__title"><a href="operations/security-permissions.md">Security & permissions</a></h3>
+			<p class="opteryx-card__desc">How to secure access, configure roles, and manage permissions.</p>
+		</article>
+	</div>
+</section>
 
 ## What is Opteryx?
 
