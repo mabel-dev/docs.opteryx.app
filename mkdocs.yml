@@ -20,7 +20,7 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: '#07797c'
+      primary: '#8fe3e0'   # lighter teal for strong contrast on dark surfaces
       accent: '#ffa503'
       toggle:
         icon: material/brightness-4

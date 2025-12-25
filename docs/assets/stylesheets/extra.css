@@ -56,6 +56,45 @@ a:focus, .md-nav__link:focus, .md-button:focus { outline:3px solid rgba(7,121,12
 /* Utility classes for card grid (used in index.md) */
 .opteryx-card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1100px; margin:24px auto; padding:0 16px; }
 
+/* Layout: wider, centered content like modern doc sites */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+.md-content { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+.md-main { padding-left: 0 !important; }
+
+/* Hide left sidebar when using top navigation for a cleaner, full-width landing */
+.md-sidebar { display: none !important; }
+
+/* Header: make it light, clean, and centered */
+.md-header { background: #ffffff; box-shadow: none; border-bottom: 1px solid rgba(15,23,42,0.04); }
+.md-header-nav { display:flex; justify-content:center; align-items:center; }
+.md-header .md-nav__list { gap: 28px; }
+
+/* Remove small Material footer credit for cleaner look (you can keep it if preferred) */
+.md-footer { border-top: 1px solid rgba(15,23,42,0.04); background: transparent; }
+.md-footer .md-footer__meta { opacity: 0.9; color: #6b7280; }
+
+/* Hero: larger, airy */
+.opteryx-hero { padding:72px 0; }
+.opteryx-hero .hero-title { font-size:3rem; line-height:1.05; font-weight:700; color: var(--brand-navy); }
+.opteryx-hero .hero-lead { font-size:1.125rem; color:#475569; max-width:640px; }
+
+/* Feature cards: larger icons, spaced layout */
+.opteryx-card { padding:22px; border-radius:12px; }
+.opteryx-card .icon { width:56px; height:56px; margin-bottom:12px; }
+.opteryx-card__title a { color: var(--brand-navy); font-weight:600; }
+
+/* Make tables and lists more airy */
+.md-typeset ul { margin-left:1rem; }
+
+/* Responsive: show sidebar as overlay on small screens */
+@media (max-width: 1024px) {
+  .md-sidebar { display: block !important; position: relative; }
+  .md-content { padding: 24px; }
+  .md-header .md-nav__list { gap: 12px; }
+}
+
+
 /* Dark mode overrides to ensure readable contrast */
 @media (prefers-color-scheme: dark) {
   :root{
