@@ -1,0 +1,57 @@
+:root{
+  --brand-teal: #07797c; /* main */
+  --brand-orange: #fe7701;
+  --brand-navy: #1f2e61;
+  --brand-red: #cb0101;
+  --brand-gold: #c89427;
+  --brand-amber: #ffa503;
+  --brand-charcoal: #3d4a4e;
+
+  --surface-1: #ffffff;
+  --muted-1: #6b7280;
+}
+
+/* Base link and accent color */
+a, .md-nav__link, .md-content a { color: var(--brand-teal); }
+a:hover, .md-nav__link:hover, .md-content a:hover { color: var(--brand-navy); }
+
+/* Header CTA / primary buttons */
+.md-button--primary, .md-header .md-nav__button, .md-footer .md-button {
+  background-color: var(--brand-teal) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+.md-button--primary:hover { filter: brightness(0.95); }
+
+/* Headings */
+.md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--brand-navy); }
+
+/* Code / highlight accents */
+.md-typeset code, .md-typeset kbd { color: var(--brand-charcoal); }
+.md-typeset .admonition-title { color: var(--brand-navy); }
+
+/* Card-like tiles for featured resources */
+.opteryx-card { background: var(--surface-1); padding:18px; border-radius:10px; box-shadow:0 6px 18px rgba(15,23,42,0.06); border:1px solid rgba(15,23,42,0.04); }
+.opteryx-card .opteryx-card__title { color: var(--brand-navy); margin:8px 0; }
+.opteryx-card .opteryx-card__desc { color: var(--muted-1); }
+
+/* Hero section helpers */
+.opteryx-hero { background: linear-gradient(180deg, rgba(7,121,124,0.06) 0%, rgba(255,255,255,0) 60%); padding:56px 0; }
+.opteryx-hero .hero-title { color: var(--brand-navy); font-size:2.4rem; margin:0 0 8px; }
+.opteryx-hero .hero-lead { color:#475569; font-size:1.05rem; margin-bottom:16px; }
+
+/* Small visual tweaks */
+.md-nav__link--active { color: var(--brand-teal) !important; }
+.md-search .md-search__input::placeholder { color: #9ca3af; }
+
+/* Accessibility: focus outlines */
+a:focus, .md-nav__link:focus, .md-button:focus { outline:3px solid rgba(7,121,124,0.18); outline-offset:2px; }
+
+/* Responsive helpers */
+@media (max-width:800px){
+  .opteryx-hero { padding:36px 0; }
+  .opteryx-hero .hero-title { font-size:1.8rem; }
+}
+
+/* Utility classes for card grid (used in index.md) */
+.opteryx-card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1100px; margin:24px auto; padding:0 16px; }
