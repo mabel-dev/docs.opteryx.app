@@ -66,9 +66,22 @@ body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 
 .md-sidebar { display: none !important; }
 
 /* Header: make it light, clean, and centered */
-.md-header { background: #ffffff; box-shadow: none; border-bottom: 1px solid rgba(15,23,42,0.04); }
+.md-header { background: #ffffff; box-shadow: none; border-bottom: 1px solid rgba(15,23,42,0.06); color: var(--brand-navy); }
 .md-header-nav { display:flex; justify-content:center; align-items:center; }
 .md-header .md-nav__list { gap: 28px; }
+.md-header .md-nav__link, .md-header .md-nav__link a { color: var(--brand-navy); }
+.md-header .md-logo { color: var(--brand-navy); }
+
+/* Improve search visibility in header */
+.md-search .md-search__input { background: #f3f4f6; color: #0b1220; border-radius: 8px; }
+.md-search .md-search__input::placeholder { color: #94a3b8; }
+
+/* Hide GitHub repo/stats link (targets repo_url) */
+a[href*="github.com/mabel-dev/opteryx"] { display: none !important; }
+.md-header a[href*="github.com"] { display: none !important; }
+
+/* If the theme inserts a repo meta element, hide it too */
+.md-header__meta, .md-header .md-nav__meta { display: none !important; }
 
 /* Remove small Material footer credit for cleaner look (you can keep it if preferred) */
 .md-footer { border-top: 1px solid rgba(15,23,42,0.04); background: transparent; }
