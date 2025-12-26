@@ -1,0 +1,8 @@
+:root{
+  --brand-teal: #07797c;
+  --brand-navy: #1f2e61;
+}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+main{max-width:1100px;margin:32px auto;padding:0 24px}
+h1{color:var(--brand-navy)}
+code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
