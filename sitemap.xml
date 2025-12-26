@@ -2,106 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.opteryx.app/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/about/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/architecture/execution-engine/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/architecture/internal-components/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/architecture/optimizer/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/architecture/planner/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/core-concepts/cost-model/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/core-concepts/execution-model/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/core-concepts/morsels-vectors/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/core-concepts/storage-formats/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/getting-started/first-query/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/getting-started/installation/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/getting-started/quick-start/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/getting-started/reading-data/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/introduction/design-principles/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/introduction/what-is-opteryx/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/introduction/when-to-use/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/operations/cloud-model/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/operations/running-locally/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/operations/security-permissions/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/roadmap-guarantees/compatibility/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/roadmap-guarantees/known-limits/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/roadmap-guarantees/stability-promises/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/sql-reference/functions/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/sql-reference/semantics-edge-cases/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
     <url>
          <loc>https://docs.opteryx.app/sql-reference/supported-sql/</loc>
-         <lastmod>2025-12-25</lastmod>
+         <lastmod>2025-12-26</lastmod>
     </url>
 </urlset>
