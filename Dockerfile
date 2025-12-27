@@ -4,8 +4,13 @@ WORKDIR /app
 
 # Install dependencies (copy package files from docs-site to improve cache)
 COPY docs-site/package.json docs-site/package-lock.json* ./
-# Use `npm ci` when a lockfile exists for reproducible installs, otherwise fall back to `npm install`.
-RUN if [ -f package-lock.json ]; then npm ci --silent; else npm install --silent; fi
+# Ensure native build tools are available for any native modules on Alpine
+RUN apk add --no-cache python3 build-base
+
+# Use `npm ci` when a lockfile exists for reproducible installs. If that fails
+# (peer deps, platform-specific optional deps, etc.), fall back to a more
+# tolerant install using `--legacy-peer-deps` so CI builds don't break silently.
+RUN if [ -f package-lock.json ]; then npm ci --silent || npm install --legacy-peer-deps --silent; else npm install --legacy-peer-deps --silent; fi
 
 # Copy the docs-site source into the build context
 COPY docs-site/ ./
