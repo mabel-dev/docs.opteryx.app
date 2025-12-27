@@ -1,3 +1,36 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+
+# Build / distribution
+dist/
+build/
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+
+# Caches, coverage
+.cache/
+coverage/
+
+# Docker
+docker-compose.override.yml
+
+# Keep package-lock.json committed for deterministic CI builds
+# Do NOT ignore package-lock.json
 # MkDocs build outputs
 site/
 
