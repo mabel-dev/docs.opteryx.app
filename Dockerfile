@@ -4,8 +4,15 @@ WORKDIR /app
 
 # Install dependencies (copy package files from docs-site to improve cache)
 COPY docs-site/package.json docs-site/package-lock.json* ./
-# Use `npm ci` when a lockfile exists for reproducible installs, otherwise fall back to `npm install`.
-RUN if [ -f package-lock.json ]; then npm ci --silent; else npm install --silent; fi
+# Diagnostic install: show node/npm versions and run install verbosely so build logs reveal failure reasons
+RUN node -v && npm -v && npm config ls -l || true
+# Try a robust install: prefer lockfile with `npm ci`, otherwise install with safe flags
+RUN if [ -f package-lock.json ]; then \
+      npm ci --loglevel=verbose --no-audit --no-fund || (echo "npm ci failed"; cat /workspace/npm-debug.log || true; exit 1); \
+    else \
+      npm cache clean --force || true; \
+      npm install --loglevel=verbose --no-audit --no-fund --legacy-peer-deps || (echo "npm install failed, retrying with legacy-peer-deps"; npm install --legacy-peer-deps --no-audit --no-fund || (cat /workspace/npm-debug.log || true; exit 1)); \
+    fi
 
 # Copy the docs-site source into the build context
 COPY docs-site/ ./
