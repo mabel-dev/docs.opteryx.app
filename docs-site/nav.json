@@ -1,0 +1,105 @@
+[
+  {
+    "Home": "index.md"
+  },
+  {
+    "Introduction": [
+      {
+        "What is Opteryx": "introduction/what-is-opteryx.md"
+      },
+      {
+        "When to use Opteryx": "introduction/when-to-use.md"
+      },
+      {
+        "Design principles": "introduction/design-principles.md"
+      }
+    ]
+  },
+  {
+    "Getting Started": [
+      {
+        "Installation": "getting-started/installation.md"
+      },
+      {
+        "First query": "getting-started/first-query.md"
+      },
+      {
+        "Reading data": "getting-started/reading-data.md"
+      }
+    ]
+  },
+  {
+    "Core Concepts": [
+      {
+        "Execution model": "core-concepts/execution-model.md"
+      },
+      {
+        "Morsels & vectors": "core-concepts/morsels-vectors.md"
+      },
+      {
+        "Cost model": "core-concepts/cost-model.md"
+      },
+      {
+        "Storage & formats": "core-concepts/storage-formats.md"
+      }
+    ]
+  },
+  {
+    "SQL Reference": [
+      {
+        "Supported SQL": "sql-reference/supported-sql.md"
+      },
+      {
+        "Functions": "sql-reference/functions.md"
+      },
+      {
+        "Semantics & edge cases": "sql-reference/semantics-edge-cases.md"
+      }
+    ]
+  },
+  {
+    "Architecture": [
+      {
+        "Planner": "architecture/planner.md"
+      },
+      {
+        "Optimizer": "architecture/optimizer.md"
+      },
+      {
+        "Execution engine": "architecture/execution-engine.md"
+      },
+      {
+        "Internal components": "architecture/internal-components.md"
+      }
+    ]
+  },
+  {
+    "Operations": [
+      {
+        "Running locally": "operations/running-locally.md"
+      },
+      {
+        "Cloud model": "operations/cloud-model.md"
+      },
+      {
+        "Security & permissions": "operations/security-permissions.md"
+      }
+    ]
+  },
+  {
+    "Roadmap & Guarantees": [
+      {
+        "Stability promises": "roadmap-guarantees/stability-promises.md"
+      },
+      {
+        "Compatibility": "roadmap-guarantees/compatibility.md"
+      },
+      {
+        "Known limits": "roadmap-guarantees/known-limits.md"
+      }
+    ]
+  },
+  {
+    "About": "about.md"
+  }
+]
