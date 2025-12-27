@@ -1,7 +1,7 @@
----
-title: reading data
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Reading Data
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -26,7 +26,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-```python
+\`\`\`python
 # Lorem ipsum file reading
 import opteryx
 
@@ -34,19 +34,19 @@ result = opteryx.query("""
     SELECT * 
     FROM 'path/to/file.parquet'
 """)
-```
+\`\`\`
 
 ### Remote Storage
 
 Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
 
-```python
+\`\`\`python
 # Sed do eiusmod tempor
 result = opteryx.query("""
     SELECT * 
     FROM 's3://bucket/path/to/data'
 """)
-```
+\`\`\`
 
 ## Cloud Storage Integration
 
@@ -70,7 +70,7 @@ Facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporib
 
 Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 
-```python
+\`\`\`python
 # Lorem ipsum in-memory data
 data = [
     {"id": 1, "name": "Lorem"},
@@ -82,13 +82,13 @@ result = opteryx.query(
     "SELECT * FROM $data",
     variables={"data": data}
 )
-```
+\`\`\`
 
 ### Pandas DataFrames
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-```python
+\`\`\`python
 # Sed do eiusmod tempor
 import pandas as pd
 
@@ -101,7 +101,7 @@ result = opteryx.query(
     "SELECT * FROM $df WHERE column1 > 1",
     variables={"df": df}
 )
-```
+\`\`\`
 
 ## Data Connection Configuration
 
@@ -130,3 +130,6 @@ Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit la
 ### Caching Strategies
 
 Quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.
+`
+  return <DocRenderer source={source} />
+}

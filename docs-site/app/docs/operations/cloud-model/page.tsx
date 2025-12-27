@@ -1,7 +1,7 @@
----
-title: cloud model
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Cloud Model
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -32,18 +32,18 @@ Magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exerci
 
 Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
 
-```bash
+\`\`\`bash
 # Lorem ipsum EC2 setup
 sudo yum update -y
 sudo yum install python3 python3-pip -y
 pip3 install opteryx
-```
+\`\`\`
 
 ### Lambda Functions
 
 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
 
-```python
+\`\`\`python
 # Sed do eiusmod Lambda handler
 import opteryx
 
@@ -54,7 +54,7 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': list(result)
     }
-```
+\`\`\`
 
 ### ECS/Fargate
 
@@ -64,7 +64,7 @@ Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et d
 
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.
 
-```python
+\`\`\`python
 # Lorem ipsum S3 access
 import opteryx
 
@@ -73,7 +73,7 @@ result = opteryx.query("""
     FROM 's3://my-bucket/data/*.parquet'
     WHERE region = 'us-east-1'
 """)
-```
+\`\`\`
 
 ## Google Cloud Platform
 
@@ -85,7 +85,7 @@ Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut 
 
 Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 
-```python
+\`\`\`python
 # Sed do eiusmod Cloud Function
 import opteryx
 
@@ -93,7 +93,7 @@ def query_handler(request):
     query = request.get_json()['query']
     result = opteryx.query(query)
     return {'data': list(result)}
-```
+\`\`\`
 
 ### Cloud Run
 
@@ -113,7 +113,7 @@ Cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non pr
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.
 
-```python
+\`\`\`python
 # Lorem ipsum Azure Function
 import azure.functions as func
 import opteryx
@@ -122,7 +122,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     query = req.get_json()['query']
     result = opteryx.query(query)
     return func.HttpResponse(str(list(result)))
-```
+\`\`\`
 
 ### Container Instances
 
@@ -138,7 +138,7 @@ Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. N
 
 Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
 
-```yaml
+\`\`\`yaml
 # Lorem ipsum Helm values
 replicaCount: 3
 image:
@@ -148,7 +148,7 @@ resources:
   limits:
     memory: 8Gi
     cpu: 4
-```
+\`\`\`
 
 ### StatefulSets
 
@@ -164,26 +164,26 @@ Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil 
 
 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.
 
-```dockerfile
+\`\`\`dockerfile
 # Lorem ipsum Dockerfile
 FROM python:3.10-slim
 WORKDIR /app
 RUN pip install opteryx
 COPY app.py .
 CMD ["python", "app.py"]
-```
+\`\`\`
 
 ### Running Containers
 
 Sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
 
-```bash
+\`\`\`bash
 # Sed do eiusmod docker run
 docker run -d \
   -e OPTERYX_MAX_MEMORY=8GB \
   -v /data:/data \
   opteryx/engine
-```
+\`\`\`
 
 ## Infrastructure as Code
 
@@ -191,7 +191,7 @@ docker run -d \
 
 Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
 
-```hcl
+\`\`\`hcl
 # Lorem ipsum Terraform
 resource "aws_instance" "opteryx" {
   ami           = "ami-12345678"
@@ -201,7 +201,7 @@ resource "aws_instance" "opteryx" {
     Name = "opteryx-engine"
   }
 }
-```
+\`\`\`
 
 ### CloudFormation
 
@@ -246,3 +246,6 @@ Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur au
 3. Magna aliqua ut enim ad minim veniam quis nostrud
 4. Exercitation ullamco laboris nisi ut aliquip ex ea
 5. Commodo consequat duis aute irure dolor in reprehenderit
+`
+  return <DocRenderer source={source} />
+}

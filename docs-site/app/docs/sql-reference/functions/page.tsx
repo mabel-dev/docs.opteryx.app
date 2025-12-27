@@ -1,7 +1,7 @@
----
-title: functions
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Functions
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -16,12 +16,12 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum string functions
 SELECT UPPER(name) as uppercase_name,
        LOWER(email) as lowercase_email
 FROM users;
-```
+\`\`\`
 
 #### SUBSTRING
 
@@ -41,13 +41,13 @@ Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit la
 
 Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod numeric functions
 SELECT ROUND(price, 2) as rounded_price,
        CEIL(quantity) as ceiling_qty,
        FLOOR(discount) as floor_discount
 FROM products;
-```
+\`\`\`
 
 #### ABS
 
@@ -67,12 +67,12 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
 
 Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum date functions
 SELECT NOW() as current_time,
        CURRENT_TIMESTAMP as timestamp,
        CURRENT_DATE as today;
-```
+\`\`\`
 
 #### DATE_TRUNC
 
@@ -92,12 +92,12 @@ Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod COUNT
 SELECT COUNT(*) as total_rows,
        COUNT(DISTINCT user_id) as unique_users
 FROM events;
-```
+\`\`\`
 
 ### SUM/AVG
 
@@ -117,14 +117,14 @@ Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, ad
 
 Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum window function
 SELECT name,
        department,
        salary,
        ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as row_num
 FROM employees;
-```
+\`\`\`
 
 ### RANK/DENSE_RANK
 
@@ -144,7 +144,7 @@ Quos dolores et quas molestias excepturi sint occaecati cupiditate non provident
 
 Id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod CASE
 SELECT name,
        CASE 
@@ -153,7 +153,7 @@ SELECT name,
            ELSE 'Senior'
        END as age_group
 FROM users;
-```
+\`\`\`
 
 ### COALESCE
 
@@ -192,3 +192,6 @@ Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa 
 ### TRY_CAST
 
 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+`
+  return <DocRenderer source={source} />
+}

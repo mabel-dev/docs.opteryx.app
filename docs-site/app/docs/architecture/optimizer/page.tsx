@@ -1,7 +1,7 @@
----
-title: optimizer
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Optimizer
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -26,11 +26,11 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
 
 Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
 
-```python
+\`\`\`python
 # Lorem ipsum filter pushdown
 # Push filters closer to data sources
 # Reduces amount of data processed
-```
+\`\`\`
 
 #### Projection Elimination
 
@@ -158,12 +158,12 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
 
 ### Optimization Hints
 
-```sql
+\`\`\`sql
 -- Lorem ipsum optimization hints
 SELECT /*+ USE_HASH_JOIN */ *
 FROM table_a a
 JOIN table_b b ON a.id = b.ref_id;
-```
+\`\`\`
 
 ### Trace Logs
 
@@ -172,3 +172,6 @@ Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, ad
 ### Performance Analysis
 
 Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
+`
+  return <DocRenderer source={source} />
+}

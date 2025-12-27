@@ -1,7 +1,7 @@
----
-title: about
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # About Opteryx
 
 ## Project Overview
@@ -46,3 +46,6 @@ Please refer to the LICENSE file in the main repository for license information.
 
 - **GitHub**: [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx)
 - **Issues**: [GitHub Issues](https://github.com/mabel-dev/opteryx/issues)
+`
+  return <DocRenderer source={source} />
+}

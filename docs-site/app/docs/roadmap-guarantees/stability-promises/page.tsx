@@ -1,7 +1,7 @@
----
-title: stability promises
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Stability Promises
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -44,25 +44,25 @@ Exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
 
 Quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.
 
-```python
+\`\`\`python
 # Lorem ipsum stable API
 import opteryx
 
 # Sed do eiusmod - guaranteed stable
 result = opteryx.query("SELECT * FROM table")
-```
+\`\`\`
 
 ### Experimental APIs
 
 Praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt.
 
-```python
+\`\`\`python
 # Lorem ipsum experimental API
 from opteryx.experimental import new_feature
 
 # Sed do eiusmod - may change in future versions
 result = new_feature.advanced_query()
-```
+\`\`\`
 
 ### Deprecated APIs
 
@@ -209,3 +209,6 @@ Eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque ea
 ### End of Life
 
 Consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+`
+  return <DocRenderer source={source} />
+}

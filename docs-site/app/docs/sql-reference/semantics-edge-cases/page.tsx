@@ -1,7 +1,7 @@
----
-title: semantics edge cases
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Semantics & Edge Cases
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -14,13 +14,13 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum NULL comparison
 SELECT *
 FROM users
 WHERE age IS NULL
    OR age IS NOT NULL;
-```
+\`\`\`
 
 ### NULL in Aggregations
 
@@ -50,7 +50,7 @@ Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et d
 
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod division handling
 SELECT 
     numerator,
@@ -60,7 +60,7 @@ SELECT
         ELSE numerator / denominator
     END as safe_division
 FROM calculations;
-```
+\`\`\`
 
 ### Integer vs Float Division
 
@@ -108,7 +108,7 @@ Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit la
 
 Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum NULL ordering
 SELECT *
 FROM data
@@ -117,7 +117,7 @@ ORDER BY value NULLS FIRST;
 SELECT *
 FROM data
 ORDER BY value NULLS LAST;
-```
+\`\`\`
 
 ### String Collation
 
@@ -190,3 +190,6 @@ Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil 
 3. Magna aliqua ut enim ad minim veniam quis nostrud
 4. Exercitation ullamco laboris nisi ut aliquip ex ea
 5. Commodo consequat duis aute irure dolor in reprehenderit
+`
+  return <DocRenderer source={source} />
+}

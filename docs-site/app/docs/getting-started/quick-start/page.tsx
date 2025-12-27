@@ -1,7 +1,7 @@
----
-title: quick start
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Quick Start
 
 This guide will help you get started with Opteryx quickly.
@@ -10,7 +10,7 @@ This guide will help you get started with Opteryx quickly.
 
 Here's a simple example to get you started with Opteryx:
 
-```python
+\`\`\`python
 import opteryx
 
 # Execute a simple query
@@ -19,7 +19,7 @@ result = opteryx.query("SELECT 'Hello, Opteryx!' AS greeting")
 # Display the results
 for row in result:
     print(row)
-```
+\`\`\`
 
 ## Working with Data
 
@@ -27,7 +27,7 @@ for row in result:
 
 You can query data from Python data structures:
 
-```python
+\`\`\`python
 import opteryx
 
 # Create sample data
@@ -47,22 +47,22 @@ result = opteryx.query("""
 # Print results
 for row in result:
     print(f"{row['name']} is {row['age']} years old")
-```
+\`\`\`
 
 ## Basic SQL Operations
 
 ### SELECT Queries
 
-```python
+\`\`\`python
 import opteryx
 
 # Simple SELECT
 result = opteryx.query("SELECT 1 AS number, 'test' AS text")
-```
+\`\`\`
 
 ### Filtering Data
 
-```python
+\`\`\`python
 import opteryx
 
 # Using WHERE clause
@@ -71,7 +71,7 @@ result = opteryx.query("""
     FROM my_data 
     WHERE column_name = 'value'
 """)
-```
+\`\`\`
 
 ## Next Steps
 
@@ -84,3 +84,6 @@ Now that you've learned the basics, you can:
 ## Need Help?
 
 If you encounter any issues, please visit our [GitHub repository](https://github.com/mabel-dev/opteryx) or check the documentation for more detailed information.
+`
+  return <DocRenderer source={source} />
+}

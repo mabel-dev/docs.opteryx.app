@@ -1,7 +1,7 @@
----
-title: when to use
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # When to Use Opteryx
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -51,3 +51,6 @@ Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saep
 3. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
 4. Duis aute irure dolor in reprehenderit in voluptate velit esse
 5. Excepteur sint occaecat cupidatat non proident
+`
+  return <DocRenderer source={source} />
+}

@@ -1,7 +1,7 @@
----
-title: running locally
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Running Locally
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -30,13 +30,13 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
 
 ### Installation
 
-```bash
+\`\`\`bash
 # Lorem ipsum installation
 pip install opteryx
 
 # Sed do eiusmod verification
 python -c "import opteryx; print(opteryx.__version__)"
-```
+\`\`\`
 
 Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
 
@@ -46,18 +46,18 @@ Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, ad
 
 Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
 
-```bash
+\`\`\`bash
 # Lorem ipsum environment setup
 export OPTERYX_HOME=/path/to/opteryx
 export OPTERYX_LOG_LEVEL=INFO
 export OPTERYX_CACHE_DIR=/tmp/opteryx-cache
-```
+\`\`\`
 
 ### Configuration Files
 
 Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
 
-```python
+\`\`\`python
 # Sed do eiusmod configuration
 import opteryx
 
@@ -66,7 +66,7 @@ opteryx.configure({
     'worker_threads': 4,
     'cache_enabled': True
 })
-```
+\`\`\`
 
 ### Connection Settings
 
@@ -78,7 +78,7 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
 
 Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
 
-```python
+\`\`\`python
 # Lorem ipsum interactive query
 import opteryx
 
@@ -86,13 +86,13 @@ import opteryx
 result = opteryx.query("SELECT * FROM dataset")
 for row in result:
     print(row)
-```
+\`\`\`
 
 ### Batch Mode
 
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
 
-```python
+\`\`\`python
 # Lorem ipsum batch processing
 import opteryx
 
@@ -105,7 +105,7 @@ queries = [
 for query in queries:
     result = opteryx.query(query)
     # Sed do eiusmod process result
-```
+\`\`\`
 
 ### Programmatic Access
 
@@ -117,14 +117,14 @@ Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saep
 
 Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 
-```python
+\`\`\`python
 # Lorem ipsum memory tuning
 opteryx.configure({
     'max_memory': '16GB',
     'spill_to_disk': True,
     'spill_directory': '/tmp/opteryx-spill'
 })
-```
+\`\`\`
 
 ### Thread Configuration
 
@@ -142,14 +142,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
 #### File-Based Data
 
-```python
+\`\`\`python
 # Lorem ipsum file access
 result = opteryx.query("""
     SELECT * 
     FROM 'data/local/dataset.parquet'
     WHERE date > '2024-01-01'
 """)
-```
+\`\`\`
 
 #### In-Memory Data
 
@@ -165,14 +165,14 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
 
 Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.
 
-```python
+\`\`\`python
 # Lorem ipsum logging setup
 import logging
 import opteryx
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('opteryx')
-```
+\`\`\`
 
 ### Metrics Collection
 
@@ -200,14 +200,14 @@ Id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita di
 
 ### Debug Mode
 
-```python
+\`\`\`python
 # Lorem ipsum debug mode
 opteryx.configure({
     'debug': True,
     'log_level': 'DEBUG',
     'profile': True
 })
-```
+\`\`\`
 
 Cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
 
@@ -232,3 +232,6 @@ Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatib
 ### Hot Reload
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+`
+  return <DocRenderer source={source} />
+}

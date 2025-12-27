@@ -1,7 +1,7 @@
----
-title: compatibility
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Compatibility
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -258,3 +258,6 @@ Qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et qu
 ### Configuration Migration
 
 Qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+`
+  return <DocRenderer source={source} />
+}

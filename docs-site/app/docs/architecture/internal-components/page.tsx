@@ -1,7 +1,7 @@
----
-title: internal components
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Internal Components
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -185,3 +185,6 @@ Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cu
 ### Helper Functions
 
 Id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis.
+`
+  return <DocRenderer source={source} />
+}

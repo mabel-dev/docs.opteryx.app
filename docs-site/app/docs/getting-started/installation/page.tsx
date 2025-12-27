@@ -1,7 +1,7 @@
----
-title: installation
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Installation
 
 This guide will help you install Opteryx on your system.
@@ -19,29 +19,32 @@ Before installing Opteryx, ensure you have:
 
 The easiest way to install Opteryx is using pip:
 
-```bash
+\`\`\`bash
 pip install opteryx
-```
+\`\`\`
 
 ### Install from Source
 
 To install the latest development version from source:
 
-```bash
+\`\`\`bash
 git clone https://github.com/mabel-dev/opteryx.git
 cd opteryx
 pip install -e .
-```
+\`\`\`
 
 ## Verify Installation
 
 After installation, verify that Opteryx is installed correctly:
 
-```python
+\`\`\`python
 import opteryx
 print(opteryx.__version__)
-```
+\`\`\`
 
 ## Next Steps
 
 Once you have Opteryx installed, proceed to the [Quick Start Guide](quick-start.md) to learn how to use it.
+`
+  return <DocRenderer source={source} />
+}

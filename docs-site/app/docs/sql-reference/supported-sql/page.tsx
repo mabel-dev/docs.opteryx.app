@@ -1,7 +1,7 @@
----
-title: supported sql
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Supported SQL
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -26,22 +26,22 @@ Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut 
 
 ### Basic SELECT
 
-```sql
+\`\`\`sql
 -- Lorem ipsum basic SELECT
 SELECT column1, column2, column3
 FROM table_name
 WHERE condition = true;
-```
+\`\`\`
 
 Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.
 
 ### DISTINCT
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod DISTINCT
 SELECT DISTINCT category, status
 FROM products;
-```
+\`\`\`
 
 ### SELECT with Expressions
 
@@ -51,14 +51,14 @@ Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et acc
 
 ### WHERE Clause
 
-```sql
+\`\`\`sql
 -- Lorem ipsum WHERE clause
 SELECT *
 FROM orders
 WHERE order_date >= '2024-01-01'
   AND status IN ('pending', 'processing')
   AND amount > 100;
-```
+\`\`\`
 
 ### HAVING Clause
 
@@ -66,13 +66,13 @@ Quos dolores et quas molestias excepturi sint occaecati cupiditate non provident
 
 ### Pattern Matching
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod pattern matching
 SELECT name, email
 FROM users
 WHERE email LIKE '%@example.com'
    OR name LIKE 'John%';
-```
+\`\`\`
 
 ## Joins
 
@@ -80,12 +80,12 @@ WHERE email LIKE '%@example.com'
 
 Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum INNER JOIN
 SELECT a.*, b.name
 FROM orders a
 INNER JOIN customers b ON a.customer_id = b.id;
-```
+\`\`\`
 
 ### LEFT/RIGHT JOIN
 
@@ -103,7 +103,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### GROUP BY
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod GROUP BY
 SELECT 
     category,
@@ -112,13 +112,13 @@ SELECT
     AVG(amount) as average_amount
 FROM transactions
 GROUP BY category;
-```
+\`\`\`
 
 ### Window Functions
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
 
-```sql
+\`\`\`sql
 -- Lorem ipsum window function
 SELECT 
     name,
@@ -126,7 +126,7 @@ SELECT
     salary,
     ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank
 FROM employees;
-```
+\`\`\`
 
 ## Subqueries
 
@@ -146,12 +146,12 @@ Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur au
 
 ### UNION
 
-```sql
+\`\`\`sql
 -- Lorem ipsum UNION
 SELECT id, name FROM customers
 UNION
 SELECT id, name FROM suppliers;
-```
+\`\`\`
 
 ### INTERSECT
 
@@ -163,7 +163,7 @@ Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit la
 
 ## Common Table Expressions (CTEs)
 
-```sql
+\`\`\`sql
 -- Sed do eiusmod CTE
 WITH monthly_sales AS (
     SELECT 
@@ -174,7 +174,7 @@ WITH monthly_sales AS (
 )
 SELECT * FROM monthly_sales
 WHERE total > 10000;
-```
+\`\`\`
 
 Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
 
@@ -205,3 +205,6 @@ Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatib
 ### JSON Operations
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+`
+  return <DocRenderer source={source} />
+}

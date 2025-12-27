@@ -1,7 +1,7 @@
----
-title: storage formats
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Storage & Formats
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -119,3 +119,6 @@ Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciat
 3. Aliqua ut enim ad minim veniam quis nostrud exercitation
 4. Ullamco laboris nisi ut aliquip ex ea commodo consequat
 5. Duis aute irure dolor in reprehenderit in voluptate velit
+`
+  return <DocRenderer source={source} />
+}

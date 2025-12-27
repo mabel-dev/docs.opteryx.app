@@ -1,7 +1,7 @@
----
-title: execution engine
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Execution Engine
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -34,11 +34,11 @@ Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
 
 Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.
 
-```python
+\`\`\`python
 # Lorem ipsum sequential scan
 # Read data sequentially from source
 # Process in batches (morsels)
-```
+\`\`\`
 
 #### Parallel Scan
 
@@ -195,3 +195,6 @@ Optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omn
 ### Visual Query Execution
 
 Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+`
+  return <DocRenderer source={source} />
+}

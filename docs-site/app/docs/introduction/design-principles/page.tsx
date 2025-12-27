@@ -1,7 +1,7 @@
----
-title: design principles
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Design Principles
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -58,3 +58,6 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 - Aut odit aut fugit, sed quia consequuntur magni dolores
 - Eos qui ratione voluptatem sequi nesciunt
 - Neque porro quisquam est, qui dolorem ipsum
+`
+  return <DocRenderer source={source} />
+}

@@ -1,7 +1,7 @@
----
-title: index
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 <section class="opteryx-hero">
 	<div class="hero-inner" style="max-width:1100px;margin:0 auto;padding:0 16px;display:flex;gap:32px;align-items:center;">
 		<div class="hero-copy" style="flex:1;">
@@ -66,3 +66,6 @@ If you need help or have questions:
 ## License
 
 Opteryx is open source software. Please refer to the main repository for license information.
+`
+  return <DocRenderer source={source} />
+}

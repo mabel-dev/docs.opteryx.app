@@ -1,7 +1,7 @@
----
-title: planner
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Planner
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -40,11 +40,11 @@ Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit
 
 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
 
-```python
+\`\`\`python
 # Lorem ipsum predicate pushdown example
 # Before: Filter after Join
 # After: Filter before Join
-```
+\`\`\`
 
 ### Projection Pruning
 
@@ -144,14 +144,14 @@ Ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate vel
 
 ### EXPLAIN Plans
 
-```sql
+\`\`\`sql
 -- Lorem ipsum EXPLAIN
 EXPLAIN
 SELECT *
 FROM orders o
 JOIN customers c ON o.customer_id = c.id
 WHERE o.order_date > '2024-01-01';
-```
+\`\`\`
 
 ### Plan Trees
 
@@ -160,3 +160,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 ### Execution Metrics
 
 Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+`
+  return <DocRenderer source={source} />
+}

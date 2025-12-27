@@ -1,7 +1,7 @@
----
-title: security permissions
----
+import DocRenderer from '../../../components/DocRenderer'
 
+export default function Page(){
+  const source = `
 # Security & Permissions
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -25,7 +25,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-```python
+\`\`\`python
 # Lorem ipsum authentication
 import opteryx
 
@@ -34,13 +34,13 @@ connection = opteryx.connect(
     password='secure_password',
     authentication_method='password'
 )
-```
+\`\`\`
 
 ### API Keys
 
 Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
 
-```python
+\`\`\`python
 # Sed do eiusmod API key auth
 import opteryx
 
@@ -48,7 +48,7 @@ connection = opteryx.connect(
     api_key='your-api-key-here',
     authentication_method='api_key'
 )
-```
+\`\`\`
 
 ### OAuth Integration
 
@@ -79,12 +79,12 @@ Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et d
 
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.
 
-```python
+\`\`\`python
 # Lorem ipsum row-level security
 SELECT *
 FROM sensitive_data
 WHERE region IN (SELECT allowed_regions FROM user_permissions WHERE user_id = CURRENT_USER)
-```
+\`\`\`
 
 ## Encryption
 
@@ -106,7 +106,7 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
 
 #### TLS/SSL
 
-```python
+\`\`\`python
 # Sed do eiusmod secure connection
 import opteryx
 
@@ -116,7 +116,7 @@ connection = opteryx.connect(
     ssl=True,
     ssl_verify=True
 )
-```
+\`\`\`
 
 #### Certificate Management
 
@@ -132,7 +132,7 @@ Id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem a
 
 Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
 
-```python
+\`\`\`python
 # Lorem ipsum audit log
 {
     "timestamp": "2024-01-15T10:30:00Z",
@@ -141,7 +141,7 @@ Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo 
     "status": "success",
     "duration_ms": 245
 }
-```
+\`\`\`
 
 ### Access Logging
 
@@ -165,14 +165,14 @@ Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil 
 
 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.
 
-```python
+\`\`\`python
 # Sed do eiusmod IP whitelist
 allowed_ips = [
     '192.168.1.0/24',
     '10.0.0.0/8',
     '172.16.0.0/12'
 ]
-```
+\`\`\`
 
 ## Data Privacy
 
@@ -182,14 +182,14 @@ Sint occaecati cupiditate non provident, similique sunt in culpa qui officia des
 
 #### Data Masking
 
-```sql
+\`\`\`sql
 -- Lorem ipsum data masking
 SELECT 
     id,
     MASK(email, 'email') as email,
     MASK(phone, 'phone') as phone
 FROM users;
-```
+\`\`\`
 
 #### Tokenization
 
@@ -215,11 +215,11 @@ Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis dolorib
 
 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
 
-```bash
+\`\`\`bash
 # Lorem ipsum secrets
 export OPTERYX_API_KEY='secret-key-here'
 export OPTERYX_DB_PASSWORD='database-password'
-```
+\`\`\`
 
 ### Secret Stores
 
@@ -258,3 +258,6 @@ Tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim 
 ### Recovery
 
 Laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.
+`
+  return <DocRenderer source={source} />
+}
