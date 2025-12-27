@@ -26,3 +26,48 @@ code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
   .hero-inner{flex-direction:column;align-items:flex-start}
   .hero-art{width:100%}
 }
+
+/* Snowflake-like hero polish */
+.hero-hero {
+  background: linear-gradient(180deg, rgba(15,40,80,0.03) 0%, rgba(255,255,255,0) 60%);
+}
+.hero-decor {
+  position: absolute; right: 48px; top: 40px; opacity: .06; width:420px; pointer-events:none;
+}
+
+/* Top nav polish */
+.topnav { background: white; border-bottom: 1px solid rgba(16,24,40,0.04); }
+.topnav .container { max-width:1100px; margin:0 auto; }
+
+/* Card subtle border like Snowflake */
+.card-snow { border: 1px solid rgba(15,23,42,0.04); background: white; }
+
+/* Make featured grid align items to top so cards don't shift */
+.featured-grid .grid { align-items: start; }
+
+/* Ensure cards are equal-height flow items */
+.card { display: flex; flex-direction: column; justify-content: flex-start; }
+
+/* Focus outlines */
+.card:focus, .btn:focus { outline: 2px solid rgba(6,95,70,0.12); outline-offset: 2px; }
+
+/* Doc renderer typography */
+.doc-container{max-width:820px;margin:0 auto;padding:2rem 1rem}
+.doc-renderer{color:var(--brand-navy);line-height:1.8;font-size:1rem;font-weight:400}
+.doc-renderer h1{font-size:2rem;margin-top:1.25rem;margin-bottom:.6rem;font-weight:700}
+.doc-renderer h2{font-size:1.35rem;margin-top:1rem;margin-bottom:.5rem;font-weight:600}
+.doc-renderer p{margin:0.6rem 0;color:#374151}
+.doc-renderer pre{background:#0f172a; color:#f8fafc; padding:1rem;border-radius:8px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.9rem}
+.doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
+.doc-renderer ul{margin:0.6rem 0 0.6rem 1.25rem}
+.doc-renderer blockquote{border-left:4px solid rgba(15,23,42,0.06);padding-left:1rem;color:#6b7280}
+
+/* Docs layout */
+.docs-layout{display:block}
+.docs-sidebar{background:transparent}
+.docs-main{padding:0 0 6rem}
+
+@media (min-width:1024px){
+  .docs-layout{display:flex}
+}
+

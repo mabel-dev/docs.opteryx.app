@@ -8,6 +8,8 @@ export default function DocRenderer({ source }: DocRendererProps){
   const html = marked.parse(source || '')
 
   return (
-    <article className="doc-renderer" dangerouslySetInnerHTML={{ __html: html }} />
+    <main className="doc-container">
+      <article className="doc-renderer" dangerouslySetInnerHTML={{ __html: html }} />
+    </main>
   )
 }
