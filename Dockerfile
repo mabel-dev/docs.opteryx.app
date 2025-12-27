@@ -24,8 +24,8 @@ RUN npm ls --depth=0 || true
 # Disable Next telemetry in the containerized build
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build the Next.js app and add diagnostics on failure
-RUN npm run build || (echo "NEXT BUILD FAILED - collecting diagnostics"; tail -n 200 /root/.npm/_logs/*.log || true; echo "--- ls -la ."; ls -la || true; echo "--- ls -la .next"; ls -la .next || true; echo "--- du -sh .next"; du -sh .next || true; exit 1)
+# Build the Next.js app and capture verbose output to build.log so we can see failures
+RUN sh -c "npm run build 2>&1 | tee build.log; rc=$?; if [ $rc -ne 0 ]; then echo '--- BUILD LOG ---'; tail -n 500 build.log || true; echo '--- .next ls ---'; ls -la .next || true; echo '--- .next size ---'; du -sh .next || true; exit $rc; fi"
 
 # Show .next summary
 RUN echo ".next content:"; ls -la .next || true; du -sh .next || true
