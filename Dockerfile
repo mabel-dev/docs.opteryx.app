@@ -10,6 +10,10 @@ RUN if [ -f package-lock.json ]; then npm ci --silent; else npm install --silent
 # Copy the docs-site source into the build context
 COPY docs-site/ ./
 
+# Diagnostic: show installed packages and react info
+RUN node -e "console.log('react keys:', Object.keys(require('react'))); console.log('react version:', require('react').version)"
+RUN npm ls --depth=0 || true
+
 # Build the Next.js app
 RUN npm run build
 
