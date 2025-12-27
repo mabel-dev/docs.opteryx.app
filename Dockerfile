@@ -4,7 +4,8 @@ WORKDIR /app
 
 # Install dependencies (copy package files from docs-site to improve cache)
 COPY docs-site/package.json docs-site/package-lock.json* ./
-RUN npm ci --silent
+# Use `npm ci` when a lockfile exists for reproducible installs, otherwise fall back to `npm install`.
+RUN if [ -f package-lock.json ]; then npm ci --silent; else npm install --silent; fi
 
 # Copy the docs-site source into the build context
 COPY docs-site/ ./
