@@ -1,0 +1,6 @@
+[project]
+name = "opteryx-docs-migrate"
+version = "0.1.0"
+
+[tool.poetry.dev-dependencies]
+PyYAML = "^6.0"
