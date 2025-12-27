@@ -1,10 +1,6 @@
-import withMDX from '@next/mdx'
-
-const withMDXConfig = withMDX({ extension: /\.(md|mdx)$/ })
-
-const nextConfig = withMDXConfig({
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+const nextConfig = {
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   reactStrictMode: true
-})
+}
 
 export default nextConfig
