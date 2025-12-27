@@ -1,7 +1,7 @@
 steps:
   # Build the Docker image from the docs-site directory using the dedicated Dockerfile
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', '${_AR_REGISTRY}/${PROJECT_ID}/${_AR_REPOSITORY}/${_IMAGE_NAME}:$SHORT_SHA', '-f', 'docs-site/Dockerfile', 'docs-site' ]
+    args: [ 'build', '-t', '${_AR_REGISTRY}/${PROJECT_ID}/${_AR_REPOSITORY}/${_IMAGE_NAME}:$SHORT_SHA', '-f', 'Dockerfile', '.' ]
 
   # Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'

@@ -1,0 +1,11 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+.vscode
+coverage
+dist
+out
+*.log
+docs-site/.next
+docs-site/node_modules
