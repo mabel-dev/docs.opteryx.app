@@ -7,14 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "next telemetry disable",
-    "migrate-docs": "python3 ../scripts/migrate_mkdocs.py"
+    "postinstall": "next telemetry disable"
   },
   "dependencies": {
     "next": "13.4.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-markdown": "8.0.5",
     "remark-gfm": "3.0.1"
   }
 }
