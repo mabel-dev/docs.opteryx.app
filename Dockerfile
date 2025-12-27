@@ -8,9 +8,14 @@ COPY docs-site/package.json docs-site/package-lock.json* ./
 RUN apk add --no-cache python3 build-base
 
 # Use `npm ci` when a lockfile exists for reproducible installs. If that fails
-# (peer deps, platform-specific optional deps, etc.), fall back to a more
-# tolerant install using `--legacy-peer-deps` so CI builds don't break silently.
-RUN if [ -f package-lock.json ]; then npm ci --silent || npm install --legacy-peer-deps --silent; else npm install --legacy-peer-deps --silent; fi
+# fall back to `npm install --legacy-peer-deps`. Run with verbose logging and
+# capture output to a file so CI logs contain the underlying error for diagnosis.
+RUN echo "node: $(node -v)" && echo "npm: $(npm -v)" && ls -la
+RUN if [ -f package-lock.json ]; then \
+			sh -c "npm ci --loglevel verbose 2>&1 | tee /app/npm-install.log" || (cat /app/npm-install.log && false); \
+		else \
+			sh -c "npm install --legacy-peer-deps --loglevel verbose 2>&1 | tee /app/npm-install.log" || (cat /app/npm-install.log && false); \
+		fi
 
 # Copy the docs-site source into the build context
 COPY docs-site/ ./
