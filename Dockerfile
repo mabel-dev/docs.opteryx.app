@@ -21,8 +21,14 @@ COPY docs-site/ ./
 RUN node -e "console.log('react keys:', Object.keys(require('react'))); console.log('react version:', require('react').version)"
 RUN npm ls --depth=0 || true
 
-# Build the Next.js app
-RUN npm run build
+# Disable Next telemetry in the containerized build
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build the Next.js app and add diagnostics on failure
+RUN npm run build || (echo "NEXT BUILD FAILED - collecting diagnostics"; tail -n 200 /root/.npm/_logs/*.log || true; echo "--- ls -la ."; ls -la || true; echo "--- ls -la .next"; ls -la .next || true; echo "--- du -sh .next"; du -sh .next || true; exit 1)
+
+# Show .next summary
+RUN echo ".next content:"; ls -la .next || true; du -sh .next || true
 
 ## Runtime image
 FROM node:18-alpine AS runtime
