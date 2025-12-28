@@ -1,6 +1,6 @@
 import React from 'react'
-import TopNav from '../components/TopNav'
-import DocsSidebar from '../components/DocsSidebar'
+import TopNav from '@/app/components/TopNav'
+import DocsSidebar from '@/app/components/DocsSidebar'
 
 export const metadata = { title: 'Docs — Opteryx' }
 

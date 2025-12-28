@@ -1,4 +1,4 @@
-import DocRenderer from '../../../components/DocRenderer'
+import DocRenderer from '@/app/components/DocRenderer'
 
 export default function Page(){
   const source = `
