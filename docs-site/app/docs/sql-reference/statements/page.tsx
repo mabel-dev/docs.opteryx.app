@@ -242,3 +242,4 @@ SELECT [ DISTINCT ] [ ON ( <columns> ) ] <expression> [, ...]
   `
     return <DocRenderer source={source} />
   }
+
