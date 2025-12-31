@@ -1,209 +1,166 @@
 import DocRenderer from '@/app/components/DocRenderer'
 
 export default function Page(){
-  const source = `
 # Supported SQL
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This page summarizes the SQL syntax and features supported by Opteryx. It collects the principal reference sections from the repository: statements, expressions, functions, data types, joins and aggregates. For full, deep reference see the individual pages linked throughout.
 
-## SQL Standards Compliance
+## Overview
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Opteryx supports a broad, pragmatic subset of SQL inspired by common engines (MySQL, DuckDB, Postgres). Support focuses on useful, file-oriented ad-hoc querying rather than full RDBMS compatibility.
 
-### SQL-92 Features
+Key supported features:
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+- `SELECT` with `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, `LIMIT`, `OFFSET`
+- `JOIN` types: `INNER`, `LEFT` (including `ANTI` and `SEMI`), `RIGHT`, `FULL`, `CROSS`
+- Set operations: `UNION` (with `ALL`), `INTERSECT`, `EXCEPT`
+- Common Table Expressions (`WITH` / CTEs)
+- Window functions and aggregates (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, etc.)
+- Expressions: logical (`AND`, `OR`, `XOR`, `NOT`), comparison, `LIKE`/`ILIKE`, regex, `BETWEEN`, `CASE`
+- Functions: extensive set of date/time, string, numeric, array and JSON helpers (see full list on the Functions page)
+- Data modification statements for ad-hoc workflows: `INSERT`, `UPDATE`, `DELETE` (limited by data source semantics)
 
-### SQL-99 Extensions
+## SELECT / Statements
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
+SELECT supports the usual projection and filtering forms:
 
-### Modern SQL Features
+```sql
+[ <statement> UNION [ ALL ] ... ]
 
-Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
+SELECT [ DISTINCT ] [ ON ( <columns> ) ] <expression> [, ...]
+       | [ * EXCEPT ( <columns> ) ]
+  FROM { <relation> | <function> | (<subquery>) } AS <alias>
+  [ FOR <period> ]
+  [ JOIN ... ]
+  WHERE <condition>
+  GROUP BY [ ALL | <expression> [, ...] ]
+  HAVING <condition>
+  ORDER BY <expression> [, ...]
+  LIMIT <limit>
+  OFFSET <offset>
+```
 
-## SELECT Statements
+- `DISTINCT` and `DISTINCT ON (cols)` are supported.
+- `EXCEPT` in `SELECT * EXCEPT(col, ...)` is supported for column exclusion in projection.
+- `FOR` clauses are used for time-travel and date-scoped queries (see Time Travel docs).
 
-### Basic SELECT
-
-\`\`\`sql
--- Lorem ipsum basic SELECT
-SELECT column1, column2, column3
-FROM table_name
-WHERE condition = true;
-\`\`\`
-
-Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.
-
-### DISTINCT
-
-\`\`\`sql
--- Sed do eiusmod DISTINCT
-SELECT DISTINCT category, status
-FROM products;
-\`\`\`
-
-### SELECT with Expressions
-
-Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.
-
-## Filtering and Conditions
-
-### WHERE Clause
-
-\`\`\`sql
--- Lorem ipsum WHERE clause
-SELECT *
-FROM orders
-WHERE order_date >= '2024-01-01'
-  AND status IN ('pending', 'processing')
-  AND amount > 100;
-\`\`\`
-
-### HAVING Clause
-
-Quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
-
-### Pattern Matching
-
-\`\`\`sql
--- Sed do eiusmod pattern matching
-SELECT name, email
-FROM users
-WHERE email LIKE '%@example.com'
-   OR name LIKE 'John%';
-\`\`\`
+See [Statements](/docs/sql-reference/statements) for more examples and syntax details.
 
 ## Joins
 
-### INNER JOIN
+Supported join syntaxes include both comma-style and explicit `JOIN` forms. Available join kinds:
 
-Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.
+- `INNER JOIN`
+- `LEFT [OUTER | ANTI | SEMI] JOIN`
+- `RIGHT [OUTER] JOIN`
+- `FULL [OUTER] JOIN`
+- `CROSS JOIN`
 
-\`\`\`sql
--- Lorem ipsum INNER JOIN
+Join conditions use `ON` (or `USING` where appropriate); `ON` and `USING` are mutually exclusive.
+
+Example (inner join):
+
+```sql
 SELECT a.*, b.name
-FROM orders a
-INNER JOIN customers b ON a.customer_id = b.id;
-\`\`\`
+  FROM orders a
+  INNER JOIN customers b
+    ON a.customer_id = b.id;
+```
 
-### LEFT/RIGHT JOIN
+See [Joins](/docs/sql-reference/joins) for diagrams and additional examples.
 
-Omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint.
+## Expressions and Operators
 
-### FULL OUTER JOIN
+Expressions are composed from column references, literals, operators and functions. Supported operators include:
 
-Et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+- Logical: `AND`, `OR`, `XOR`, `NOT`
+- Comparison: `=`, `<>`, `<`, `>`, `<=`, `>=`, `IN`, `NOT IN`, `IS` (for `NULL`/`TRUE`/`FALSE`)
+- Pattern/regex: `LIKE`, `ILIKE`, `RLIKE` (and aliases `~`, `SIMILAR TO`)
+- Bitwise/IP: `|`, `&`, `^` and IP containment operations
 
-### CROSS JOIN
+`CASE` expressions (simple and searched forms) are supported.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Example:
 
-## Aggregations
+```sql
+SELECT name,
+       CASE WHEN numberOfMoons = 0 THEN 'none'
+            WHEN numberOfMoons = 1 THEN 'one'
+            ELSE 'many' END AS moon_label
+  FROM $planets;
+```
 
-### GROUP BY
+## Aggregates & Window Functions
 
-\`\`\`sql
--- Sed do eiusmod GROUP BY
-SELECT 
-    category,
-    COUNT(*) as total_count,
-    SUM(amount) as total_amount,
-    AVG(amount) as average_amount
-FROM transactions
-GROUP BY category;
-\`\`\`
+Aggregates such as `COUNT`, `SUM`, `AVG`, `MIN`, `MAX` are supported and used with `GROUP BY`. `HAVING` filters grouped results.
 
-### Window Functions
+Window functions (e.g., `ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)`) are supported for ranking and running calculations.
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
+Example (group + window):
 
-\`\`\`sql
--- Lorem ipsum window function
-SELECT 
-    name,
-    department,
-    salary,
-    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank
-FROM employees;
-\`\`\`
+```sql
+SELECT category,
+       COUNT(*) AS cnt,
+       SUM(amount) AS total
+  FROM transactions
+ GROUP BY category;
 
-## Subqueries
+SELECT name, department, salary,
+       ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rank
+  FROM employees;
+```
 
-### Scalar Subqueries
+## Functions
 
-Cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Opteryx implements a large set of functions for conversion, date/time, string manipulation, arrays, JSON, and numeric math. A few examples:
 
-### Correlated Subqueries
+- Casting: `CAST(x AS TYPE)`, `TRY_CAST`, `SAFE_CAST`
+- Date/time: `CURRENT_DATE`, `CURRENT_TIMESTAMP`, `DATE_TRUNC`, `EXTRACT`, `FROM_UNIXTIME`, `UNIXTIME`
+- String: `LOWER`, `UPPER`, `CONCAT`, `LENGTH`, `REGEXP_REPLACE`
+- Array: `ARRAY[...]`, `ARRAY_CONTAINS`, `LENGTH(array)`, `SORT(array)`
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae.
+Full function reference: [Functions](/docs/sql-reference/functions)
 
-### EXISTS/NOT EXISTS
+## Data Types
 
-Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+Supported basic data types include `INTEGER`, `FLOAT`, `VARCHAR`, `BOOLEAN`, `TIMESTAMP`, `DATE`, `TIME`, `VARBINARY`, `ARRAY`, `STRUCT` and `JSON`-like objects. See the Data Types reference for exact type behaviours and conversions.
+
+See: [Data Types](/docs/sql-reference/data-types)
+
+## Subqueries & CTEs
+
+Scalar and correlated subqueries are supported, as are CTEs using `WITH`. Use CTEs to structure complex queries or to reuse computed sub-expressions.
+
+Example CTE:
+
+```sql
+WITH monthly_sales AS (
+  SELECT DATE_TRUNC('month', order_date) AS month,
+         SUM(amount) AS total
+    FROM orders
+   GROUP BY 1
+)
+SELECT * FROM monthly_sales WHERE total > 10000;
+```
 
 ## Set Operations
 
-### UNION
+`UNION` (with `ALL`), `INTERSECT`, and `EXCEPT` are supported. `UNION` by default removes duplicates; use `UNION ALL` to keep them.
 
-\`\`\`sql
--- Lorem ipsum UNION
-SELECT id, name FROM customers
-UNION
-SELECT id, name FROM suppliers;
-\`\`\`
+## DML (INSERT / UPDATE / DELETE)
 
-### INTERSECT
+Basic `INSERT`, `UPDATE`, and `DELETE` statements are supported where the underlying data store allows mutation. Behaviour may vary based on the storage backend.
 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+## Additional Notes and Links
 
-### EXCEPT
+- For full statements syntax and examples see: [Statements](/docs/sql-reference/statements)
+- For comprehensive function/operator lists see: [Functions](/docs/sql-reference/functions)
+- For join diagrams and advanced examples see: [Joins](/docs/sql-reference/joins)
+- For advanced topics like time travel, temp tables, arrays, and structs see the `adv-*` documents in `/sql-reference/`.
 
-Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
+---
 
-## Common Table Expressions (CTEs)
-
-\`\`\`sql
--- Sed do eiusmod CTE
-WITH monthly_sales AS (
-    SELECT 
-        DATE_TRUNC('month', order_date) as month,
-        SUM(amount) as total
-    FROM orders
-    GROUP BY 1
-)
-SELECT * FROM monthly_sales
-WHERE total > 10000;
-\`\`\`
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-## Data Modification
-
-### INSERT
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
-### UPDATE
-
-Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-### DELETE
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.
-
-## Advanced Features
-
-### Pivot Operations
-
-Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-### Array Operations
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-### JSON Operations
-
+If you want, I can also expand this page by inlining the full content of each reference file (`statements.md`, `functions.md`, `expressions.md`, etc.) instead of summarizing — tell me which files to include in full.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
 `
   return <DocRenderer source={source} />
