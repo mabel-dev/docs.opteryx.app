@@ -47,51 +47,6 @@ export default function Breadcrumbs() {
 
   if (breadcrumbs.length === 0) return null
 
-  // Define which breadcrumb items have actual pages (not just structural)
-  const hasPage = (crumb: string, index: number): boolean => {
-    // First level pages exist for all sections
-    if (index === 0) return true
-    // "SQL Language Reference" and "Advanced topics" are structural only
-    if (crumb === 'SQL Language Reference' || crumb === 'Advanced topics') return false
-    // All other intermediate pages exist
-    return true
-  }
-
-  // Build cumulative path for each breadcrumb level
-  const buildBreadcrumbPath = (index: number): string => {
-    const parts = breadcrumbs.slice(0, index + 1)
-    
-    // Map breadcrumb segments to URL segments
-    const urlSegments: string[] = []
-    parts.forEach((part, i) => {
-      const slug = part.toLowerCase()
-        .replace(/\s+&\s+/g, '-')
-        .replace(/\s+/g, '-')
-      
-      if (i === 0) {
-        // First level maps directly to docs section
-        if (part === 'Introduction') urlSegments.push('introduction')
-        else if (part === 'Getting Started') urlSegments.push('getting-started')
-        else if (part === 'Core Concepts') urlSegments.push('core-concepts')
-        else if (part === 'Reference') urlSegments.push('reference')
-        else if (part === 'Architecture') urlSegments.push('architecture')
-        else if (part === 'Operations') urlSegments.push('operations')
-        else if (part === 'Roadmap & Guarantees') urlSegments.push('roadmap-guarantees')
-      } else if (i === 1 && parts[0] === 'Reference') {
-        // Reference → SQL Language Reference maps to sql/
-        if (part === 'SQL Language Reference') urlSegments.push('sql')
-      } else if (i === 2 && parts[0] === 'Reference' && parts[1] === 'SQL Language Reference') {
-        // Third level under Reference → SQL maps to specific page
-        if (part === 'Advanced topics') urlSegments.push('advanced')
-        else urlSegments.push(slug)
-      } else {
-        urlSegments.push(slug)
-      }
-    })
-    
-    return `/docs/${urlSegments.join('/')}`
-  }
-
   return (
     <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6 pb-3 border-b border-gray-200">
       <Link href="/docs" className="hover:text-opteryx-teal hover:underline transition-colors">
@@ -99,8 +54,6 @@ export default function Breadcrumbs() {
       </Link>
       {breadcrumbs.map((crumb, index) => {
         const isLast = index === breadcrumbs.length - 1
-        const isClickable = hasPage(crumb, index)
-        const href = buildBreadcrumbPath(index)
         
         return (
           <div key={index} className="flex items-center space-x-2">
@@ -109,10 +62,6 @@ export default function Breadcrumbs() {
             </svg>
             {isLast ? (
               <span className="text-gray-900 font-medium">{crumb}</span>
-            ) : isClickable ? (
-              <Link href={href} className="text-gray-600 hover:text-opteryx-teal hover:underline transition-colors">
-                {crumb}
-              </Link>
             ) : (
               <span className="text-gray-600">{crumb}</span>
             )}
