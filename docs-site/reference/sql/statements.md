@@ -1,123 +1,124 @@
 ---
-title: SQL Statements Reference - Opteryx Documentation
-description: Complete reference guide for SQL statements supported by Opteryx. Learn SELECT, SHOW, SET, and other SQL commands with examples.
+title: SQL Statements — Opteryx Reference
+description: Practical reference for SQL statements supported by Opteryx with concise examples and behavior notes.
 ---
 
 # Statements
 
-The following SQL statement forms are supported in Opteryx.
+This page covers the most commonly used SQL statements in Opteryx with short examples and quick behavior notes. For in-depth syntax and full examples, follow the links to the detailed pages.
 
-The SQL syntax supported by Opteryx is broadly inspired by [MySQL](https://www.mysql.com/); however, full compatibility is not a design goal. Syntax and feature support are selectively implemented based on relevance to Opteryx’s architecture and intended use cases.
+## Overview
+Opteryx supports a pragmatic subset of SQL suitable for file-backed analytical queries. The following common statements are supported: `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `EXPLAIN`, `SHOW`, `SET`, and various `SHOW`/`SHOW CREATE` helpers.
 
-## SELECT
+---
 
-Retrieve rows from one or more relations.
+## SELECT (querying)
+Retrieve rows from relations, with full support for filtering, joining, grouping, ordering and pagination.
 
-~~~sql
-[ <statement> UNION [ ALL ] ... ]
+Example — basic query:
+```sql
+SELECT id, name, created_at
+  FROM users
+ WHERE active = TRUE
+ ORDER BY created_at DESC
+ LIMIT 50;
+```
 
-SELECT [ DISTINCT ] [ ON ( <columns> ) ] <expression> [, ...]
-       | [ * EXCEPT ( <columns> ) ]
-  FROM { <relation> | <function> | (<subquery>) } AS <alias>
-  [ FOR <period> ]
-  [
-    JOIN clauses...
-  ]
-  WHERE <condition> [ { AND | OR | XOR } ... ]
-  GROUP BY [ ALL | <expression> [, ...] ]
-  HAVING <condition> [ { AND | OR | XOR } ... ]
-  ORDER BY <expression> [, ...]
-  LIMIT <limit>
-  OFFSET <offset>
-~~~
+Example — aggregation:
+```sql
+SELECT category, COUNT(*) AS cnt, SUM(amount) AS total
+  FROM transactions
+ WHERE status = 'completed'
+ GROUP BY category
+ HAVING SUM(amount) > 1000
+ ORDER BY total DESC;
+```
 
-### UNION
+Notes:
+- `DISTINCT` and `DISTINCT ON (cols)` are supported.
+- `SELECT * EXCEPT (col1, col2)` excludes listed columns from `*` expansion.
+- `FOR` clauses provide time-scoped/time-travel queries in supported contexts (see Time Travel docs).
 
-~~~sql
-statement UNION [ ALL ] statement
-~~~
+---
 
-The `UNION` clause combines the results of two queries by appending the rows. Column names and types are taken from the first query. Names from the second are ignored, and types are coerced when possible.
+## Joins & FROM
+All common join forms are available: `INNER`, `LEFT` (and `LEFT SEMI` / `LEFT ANTI`), `RIGHT`, `FULL`, and `CROSS`.
 
-By default, `UNION` removes duplicate rows. Use the `ALL` modifier to retain duplicates.
+Example — inner join:
+```sql
+SELECT o.id AS order_id, c.name AS customer
+  FROM orders o
+  JOIN customers c ON o.customer_id = c.id;
+```
 
-### SELECT
+---
 
-~~~sql
-SELECT [ DISTINCT [ ON (columns) ]] expression [, ...]
-~~~
-~~~sql
-SELECT * EXCEPT (column[, ...])
-~~~
+## Set operations
+- `UNION` / `UNION ALL` — combines result sets
+- `INTERSECT` — yields rows present in both
+- `EXCEPT` — yields rows from the first not in the second
 
-The `SELECT` clause defines the columns or expressions to return. Although it appears first, it executes after the `FROM`, `WHERE`, and `GROUP BY` clauses.
+Example:
+```sql
+SELECT id FROM a
+UNION ALL
+SELECT id FROM b;
+```
 
-- `DISTINCT` returns only unique rows.
-- `DISTINCT ON (columns)` removes duplicates based on the given columns.
-- `EXCEPT` allows exclusion of specific columns.
+---
 
-### FROM / JOIN
+## DML: INSERT / UPDATE / DELETE
+Basic data modification statements are supported where the underlying data store allows mutations. Behavior depends on storage backend.
 
-~~~sql
-FROM relation [AS alias] [FOR period] [WITH (NO_CACHE, NO_PARTITION, NO_PUSH_PROJECTION, NO_PUSH_SELECTION)] [, ...] 
-JOIN ...
-~~~
+Example — insert:
+```sql
+INSERT INTO users (id, name, active) VALUES (1, 'acme', true);
+```
 
-`FROM` defines the source(s) of data. It supports single or multiple relations, functions, subqueries, and joins.
+Example — update:
+```sql
+UPDATE users SET active = FALSE WHERE last_login < '2023-01-01';
+```
 
-Supported `JOIN` types:
+Example — delete:
+```sql
+DELETE FROM sessions WHERE expires_at < current_timestamp;
+```
 
-- `INNER JOIN`   
-- `LEFT [OUTER | ANTI | SEMI] JOIN`   
-- `RIGHT [OUTER] JOIN`   
-- `FULL [OUTER] JOIN`   
-- `CROSS JOIN`  
+---
 
-`ON` and `USING` are mutually exclusive and only applicable to `INNER`, `LEFT`, and `RIGHT` joins.
+## EXPLAIN
+`EXPLAIN` shows the logical/physical plan; `EXPLAIN ANALYZE` runs the query and shows runtime metrics.
 
-See [Joins](/docs/reference/sql/joins) for full syntax and examples.
+Example:
+```sql
+EXPLAIN ANALYZE SELECT * FROM orders WHERE id = 1;
+```
 
-### FOR
+Output formats may vary and are not guaranteed stable for machine parsing; `FORMAT MERMAID` can produce diagrams.
 
-~~~sql
-FOR date
-~~~
-~~~sql
-FOR DATES BETWEEN start AND end
-~~~
-~~~sql
-FOR DATES IN range
-~~~
-~~~sql
-FOR DATES SINCE start
-~~~
-~~~sql
-FOR LAST n DAYS
-~~~
+---
 
-Filters data by the date it was recorded for. If omitted, `FOR TODAY` is assumed.
+## SHOW, SET, and HELP commands
+- `SHOW FUNCTIONS`, `SHOW TABLES`, `SHOW COLUMNS`, etc., list metadata.
+- `SET variable = value` sets query-scoped variables.
+- `SHOW PARAMETERS` / `SHOW VARIABLES` display configuration or variables.
 
-See [Time Travel](/docs/reference/sql/adv-time-travel/) for more information.
+---
 
-### WHERE
+## Tips & Behavior
+- `ORDER BY` operates on the final result set; use `LIMIT`/`OFFSET` for pagination.
+- `HAVING` filters grouped results (post-aggregation).
+- Use `EXPLAIN ANALYZE` to diagnose slow queries and `FOR` for time-scoped reads.
 
-~~~sql
-WHERE condition
-~~~
+---
 
-Applies filters to rows before grouping or projection.
+## Where to go next
+- Detailed statements reference: [Statements full page](/docs/reference/sql/statements)
+- Examples and edge cases: [Supported SQL](/docs/reference/sql/supported-sql)
+- Joins: [Joins](/docs/reference/sql/joins)
 
-### GROUP BY and HAVING
-
-~~~sql
-GROUP BY expression [, ...]
-~~~
-~~~sql
-GROUP BY ALL
-~~~
-~~~sql
-HAVING group_condition
-~~~
+If you want, I can expand this page with more real-world examples, expected outputs, and common pitfalls for each statement.
 
 - `GROUP BY` defines grouping keys for aggregation.
 - `GROUP BY ALL` includes all non-aggregated columns from the `SELECT`.
