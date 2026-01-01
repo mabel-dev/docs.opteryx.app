@@ -89,7 +89,7 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT JOIN](left-join.svg)
+![LEFT JOIN](/images/left-join.svg)
 
 ## RIGHT JOIN
 

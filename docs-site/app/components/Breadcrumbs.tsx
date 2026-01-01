@@ -47,6 +47,16 @@ export default function Breadcrumbs() {
 
   if (breadcrumbs.length === 0) return null
 
+  // Define which breadcrumb items have actual pages (not just structural)
+  const hasPage = (crumb: string, index: number): boolean => {
+    // First level pages exist for all sections
+    if (index === 0) return true
+    // "SQL Language Reference" and "Advanced topics" are structural only
+    if (crumb === 'SQL Language Reference' || crumb === 'Advanced topics') return false
+    // All other intermediate pages exist
+    return true
+  }
+
   // Build cumulative path for each breadcrumb level
   const buildBreadcrumbPath = (index: number): string => {
     const parts = breadcrumbs.slice(0, index + 1)
@@ -89,6 +99,7 @@ export default function Breadcrumbs() {
       </Link>
       {breadcrumbs.map((crumb, index) => {
         const isLast = index === breadcrumbs.length - 1
+        const isClickable = hasPage(crumb, index)
         const href = buildBreadcrumbPath(index)
         
         return (
@@ -98,10 +109,12 @@ export default function Breadcrumbs() {
             </svg>
             {isLast ? (
               <span className="text-gray-900 font-medium">{crumb}</span>
-            ) : (
+            ) : isClickable ? (
               <Link href={href} className="text-gray-600 hover:text-opteryx-teal hover:underline transition-colors">
                 {crumb}
               </Link>
+            ) : (
+              <span className="text-gray-600">{crumb}</span>
             )}
           </div>
         )

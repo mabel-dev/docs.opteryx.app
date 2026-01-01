@@ -10,7 +10,9 @@
 }
 
 /* Teal logo in light mode */
+.teal-logo svg,
 .teal-logo svg path {
+  color: #07797c !important;
   fill: #07797c !important;
 }
 .teal-logo img {
