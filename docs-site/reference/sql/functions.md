@@ -1,17 +1,18 @@
 ---
-title: SQL Functions and Operators - Opteryx Reference
-description: Comprehensive guide to SQL functions and operators in Opteryx. String functions, date/time operations, mathematical functions, and more.
+title: SQL Functions — Opteryx Reference
+description: Concise, categorized reference for SQL functions supported by Opteryx with examples and usage notes.
 ---
 
 # Functions
 
-This document describes the supported SQL functions and operators.
+This page summarizes the most commonly used SQL functions in Opteryx, grouped by category with short examples and behavior notes.
 
-Generally functions will return `null` on `null` input, although note that this is not true in all circumstances, especially for null-aware functions like `COALESCE` and `IFNULL`.
+**Quick notes**
+- Functions typically return `NULL` when given `NULL` input, except for null-aware helpers like `COALESCE` and `IFNULL`.
+- Use `TRY_CAST(value AS TYPE)` or `SAFE_CAST(value AS TYPE)` when converting potentially invalid values to avoid errors.
+- See the detailed function list for complete signatures and edge cases: [Functions full list](/docs/reference/sql/functions).
 
-Definitions noted with a :octicons-dot-16: accept different input arguments.
-
-New functions for this version are annotated with the :octicons-star-16: icon.
+---
 
 ## Conversion Functions
 
