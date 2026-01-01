@@ -92,6 +92,43 @@
                 "EXPLAIN": "reference/sql/data-retrieval/explain.md"
               }
             ]
+          },
+          {
+            "Advanced topics": [
+              {
+                "Engine configuration": "reference/sql/advanced/adv-engine-configuration.md"
+              },
+              {
+                "Information schema": "reference/sql/advanced/adv-information-schema.md"
+              },
+              {
+                "NULL semantics": "reference/sql/advanced/adv-null-semantics.md"
+              },
+              {
+                "Query optimization": "reference/sql/advanced/adv-query-optimization.md"
+              },
+              {
+                "Sample data": "reference/sql/advanced/adv-sample-data.md"
+              },
+              {
+                "Temporary tables": "reference/sql/advanced/adv-temp-tables.md"
+              },
+              {
+                "Time travel queries": "reference/sql/advanced/adv-time-travel.md"
+              },
+              {
+                "Working with IPs": "reference/sql/advanced/adv-working-with-ips.md"
+              },
+              {
+                "Working with lists": "reference/sql/advanced/adv-working-with-lists.md"
+              },
+              {
+                "Working with structs": "reference/sql/advanced/adv-working-with-structs.md"
+              },
+              {
+                "Working with timestamps": "reference/sql/advanced/adv-working-with-timestamps.md"
+              }
+            ]
           }
         ]
       },

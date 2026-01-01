@@ -1,70 +1,56 @@
 ---
-title: SQL Aggregate Functions - Opteryx Reference
-description: Complete guide to SQL aggregate functions in Opteryx. Learn how to use COUNT, SUM, AVG, MIN, MAX, and other aggregation functions.
+title: Aggregates & Window Functions — Opteryx Reference
+description: Quick reference for SQL aggregate and common window functions with examples and behavior notes.
 ---
 
 # Aggregates
 
-Aggregates are functions that combine multiple rows into a single value. Aggregates can only be used in the `SELECT` and `HAVING` clauses of a SQL query.
+Aggregates combine multiple rows into single summary values and are typically used with `GROUP BY` (or as window functions). Aggregates generally ignore `NULL` inputs.
 
-When an `ORDER BY` clause is provided within an aggregate function, the input values are sorted before being aggregated. 
+## Common aggregates
+- `COUNT(*)`, `COUNT(col)`, `COUNT(DISTINCT col)` — row and value counts
+- `SUM(col)`, `AVG(col)`, `MIN(col)`, `MAX(col)` — standard numeric aggregates
+- `STDDEV(col)`, `VARIANCE(col)` — dispersion measures
+- `ARRAY_AGG(col)` — collect values into an array (supports `DISTINCT` and `LIMIT`)
+- `ANY_VALUE(col)` — pick an arbitrary value from the group
+- `APPROXIMATE_MEDIAN(col)` — approximate median (T-Digest) for large sets
 
-Aggregate functions generally ignore `null` values when performing calculations.
+Example — grouped aggregation:
+```sql
+SELECT category, COUNT(*) AS cnt, SUM(amount) AS total
+  FROM transactions
+ GROUP BY category
+ ORDER BY total DESC;
+```
 
-Definitions noted with a :octicons-square-16: are only supported in statements that include a `GROUP BY` clause.
+Example — array aggregator:
+```sql
+SELECT order_id, ARRAY_AGG(item_id) AS items FROM order_items GROUP BY order_id;
+```
 
-New aggregates for this version are annotated with the :octicons-star-16: icon.
+---
 
-## General Functions
+## Window functions
+Many aggregates also have window variants via `OVER(...)` to compute running or partitioned summaries.
 
-!!! function "`ANY_VALUE` (**column**) → _any_"  
-    Select an arbitrary single value from **column** within the grouping. The specific value returned is not guaranteed.  
+Example — partitioned sum:
+```sql
+SELECT id, user_id, amount,
+       SUM(amount) OVER (PARTITION BY user_id ORDER BY ts ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
+  FROM purchases;
+```
 
-!!! function "`APPROXIMATE_MEDIAN` (**column**: _numeric_) → _numeric_"  
-    Calculate an approximate median of **column** using the T-Digest algorithm. This is faster than computing the exact median for large datasets.
+---
 
-!!! function "`ARRAY_AGG` ([ DISTINCT ] **column** [ LIMIT **n** ]) → _array_ :octicons-square-16:"   
-    Collect all values of **column** within the group into an array.   
-    The **DISTINCT** modifier optionally filters the array to contain only unique values.   
-    The **LIMIT** clause restricts the array to a maximum of **n** items.     
+## Behavior notes
+- `COUNT(DISTINCT col)` can be more expensive than `COUNT(col)`; use approximate methods when needed.
+- `ARRAY_AGG(DISTINCT ...)` preserves distinctness; `ARRAY_AGG` without `LIMIT` may produce large arrays — use `LIMIT` if needed.
+- Aggregates ignore `NULL` values for most functions (e.g., `SUM`, `AVG`) unless documented otherwise.
 
-!!! function "`AVG` (**column**: _numeric_) → _numeric_"  
-    Calculate the arithmetic mean (average) of values in **column**.   
+---
 
-!!! function "`COUNT` (*) → _numeric_"  
-    Count the total number of rows.
+## Where to go next
+- Examples in [Statements](/docs/reference/sql/statements)
+- Advanced aggregation & performance tips: see `adv-query-optimization` and `adv-sample-data` pages
 
-!!! function "`COUNT` ([ DISTINCT ] **column**) → _numeric_"  
-    Count the number of non-`null` values in **column**.   
-    The **DISTINCT** modifier counts only unique values. Note that when using **DISTINCT**, `null` values are included in the count if present.  
-
-!!! function "`COUNT_DISTINCT` (**column**) → _numeric_"  
-    Count the number of distinct (unique) values in **column**.    
-    Alias of `COUNT(DISTINCT column)`
-
-!!! function ":octicons-beaker-24: `HISTOGRAM` (**column**) → _struct_"    
-    Generate a histogram showing the frequency distribution of values in **column**.
-
-!!! function "`MAX` (**column**) → _any_"  
-    The maximum value in **column**.  
-
-!!! function "`MIN` (**column**) → _any_"  
-    The minimum value in **column**.  
-
-!!! function "`MIN_MAX` (**column**) → _struct_"  
-    Return both the minimum and maximum values in **column** as a struct.  
-
-!!! function "`ONE` (**column**) → _any_"  
-    Alias for `ANY_VALUE`.  
-
-!!! function "`PRODUCT` (**column**: _numeric_) → _numeric_"  
-    Calculate the product (multiplication) of all values in **column**.  
-
-!!! function "`STDDEV` (**column**: _numeric_) → _numeric_"  
-    Calculate the standard deviation of values in **column**.  
-
-!!! function "`SUM` (**column**: _numeric_) → _numeric_"  
-    Calculate the sum (total) of all values in **column**.  
-
-!!! function "`VARIANCE` (**column**: _numeric_) → _numeric_"  
-    Calculate the variance of values in **column**.  
+If you want, I can expand this page with common pitfalls, expected outputs, and performance tips for large datasets.
