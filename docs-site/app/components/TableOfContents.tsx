@@ -13,13 +13,23 @@ export default function TableOfContents() {
 
   useEffect(() => {
     // Extract H2 and H3 headings from the document
-    const elements = Array.from(document.querySelectorAll('article h2, article h3'))
-    const headingData: Heading[] = elements.map((elem) => ({
-      id: elem.id,
-      text: elem.textContent || '',
-      level: parseInt(elem.tagName[1])
-    }))
-    setHeadings(headingData)
+    const extractHeadings = () => {
+      const elements = Array.from(document.querySelectorAll('article h2, article h3'))
+      const headingData: Heading[] = elements.map((elem) => ({
+        id: elem.id,
+        text: elem.textContent || '',
+        level: parseInt(elem.tagName[1])
+      }))
+      setHeadings(headingData)
+
+      // Set active ID to first heading if available
+      if (headingData.length > 0 && !activeId) {
+        setActiveId(headingData[0].id)
+      }
+    }
+
+    // Run after a short delay to ensure DOM is fully rendered
+    setTimeout(extractHeadings, 100)
 
     // Set up intersection observer for active heading
     const observer = new IntersectionObserver(
@@ -33,7 +43,9 @@ export default function TableOfContents() {
       { rootMargin: '-100px 0px -66%' }
     )
 
+    const elements = document.querySelectorAll('article h2, article h3')
     elements.forEach((elem) => observer.observe(elem))
+    
     return () => observer.disconnect()
   }, [])
 

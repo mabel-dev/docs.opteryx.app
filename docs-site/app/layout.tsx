@@ -2,8 +2,12 @@ import './globals.css'
 import React from 'react'
 
 export const metadata = {
-  title: 'Opteryx Docs',
-  description: 'Documentation for Opteryx'
+  title: 'Opteryx Documentation',
+  description: 'Official documentation for Opteryx - SQL engine for data files',
+  icons: {
+    icon: '/opteryx.svg',
+    apple: '/opteryx.svg',
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

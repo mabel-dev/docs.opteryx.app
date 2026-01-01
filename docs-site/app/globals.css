@@ -58,8 +58,8 @@ code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
 .doc-renderer h2{font-size:1.35rem;margin-top:2rem;margin-bottom:.75rem;font-weight:600;scroll-margin-top:5rem}
 .doc-renderer h3{font-size:1.15rem;margin-top:1.5rem;margin-bottom:.5rem;font-weight:600;scroll-margin-top:5rem}
 .doc-renderer p{margin:0.6rem 0;color:#374151}
-.doc-renderer pre{background:#0f172a; color:#e2e8f0; padding:1rem;border-radius:8px; overflow-x:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.875rem; margin:1rem 0; line-height:1.5}
-.doc-renderer pre code{background:transparent;padding:0;color:#e2e8f0;font-size:.875rem}
+.doc-renderer pre{background:#f7f8f9; color:#1e1e1e; padding:1rem 1.25rem;border-radius:6px; overflow-x:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.875rem; margin:1rem 0; line-height:1.6; border:1px solid #e5e7eb}
+.doc-renderer pre code{background:transparent;padding:0;color:#1e1e1e;font-size:.875rem}
 .doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#1f2937;font-size:.875rem}
 .doc-renderer ul{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:disc}
 .doc-renderer ol{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:decimal}

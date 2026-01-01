@@ -49,7 +49,7 @@ export default function Breadcrumbs() {
 
   return (
     <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6 pb-3 border-b border-gray-200">
-      <Link href="/docs" className="hover:text-opteryx-teal transition-colors">
+      <Link href="/docs" className="hover:text-opteryx-teal hover:underline transition-colors">
         Docs
       </Link>
       {breadcrumbs.map((crumb, index) => {
@@ -62,7 +62,7 @@ export default function Breadcrumbs() {
             {isLast ? (
               <span className="text-gray-900 font-medium">{crumb}</span>
             ) : (
-              <span className="hover:text-opteryx-teal transition-colors cursor-default">{crumb}</span>
+              <span className="text-gray-600">{crumb}</span>
             )}
           </div>
         )
