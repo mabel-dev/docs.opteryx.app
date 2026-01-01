@@ -6,7 +6,7 @@ export default function TopNav(){
     <header className="topnav w-full shadow-sm border-b border-gray-200 bg-white sticky top-0 z-50">
       <div className="w-full px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 teal-logo">
             <Image src="/opteryx.svg" alt="Opteryx" width={28} height={28} />
             <span className="font-semibold text-base text-opteryx-navy">Opteryx Documentation</span>
           </Link>

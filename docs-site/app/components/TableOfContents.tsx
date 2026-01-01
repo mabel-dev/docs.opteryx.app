@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface Heading {
   id: string
@@ -10,6 +11,7 @@ interface Heading {
 export default function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([])
   const [activeId, setActiveId] = useState<string>('')
+  const pathname = usePathname()
 
   useEffect(() => {
     // Extract H2 and H3 headings from the document
@@ -47,7 +49,7 @@ export default function TableOfContents() {
     elements.forEach((elem) => observer.observe(elem))
     
     return () => observer.disconnect()
-  }, [])
+  }, [pathname]) // Re-run when pathname changes
 
   if (headings.length === 0) return null
 

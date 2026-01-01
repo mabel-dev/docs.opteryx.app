@@ -2,9 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 :root{
   --brand-teal: #07797c;
   --brand-navy: #1f2e61;
+}
+
+/* Teal logo in light mode */
+.teal-logo svg path {
+  fill: #07797c !important;
+}
+.teal-logo img {
+  filter: invert(36%) sepia(56%) saturate(1084%) hue-rotate(143deg) brightness(91%) contrast(98%);
 }
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
 main{max-width:1100px;margin:32px auto;padding:0 24px}
@@ -58,9 +68,9 @@ code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
 .doc-renderer h2{font-size:1.35rem;margin-top:2rem;margin-bottom:.75rem;font-weight:600;scroll-margin-top:5rem}
 .doc-renderer h3{font-size:1.15rem;margin-top:1.5rem;margin-bottom:.5rem;font-weight:600;scroll-margin-top:5rem}
 .doc-renderer p{margin:0.6rem 0;color:#374151}
-.doc-renderer pre{background:#f7f8f9; color:#1e1e1e; padding:1rem 1.25rem;border-radius:6px; overflow-x:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.875rem; margin:1rem 0; line-height:1.6; border:1px solid #e5e7eb}
-.doc-renderer pre code{background:transparent;padding:0;color:#1e1e1e;font-size:.875rem}
-.doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#1f2937;font-size:.875rem}
+.doc-renderer pre{background:#f7f8f9; color:#1e1e1e; padding:1rem 1.25rem;border-radius:6px; overflow-x:auto; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.875rem; margin:1rem 0; line-height:1.6}
+.doc-renderer pre code{background:transparent;padding:0;color:#1e1e1e;font-size:.875rem;font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace}
+.doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#1f2937;font-size:.875rem;font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace}
 .doc-renderer ul{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:disc}
 .doc-renderer ol{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:decimal}
 .doc-renderer li{margin:0.25rem 0}

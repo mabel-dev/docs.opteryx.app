@@ -28,7 +28,7 @@ SELECT *
  CROSS JOIN right_relation;
 ~~~
 
-![CROSS JOIN](cross-join.svg)
+![CROSS JOIN](/images/cross-join.svg)
 
 The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
 
@@ -53,7 +53,7 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![INNER JOIN](inner-join.svg)
+![INNER JOIN](/images/inner-join.svg)
 
 In this example, the blue column is used as the joining column in both relations. Only the value `1` appears in both relations, so the result set contains the combination of rows with `1` from both _left_relation_ and _right_relation_.
 
@@ -112,7 +112,7 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![FULL JOIN](full-join.svg)
+![FULL JOIN](/images/full-join.svg)
 
 ## LEFT SEMI JOIN
 
@@ -131,7 +131,7 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT SEMI JOIN](left-semi-join.svg)
+![LEFT SEMI JOIN](/images/left-semi-join.svg)
 
 ## RIGHT SEMI JOIN
 
@@ -154,7 +154,7 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT ANTI JOIN](left-anti-join.svg)
+![LEFT ANTI JOIN](/images/left-anti-join.svg)
 
 ## RIGHT ANTI JOIN
 

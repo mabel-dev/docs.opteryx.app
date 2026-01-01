@@ -3,6 +3,7 @@ import TopNav from '@/app/components/TopNav'
 import DocsSidebar from '@/app/components/DocsSidebar'
 import Breadcrumbs from '@/app/components/Breadcrumbs'
 import TableOfContents from '@/app/components/TableOfContents'
+import DocsFooter from '@/app/components/DocsFooter'
 
 export const metadata = { title: 'Docs — Opteryx' }
 
@@ -16,6 +17,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }){
           <div className="max-w-4xl mx-auto px-3 py-4">
             <Breadcrumbs />
             {children}
+            <DocsFooter />
           </div>
         </div>
         <TableOfContents />
