@@ -21,7 +21,9 @@ This page gives a concise, practical summary of the SQL features supported by Op
 - Set ops: `UNION` / `UNION ALL`, `INTERSECT`, `EXCEPT`
 - Data mod: `INSERT`, `UPDATE`, `DELETE` (backend-dependent)
 
-> Note: Opteryx targets a pragmatic, file-oriented SQL subset suitable for ad-hoc analytical queries — not full RDBMS parity.
+> Tip: Opteryx targets a pragmatic, file-oriented SQL subset suitable for ad-hoc analytical queries — not full RDBMS parity.
+
+> Be Aware: Some advanced features may behave differently than traditional database systems due to Opteryx's file-oriented architecture.
 
 ---
 

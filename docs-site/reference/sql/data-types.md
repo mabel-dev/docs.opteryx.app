@@ -18,7 +18,7 @@ Opteryx supports a compact set of data types optimized for analytical workflows 
 - `ARRAY<type>` — fixed-type arrays
 - `STRUCT` / JSON-like objects — nested data structures
 
-> Note: `BLOB` is being transitioned to `VARBINARY` in some places; prefer `VARBINARY` in new content.
+> Tip: `BLOB` is being transitioned to `VARBINARY` in some places; prefer `VARBINARY` in new content.
 
 ---
 

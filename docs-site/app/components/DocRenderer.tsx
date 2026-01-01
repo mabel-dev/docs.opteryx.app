@@ -18,12 +18,20 @@ marked.use({
         return `<${tag} id="${id}">${content}</${tag}>`
       })
       
-      // Detect and tag callout blockquotes (Note:, TIP:, Warning:, etc.)
+      // Detect and tag callout blockquotes (Tip:, Be Aware:, etc.)
       processed = processed.replace(
-        /<blockquote>\s*<p>\s*(Note|TIP|Tip|Warning|Caution):\s*(.*?)<\/p>/gi,
+        /<blockquote>\s*<p>\s*(Tip|TIP|Be Aware|Warning|Caution):\s*(.*?)<\/p>/gi,
         (match, type, content) => {
-          const calloutType = type.toLowerCase()
-          return `<blockquote data-callout="${calloutType}"><p><strong>${type}:</strong> ${content}</p>`
+          const normalizedType = type.toLowerCase().replace(/\s+/g, '')
+          const displayTitle = type.charAt(0).toUpperCase() + type.slice(1)
+          const iconPath = normalizedType === 'tip' ? '/images/bulb-outline.svg' : '/images/warning-outline.svg'
+          
+          return `<blockquote data-callout="${normalizedType}">
+            <div class="callout-header">
+              <img src="${iconPath}" alt="" class="callout-icon" />
+              <div class="callout-title">${displayTitle}</div>
+            </div>
+            <p class="callout-content">${content}</p>`
         }
       )
       
