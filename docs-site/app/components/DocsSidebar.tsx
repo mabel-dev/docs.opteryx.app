@@ -1,4 +1,7 @@
+'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 const nav = [
   { title: 'Introduction', items: [
@@ -56,15 +59,33 @@ const nav = [
 ]
 
 export default function DocsSidebar(){
+  const pathname = usePathname()
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
+    // Auto-expand section if current page is in it
+    Object.fromEntries(nav.map(section => [
+      section.title, 
+      section.items.some((item: any) => 
+        item.href === pathname || 
+        (item.items && item.items.some((sub: any) => sub.href === pathname))
+      )
+    ]))
+  )
+
+  const toggleSection = (title: string) => {
+    setExpandedSections(prev => ({ ...prev, [title]: !prev[title] }))
+  }
+
   const renderItem = (item: any, level = 0) => {
+    const isActive = item.href === pathname
+    
     if (item.items) {
-      // Nested submenu
+      // Nested submenu (always expanded)
       return (
         <div key={item.title} className={`${level > 0 ? 'ml-2 mt-1' : ''}`}>
-          <div className={`text-xs ${level > 0 ? 'font-medium text-gray-600' : 'font-semibold'} mb-1`}>
+          <div className={`text-xs ${level > 0 ? 'font-medium text-gray-600' : 'font-semibold'} mb-1 cursor-default`}>
             {item.title}
           </div>
-          <ul className="space-y-1 text-sm">
+          <ul className="space-y-0.5 text-sm border-l border-gray-200 ml-2 pl-3">
             {item.items.map((subItem: any) => (
               <li key={subItem.href || subItem.title}>
                 {renderItem(subItem, level + 1)}
@@ -74,29 +95,55 @@ export default function DocsSidebar(){
         </div>
       )
     }
+    
     // Regular link
     return (
-      <Link href={item.href} className="text-gray-700 hover:text-opteryx-navy block rounded-md px-2 py-1">
+      <Link 
+        href={item.href} 
+        className={`block rounded px-2 py-1 text-sm transition-colors ${
+          isActive 
+            ? 'bg-opteryx-teal/10 text-opteryx-teal font-medium' 
+            : 'text-gray-700 hover:text-opteryx-navy hover:bg-gray-100'
+        }`}
+      >
         {item.title}
       </Link>
     )
   }
 
   return (
-    <aside className="docs-sidebar hidden md:block md:sticky md:top-16 md:w-64 lg:w-72">
-      <nav className="p-4">
-        {nav.map(section => (
-          <div key={section.title} className="mb-4">
-            <div className="text-sm font-semibold mb-2">{section.title}</div>
-            <ul className="space-y-1 text-sm">
-              {section.items.map((item: any) => (
-                <li key={item.href || item.title}>
-                  {renderItem(item)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <aside className="docs-sidebar hidden md:block md:w-64 lg:w-72 border-r border-gray-200 overflow-y-auto sticky top-0 h-screen pt-4">
+      <nav className="px-4 pb-8">
+        {nav.map(section => {
+          const isExpanded = expandedSections[section.title]
+          return (
+            <div key={section.title} className="mb-3">
+              <button
+                onClick={() => toggleSection(section.title)}
+                className="w-full flex items-center justify-between text-sm font-semibold text-gray-900 mb-1 hover:text-opteryx-teal transition-colors"
+              >
+                {section.title}
+                <svg 
+                  className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              {isExpanded && (
+                <ul className="space-y-0.5 text-sm mt-1">
+                  {section.items.map((item: any) => (
+                    <li key={item.href || item.title}>
+                      {renderItem(item)}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )
+        })}
       </nav>
     </aside>
   )

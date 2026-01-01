@@ -1,18 +1,24 @@
 import React from 'react'
 import TopNav from '@/app/components/TopNav'
 import DocsSidebar from '@/app/components/DocsSidebar'
+import Breadcrumbs from '@/app/components/Breadcrumbs'
+import TableOfContents from '@/app/components/TableOfContents'
 
 export const metadata = { title: 'Docs — Opteryx' }
 
 export default function DocsLayout({ children }: { children: React.ReactNode }){
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <TopNav />
-      <div className="docs-layout max-w-7xl mx-auto px-4 mt-8 lg:flex lg:gap-8">
+      <div className="docs-layout flex w-full">
         <DocsSidebar />
-        <div className="docs-main flex-1 lg:pt-2">
-          {children}
+        <div className="docs-main flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto px-8 py-6">
+            <Breadcrumbs />
+            {children}
+          </div>
         </div>
+        <TableOfContents />
       </div>
     </div>
   )
