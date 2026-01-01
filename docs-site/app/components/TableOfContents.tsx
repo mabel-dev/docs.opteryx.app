@@ -40,8 +40,8 @@ export default function TableOfContents() {
   if (headings.length === 0) return null
 
   return (
-    <aside className="hidden xl:block xl:w-64 sticky top-4 h-screen overflow-y-auto pb-8">
-      <div className="px-4">
+    <aside className="hidden xl:block xl:w-64 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto pb-8 pt-4">
+      <div className="pl-6 pr-4">
         <h4 className="text-sm font-semibold text-gray-900 mb-3">On this page</h4>
         <nav>
           <ul className="space-y-2 text-sm border-l border-gray-200">

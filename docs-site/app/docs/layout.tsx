@@ -13,7 +13,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }){
       <div className="docs-layout flex w-full">
         <DocsSidebar />
         <div className="docs-main flex-1 min-w-0">
-          <div className="max-w-4xl mx-auto px-8 py-6">
+          <div className="max-w-4xl mx-auto px-6 py-4">
             <Breadcrumbs />
             {children}
           </div>

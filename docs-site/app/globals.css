@@ -52,15 +52,22 @@ code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
 .card:focus, .btn:focus { outline: 2px solid rgba(6,95,70,0.12); outline-offset: 2px; }
 
 /* Doc renderer typography */
-.doc-container{max-width:820px;margin:0 auto;padding:2rem 1rem}
+.doc-container{max-width:100%;margin:0;padding:0}
 .doc-renderer{color:var(--brand-navy);line-height:1.8;font-size:1rem;font-weight:400}
 .doc-renderer h1{font-size:2rem;margin-top:1.25rem;margin-bottom:.6rem;font-weight:700}
-.doc-renderer h2{font-size:1.35rem;margin-top:1rem;margin-bottom:.5rem;font-weight:600}
+.doc-renderer h2{font-size:1.35rem;margin-top:2rem;margin-bottom:.75rem;font-weight:600;scroll-margin-top:5rem}
+.doc-renderer h3{font-size:1.15rem;margin-top:1.5rem;margin-bottom:.5rem;font-weight:600;scroll-margin-top:5rem}
 .doc-renderer p{margin:0.6rem 0;color:#374151}
-.doc-renderer pre{background:#0f172a; color:#f8fafc; padding:1rem;border-radius:8px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.9rem}
-.doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
-.doc-renderer ul{margin:0.6rem 0 0.6rem 1.25rem}
-.doc-renderer blockquote{border-left:4px solid rgba(15,23,42,0.06);padding-left:1rem;color:#6b7280}
+.doc-renderer pre{background:#0f172a; color:#e2e8f0; padding:1rem;border-radius:8px; overflow-x:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:.875rem; margin:1rem 0; line-height:1.5}
+.doc-renderer pre code{background:transparent;padding:0;color:#e2e8f0;font-size:.875rem}
+.doc-renderer code{background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#1f2937;font-size:.875rem}
+.doc-renderer ul{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:disc}
+.doc-renderer ol{margin:0.75rem 0 0.75rem 1.5rem;list-style-type:decimal}
+.doc-renderer li{margin:0.25rem 0}
+.doc-renderer blockquote{border-left:4px solid rgba(15,23,42,0.06);padding-left:1rem;color:#6b7280;margin:1rem 0}
+.doc-renderer img{max-width:100%;height:auto;border-radius:8px;margin:1.5rem 0}
+.doc-renderer a{color:#07797c;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.doc-renderer a:hover{border-bottom-color:#07797c}
 
 /* Docs layout */
 .docs-layout{display:block}
