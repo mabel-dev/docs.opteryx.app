@@ -45,18 +45,66 @@
     ]
   },
   {
-    "SQL Reference": [
+    "Reference": [
       {
-        "Supported SQL": "sql-reference/supported-sql.md"
+        "API Reference": [
+          {
+            "Authentication API": "reference/api/authentication-api.md"
+          },
+          {
+            "Data API": "reference/api/data-api.md"
+          }
+        ]
       },
       {
-        "Functions": "sql-reference/functions.md"
+        "SQL Language Reference": [
+          {
+            "Data Types": "reference/sql/data-types.md"
+          },
+          {
+            "Functions": "reference/sql/functions.md"
+          },
+          {
+            "DDL statements": [
+              {
+                "ANALYZE TABLE": "reference/sql/ddl/analyze-table.md"
+              },
+              {
+                "CREATE VIEW": "reference/sql/ddl/create-view.md"
+              },
+              {
+                "UPDATE VIEW": "reference/sql/ddl/update-view.md"
+              },
+              {
+                "DROP VIEW": "reference/sql/ddl/drop-view.md"
+              },
+              {
+                "COMMENT": "reference/sql/ddl/comment.md"
+              }
+            ]
+          },
+          {
+            "Data retrieval statements": [
+              {
+                "SELECT": "reference/sql/data-retrieval/select.md"
+              },
+              {
+                "EXPLAIN": "reference/sql/data-retrieval/explain.md"
+              }
+            ]
+          }
+        ]
       },
       {
-        "Semantics & edge cases": "sql-reference/semantics-edge-cases.md"
+        "Python Reference": [
+          {
+            "SQLAlchemy": "reference/python/sqlalchemy.md"
+          }
+        ]
       }
     ]
   },
+
   {
     "Architecture": [
       {
