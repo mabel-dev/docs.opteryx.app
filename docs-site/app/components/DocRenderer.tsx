@@ -3,8 +3,10 @@ import { marked } from 'marked'
 
 type DocRendererProps = { source: string }
 
-// Configure marked to add IDs to headings
+// Configure marked to add IDs to headings and enable GFM tables
 marked.use({
+  gfm: true,
+  breaks: false,
   hooks: {
     postprocess(html) {
       // Add IDs to h2 and h3 tags for TOC linking

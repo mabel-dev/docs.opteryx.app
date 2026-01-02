@@ -3,16 +3,12 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
 const pathToTitle: Record<string, string[]> = {
-  '/docs/introduction/what-is-opteryx': ['Introduction', 'What is Opteryx'],
-  '/docs/introduction/when-to-use': ['Introduction', 'When to use Opteryx'],
-  '/docs/introduction/design-principles': ['Introduction', 'Design principles'],
-  '/docs/getting-started/installation': ['Getting Started', 'Installation'],
-  '/docs/getting-started/first-query': ['Getting Started', 'First query'],
-  '/docs/getting-started/reading-data': ['Getting Started', 'Reading data'],
-  '/docs/core-concepts/execution-model': ['Core Concepts', 'Execution model'],
-  '/docs/core-concepts/morsels-vectors': ['Core Concepts', 'Morsels & vectors'],
+  '/docs/getting-started/registration': ['Getting Started', 'Logging in'],
+  '/docs/getting-started/quick-start': ['Getting Started', 'Site tour'],
+  '/docs/getting-started/reading-data': ['Getting Started', 'Load and query data'],
+  '/docs/core-concepts/storage-formats': ['Core Concepts', 'Data structure'],
+  '/docs/core-concepts/access-and-permissions': ['Core Concepts', 'Access & permissions'],
   '/docs/core-concepts/cost-model': ['Core Concepts', 'Cost model'],
-  '/docs/core-concepts/storage-formats': ['Core Concepts', 'Storage & formats'],
   '/docs/reference/sql/supported-sql': ['Reference', 'SQL Language Reference', 'SQL overview'],
   '/docs/reference/sql/data-types': ['Reference', 'SQL Language Reference', 'Data types'],
   '/docs/reference/sql/functions': ['Reference', 'SQL Language Reference', 'Functions'],
@@ -29,16 +25,7 @@ const pathToTitle: Record<string, string[]> = {
   '/docs/reference/sql/advanced/working-with-lists': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with lists'],
   '/docs/reference/sql/advanced/working-with-structs': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with structs'],
   '/docs/reference/sql/advanced/working-with-timestamps': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with timestamps'],
-  '/docs/architecture/planner': ['Architecture', 'Planner'],
-  '/docs/architecture/optimizer': ['Architecture', 'Optimizer'],
-  '/docs/architecture/execution-engine': ['Architecture', 'Execution engine'],
-  '/docs/architecture/internal-components': ['Architecture', 'Internal components'],
-  '/docs/operations/running-locally': ['Operations', 'Running locally'],
-  '/docs/operations/cloud-model': ['Operations', 'Cloud model'],
-  '/docs/operations/security-permissions': ['Operations', 'Security & permissions'],
-  '/docs/roadmap-guarantees/stability-promises': ['Roadmap & Guarantees', 'Stability promises'],
-  '/docs/roadmap-guarantees/compatibility': ['Roadmap & Guarantees', 'Compatibility'],
-  '/docs/roadmap-guarantees/known-limits': ['Roadmap & Guarantees', 'Known limits'],
+  
 }
 
 export default function Breadcrumbs() {

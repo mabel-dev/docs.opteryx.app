@@ -1,46 +1,27 @@
 [
   {
-    "Home": "index.md"
-  },
-  {
-    "Introduction": [
-      {
-        "What is Opteryx": "introduction/what-is-opteryx.md"
-      },
-      {
-        "When to use Opteryx": "introduction/when-to-use.md"
-      },
-      {
-        "Design principles": "introduction/design-principles.md"
-      }
-    ]
-  },
-  {
     "Getting Started": [
       {
-        "Installation": "getting-started/installation.md"
+        "Logging in": "getting-started/registration.md"
       },
       {
-        "First query": "getting-started/first-query.md"
+        "Site tour": "getting-started/quick-start.md"
       },
       {
-        "Reading data": "getting-started/reading-data.md"
+        "Load and query data": "getting-started/reading-data.md"
       }
     ]
   },
   {
     "Core Concepts": [
       {
-        "Execution model": "core-concepts/execution-model.md"
+        "Data structure": "core-concepts/storage-formats.md"
       },
       {
-        "Morsels & vectors": "core-concepts/morsels-vectors.md"
+        "Access and permissions": "core-concepts/access-and-permissions.md"
       },
       {
         "Cost model": "core-concepts/cost-model.md"
-      },
-      {
-        "Storage & formats": "core-concepts/storage-formats.md"
       }
     ]
   },
@@ -53,6 +34,18 @@
           },
           {
             "Data API": "reference/api/data-api.md"
+          },
+          {
+            "Authorization API": "reference/api/authorization-api.md"
+          },
+          {
+            "Metadata API": "reference/api/metadata-api.md"
+          },
+          {
+            "Policy API": "reference/api/policy-api.md"
+          },
+          {
+            "Upload API": "reference/api/upload-api.md"
           }
         ]
       },
@@ -65,33 +58,37 @@
             "Functions": "reference/sql/functions.md"
           },
           {
-            "DDL statements": [
-              {
-                "ANALYZE TABLE": "reference/sql/ddl/analyze-table.md"
-              },
-              {
-                "CREATE VIEW": "reference/sql/ddl/create-view.md"
-              },
-              {
-                "UPDATE VIEW": "reference/sql/ddl/update-view.md"
-              },
-              {
-                "DROP VIEW": "reference/sql/ddl/drop-view.md"
-              },
-              {
-                "COMMENT": "reference/sql/ddl/comment.md"
-              }
-            ]
+            "Aggregates": "reference/sql/aggregates.md"
           },
           {
-            "Data retrieval statements": [
-              {
-                "SELECT": "reference/sql/data-retrieval/select.md"
-              },
-              {
-                "EXPLAIN": "reference/sql/data-retrieval/explain.md"
-              }
-            ]
+            "Statements": "reference/sql/statements.md"
+          },
+          {
+            "Joins": "reference/sql/joins.md"
+          },
+          {
+            "ANALYZE TABLE": "reference/sql/ddl/analyze-table.md"
+          },
+          {
+            "CREATE VIEW": "reference/sql/ddl/create-view.md"
+          },
+          {
+            "UPDATE VIEW": "reference/sql/ddl/update-view.md"
+          },
+          {
+            "DROP VIEW": "reference/sql/ddl/drop-view.md"
+          },
+          {
+            "COMMENT": "reference/sql/ddl/comment.md"
+          },
+          {
+            "SELECT": "reference/sql/data-retrieval/select.md"
+          },
+          {
+            "EXPLAIN": "reference/sql/data-retrieval/explain.md"
+          },
+          {
+            "SQL Supported": "reference/sql/supported-sql.md"
           },
           {
             "Advanced topics": [
@@ -140,51 +137,5 @@
         ]
       }
     ]
-  },
-
-  {
-    "Architecture": [
-      {
-        "Planner": "architecture/planner.md"
-      },
-      {
-        "Optimizer": "architecture/optimizer.md"
-      },
-      {
-        "Execution engine": "architecture/execution-engine.md"
-      },
-      {
-        "Internal components": "architecture/internal-components.md"
-      }
-    ]
-  },
-  {
-    "Operations": [
-      {
-        "Running locally": "operations/running-locally.md"
-      },
-      {
-        "Cloud model": "operations/cloud-model.md"
-      },
-      {
-        "Security & permissions": "operations/security-permissions.md"
-      }
-    ]
-  },
-  {
-    "Roadmap & Guarantees": [
-      {
-        "Stability promises": "roadmap-guarantees/stability-promises.md"
-      },
-      {
-        "Compatibility": "roadmap-guarantees/compatibility.md"
-      },
-      {
-        "Known limits": "roadmap-guarantees/known-limits.md"
-      }
-    ]
-  },
-  {
-    "About": "about.md"
   }
 ]
