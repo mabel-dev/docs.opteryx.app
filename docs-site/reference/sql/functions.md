@@ -3,6 +3,7 @@ title: SQL Functions — Opteryx Reference
 description: Concise, categorized reference for SQL functions supported by Opteryx with examples and usage notes.
 ---
 
+
 # Functions
 
 This page summarizes the most commonly used SQL functions in Opteryx, grouped by category with short examples and behavior notes.
@@ -10,7 +11,12 @@ This page summarizes the most commonly used SQL functions in Opteryx, grouped by
 **Quick notes**
 - Functions typically return `NULL` when given `NULL` input, except for null-aware helpers like `COALESCE` and `IFNULL`.
 - Use `TRY_CAST(value AS TYPE)` or `SAFE_CAST(value AS TYPE)` when converting potentially invalid values to avoid errors.
-- See the detailed function list for complete signatures and edge cases: [Functions full list](/docs/reference/sql/functions).
+- Detailed, function-level pages are available for common functions:
+    - [CAST](functions/cast.md)
+    - [TRY_CAST](functions/try_cast.md)
+    - [current_date](functions/current_date.md)
+    - [VARCHAR](functions/varchar.md)
+    - [INTEGER](functions/integer.md)
 
 ---
 

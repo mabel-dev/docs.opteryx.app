@@ -33,7 +33,7 @@
             "Authentication API": "reference/api/authentication-api.md"
           },
           {
-            "Data API": "reference/api/data-api.md"
+            "Jobs API": "reference/api/jobs-api.md"
           },
           {
             "Authorization API": "reference/api/authorization-api.md"
@@ -130,7 +130,7 @@
         ]
       },
       {
-        "Python Reference": [
+        "Python Integration": [
           {
             "SQLAlchemy": "reference/python/sqlalchemy.md"
           }
