@@ -1,4 +1,3 @@
-```markdown
 # Jobs API
 
 **Status:** Published
@@ -13,14 +12,14 @@ The Jobs service accepts SQL statements for execution and exposes job status and
 
 End Point            | GET | POST | PATCH | DELETE
 -------------------- | --- | ---- | ----- | ----
-`/api/v1/statements` | - | Create Statement | - | -
-`/api/v1/statements/{identifier}/status` | Get Statement Status | - | - | -
-`/api/v1/statements/{identifier}/results` | Get Statement Results | - | - | -
-`/api/v1/statements/{identifier}/cancel` | - | Cancel Statement | - | -
+`/api/v1/jobs` | - | Create Job | - | -
+`/api/v1/jobs/{identifier}/status` | Get Job Status | - | - | -
+`/api/v1/jobs/{identifier}/results` | Get Job Results | - | - | -
+`/api/v1/jobs/{identifier}/cancel` | - | Cancel Job | - | -
 
 ## Create Statement
 
-**Request:** `[POST] /api/v1/statements`
+**Request:** `[POST] /api/v1/jobs`
 
 Request JSON: `{ "sql_text": "SELECT ...", "parameters": {...} }`
 
@@ -28,13 +27,13 @@ Response (201): `execution_id`, `status`, `created_at`, `status_url`.
 
 ## Get Statement Status
 
-**Request:** `[GET] /api/v1/statements/{identifier}/status`
+**Request:** `[GET] /api/v1/jobs/{identifier}/status`
 
 Response: `execution_id`, `status`, `finished_at`, `results_url`, `error_message`.
 
 ## Get Statement Results
 
-**Request:** `[GET] /api/v1/statements/{identifier}/results?num_rows={num_rows}&offset={offset}`
+**Request:** `[GET] /api/v1/jobs/{identifier}/results?num_rows={num_rows}&offset={offset}`
 
 Response: `execution_id`, `created_at`, `sql_text`, `total_rows`, `data` (array of row objects), `next_page`.
 
@@ -44,4 +43,3 @@ Response: `execution_id`, `created_at`, `sql_text`, `total_rows`, `data` (array 
 Authentication
 - Bearer JWT required for protected endpoints. Tokens are validated against JWKS from the Authentication service. `JOBS_AUDIENCE` expected in `aud` claim.
 
-```

@@ -55,7 +55,26 @@
             "Data Types": "reference/sql/data-types.md"
           },
           {
-            "Functions": "reference/sql/functions.md"
+            "Functions": {
+              "href": "reference/sql/functions.md",
+              "items": [
+                {
+                  "CAST": "reference/sql/functions/cast.md"
+                },
+                {
+                  "TRY_CAST": "reference/sql/functions/try_cast.md"
+                },
+                {
+                  "current_date": "reference/sql/functions/current_date.md"
+                },
+                {
+                  "VARCHAR": "reference/sql/functions/varchar.md"
+                },
+                {
+                  "INTEGER": "reference/sql/functions/integer.md"
+                }
+              ]
+            }
           },
           {
             "Aggregates": "reference/sql/aggregates.md"

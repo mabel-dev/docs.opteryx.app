@@ -25,6 +25,18 @@ const pathToTitle: Record<string, string[]> = {
   '/docs/reference/sql/advanced/working-with-lists': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with lists'],
   '/docs/reference/sql/advanced/working-with-structs': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with structs'],
   '/docs/reference/sql/advanced/working-with-timestamps': ['Reference', 'SQL Language Reference', 'Advanced topics', 'Working with timestamps'],
+  '/docs/reference/api/authentication-api': ['Reference', 'API Reference', 'Authentication API'],
+  '/docs/reference/api/jobs-api': ['Reference', 'API Reference', 'Jobs API'],
+  '/docs/reference/api/authorization-api': ['Reference', 'API Reference', 'Authorization API'],
+  '/docs/reference/api/metadata-api': ['Reference', 'API Reference', 'Metadata API'],
+  '/docs/reference/api/policy-api': ['Reference', 'API Reference', 'Policy API'],
+  '/docs/reference/api/upload-api': ['Reference', 'API Reference', 'Upload API'],
+  '/docs/reference/sql/functions/cast': ['Reference', 'SQL Language Reference', 'Functions', 'CAST'],
+  '/docs/reference/sql/functions/try_cast': ['Reference', 'SQL Language Reference', 'Functions', 'TRY_CAST'],
+  '/docs/reference/sql/functions/current_date': ['Reference', 'SQL Language Reference', 'Functions', 'current_date'],
+  '/docs/reference/sql/functions/varchar': ['Reference', 'SQL Language Reference', 'Functions', 'VARCHAR'],
+  '/docs/reference/sql/functions/integer': ['Reference', 'SQL Language Reference', 'Functions', 'INTEGER'],
+  '/docs/reference/python/sqlalchemy': ['Reference', 'Python Integration', 'SQLAlchemy'],
   
 }
 

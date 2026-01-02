@@ -30,9 +30,23 @@ const buildNav = (navArray: any[]) => {
         if (Array.isArray(childVal)) {
           return { title: childKey, items: childVal.map((c: any) => resolveNode(c)) }
         }
+        // object with href and items
+        if (typeof childVal === 'object' && !Array.isArray(childVal)) {
+          const result: any = { title: childKey }
+          if (childVal.href) result.href = toHref(childVal.href)
+          if (childVal.items) result.items = childVal.items.map((c: any) => resolveNode(c))
+          return result
+        }
         return null
       }).filter(Boolean)
       return { title: key, items }
+    }
+    // object with href and/or items
+    if (typeof val === 'object' && !Array.isArray(val)) {
+      const result: any = { title: key }
+      if (val.href) result.href = toHref(val.href)
+      if (val.items) result.items = val.items.map((c: any) => resolveNode(c))
+      return result
     }
     return null
   }
@@ -52,6 +66,13 @@ const buildNav = (navArray: any[]) => {
         if (Array.isArray(v)) {
           return { title: k, items: v.map((c: any) => resolveNode(c)) }
         }
+        // object with href and/or items
+        if (typeof v === 'object' && !Array.isArray(v)) {
+          const result: any = { title: k }
+          if (v.href) result.href = toHref(v.href)
+          if (v.items) result.items = v.items.map((c: any) => resolveNode(c))
+          return result
+        }
         return null
       }).filter(Boolean)
       resolved.push({ title, items })
@@ -63,23 +84,48 @@ const buildNav = (navArray: any[]) => {
 
 const nav = buildNav(navJson)
 
+// Debug: log the parsed nav structure
+if (typeof window !== 'undefined') {
+  console.log('Parsed nav structure:', JSON.stringify(nav, null, 2))
+}
+
 export default function DocsSidebar(){
   const pathname = usePathname()
   
   // L1 sections always visible, L2 subsections expandable
-  const [expandedL2, setExpandedL2] = useState<Record<string, boolean>>(() => {
+  const [expandedL2, setExpandedL2] = useState<Record<string, boolean>>({})
+
+  // Auto-expand sections based on current path
+  useMemo(() => {
     const initial: Record<string, boolean> = {}
     nav.forEach(section => {
       section.items.forEach((item: any) => {
-          if (item.items) {
+        if (item.items) {
           // Auto-expand L2 if current page is in it
           const key = `${section.title}::${item.title}`
-          initial[key] = item.items.some((sub: any) => sub.href === pathname)
+          const hasMatch = item.items.some((sub: any) => {
+            if (sub.href === pathname) return true
+            // Check L3 expandable items
+            if (sub.items) {
+              return sub.items.some((l4: any) => l4.href === pathname)
+            }
+            return false
+          })
+          if (hasMatch) initial[key] = true
+          
+          // Also auto-expand L3 if current page is in it
+          item.items.forEach((sub: any) => {
+            if (sub.items) {
+              const l3Key = `${section.title}::${item.title}::${sub.title}`
+              const hasL4Match = sub.items.some((l4: any) => l4.href === pathname)
+              if (hasL4Match) initial[l3Key] = true
+            }
+          })
         }
       })
     })
-    return initial
-  })
+    setExpandedL2(initial)
+  }, [pathname])
 
   const toggleL2 = (sectionTitle: string, itemTitle: string) => {
     const key = `${sectionTitle}::${itemTitle}`
@@ -113,10 +159,72 @@ export default function DocsSidebar(){
             <ul className="space-y-0.5 mt-1 ml-3 border-l border-gray-200 pl-3">
               {item.items.map((subItem: any) => {
                 if (subItem.items) {
-                  // Nested submenu (L3 with children - shouldn't happen but handle gracefully)
+                  // L3 expandable item
+                  const l3Key = `${sectionTitle}::${item.title}::${subItem.title}`
+                  const isL3Expanded = expandedL2[l3Key]
+                  
                   return (
-                    <li key={subItem.title} className="text-xs text-gray-600 mt-2 mb-1">
-                      {subItem.title}
+                    <li key={subItem.title}>
+                      <div className={`flex items-center rounded ${subItem.href === pathname ? 'bg-opteryx-teal/10' : ''}`}>
+                        {subItem.href ? (
+                          <Link
+                            href={subItem.href}
+                            className={`flex-1 block px-2 py-1 text-sm transition-colors ${
+                              subItem.href === pathname
+                                ? 'text-opteryx-teal'
+                                : 'text-gray-700 hover:text-opteryx-navy hover:bg-gray-100'
+                            }`}
+                          >
+                            {subItem.title}
+                          </Link>
+                        ) : (
+                          <span className="flex-1 block px-2 py-1 text-sm text-gray-700">
+                            {subItem.title}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => {
+                            const key = `${sectionTitle}::${item.title}::${subItem.title}`
+                            setExpandedL2(prev => ({ ...prev, [key]: !prev[key] }))
+                          }}
+                          className={`px-2 py-1 transition-colors ${
+                            subItem.href === pathname ? 'text-opteryx-teal' : 'hover:text-opteryx-teal'
+                          }`}
+                        >
+                          <svg 
+                            className={`w-3 h-3 transition-transform ${isL3Expanded ? 'rotate-90' : ''}`}
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
+                      {isL3Expanded && (
+                        <ul className="space-y-0.5 mt-1 ml-3 border-l border-gray-200 pl-3">
+                          {subItem.items.map((l4Item: any) => (
+                            <li key={l4Item.href || l4Item.title}>
+                              {l4Item.href ? (
+                                <Link 
+                                  href={l4Item.href} 
+                                  className={`block rounded px-2 py-1 text-sm transition-colors ${
+                                    l4Item.href === pathname
+                                      ? 'bg-opteryx-teal/10 text-opteryx-teal' 
+                                      : 'text-gray-700 hover:text-opteryx-navy hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {l4Item.title}
+                                </Link>
+                              ) : (
+                                <span className="block px-2 py-1 text-sm text-gray-600">
+                                  {l4Item.title}
+                                </span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   )
                 }

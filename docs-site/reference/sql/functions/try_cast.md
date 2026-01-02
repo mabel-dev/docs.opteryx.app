@@ -1,15 +1,21 @@
-```markdown
 # TRY_CAST
 
-**Status:** Placeholder
+**Category:** Conversion
 
 Signature: `TRY_CAST(value AS TYPE)` — attempt to cast a value to the target type; returns `NULL` if the cast fails.
 
-Example:
+## Syntax
+
+## Examples
 
 ```sql
 SELECT TRY_CAST('not-a-number' AS INTEGER);
 ```
 
-Notes: Document behavior with invalid inputs and examples.
-```
+## Related Functions
+
+CAST, SAFE_CAST
+
+## Notes
+
+Document behavior with invalid inputs and examples.

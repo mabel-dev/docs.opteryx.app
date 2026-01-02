@@ -1,15 +1,21 @@
-```markdown
 # current_date
 
-**Status:** Placeholder
+**Category:** Date & Time
 
 Signature: `current_date` — returns current date (UTC). No parentheses required.
 
-Example:
+## Syntax
+
+## Examples
 
 ```sql
 SELECT current_date;
 ```
 
-Notes: Describe timezone behavior and precision.
-```
+## Related Functions
+
+current_time, current_timestamp
+
+## Notes
+
+Describe timezone behavior and precision.
