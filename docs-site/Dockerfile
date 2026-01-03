@@ -22,4 +22,4 @@ EXPOSE 8080
 ENV PORT=8080
 
 # Use the start script in package.json which runs `next start`
-CMD ["sh", "-c", "npm run start -- -p ${PORT}" ]
+CMD ["sh", "-c", "next start -p ${PORT}" ]
