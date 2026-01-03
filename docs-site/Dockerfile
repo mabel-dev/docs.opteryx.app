@@ -4,6 +4,8 @@ WORKDIR /app
 
 # Install deps
 COPY package.json package-lock.json* ./
+# upgrade npm to suppress update notice and use newer CLI features
+RUN npm install -g npm@11.7.0 --silent --unsafe-perm
 RUN npm ci --silent
 
 # Copy source and build

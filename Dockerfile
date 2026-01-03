@@ -11,6 +11,10 @@ RUN apk add --no-cache python3 build-base
 # fall back to `npm install --legacy-peer-deps`. Run with verbose logging and
 # capture output to a file so CI logs contain the underlying error for diagnosis.
 RUN echo "node: $(node -v)" && echo "npm: $(npm -v)" && ls -la
+
+# upgrade npm to suppress update notice and use newer CLI features
+RUN npm install -g npm@11.7.0 --silent --unsafe-perm
+
 RUN if [ -f package-lock.json ]; then \
 			sh -c "npm ci --loglevel verbose 2>&1 | tee /app/npm-install.log" || (cat /app/npm-install.log && false); \
 		else \
@@ -39,4 +43,4 @@ EXPOSE 8080
 ENV PORT=8080
 
 # Start Next.js in production mode
-CMD ["sh", "-c", "npm run start -- -- -p ${PORT}"]
+CMD ["sh", "-c", "next start -p ${PORT}"]
