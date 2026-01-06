@@ -42,5 +42,5 @@ COPY --from=builder /app .
 EXPOSE 8080
 ENV PORT=8080
 
-# Start Next.js in production mode
-CMD ["sh", "-c", "next start -p ${PORT}"]
+# Start Next.js in production mode via npm so `node_modules/.bin` is on PATH
+CMD ["npm", "start"]
