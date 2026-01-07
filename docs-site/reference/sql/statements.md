@@ -1,169 +1,84 @@
 ---
 title: SQL Statements — Opteryx Reference
-description: Practical reference for SQL statements supported by Opteryx with concise examples and behavior notes.
+description: Complete SQL statements reference for Opteryx, covering SELECT, WHERE, GROUP BY, ORDER BY, LIMIT, and more.
 ---
 
 # Statements
 
-This page covers the most commonly used SQL statements in Opteryx with short examples and quick behavior notes. For in-depth syntax and full examples, follow the links to the detailed pages.
+This section covers SQL statements and clauses supported by Opteryx. Click on any topic below for detailed syntax, examples, and usage notes.
 
-## Overview
-Opteryx supports a pragmatic subset of SQL suitable for file-backed analytical queries. The following common statements are supported: `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `EXPLAIN`, `SHOW`, `SET`, and various `SHOW`/`SHOW CREATE` helpers.
+## Query Clauses
 
----
+The following clauses are used to construct SQL queries for retrieving and transforming data:
 
-## SELECT (querying)
-Retrieve rows from relations, with full support for filtering, joining, grouping, ordering and pagination.
+| Clause | Purpose |
+|--------|---------|
+| [SELECT](statements/select.md) | Specify columns and expressions to retrieve |
+| [WHERE](statements/where.md) | Filter rows based on conditions |
+| [GROUP BY](statements/group-by.md) | Group rows by one or more columns for aggregation |
+| [HAVING](statements/having.md) | Filter groups after aggregation |
+| [ORDER BY](statements/order-by.md) | Sort results by one or more columns |
+| [LIMIT / OFFSET](statements/limit.md) | Paginate results |
+| [WITH (CTE)](statements/with.md) | Define named subqueries (Common Table Expressions) |
+| [DISTINCT](statements/distinct.md) | Remove duplicate rows from results |
 
-Example — basic query:
-```sql
-SELECT id, name, created_at
-  FROM users
- WHERE active = TRUE
- ORDER BY created_at DESC
- LIMIT 50;
-```
+## Set Operations
 
-Example — aggregation:
-```sql
-SELECT category, COUNT(*) AS cnt, SUM(amount) AS total
-  FROM transactions
- WHERE status = 'completed'
- GROUP BY category
- HAVING SUM(amount) > 1000
- ORDER BY total DESC;
-```
+Combine results from multiple queries:
 
-Notes:
-- `DISTINCT` and `DISTINCT ON (cols)` are supported.
-- `SELECT * EXCEPT (col1, col2)` excludes listed columns from `*` expansion.
-- `FOR` clauses provide time-scoped/time-travel queries in supported contexts (see Time Travel docs).
+| Operation | Purpose |
+|-----------|---------|
+| [UNION / INTERSECT / EXCEPT](statements/union.md) | Combine, intersect, or find differences between result sets |
 
----
+## Data Modification
 
-## Joins & FROM
-All common join forms are available: `INNER`, `LEFT` (and `LEFT SEMI` / `LEFT ANTI`), `RIGHT`, `FULL`, and `CROSS`.
+Statements for inserting, updating, and deleting data:
 
-Example — inner join:
-```sql
-SELECT o.id AS order_id, c.name AS customer
-  FROM orders o
-  JOIN customers c ON o.customer_id = c.id;
-```
+| Statement | Purpose |
+|-----------|---------|
+| [INSERT](statements/insert.md) | Add new rows to a table |
+| [UPDATE](statements/update.md) | Modify existing rows |
+| [DELETE](statements/delete.md) | Remove rows from a table |
 
----
+## Query Analysis
 
-## Set operations
-- `UNION` / `UNION ALL` — combines result sets
-- `INTERSECT` — yields rows present in both
-- `EXCEPT` — yields rows from the first not in the second
+Understand and optimize query execution:
 
-Example:
-```sql
-SELECT id FROM a
-UNION ALL
-SELECT id FROM b;
-```
+| Statement | Purpose |
+|-----------|---------|
+| [EXPLAIN](statements/explain.md) | Display query plans and execution metrics |
 
----
+## View Management
 
-## DML: INSERT / UPDATE / DELETE
-Basic data modification statements are supported where the underlying data store allows mutations. Behavior depends on storage backend.
+Create and manage views:
 
-Example — insert:
-```sql
-INSERT INTO users (id, name, active) VALUES (1, 'acme', true);
-```
+| Statement | Purpose |
+|-----------|---------|
+| [CREATE VIEW](statements/create-view.md) | Create a new named view |
+| [ALTER VIEW](statements/alter-view.md) | Modify an existing view definition |
+| [DROP VIEW](statements/drop-view.md) | Remove a view |
 
-Example — update:
-```sql
-UPDATE users SET active = FALSE WHERE last_login < '2023-01-01';
-```
+## Table Management
 
-Example — delete:
-```sql
-DELETE FROM sessions WHERE expires_at < current_timestamp;
-```
+Manage table properties and statistics:
 
----
+| Statement | Purpose |
+|-----------|---------|
+| [ANALYZE TABLE](statements/analyze-table.md) | Collect statistics for query optimization |
+| [COMMENT](statements/comment.md) | Add descriptive comments to tables and views |
 
-## EXPLAIN
-`EXPLAIN` shows the logical/physical plan; `EXPLAIN ANALYZE` runs the query and shows runtime metrics.
+## Advanced Features
 
-Example:
-```sql
-EXPLAIN ANALYZE SELECT * FROM orders WHERE id = 1;
-```
+Special clauses and time-based queries:
 
-Output formats may vary and are not guaranteed stable for machine parsing; `FORMAT MERMAID` can produce diagrams.
+| Feature | Purpose |
+|---------|---------|
+| [AT (Time Travel)](statements/at.md) | Query data as it existed at a specific point in time |
 
----
+## JOIN Operations
 
-## SHOW, SET, and HELP commands
-- `SHOW FUNCTIONS`, `SHOW TABLES`, `SHOW COLUMNS`, etc., list metadata.
-- `SET variable = value` sets query-scoped variables.
-- `SHOW PARAMETERS` / `SHOW VARIABLES` display configuration or variables.
+For detailed information on joining tables, see the [Joins](../joins.md) reference page.
 
----
 
-## Tips & Behavior
-- `ORDER BY` operates on the final result set; use `LIMIT`/`OFFSET` for pagination.
-- `HAVING` filters grouped results (post-aggregation).
-- Use `EXPLAIN ANALYZE` to diagnose slow queries and `FOR` for time-scoped reads.
-
----
-
-## Where to go next
-- Detailed statements reference: [Statements full page](/docs/reference/sql/statements)
-- Examples and edge cases: [Supported SQL](/docs/reference/sql/supported-sql)
-- Joins: [Joins](/docs/reference/sql/joins)
-
-If you want, I can expand this page with more real-world examples, expected outputs, and common pitfalls for each statement.
-
-- `GROUP BY` defines grouping keys for aggregation.
-- `GROUP BY ALL` includes all non-aggregated columns from the `SELECT`.
-- `HAVING` filters grouped results and requires a `GROUP BY`.
-
-### ORDER BY / LIMIT / OFFSET
-
-~~~sql
-ORDER BY expression [ ASC | DESC ] [, ...]
-~~~
-~~~sql
-OFFSET n
-~~~
-~~~sql
-LIMIT n
-~~~
-
-These clauses apply to the final output:
-
-- `ORDER BY` sorts rows.
-- `LIMIT` restricts how many rows are returned.
-- `OFFSET` skips rows before returning results.
-
-## EXPLAIN
-
-~~~sql
-EXPLAIN [ ANALYZE ] [ FORMAT MERMAID | FORMAT TEXT ] statement
-~~~
-
-Displays the logical query plan.
-
-- `ANALYZE` executes the query and appends execution metrics.
-- `FORMAT` specifies output style: `TEXT` (default) or [`MERMAID`](https://mermaid.js.org/) for diagramming.
-
-!!! warning
-    Output format may change across versions and is not intended for machine parsing.
-
-## EXECUTE :octicons-beaker-24: 
-
-Execute a prepared statement.
-
-~~~sql
-EXECUTE statement_name[(<parameter=value[, ...]>)]
-~~~
-
-The `EXECUTE` clause executes a prepared statement. The parameters supplied in the invocation clause are used to populate placeholders in the prepared statement. The supplied parameters must be named, for example `EXECUTE PLANETS_BY_ID (id=1)`.
 
 ... (truncated)

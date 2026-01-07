@@ -80,31 +80,71 @@
             "Aggregates": "reference/sql/aggregates.md"
           },
           {
-            "Statements": "reference/sql/statements.md"
+            "Statements": {
+              "href": "reference/sql/statements.md",
+              "items": [
+                {
+                  "SELECT": "reference/sql/statements/select.md"
+                },
+                {
+                  "WHERE": "reference/sql/statements/where.md"
+                },
+                {
+                  "GROUP BY": "reference/sql/statements/group-by.md"
+                },
+                {
+                  "HAVING": "reference/sql/statements/having.md"
+                },
+                {
+                  "ORDER BY": "reference/sql/statements/order-by.md"
+                },
+                {
+                  "LIMIT / OFFSET": "reference/sql/statements/limit.md"
+                },
+                {
+                  "WITH (CTE)": "reference/sql/statements/with.md"
+                },
+                {
+                  "DISTINCT": "reference/sql/statements/distinct.md"
+                },
+                {
+                  "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"
+                },
+                {
+                  "INSERT": "reference/sql/statements/insert.md"
+                },
+                {
+                  "UPDATE": "reference/sql/statements/update.md"
+                },
+                {
+                  "DELETE": "reference/sql/statements/delete.md"
+                },
+                {
+                  "EXPLAIN": "reference/sql/statements/explain.md"
+                },
+                {
+                  "CREATE VIEW": "reference/sql/statements/create-view.md"
+                },
+                {
+                  "ALTER VIEW": "reference/sql/statements/alter-view.md"
+                },
+                {
+                  "DROP VIEW": "reference/sql/statements/drop-view.md"
+                },
+                {
+                  "ANALYZE TABLE": "reference/sql/statements/analyze-table.md"
+                },
+                {
+                  "COMMENT": "reference/sql/statements/comment.md"
+                },
+                {
+                  "AT (Time Travel)": "reference/sql/statements/at.md"
+                }
+              ]
+            }
           },
           {
             "Joins": "reference/sql/joins.md"
-          },
-          {
-            "ANALYZE TABLE": "reference/sql/ddl/analyze-table.md"
-          },
-          {
-            "CREATE VIEW": "reference/sql/ddl/create-view.md"
-          },
-          {
-            "UPDATE VIEW": "reference/sql/ddl/update-view.md"
-          },
-          {
-            "DROP VIEW": "reference/sql/ddl/drop-view.md"
-          },
-          {
-            "COMMENT": "reference/sql/ddl/comment.md"
-          },
-          {
-            "SELECT": "reference/sql/data-retrieval/select.md"
-          },
-          {
-            "EXPLAIN": "reference/sql/data-retrieval/explain.md"
           },
           {
             "SQL Supported": "reference/sql/supported-sql.md"
