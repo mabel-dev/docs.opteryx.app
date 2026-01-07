@@ -27,14 +27,14 @@ export default function Page(){
 			<p class="opteryx-card__desc">Run your first query in minutes and explore Opteryx capabilities.</p>
 		</article>
 		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-architecture.svg" class="icon" alt="Architecture icon">
-			<h3 class="opteryx-card__title"><a href="/docs/architecture/execution-engine">Architecture</a></h3>
-			<p class="opteryx-card__desc">Read about the execution engine, planner, and optimizer internals.</p>
+			<img src="/docs/assets/images/icon-architecture.svg" class="icon" alt="Tutorials icon">
+			<h3 class="opteryx-card__title"><a href="/tutorials">Tutorials</a></h3>
+			<p class="opteryx-card__desc">Hands-on tutorials, including Jupyter Notebook examples and interactive guides.</p>
 		</article>
 		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-security.svg" class="icon" alt="Security icon">
-			<h3 class="opteryx-card__title"><a href="/docs/operations/security-permissions">Security & permissions</a></h3>
-			<p class="opteryx-card__desc">How to secure access, configure roles, and manage permissions.</p>
+			<img src="/docs/assets/images/icon-security.svg" class="icon" alt="Releases icon">
+			<h3 class="opteryx-card__title"><a href="/releases">Releases</a></h3>
+			<p class="opteryx-card__desc">Release notes and changelogs for the website, APIs, and SQL engine.</p>
 		</article>
 	</div>
 </section>

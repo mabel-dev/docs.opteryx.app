@@ -11,9 +11,9 @@ export default function TopNav(){
             <span className="font-semibold text-base text-opteryx-navy">Opteryx Documentation</span>
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-gray-600">
-            <Link href="/docs" className="hover:text-opteryx-teal">Docs</Link>
-            <Link href="/docs/architecture/execution-engine" className="hover:text-opteryx-teal">Architecture</Link>
-            <Link href="/docs/operations/security-permissions" className="hover:text-opteryx-teal">Security</Link>
+            <Link href="/docs" className="hover:text-opteryx-teal">Guides</Link>
+            <Link href="/tutorials" className="hover:text-opteryx-teal">Tutorials</Link>
+            <Link href="/releases" className="hover:text-opteryx-teal">Releases</Link>
           </nav>
         </div>
         <div className="flex items-center gap-3">
