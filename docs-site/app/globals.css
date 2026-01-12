@@ -10,14 +10,7 @@
 }
 
 /* Teal logo in light mode */
-.teal-logo svg,
-.teal-logo svg path {
-  color: #07797c !important;
-  fill: #07797c !important;
-}
-.teal-logo img {
-  filter: invert(36%) sepia(56%) saturate(1084%) hue-rotate(143deg) brightness(91%) contrast(98%);
-}
+
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
 main{max-width:1100px;margin:32px auto;padding:0 24px}
 h1{color:var(--brand-navy)}
