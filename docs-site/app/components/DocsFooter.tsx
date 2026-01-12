@@ -11,7 +11,7 @@ export default function DocsFooter() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image src="/opteryx.svg" alt="" width={16} height={16} />
+          <Image src="/opteryx-icon.svg" alt="" width={16} height={16} />
           <span>Visit Opteryx</span>
         </Link>
         <div>
