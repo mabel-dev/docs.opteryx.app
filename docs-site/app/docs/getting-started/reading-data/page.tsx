@@ -12,6 +12,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - public.examples.planets
 - public.examples.vulnerabilities
 - public.github.events
+- public.nyc_taxi.*
+- public.covid19.covid (https://health.google.com/covid-19/open-data/raw-data)
+- public.imdb.*
 
 `
   return <DocRenderer source={source} />
