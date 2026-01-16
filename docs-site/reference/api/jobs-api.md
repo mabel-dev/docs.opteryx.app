@@ -13,6 +13,7 @@ The Jobs service accepts SQL statements for execution and exposes job status and
 End Point            | GET | POST | PATCH | DELETE
 -------------------- | --- | ---- | ----- | ----
 `/api/v1/jobs` | - | Create Job | - | -
+`/api/v1/jobs/recent` | Get Recent Queries | - | - | -
 `/api/v1/jobs/{identifier}/status` | Get Job Status | - | - | -
 `/api/v1/jobs/{identifier}/results` | Get Job Results | - | - | -
 `/api/v1/jobs/{identifier}/cancel` | - | Cancel Job | - | -
@@ -24,6 +25,17 @@ End Point            | GET | POST | PATCH | DELETE
 Request JSON: `{ "sql_text": "SELECT ...", "parameters": {...} }`
 
 Response (201): `execution_id`, `status`, `created_at`, `status_url`.
+
+## Get Recent User Queries
+
+**Request:** `[GET] /api/v1/jobs/recent?filter={value}`
+
+Requires Bearer token. Returns array of recent query job objects from the currently authenticated user.
+
+Optional query parameter:
+- `filter` (string): case-insensitive substring filter against `sql_text`
+
+Response (200): Array of recent job objects with fields: `execution_id`, `sql_text`, `created_at`, `status`, `llm_described`, `time_taken_s`, and optional `error` and `client_info`.
 
 ## Get Statement Status
 
