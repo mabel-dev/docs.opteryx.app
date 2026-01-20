@@ -42,6 +42,9 @@
             "Metadata API": "reference/api/metadata-api.md"
           },
           {
+            "OData API": "reference/api/odata-api.md"
+          },
+          {
             "Policy API": "reference/api/policy-api.md"
           },
           {

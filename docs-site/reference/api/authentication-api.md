@@ -6,24 +6,28 @@ Base URL: https://authenticate.opteryx.app
 
 ## Overview
 
-The Authentication service issues and validates JWTs, provides JWKS, and implements OAuth2 flows (client credentials, authorization code + PKCE, refresh tokens).
+The Authentication service issues and validates JWTs, provides JWKS, manages Personal Access Tokens (PATs) for machine clients, and implements OAuth2 flows (client credentials, authorization code + PKCE, refresh tokens).
 
 **Endpoints**
 
-End Point            | GET | POST | PATCH | DELETE
--------------------- | --- | ---- | ----- | ------
-`/health`            | Read Health | - | - | -
-`/jwks`              | Read JWKS | - | - | -
-`/token`             | - | Create Token | - | -
-`/keys/ensure`       | - | Ensure Key | - | -
-`/oauth/authorize`   | Read Authorization | - | - | -
-`/oauth/token`       | - | Exchange Token | - | -
-`/admin/*`           | Read Admin | Create Admin | Update Admin | Delete Admin
+End Point                                    | GET | POST | PATCH | DELETE
+-------------------------------------------- | --- | ---- | ----- | -----
+`/health`                                    | Read Health | - | - | -
+`/jwks`                                      | Read JWKS | - | - | -
+`/token`                                     | - | Token Endpoint (all grants) | - | -
+`/oauth/authorize`                           | Start Authorization | - | - | -
+`/oauth/token`                               | - | Exchange Auth Code | - | -
+`/clients/{client_id}/credentials`           | List Credentials | Create Credential (PAT) | - | -
+`/clients/{client_id}/credentials/{cred_id}` | - | - | - | Revoke Credential
+`/keys/ensure`                               | - | Ensure Key Exists | - | -
+`/auth/{provider}/authorize`                 | Start External OAuth | - | - | -
+`/auth/{provider}/callback`                  | OAuth Callback | - | - | -
 
 **Authentication flows**
-- Client Credentials: `POST /token` with `grant_type=client_credentials` and `client_id`/`client_secret` (confidential clients).
+- Client Credentials: `POST /token` with `grant_type=client_credentials` and `client_id`/`client_secret` (confidential clients, PATs allowed).
 - Authorization Code + PKCE: `GET /oauth/authorize` then `POST /oauth/token` exchanging the code with `code_verifier` for public clients.
-- Refresh tokens: returned on authorization_code flows; refreshes performed via `POST /token` with `grant_type=refresh_token`.
+- Refresh tokens: exchanged via `POST /token` with `grant_type=refresh_token` (rotate on use).
+- Personal Access Tokens (PATs): created via `POST /clients/{client_id}/credentials` and used as `client_secret` in client_credentials grants.
 
 ## Get JWKS
 
