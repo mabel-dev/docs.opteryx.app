@@ -105,6 +105,10 @@
                   "ORDER BY": "reference/sql/statements/order-by.md"
                 },
                 {
+                  "Expressions": "reference/sql/expressions.md"
+                },
+
+                {
                   "LIMIT / OFFSET": "reference/sql/statements/limit.md"
                 },
                 {
