@@ -58,6 +58,9 @@
             "Data Types": "reference/sql/data-types.md"
           },
           {
+            "Expressions": "reference/sql/expressions.md"
+          },
+          {
             "Functions": {
               "href": "reference/sql/functions.md",
               "items": [
