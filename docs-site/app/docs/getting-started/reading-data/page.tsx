@@ -9,7 +9,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Sample Datasets
 
-The public service exposes a collection of example datasets you can query immediately. Discover available EntitySets from the OData service document (`GET https://odata.opteryx.app/api/v4/`). Example public datasets include:
+The public service exposes a collection of example datasets you can query immediately. Discover available EntitySets from the OData service document (\`GET https://odata.opteryx.app/api/v4/\`). Example public datasets include:
 
  - `public.examples.planets` - small example table of planets (good for quick queries and demos).
  - `public.examples.vulnerabilities` - vulnerabilities sample dataset.
@@ -27,7 +27,7 @@ To query a dataset via OData, use the dataset path from the service document, fo
 GET https://odata.opteryx.app/api/v4/public/examples/planets?$top=10
 \`\`\`
 
-When you first explore large public datasets (for example the NYC taxi tables), prefer `$filter` and `$select` to limit returned rows and columns.
+When you first explore large public datasets (for example the NYC taxi tables), prefer \`$filter\` and \`$select\` to limit returned rows and columns.
 
 `
   return <DocRenderer source={source} />
