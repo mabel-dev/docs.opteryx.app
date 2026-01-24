@@ -8,9 +8,9 @@ Opteryx uses workspaces as the default permission boundary. Within a workspace a
 
 ## Roles and capabilities
 
-- **read** — can query and read dataset rows and metadata.
-- **write** — can modify table contents (insert/replace) and create snapshots.
-- **own** — full administrative control for the resource, including changing permissions and deleting tables.
+- **read** - can query and read dataset rows and metadata.
+- **write** - can modify table contents (insert/replace) and create snapshots.
+- **own** - full administrative control for the resource, including changing permissions and deleting tables.
 
 Roles may be granted at the workspace level (applies to all datasets in the workspace) or scoped to individual tables.
 
