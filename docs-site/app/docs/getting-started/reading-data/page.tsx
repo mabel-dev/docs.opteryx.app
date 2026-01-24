@@ -20,11 +20,12 @@ The public service exposes a collection of example datasets you can query immedi
 - `opteryx.test.*` — test datasets (astronauts, planets, tweets, etc.) used for examples and benchmarking.
 - `benchmarks.tpch.*` & `benchmarks.clickbench.hits` — benchmark datasets useful for performance testing.
 
+
 To query a dataset via OData, use the dataset path from the service document, for example:
 
-```
+\`\`\`
 GET https://odata.opteryx.app/api/v4/public/examples/planets?$top=10
-```
+\`\`\`
 
 When you first explore large public datasets (for example the NYC taxi tables), prefer `$filter` and `$select` to limit returned rows and columns.
 

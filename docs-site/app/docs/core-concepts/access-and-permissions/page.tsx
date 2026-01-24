@@ -24,13 +24,13 @@ Policies and ACLs can be managed via the Policy API (see [Policy API](/docs/refe
 
 Example (pseudo) policy fragment:
 
-```
+\`\`\`
 {
   "resource": "workspace:personal/bastian",
   "principal": "user:bastian",
   "actions": ["read","write"]
 }
-```
+\`\`\`
 
 ## Audit & Logging
 
