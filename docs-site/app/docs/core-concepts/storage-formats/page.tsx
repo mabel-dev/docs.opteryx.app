@@ -94,6 +94,16 @@ Quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, 
 
 ## Compression
 
+## Chunking and Compaction
+
+Data stored in Opteryx is internally organised into approximate 128 MB chunks. This chunking keeps large datasets efficient to read and enables parallel query processing.
+
+- Chunk size: ~128 MB per chunk (approximate; actual chunk sizes may vary slightly).
+- Compaction: small/fragmented chunks are periodically consolidated by the system in a process referred to as "compaction". Compaction improves read efficiency and reduces metadata overhead.
+- User control: compaction is performed automatically by the service; there is no user-facing API to trigger compaction manually.
+
+When designing ingestion and partitioning strategies prefer reasonably-sized files (not many tiny files) to avoid excessive fragmentation and rely on the platform's compaction to maintain optimal storage layout.
+
 ### Compression Algorithms
 
 #### Snappy

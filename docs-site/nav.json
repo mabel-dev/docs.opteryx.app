@@ -39,9 +39,6 @@
             "Authorization API": "reference/api/authorization-api.md"
           },
           {
-            "Metadata API": "reference/api/metadata-api.md"
-          },
-          {
             "OData API": "reference/api/odata-api.md"
           },
           {

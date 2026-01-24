@@ -22,9 +22,36 @@ End Point | Method | Description
 ## Authentication
 
 - Bearer token (recommended): `Authorization: Bearer {JWT}`
-- Basic authentication is supported for interactive use and is exchanged for a JWT via the external Authentication service.
+- Basic authentication (username:token) is supported for interactive tools; basic auth is exchanged for a JWT by the authentication gateway.
+
+### Authentication examples (Python)
+
+Bearer token example:
+
+```python
+import requests
+
+url = "https://odata.opteryx.app/api/v4/public/examples/planets?$top=5"
+headers = {"Authorization": "Bearer YOUR_JWT_HERE"}
+resp = requests.get(url, headers=headers)
+print(resp.status_code, resp.json())
+```
+
+Basic auth example (token as password):
+
+```python
+import requests
+
+url = "https://odata.opteryx.app/api/v4/public/examples/planets?$top=5"
+resp = requests.get(url, auth=("", "YOUR_TOKEN_HERE"))
+print(resp.status_code, resp.json())
+```
+
+Tokens (personal access tokens / API keys) are created and managed from Operyx Studio's Settings → API Tokens page. Use those tokens in `Authorization: Bearer` headers for long-lived programmatic access.
 
 ## OData v4 Query Parameters (Phase 1)
+
+Supported parameters: `$filter`, `$select`, `$orderby`, `$top`, `$skip`, `$count`.
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
@@ -34,7 +61,12 @@ End Point | Method | Description
 | `$top` | Limit number of results (default 100, max 10000) | `$top=100` |
 | `$skip` | Skip N results for pagination | `$skip=200` |
 | `$count` | Include total count of results | `$count=true` |
-| `$apply` | Aggregation and grouping operations | `$apply=groupby((region), aggregate(sum(revenue) as TotalRevenue))` |
+
+Notes:
+
+- `$expand` is not supported in the current phase.
+- Batching (`$batch`) is not supported.
+- For large result sets the service returns paged responses and includes an `@odata.nextLink` property when more results are available — follow that link to fetch subsequent pages.
 
 ### Filter Operators
 
@@ -42,9 +74,9 @@ End Point | Method | Description
 - Logical: `and`, `or`, `not`
 - String functions: `contains(field,'sub')`, `startswith(field,'pre')`, `endswith(field,'suf')` (case-sensitive)
 
-### Aggregation (`$apply`)
+### Aggregation
 
-Supports grouping and aggregations such as `sum()`, `count()`, `avg()`, `min()`, `max()` and `count(*)`.
+Aggregation functions and `$apply` support are limited in Phase 1; check the service for current support and examples.
 
 ## Examples
 
