@@ -40,4 +40,12 @@ Prices are shown in GBP.
 
 - Costing examples are indicative. The billing portal provides exact usage and charges.
 - For Enterprise agreements or GBP currency rounding/policies, contact sales or your account manager.
+ -For Enterprise agreements or GBP currency rounding/policies, contact sales or your account manager.
+ 
 ### I/O Cost
+
+Network transfer and disk access are included in billed usage. For detailed breakdowns, consult the billing portal.
+
+`
+  return <DocRenderer source={source} />
+}
