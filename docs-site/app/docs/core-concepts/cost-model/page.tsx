@@ -4,47 +4,60 @@ export default function Page(){
   const source = `
 # Cost Model
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
 ## Overview
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Opteryx uses a simple, usage-based pricing model.
+You pay only for the resources you consume, with a Free allowance included each month.
 
-### Cost Components
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-# Cost Model
-
-Prices are shown in GBP.
+All prices are shown in GBP.
 
 ## Plans
 
-- **Free** — 1 GB storage and 10 GB of query data per month included at no charge.
-- **Paid** — includes the Free allowance; additional usage is billed monthly as follows:
-  - Storage: £0.04 per GB per month
-  - Queries: £1 per 1,000 queries
-  - Queried data transfer: £10 per queried TB
+- **Free** — includes 1 GB storage, 10 GB of queried data per calendar month, and 500 queries per day, available at no charge.
+- **Paid** — includes the Free allowance (per billing account); additional usage is billed monthly as follows:
+	- Storage: £0.00005 per GB per hour (~£0.036 per GB per month)
+	- Queries: £1 per 10,000 queries
+	- Queried data: £0.005 per GB (equivalent to £5 per TB)
 - **Enterprise** — contact sales for custom pricing and volume discounts.
 
 ## Billing rules
 
-- The Free plan allowance is applied first; paid usage is only for consumption above the included limits.
+- The Free plan allowance is applied first; paid usage is only billed for consumption above the included limits.
+- The full Free allowance is available for each calendar month, regardless of when during the month an account is created.
 - Charges are calculated per calendar month and invoiced in GBP.
+- Usage is rounded up to the next whole unit (e.g., 10.1 GB is billed as 11 GB).
+- Billing accounts can have multiple projects; the Free allowance is shared across all projects under the same billing account.
+- If a billing account is not configured, usage is capped at the Free plan limits and additional usage is blocked rather than billed.
+- Queries that scan zero bytes of data still count toward query limits, as they consume compute resources even when no data is read.
+- Units: 1 GB = 1,000,000,000 bytes
+- Prices exclude VAT or other applicable taxes, which will be added where required by law.
 
 ## Examples
 
-- If you store 5 GB in a month on the Paid plan: 1 GB free + 4 GB charged → 4 × £0.04 = £0.16 for storage.
-- If you run 12,000 queries in a month: 12,000 − 10,000 free (example allowance only applies to data, not query count) → billed according to plan; consult billing portal for query allowances tied to plans.
+**Storage**
+If you store 5 GB for a full month on the Paid plan:
+- 1 GB free
+- 4 GB billable
+- Rounded up to 4 GB
+- = 4 x £0.036 ≈ £0.14 for storage
+
+**Queried data**  
+If your queries process 120 GB of data in a month:
+- 10 GB free
+- 110 GB billable
+- Rounded up to 110 GB
+- = 110 x £0.005 = £0.55
+
+**Queries**  
+If you run 600 queries a day (18,000 in a month):
+- 3,000 billable queries
+- Rounded up to 1 billing unit
+- = 1 x £1 = £1.00
 
 ## Notes
 
 - Costing examples are indicative. The billing portal provides exact usage and charges.
 - For Enterprise agreements or GBP currency rounding/policies, contact sales or your account manager.
- -For Enterprise agreements or GBP currency rounding/policies, contact sales or your account manager.
- 
-### I/O Cost
-
-Network transfer and disk access are included in billed usage. For detailed breakdowns, consult the billing portal.
 
 `
   return <DocRenderer source={source} />
