@@ -1,5 +1,5 @@
 ## Multi-stage build: build Next.js then run production server
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install dependencies (copy package files from docs-site to improve cache)
@@ -32,7 +32,7 @@ RUN npm ls --depth=0 || true
 RUN npm run build
 
 ## Runtime image
-FROM node:18-alpine AS runtime
+FROM node:20-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 
