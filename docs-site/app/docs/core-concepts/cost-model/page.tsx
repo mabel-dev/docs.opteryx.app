@@ -58,6 +58,8 @@ If you run 600 queries a day (18,000 in a month):
 ## Notes
 
 - Costing examples are indicative. The billing portal provides exact usage and charges.
+- Data maintenance (for example, compaction, or cleanup) can change the size or layout of stored data; as a result, the amount of data processed by queries may vary over time and may be different after maintenance.
+- For versioned datasets, each retained version of a dataset counts toward storage usage and is included in storage charges.
 - For Enterprise agreements or GBP currency rounding/policies, contact sales or your account manager.
 
 `
