@@ -12,11 +12,7 @@ RUN apk add --no-cache python3 build-base
 RUN echo "node: $(node -v)" && echo "npm: $(npm -v)" && ls -la
 
 # Install dependencies with error handling
-RUN if [ -f package-lock.json ]; then \
-		npm ci --loglevel verbose 2>&1 | tee /app/npm-install.log || (cat /app/npm-install.log && false); \
-	else \
-		npm install --legacy-peer-deps --loglevel verbose 2>&1 | tee /app/npm-install.log || (cat /app/npm-install.log && false); \
-	fi
+RUN npm install --loglevel verbose 2>&1 | tee /app/npm-install.log || (cat /app/npm-install.log && false)
 
 # Diagnostic: show installed packages
 RUN npm ls --depth=0 || true
