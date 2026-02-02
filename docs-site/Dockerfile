@@ -1,5 +1,5 @@
 ## Multi-stage build: build Next.js then run production server
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install deps
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 ## Runtime image
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 
