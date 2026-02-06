@@ -52,6 +52,9 @@ eggs/
 lib/
 lib64/
 parts/
+
+# Allow docs-site app lib directory
+!docs-site/app/lib/
 sdist/
 var/
 wheels/
