@@ -11,7 +11,9 @@ export default function DocsFooter() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image src="/opteryx-icon.svg" alt="" width={16} height={16} />
+          <div className="w-4 h-4">
+            <Image src="/opteryx-logo-outline.svg" alt="" width={16} height={16} className="w-full h-full" style={{ filter: 'invert(33%) sepia(65%) saturate(3) hue-rotate(162deg)' }} />
+          </div>
           <span>Try Opteryx Now</span>
         </Link>
         <div>
