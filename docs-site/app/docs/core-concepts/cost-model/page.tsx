@@ -27,7 +27,7 @@ All prices are shown in GBP, exclusive of VAT or other applicable taxes.
 - **Paid** — includes the Free allowance (per billing account); additional usage is billed monthly as follows:
 	- Storage: £0.00003 per GB per hour (~£0.02 per GB per month)
 	- Queries: £1 per 10,000 queries
-	- Queried data: £0.005 per GB (equivalent to £5 per TB)
+	- Queried data: £0.001 per GB (equivalent to £1 per TB)
 - **Enterprise** — contact sales for custom pricing and volume discounts.
 
 ## Billing terms
