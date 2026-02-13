@@ -23,10 +23,10 @@ All prices are shown in GBP, exclusive of VAT or other applicable taxes.
 
 ## Plans
 
-- **Free** — includes 5 GB storage, 5 GB of queried data per calendar month, and 500 queries per day, available at no charge.
+- **Free** — includes 5 GB storage, 5 GB of queried data per calendar month, and 100 queries per day, available at no charge.
 - **Paid** — includes the Free allowance (per billing account); additional usage is billed monthly as follows:
 	- Storage: £0.00003 per GB per hour (~£0.02 per GB per month)
-	- Queries: £1 per 10,000 queries
+	- Queries: £0.1 per 1,000 queries
 	- Queried data: £0.001 per GB (equivalent to £1 per TB)
 - **Enterprise** — contact sales for custom pricing and volume discounts.
 
