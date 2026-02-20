@@ -1,71 +1,15 @@
+import path from 'path'
+import { notFound } from 'next/navigation'
 import DocRenderer from '@/app/components/DocRenderer'
+import { getContentDocsDir } from '@/app/lib/getContentDocsDir'
+import { readMarkdownFile } from '@/app/lib/readMarkdownFile'
 
-export default function Page(){
-  const source = `
-<section class="opteryx-hero">
-	<div class="hero-inner" style="max-width:1100px;margin:0 auto;padding:0 16px;display:flex;gap:32px;align-items:center;">
-		<div class="hero-copy" style="flex:1;">
-			<h1 class="hero-title">Welcome to Opteryx Documentation</h1>
-			<p class="hero-lead">Fast, lightweight SQL analytics for your data — run queries locally or in the cloud with minimal fuss.</p>
-			<p><a class="md-button md-button--primary" href="/docs/getting-started/quick-start">Get started</a></p>
-		</div>
-		<div class="hero-art" style="flex:0 0 420px;text-align:right;">
-			<img src="/docs/assets/images/hero-illustration.svg" alt="Opteryx illustration" style="max-width:420px;width:100%;height:auto;" loading="lazy">
-		</div>
-	</div>
-</section>
+export default function Page() {
+  const source = readMarkdownFile(path.join(getContentDocsDir(), 'index.md'))
 
-<section class="featured" aria-labelledby="featured-resources" style="padding-top:28px;">
-	<div style="max-width:1100px;margin:0 auto;padding:0 16px;">
-		<h2 id="featured-resources">Featured resources</h2>
-		<p style="color:#6b7280;margin-top:4px;margin-bottom:12px;">Dive into our top picks</p>
-	</div>
-	<div class="opteryx-card-grid">
-		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-getting-started.svg" class="icon" alt="Getting started icon">
-			<h3 class="opteryx-card__title"><a href="/docs/getting-started/quick-start">Quick start</a></h3>
-			<p class="opteryx-card__desc">Run your first query in minutes and explore Opteryx capabilities.</p>
-		</article>
-		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-architecture.svg" class="icon" alt="Tutorials icon">
-			<h3 class="opteryx-card__title"><a href="/tutorials">Tutorials</a></h3>
-			<p class="opteryx-card__desc">Hands-on tutorials, including Jupyter Notebook examples and interactive guides.</p>
-		</article>
-		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-security.svg" class="icon" alt="Releases icon">
-			<h3 class="opteryx-card__title"><a href="/releases">Releases</a></h3>
-			<p class="opteryx-card__desc">Release notes and changelogs for the website, APIs, and SQL engine.</p>
-		</article>
-	</div>
-</section>
+  if (!source) {
+    return notFound()
+  }
 
-## What is Opteryx?
-
-Opteryx is a SQL query engine designed for analyzing data across various sources with a focus on performance and ease of use.
-
-## Key Features
-
-- **SQL Compatibility**: Full SQL query support for data analysis
-- **Multiple Data Sources**: Query data from various sources seamlessly
-- **High Performance**: Optimized for fast query execution
-- **Easy to Use**: Simple setup and intuitive interface
-
-## Quick Links
-
-- [Installation Guide](getting-started/installation.md) - Get started with Opteryx
-- [Quick Start Tutorial](getting-started/quick-start.md) - Learn the basics in minutes
-- [About Opteryx](about.md) - Learn more about the project
-
-## Getting Help
-
-If you need help or have questions:
-
-- Visit our [GitHub repository](https://github.com/mabel-dev/opteryx)
-- Report issues on [GitHub Issues](https://github.com/mabel-dev/opteryx/issues)
-
-## License
-
-Opteryx is open source software. Please refer to the main repository for license information.
-`
   return <DocRenderer source={source} />
 }

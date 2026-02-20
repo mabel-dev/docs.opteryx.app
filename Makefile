@@ -2,7 +2,7 @@
 
 PORT ?= 3000
 
-.PHONY: serve serve-prod build install
+.PHONY: serve serve-prod build install validate
 
 serve:
 	@echo "Starting docs-site dev server on http://localhost:$(PORT)"
@@ -17,3 +17,6 @@ build:
 
 install:
 	@cd docs-site && npm ci
+
+validate:
+	@cd docs-site && npm run validate:docs

@@ -68,7 +68,7 @@ This page summarizes the most commonly used SQL functions in Opteryx, grouped by
 
 ## Date & Time Functions
 
-For more details, see [Working with Timestamps](../adv-working-with-timestamps/).
+For more details, see [Working with Timestamps](advanced/adv-working-with-timestamps.md).
 
 !!! function "`current_date` → _data_"  
     Return the current date, in UTC. Note `current_date` does not require parenthesis.  

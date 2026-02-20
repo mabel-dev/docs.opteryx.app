@@ -7,6 +7,8 @@ type DocRendererProps = { source: string }
 marked.use({
   gfm: true,
   breaks: false,
+  mangle: false,
+  headerIds: false,
   hooks: {
     postprocess(html) {
       // Add IDs to h2 and h3 tags for TOC linking

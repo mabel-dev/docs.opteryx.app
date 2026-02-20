@@ -9,17 +9,52 @@ The `AT` clause enables time-scoped queries, allowing you to query data as it ex
 
 ## Basic Syntax
 
+### AT Clause with TIMESTAMP
+
 ```sql
 SELECT ...
   FROM table_name AT (TIMESTAMP => '<timestamp_value>')
  WHERE ...;
 ```
 
+### TIMESTAMP AS OF Clause
+
+```sql
+SELECT ...
+  FROM table_name TIMESTAMP AS OF <timestamp_expression>
+ WHERE ...;
+```
+
 ## Examples
 
-### Query Data at a Specific Time
+### Query Data at a Specific Time (AT Clause)
 ```sql
 SELECT * FROM orders AT (TIMESTAMP => '2024-01-15T10:30:00Z');
+```
+
+### Query with Timestamp Literal (TIMESTAMP AS OF)
+```sql
+SELECT * FROM $planets TIMESTAMP AS OF '2024-12-15 00:00:00';
+```
+
+### Query with Interval Offset (TIMESTAMP AS OF)
+```sql
+SELECT * FROM $planets TIMESTAMP AS OF INTERVAL '1' DAY;
+```
+
+### Query with Calculated Date Expression (TIMESTAMP AS OF)
+```sql
+SELECT * FROM $planets TIMESTAMP AS OF CURRENT_DATE - INTERVAL '7' DAY;
+```
+
+### Query with Date Truncation (TIMESTAMP AS OF)
+```sql
+SELECT * FROM $planets TIMESTAMP AS OF DATE_TRUNC('month', CURRENT_DATE);
+```
+
+### AT Clause with Named Parameter
+```sql
+SELECT * FROM $planets AT(TIMESTAMP => '2024-12-15 00:00:00');
 ```
 
 ### Compare Current vs. Historical Data

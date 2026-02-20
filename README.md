@@ -1,75 +1,62 @@
-# docs.opteryx.app
+# docs.opteryx
 
-Official documentation site for Opteryx, built with MkDocs and the Material theme.
+Official documentation site for Opteryx.
 
-## Overview
+## Stack
 
-This repository contains the documentation for Opteryx, a powerful SQL query engine.
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Markdown rendered via `marked`
 
 ## Local Development
 
-### Prerequisites
-
-- Python 3.8 or higher
-- pip
-
-### Setup
-
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. Start the development server:
-   ```bash
-   mkdocs serve
-   ```
-
-3. Open your browser and navigate to `http://127.0.0.1:8000`
-
-## Building the Site
-
-To build the static site:
+Run from repo root:
 
 ```bash
-mkdocs build
+make serve
 ```
 
-The built site will be in the `site/` directory.
-
-## Deployment
-
-The site is automatically deployed to GitHub Pages when changes are pushed to the main branch via GitHub Actions.
-
-You can also manually deploy using:
+Or directly:
 
 ```bash
-mkdocs gh-deploy
+cd docs-site
+npm ci
+npm run dev
 ```
 
-## Project Structure
+## Repository Layout
 
+- `docs-site/content/docs/` - Markdown source for non-reference docs (`/docs/*` pages).
+- `docs-site/reference/` - Markdown source for API, SQL, and Python reference docs.
+- `docs-site/nav.json` - sidebar structure and reference route metadata.
+- `docs-site/app/docs/[...slug]/page.tsx` - dynamic renderer for non-reference docs.
+- `docs-site/app/docs/reference/[...slug]/page.tsx` - dynamic renderer for reference docs.
+- `docs-site/app/lib/docsNav.ts` - shared nav + breadcrumb + reference path mapping logic.
+- `docs-site/scripts/validate-docs.mjs` - nav/content integrity checks for docs paths and markdown links.
+- `cloudbuild/` - Cloud Build deployment config.
+
+## Editing Docs
+
+1. Edit non-reference pages in `docs-site/content/docs/`.
+2. Edit reference pages in `docs-site/reference/`.
+3. Add/update `docs-site/nav.json` when navigation should change.
+
+## Build
+
+```bash
+make build
 ```
-.
-├── docs/                  # Documentation source files
-│   ├── index.md          # Home page
-│   ├── about.md          # About page
-│   └── getting-started/  # Getting started guides
-├── mkdocs.yml            # MkDocs configuration
-├── requirements.txt      # Python dependencies
-└── .github/workflows/    # GitHub Actions workflows
+
+or:
+
+```bash
+cd docs-site
+npm run build
 ```
 
-## Contributing
+## Validation
 
-To contribute to the documentation:
-
-1. Fork the repository
-2. Create a new branch for your changes
-3. Make your changes to the markdown files in `docs/`
-4. Test locally with `mkdocs serve`
-5. Submit a pull request
-
-## License
-
-See the main [Opteryx repository](https://github.com/mabel-dev/opteryx) for license information.
+```bash
+make validate
+```

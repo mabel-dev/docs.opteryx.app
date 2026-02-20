@@ -77,7 +77,7 @@ Special clauses and time-based queries:
 
 ## JOIN Operations
 
-For detailed information on joining tables, see the [Joins](../joins.md) reference page.
+For detailed information on joining tables, see the [Joins](joins.md) reference page.
 
 
 

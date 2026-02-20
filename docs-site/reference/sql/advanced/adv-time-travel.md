@@ -83,7 +83,11 @@ DAY OF WEEK  | FOR, BETWEEN    | Represents the most recent past date of the spe
 
 ## Time Travel
 
-You can query dates or date ranges using a `FOR` clause in your query. For example to view the contents of partition
+You can query dates or date ranges using a `FOR` clause in your query. Alternatively, you can use the `TIMESTAMP AS OF` clause for more flexible timestamp expressions.
+
+### Using FOR Clause
+
+For example to view the contents of partition using a `FOR` clause:
 
 ~~~sql
 SELECT *
@@ -113,6 +117,42 @@ Mars
 Jupiter
 Saturn
 Neptune
+~~~
+
+### Using TIMESTAMP AS OF Clause
+
+Alternatively, use `TIMESTAMP AS OF` for flexible timestamp expressions that support intervals, functions, and calculations:
+
+~~~sql
+SELECT *
+  FROM $planets
+   TIMESTAMP AS OF INTERVAL '1' DAY;
+~~~
+
+~~~sql
+SELECT *
+  FROM $planets
+   TIMESTAMP AS OF '2024-12-15 00:00:00';
+~~~
+
+~~~sql
+SELECT name
+  FROM $planets
+   TIMESTAMP AS OF CURRENT_DATE - INTERVAL '7' DAY;
+~~~
+
+~~~sql
+SELECT *
+  FROM $planets
+   TIMESTAMP AS OF DATE_TRUNC('month', CURRENT_DATE);
+~~~
+
+The `TIMESTAMP AS OF` syntax also works with the `AT` clause notation:
+
+~~~sql
+SELECT *
+  FROM $planets
+   AT(TIMESTAMP => '2024-12-15 00:00:00');
 ~~~
 
 ## Accumulation

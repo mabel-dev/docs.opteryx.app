@@ -13,7 +13,7 @@ There are four built-in relations for demonstration and testing.
 - `$missions` (8 columns,  4630 rows)   
 
 !!! Note
-    You can also create randomized data using [`FAKE` temporary tables](../adv-temp-tables/).
+    You can also create randomized data using [`FAKE` temporary tables](adv-temp-tables.md).
 
 Satellites and Planets datasets acquired from [this source](https://github.com/devstronomy/nasa-data-scraper/tree/f610e541a053f05e26573570604aed50b358cc43/data/json).
 
@@ -30,7 +30,7 @@ SELECT *
 
 These datasets are used extensively for regression testing Opteryx, but may also be used for testing and demonstration. They are part of the query engine and are available to be queried on all operational instances of Opteryx. Although these datasets may represent data that may change over time, these datasets are fixed in content to provide a reliable and consistent dataset for testing.
 
-Note however, that the `$planets` dataset is temporal and using the [Time Travel](../adv-time-travel/) feature of Opteryx will return different results based on the date provided.
+Note however, that the `$planets` dataset is temporal and using the [Time Travel](adv-time-travel.md) feature of Opteryx will return different results based on the date provided.
 
 !!! Note  
     Other internal datasets exist, these all have a first character of `$`. These are not intended for end-users and should not be used. Their name, purpose and structure is not guaranteed to remain consistent or intended to be useful outside the internal state of Opteryx.
