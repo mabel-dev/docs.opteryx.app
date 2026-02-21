@@ -57,8 +57,19 @@ marked.use({
 })
 
 export default function DocRenderer({ source }: DocRendererProps){
+  // Validate source is a non-empty string
+  if (!source || typeof source !== 'string' || source.trim().length === 0) {
+    return (
+      <main className="doc-container">
+        <article className="doc-renderer">
+          <p>No content available.</p>
+        </article>
+      </main>
+    )
+  }
+
   // Convert markdown/inline HTML to sanitized HTML (marked does not sanitize by default)
-  const html = String(marked.parse(source || ''))
+  const html = String(marked.parse(source))
 
   return (
     <main className="doc-container">
