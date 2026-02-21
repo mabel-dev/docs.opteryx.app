@@ -26,6 +26,7 @@ export function generateStaticParams() {
   const contentDir = getContentDocsDir()
 
   return listMarkdownSlugs(contentDir)
+    .filter((slug) => Array.isArray(slug) && slug.length > 0)
     .filter((slug) => !(slug.length === 1 && slug[0] === 'index'))
     .filter((slug) => !(slug[0] === 'reference' && slug.length > 1))
     .map((slug) => ({ slug }))
