@@ -18,7 +18,7 @@ export function getReferenceDir(): string {
   // Try each possible path
   for (const referenceDir of possiblePaths) {
     try {
-      if (fs.existsSync(referenceDir)) {
+      if (fs.existsSync(referenceDir) && fs.statSync(referenceDir).isDirectory()) {
         return referenceDir
       }
     } catch (e) {
