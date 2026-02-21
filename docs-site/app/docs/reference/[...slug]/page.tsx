@@ -13,9 +13,9 @@ type Props = {
   }
 }
 
-function normalizeSlug(slug: string[]): string[] {
-  if (slug.length === 0) {
-    return slug
+function normalizeSlug(slug: string[] | undefined): string[] {
+  if (!slug || !Array.isArray(slug) || slug.length === 0) {
+    return []
   }
 
   const normalized = [...slug]
@@ -49,7 +49,15 @@ export function generateStaticParams() {
 }
 
 export default function Page({ params }: Props) {
+  if (!params || !params.slug || !Array.isArray(params.slug)) {
+    return notFound()
+  }
+
   const normalizedSlug = normalizeSlug(params.slug)
+  if (normalizedSlug.length === 0) {
+    return notFound()
+  }
+
   const docsPath = `/docs/reference/${normalizedSlug.join('/')}`
   const mappedRelativePath = getReferenceMdPathForDocsPath(docsPath)
 
