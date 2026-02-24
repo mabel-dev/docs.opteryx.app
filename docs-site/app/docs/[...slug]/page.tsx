@@ -35,12 +35,15 @@ export function generateStaticParams() {
     .map((slug) => ({ slug }))
 }
 
-export default function Page({ params }: Props) {
-  if (!params || !params.slug || !Array.isArray(params.slug)) {
+export default async function Page({ params }: Props) {
+  // In Next.js 16, params might be a Promise
+  const resolvedParams = await Promise.resolve(params)
+  
+  if (!resolvedParams || !resolvedParams.slug || !Array.isArray(resolvedParams.slug)) {
     return notFound()
   }
 
-  const normalizedSlug = normalizeSlug(params.slug)
+  const normalizedSlug = normalizeSlug(resolvedParams.slug)
   if (normalizedSlug.length === 0) {
     return notFound()
   }
