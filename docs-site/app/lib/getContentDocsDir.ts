@@ -3,6 +3,7 @@ import path from 'path'
 
 /**
  * Finds the content/docs directory in local and container build layouts.
+ * Used during static page generation to find source markdown files.
  */
 export function getContentDocsDir(): string {
   const cwd = process.cwd()
@@ -17,14 +18,20 @@ export function getContentDocsDir(): string {
 
   for (const contentDir of possiblePaths) {
     try {
-      if (fs.existsSync(contentDir) && fs.statSync(contentDir).isDirectory()) {
+      const stat = fs.statSync(contentDir)
+      if (stat && stat.isDirectory()) {
         return contentDir
       }
     } catch {
-      // Try next candidate.
+      // Try next candidate
     }
   }
 
-  // Default fallback - will be caught if it doesn't exist when actually used
+  // Log a warning if we couldn't find content directory
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('[getContentDocsDir] Could not find content/docs directory. Tried:', possiblePaths)
+  }
+
+  // Return a default that might not exist - this is caught when actually accessed
   return path.join(cwd, 'content', 'docs')
 }

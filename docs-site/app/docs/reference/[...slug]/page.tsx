@@ -13,6 +13,9 @@ type Props = {
   }
 }
 
+// Ensure this route is statically generated with no revalidation
+export const revalidate = false
+
 function normalizeSlug(slug: string[] | undefined): string[] {
   if (!slug || !Array.isArray(slug) || slug.length === 0) {
     return []
