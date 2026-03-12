@@ -7,339 +7,296 @@ description: Concise, categorized reference for SQL functions supported by Opter
 
 The following functions are supported by Opteryx.  For details, see individual pages where available.
 
-!!! function "`ABS(value)`"  
-    Return the absolute value of `value`.
+!!! function "`ABS(num)`"  
+    Returns absolute value of input number.
 
-!!! function "`ALL(boolean_expr)`"  
-    Check if all values in the group are true.
+!!! function "`ARRAY(expr, type_name)`"  
+    Constructs an array of the specified element type.
 
-!!! function "`ANY(boolean_expr)`"  
-    Check if any value in the group is true.
+!!! function "`ARRAY_CONTAINS(arr, item)`"  
+    Test if array contains item.
 
-!!! function "`ANY_VALUE(expr)`"  
-    Return any non-null value from the group.
+!!! function "`ARRAY_CONTAINS_ALL(arr, items)`"  
+    Test if array contains all items from set.
 
-!!! function "`APPROXIMATE_MEDIAN(number)`"  
-    Calculate an approximate median of values.
+!!! function "`ARRAY_CONTAINS_ANY(arr, items)`"  
+    Test if array contains any item from set.
 
-!!! function "`ARRAY_AGG([DISTINCT] expr)`"  
-    Aggregate values into an array.
+!!! function "`ASCII(str)`"  
+    Return ASCII codepoint of first character.
 
-!!! function "`ARRAY_CONTAINS(array, value)`"  
-    Check if `array` contains `value` (returns boolean).
+!!! function "`BASE64_DECODE(blob)`"  
+    Base64 decode.
 
-!!! function "`ARRAY_CONTAINS_ALL(array, values)`"  
-    Check if `array` contains all values from the `values` array.
+!!! function "`BASE64_ENCODE(blob)`"  
+    Base64 encode.
 
-!!! function "`ARRAY_CONTAINS_ANY(array, values)`"  
-    Check if `array` contains any value from the `values` array.
+!!! function "`BASE85_DECODE(blob)`"  
+    Base85 decode.
 
-!!! function "`ASCII(string)`"  
-    Return the ASCII code of the first character in `string`.
+!!! function "`BASE85_ENCODE(blob)`"  
+    Base85 encode.
 
-!!! function "`AVG([DISTINCT] number)`"  
-    Calculate the average of values. Use AVG(DISTINCT number) for distinct values.
+!!! function "`CASE(arg0, [args...])`"  
+    Returns a value based on conditional expressions.
 
-!!! function "`BASE64_DECODE(value)`"  
-    Decode `value` from Base64.
+!!! function "`CEILING(num, [scale...])`"  
+    Returns smallest integer greater than or equal to input.
 
-!!! function "`BASE64_ENCODE(value)`"  
-    Encode `value` as Base64.
+!!! function "`CHAR(val)`"  
+    Convert codepoint to character.
 
-!!! function "`CEILING(value)`"  
-    Return the smallest integer value not less than `value`.
+!!! function "`COALESCE(arg0, [args...])`"  
+    Returns the first non-null value from the list of arguments.
 
-!!! function "`CEILING(value, scale)`"  
-    Rounds up a numeric value to the specified scale
+!!! function "`CONCAT(str1, [more...])`"  
+    Returns concatenation of all input strings.
 
-!!! function "`CHAR(value)`"  
-    Return the character with the specified ASCII/Unicode code.
-
-!!! function "`COALESCE(value1, value2, ...)`"  
-    Return the first non-null value from the list.
-
-!!! function "`CONCAT(string1, string2, ...)`"  
-    Concatenate multiple strings together.
-
-!!! function "`CONCAT_WS(separator, string1, string2, ...)`"  
-    Concatenate multiple strings with a separator between them.
+!!! function "`CONCAT_WS(sep, str1, [more...])`"  
+    Concatenate with separator.
 
 !!! function "`CONNECTION_ID()`"  
-    Return the connection ID.
+    Current connection identifier.
 
-!!! function "`COSINE_SIMILARITY(vector1, vector2)`"  
-    Calculate the cosine similarity between two vectors.
+!!! function "`COSINE_DISTANCE(arr, vec)`"  
+    Cosine distance over numeric vectors or lexical text inputs.
 
-!!! function "`COUNT([DISTINCT] expr)`"  
-    Count the number of non-null values. Use COUNT(DISTINCT expr) for distinct values.
+!!! function "`COSINE_DISTANCE(arr, vec)`"  
+    Cosine distance over numeric vectors or lexical text inputs.
 
-!!! function "`COUNT(DISTINCT expr)`"  
-    Count the number of distinct values.
+!!! function "`COSINE_SIMILARITY(arr, vec)`"  
+    Cosine similarity over numeric vectors or lexical text inputs.
+
+!!! function "`COSINE_SIMILARITY(arr, vec)`"  
+    Cosine similarity over numeric vectors or lexical text inputs.
 
 !!! function "`CURRENT_DATE()`"  
-    Return the current date.
+    Current date (SQL-92).
 
 !!! function "`CURRENT_TIME()`"  
-    Return the current time.
+    Current time (SQL-92).
 
 !!! function "`CURRENT_TIMESTAMP()`"  
-    Return the current timestamp (alias for NOW).
+    Current timestamp (SQL-92).
 
 !!! function "`DATABASE()`"  
-    Return the current database/schema.
+    Current database name.
 
-!!! function "`DATEDIFF(unit, start_date, end_date)`"  
-    Calculate the difference between two dates in specified units.
+!!! function "`DATEDIFF(part, date, end)`"  
+    Difference between two dates in the specified unit.
 
 !!! function "`DATEPART(part, date)`"  
-    Extract a part of a date (YEAR, MONTH, DAY, HOUR, MINUTE, SECOND, WEEK, QUARTER).
+    Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.
 
-!!! function "`DATE_FORMAT(date, format)`"  
-    Format a date or timestamp according to a format string.
+!!! function "`DATETRUNC(part, date)`"  
+    Truncate date/timestamp to specified granularity. Alias for `DATE_TRUNC`.
 
-!!! function "`DATE_TRUNC(unit, timestamp)`"  
-    Truncate `timestamp` to the precision specified by `unit` (e.g. 'hour', 'day').
+!!! function "`DATE_DIFF(part, date, end)`"  
+    Difference between two dates in the specified unit. Alias for `DATEDIFF`.
 
-!!! function "`DAY(date)`"  
-    Extract the day of month (1-31) from a date or timestamp.
+!!! function "`DATE_FORMAT(date, pattern)`"  
+    Format date/timestamp as string.
+
+!!! function "`DATE_TRUNC(part, date)`"  
+    Truncate date/timestamp to specified granularity.
 
 !!! function "`E()`"  
-    Return Euler's number (e).
+    Euler's number e.
 
 !!! function "`EMBED(text)`"  
-    Convert text into a numeric embedding vector using the configured embedding provider.
+    Embeds text using the configured engine embedding provider.
 
-!!! function "`FLOOR(value)`"  
-    Return the largest integer value not greater than `value`.
+!!! function "`FLOOR(num, [scale...])`"  
+    Returns largest integer less than or equal to input.
 
-!!! function "`FROM_UNIXTIME(unix_timestamp)`"  
-    Convert Unix timestamp to a datetime.
+!!! function "`FROM_UNIXTIME(ts)`"  
+    Convert Unix timestamp to TIMESTAMP.
 
-!!! function "`GET(json_or_array, key)`"  
-    Get value from JSON object or array by key/index.
+!!! function "`GET_STRING(struct, key)`"  
+    Extract string field from struct/map.
 
-!!! function "`GREATEST(value1, value2, ...)`"  
-    Return the greatest (maximum) value from the list.
+!!! function "`GREATEST(arr)`"  
+    Returns the maximum element from an array column.
 
-!!! function "`HASH(value)`"  
-    Return a hash of `value`.
+!!! function "`HASH(val)`"  
+    Generic hash.
 
-!!! function "`HEX_DECODE(value)`"  
-    Decode `value` from hexadecimal.
+!!! function "`HEX_DECODE(blob)`"  
+    Hex decode.
 
-!!! function "`HEX_ENCODE(value)`"  
-    Encode `value` as hexadecimal.
+!!! function "`HEX_ENCODE(blob)`"  
+    Hex encode.
 
-!!! function "`HISTOGRAM(number)`"  
-    Generate a histogram distribution from values.
-
-!!! function "`HOUR(timestamp)`"  
-    Extract the hour (0-23) from a timestamp.
-
-!!! function "`HUMANIZE(number)`"  
-    Convert number to a human-readable format.
+!!! function "`HUMANIZE(val)`"  
+    Format number in human-readable form.
 
 !!! function "`IFNOTNULL(value, result)`"  
-    Return `result` if `value` is not null, otherwise null.
+    Returns second argument if first argument is not null, otherwise null.
 
-!!! function "`IFNULL(value, replacement)`"  
-    Return `value` if not null, otherwise return `replacement`.
+!!! function "`IFNULL(value, default)`"  
+    Returns first argument if not null, otherwise returns second argument.
 
 !!! function "`IIF(condition, true_value, false_value)`"  
-    Return `true_value` if `condition` is true, otherwise return `false_value`.
+    Returns second argument if condition is true, otherwise third argument.
 
-!!! function "`INITCAP(string)`"  
-    Convert string to initial capital (first letter capitalized, rest lowercase).
+!!! function "`INITCAP(str)`"  
+    Capitalise first letter of each word.
 
-!!! function "`JSONB_OBJECT_KEYS(json_object)`"  
-    Return an array of all keys in a JSON object.
+!!! function "`JSONB_OBJECT_KEYS(json)`"  
+    Extract keys from JSON object.
 
-!!! function "`LEAST(value1, value2, ...)`"  
-    Return the least (minimum) value from the list.
+!!! function "`LEAST(arr)`"  
+    Returns the minimum element from an array column.
 
-!!! function "`LEFT(string, length)`"  
-    Return the leftmost `length` characters from `string`.
+!!! function "`LEFT(str, n)`"  
+    Return leftmost N characters.
 
-!!! function "`LENGTH(string)`"  
-    Return the length of the string in characters.
+!!! function "`LENGTH(str)`"  
+    Returns the number of characters in the input string.
 
-!!! function "`LEVENSHTEIN(string1, string2)`"  
-    Return the Levenshtein distance (edit distance) between two strings.
+!!! function "`LEVENSHTEIN(a, b)`"  
+    Levenshtein edit distance between two strings.
 
-!!! function "`LN(value)`"  
-    Return the natural logarithm of `value`.
+!!! function "`LN(num)`"  
+    Natural logarithm.
 
-!!! function "`LOG(value, base)`"  
-    Return the logarithm of `value` to the specified `base`.
+!!! function "`LOG(num, base)`"  
+    Logarithm with arbitrary base.
 
-!!! function "`LOG10(value)`"  
-    Return the base-10 logarithm of `value`.
+!!! function "`LOG10(num)`"  
+    Base-10 logarithm.
 
-!!! function "`LOG2(value)`"  
-    Return the base-2 logarithm of `value`.
+!!! function "`LOG2(num)`"  
+    Base-2 logarithm.
 
-!!! function "`LOWER(string)`"  
-    Convert string to lowercase.
+!!! function "`LOWER(str)`"  
+    Returns input string with all characters in lowercase.
 
-!!! function "`LPAD(string, length, [pad_string])`"  
-    Pad the left side of `string` to `length` using `pad_string` (default space).
+!!! function "`LPAD(str, width, [fill])`"  
+    Left-pad string to width.
 
-!!! function "`LTRIM(string)`"  
-    Remove leading whitespace from `string`.
+!!! function "`LTRIM(str, [chars])`"  
+    Trim leading characters.
 
-!!! function "`MAX(expr)`"  
-    Return the maximum value.
+!!! function "`MD5(val)`"  
+    MD5 hash.
 
-!!! function "`MD5(value)`"  
-    Return the MD5 hash of `value`.
+!!! function "`NORMAL(n)`"  
+    Generate normally-distributed random numbers.
 
-!!! function "`MIN(expr)`"  
-    Return the minimum value.
+!!! function "`NULLIF(value, compare)`"  
+    Returns null if arguments are equal, otherwise returns first argument.
 
-!!! function "`MINUTE(timestamp)`"  
-    Extract the minute (0-59) from a timestamp.
-
-!!! function "`MONTH(date)`"  
-    Extract the month (1-12) from a date or timestamp.
-
-!!! function "`NORMAL()`"  
-    Generate a random value from a normal distribution.
-
-!!! function "`NOW()`"  
-    Return the current timestamp.
-
-!!! function "`NULLIF(value1, value2)`"  
-    Return null if `value1` equals `value2`, otherwise return `value1`.
+!!! function "`PASSTHRU(value)`"  
+    Returns the input value unchanged. Used for testing and compatibility.
 
 !!! function "`PHI()`"  
-    Return the golden ratio (phi).
+    Golden ratio φ.
 
 !!! function "`PI()`"  
-    Return the value of pi.
+    Mathematical constant π.
 
-!!! function "`POSITION(substring IN string)`"  
-    Return the position of `substring` in `string` (1-based, 0 if not found).
+!!! function "`POSITION(needle, haystack)`"  
+    Find position of substring.
 
-!!! function "`POWER(base, exponent)`"  
-    Return `base` raised to the power of `exponent`.
+!!! function "`POWER(num, exp)`"  
+    Raise base to exponent (SQL-92).
 
-!!! function "`PRODUCT(number)`"  
-    Calculate the product of values.
+!!! function "`RANDOM(n)`"  
+    Generate random numbers.
 
-!!! function "`QUARTER(date)`"  
-    Extract the quarter (1-4) from a date or timestamp.
+!!! function "`RANDOM_STRING(n)`"  
+    Generate random strings.
 
-!!! function "`RAND()`"  
-    Generate a random double between 0 and 1 (alias for RANDOM).
+!!! function "`REGEXP_REPLACE(str, pattern, replacement)`"  
+    Replace regex matches.
 
-!!! function "`RANDOM()`"  
-    Generate a random double between 0 and 1.
+!!! function "`REPLACE(str, search, replacement)`"  
+    Replace occurrences of substring.
 
-!!! function "`RANDOM_STRING(length)`"  
-    Generate a random string of specified length.
+!!! function "`REVERSE(str)`"  
+    Reverse a string.
 
-!!! function "`REGEXP_REPLACE(string, pattern, replacement)`"  
-    Replace matches of regex `pattern` with `replacement` in `string`.
+!!! function "`RIGHT(str, n)`"  
+    Return rightmost N characters.
 
-!!! function "`REPLACE(string, search, replacement)`"  
-    Replace all occurrences of `search` with `replacement` in `string`.
+!!! function "`ROUND(num, [precision...])`"  
+    Rounds input number to nearest integer or specified decimal places.
 
-!!! function "`REVERSE(string)`"  
-    Reverse the characters in `string`.
+!!! function "`RPAD(str, width, [fill])`"  
+    Right-pad string to width.
 
-!!! function "`RIGHT(string, length)`"  
-    Return the rightmost `length` characters from `string`.
+!!! function "`RTRIM(str, [chars])`"  
+    Trim trailing characters.
 
-!!! function "`ROUND(value, [scale])`"  
-    Round `value` to `scale` decimal places. `scale` is optional and defaults to 0.
+!!! function "`SHA1(val)`"  
+    SHA-1 hash.
 
-!!! function "`RPAD(string, length, [pad_string])`"  
-    Pad the right side of `string` to `length` using `pad_string` (default space).
+!!! function "`SHA224(val)`"  
+    SHA-224 hash.
 
-!!! function "`RTRIM(string)`"  
-    Remove trailing whitespace from `string`.
+!!! function "`SHA256(val)`"  
+    SHA-256 hash.
 
-!!! function "`SEARCH(text, pattern)`"  
-    Search for a pattern in text (boolean result).
+!!! function "`SHA384(val)`"  
+    SHA-384 hash.
 
-!!! function "`SECOND(timestamp)`"  
-    Extract the second (0-59) from a timestamp.
+!!! function "`SHA512(val)`"  
+    SHA-512 hash.
 
-!!! function "`SHA1(value)`"  
-    Return the SHA1 hash of `value`.
+!!! function "`SIGN(num)`"  
+    Sign of number (-1, 0, 1).
 
-!!! function "`SHA256(value)`"  
-    Return the SHA256 hash of `value`.
+!!! function "`SORT(arr)`"  
+    Returns a sorted version of an array column.
 
-!!! function "`SHA512(value)`"  
-    Return the SHA512 hash of `value`.
+!!! function "`SOUNDEX(str)`"  
+    Return Soundex phonetic code.
 
-!!! function "`SIGN(value)`"  
-    Return the sign of `value` (-1, 0, or 1).
+!!! function "`SPLIT(str, [delimiter], [limit])`"  
+    Split string into array.
 
-!!! function "`SORT(array)`"  
-    Sort the elements in an array.
+!!! function "`SQRT(num)`"  
+    Returns square root of input number.
 
-!!! function "`SOUNDEX(string)`"  
-    Return the Soundex code of `string` for phonetic comparison.
+!!! function "`SUBSTRING(str, start)`"  
+    Returns substring starting at position with optional length.
 
-!!! function "`SPLIT(string, delimiter)`"  
-    Split `string` by `delimiter` and return an array of substrings.
+!!! function "`TIMEDIFF(time1, time2)`"  
+    Difference between two times.
 
-!!! function "`SQRT(value)`"  
-    Return the square root of `value`.
+!!! function "`TIME_BUCKET(magnitude, units, date)`"  
+    Bucket date into fixed-width intervals.
 
-!!! function "`STDDEV(number)`"  
-    Calculate the standard deviation of values.
+!!! function "`TIME_DIFF(time1, time2)`"  
+    Difference between two times. Alias for `TIMEDIFF`.
 
-!!! function "`SUBSTRING(string, start, [length])`"  
-    Extract a substring from `string` starting at `start` position for `length` characters.
+!!! function "`TITLE(str)`"  
+    Convert string to title case.
 
-!!! function "`SUM([DISTINCT] number)`"  
-    Calculate the sum of values. Use SUM(DISTINCT number) for distinct values.
+!!! function "`TITLECASE(str)`"  
+    Convert string to title case. Alias for `TITLE`.
 
-!!! function "`TIMEDIFF(start_time, end_time)`"  
-    Calculate the time difference between two timestamps.
+!!! function "`TO_UNIXTIME(date)`"  
+    Convert TIMESTAMP to Unix epoch seconds. Alias for `UNIXTIME`.
 
-!!! function "`TIME_BUCKET(interval, timestamp)`"  
-    Bucket a timestamp into time intervals.
+!!! function "`TRIM(str, [chars])`"  
+    Trim leading and trailing characters.
 
-!!! function "`TITLE(string)`"  
-    Convert string to title case (first letter of each word capitalized).
+!!! function "`TRUNCATE(num, [scale...])`"  
+    Truncate towards zero.
 
-!!! function "`TODAY()`"  
-    Return the current date (alias for CURRENT_DATE).
+!!! function "`TRY_ARRAY(expr, type_name)`"  
+    Like ARRAY but returns null on type conversion failure.
 
-!!! function "`TRIM(string)`"  
-    Remove leading and trailing whitespace from `string`.
+!!! function "`UNIXTIME(date)`"  
+    Convert TIMESTAMP to Unix epoch seconds.
 
-!!! function "`TRUNC(value)`"  
-    Truncate `value` to an integer (remove decimal part).
-
-!!! function "`UNIXTIME([timestamp])`"  
-    Convert a timestamp to Unix timestamp, or return current Unix timestamp if no argument.
-
-!!! function "`UPPER(string)`"  
-    Convert string to uppercase.
+!!! function "`UPPER(str)`"  
+    Returns input string with all characters in uppercase.
 
 !!! function "`USER()`"  
-    Return the current user.
-
-!!! function "`UTC_TIMESTAMP()`"  
-    Return the current UTC timestamp.
-
-!!! function "`VARIANCE(number)`"  
-    Calculate the variance of values.
+    Current user name.
 
 !!! function "`VERSION()`"  
-    Return the version of Opteryx.
-
-!!! function "`WEEK(date)`"  
-    Extract the ISO week number (1-53) from a date or timestamp.
-
-!!! function "`YEAR(date)`"  
-    Extract the year from a date or timestamp.
-
-!!! function "`YESTERDAY()`"  
-    Return yesterday's date.
-
+    Database version string.
