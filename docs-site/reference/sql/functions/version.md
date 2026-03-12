@@ -7,4 +7,14 @@ description: Database version string.
 
 Database version string.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+VERSION()
+```
+
+## Returns
+
+Returns the computed result as `varchar`.

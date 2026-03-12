@@ -1,10 +1,24 @@
 ---
 title: ASCII — Opteryx Function
-description: Return ASCII codepoint of first character.
+description: Computes ascii codepoint of first character.
 ---
 
 # ASCII
 
-Return ASCII codepoint of first character.
+Computes ascii codepoint of first character.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+ASCII(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `integer`.

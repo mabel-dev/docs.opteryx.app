@@ -7,4 +7,14 @@ description: Mathematical constant π.
 
 Mathematical constant π.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+PI()
+```
+
+## Returns
+
+Returns the computed result as `double`.

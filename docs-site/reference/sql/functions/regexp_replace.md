@@ -7,4 +7,20 @@ description: Replace regex matches.
 
 Replace regex matches.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+REGEXP_REPLACE(str, pattern, replacement)
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **pattern**: Regular expression pattern to match in the input string.
+- **replacement**: Replacement text used for matched content.
+
+## Returns
+
+Returns the computed result as `blob`.

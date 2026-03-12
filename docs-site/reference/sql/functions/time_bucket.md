@@ -7,4 +7,20 @@ description: Bucket date into fixed-width intervals.
 
 Bucket date into fixed-width intervals.
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+TIME_BUCKET(magnitude, units, date)
+```
+
+## Arguments
+
+- **magnitude**: Bucket width for each interval.
+- **units**: Unit for the bucket width, such as `minute`, `hour`, or `day`. Must be a constant expression.
+- **date**: Date, time, or timestamp value to evaluate.
+
+## Returns
+
+Returns the computed result as `timestamp`.

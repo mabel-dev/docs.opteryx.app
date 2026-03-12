@@ -7,4 +7,18 @@ description: Sign of number (-1, 0, 1).
 
 Sign of number (-1, 0, 1).
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+SIGN(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns the computed result as `integer`.

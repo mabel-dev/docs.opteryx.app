@@ -7,4 +7,14 @@ description: Euler's number e.
 
 Euler's number e.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+E()
+```
+
+## Returns
+
+Returns the computed result as `double`.

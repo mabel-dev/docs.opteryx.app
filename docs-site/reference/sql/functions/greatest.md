@@ -1,10 +1,24 @@
 ---
 title: GREATEST — Opteryx Function
-description: Returns the maximum element from an array column.
+description: Determines the maximum element in an array column.
 ---
 
 # GREATEST
 
-Returns the maximum element from an array column.
+Determines the maximum element in an array column.
 
-<!-- more details to be added -->
+**Category:** Array Functions
+
+## Syntax
+
+```
+GREATEST(arr)
+```
+
+## Arguments
+
+- **arr**: Input array or vector value.
+
+## Returns
+
+Returns a single element from `arr`, preserving the array's element type.

@@ -1,10 +1,25 @@
 ---
 title: LEFT — Opteryx Function
-description: Return leftmost N characters.
+description: Computes leftmost n characters.
 ---
 
 # LEFT
 
-Return leftmost N characters.
+Computes leftmost n characters.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+LEFT(str, n)
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **n**: Integer control value used by the function.
+
+## Returns
+
+Returns the computed result as `varchar`.

@@ -7,4 +7,18 @@ description: Embeds text using the configured engine embedding provider.
 
 Embeds text using the configured engine embedding provider.
 
-<!-- more details to be added -->
+**Category:** Vector / Embedding Functions
+
+## Syntax
+
+```
+EMBED(text)
+```
+
+## Arguments
+
+- **text**: Input text to convert into an embedding vector.
+
+## Returns
+
+Returns an embedding vector represented as an array of doubles.

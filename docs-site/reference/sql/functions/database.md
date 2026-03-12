@@ -7,4 +7,14 @@ description: Current database name.
 
 Current database name.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+DATABASE()
+```
+
+## Returns
+
+Returns the computed result as `varchar`.

@@ -7,4 +7,18 @@ description: Generate normally-distributed random numbers.
 
 Generate normally-distributed random numbers.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+NORMAL(n)
+```
+
+## Arguments
+
+- **n**: Number of random values to generate.
+
+## Returns
+
+Returns the computed result as `double`.

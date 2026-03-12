@@ -1,10 +1,24 @@
 ---
 title: SORT — Opteryx Function
-description: Returns a sorted version of an array column.
+description: Sorts an array column.
 ---
 
 # SORT
 
-Returns a sorted version of an array column.
+Sorts an array column.
 
-<!-- more details to be added -->
+**Category:** Array Functions
+
+## Syntax
+
+```
+SORT(arr)
+```
+
+## Arguments
+
+- **arr**: Input array or vector value.
+
+## Returns
+
+Returns a sorted array while preserving the input array type.

@@ -1,10 +1,25 @@
 ---
 title: RIGHT — Opteryx Function
-description: Return rightmost N characters.
+description: Computes rightmost n characters.
 ---
 
 # RIGHT
 
-Return rightmost N characters.
+Computes rightmost n characters.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+RIGHT(str, n)
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **n**: Integer control value used by the function.
+
+## Returns
+
+Returns the computed result as `varchar`.

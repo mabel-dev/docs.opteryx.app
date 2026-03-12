@@ -7,4 +7,18 @@ description: Generate random strings.
 
 Generate random strings.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+RANDOM_STRING(n)
+```
+
+## Arguments
+
+- **n**: Length hint or row count used to generate random strings.
+
+## Returns
+
+Returns the computed result as `blob`.

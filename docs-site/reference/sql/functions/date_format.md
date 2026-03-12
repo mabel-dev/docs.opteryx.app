@@ -7,4 +7,19 @@ description: Format date/timestamp as string.
 
 Format date/timestamp as string.
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+DATE_FORMAT(date, pattern)
+```
+
+## Arguments
+
+- **date**: Date, time, or timestamp value to evaluate.
+- **pattern**: Format string used to render the temporal value as text. Must be a constant expression.
+
+## Returns
+
+Returns the computed result as `varchar`.

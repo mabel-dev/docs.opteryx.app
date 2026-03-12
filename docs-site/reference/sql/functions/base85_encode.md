@@ -7,4 +7,18 @@ description: Base85 encode.
 
 Base85 encode.
 
-<!-- more details to be added -->
+**Category:** Hash & Encoding Functions
+
+## Syntax
+
+```
+BASE85_ENCODE(blob)
+```
+
+## Arguments
+
+- **blob**: Binary or text value to encode, decode, or transform.
+
+## Returns
+
+Returns the computed result as `blob`.

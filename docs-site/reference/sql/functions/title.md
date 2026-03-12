@@ -7,4 +7,18 @@ description: Convert string to title case.
 
 Convert string to title case.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+TITLE(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `varchar`.

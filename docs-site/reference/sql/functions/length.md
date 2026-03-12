@@ -1,10 +1,24 @@
 ---
 title: LENGTH — Opteryx Function
-description: Returns the number of characters in the input string.
+description: Calculates the number of characters in the input string.
 ---
 
 # LENGTH
 
-Returns the number of characters in the input string.
+Calculates the number of characters in the input string.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+LENGTH(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `integer`.

@@ -1,10 +1,25 @@
 ---
 title: CEILING — Opteryx Function
-description: Returns smallest integer greater than or equal to input.
+description: Calculates the smallest integer greater than or equal to the input.
 ---
 
 # CEILING
 
-Returns smallest integer greater than or equal to input.
+Calculates the smallest integer greater than or equal to the input.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+CEILING(num, [scale...])
+```
+
+## Arguments
+
+- **num**: Numeric value to round upward.
+- **scale**: Decimal scale to apply before taking the ceiling. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
+
+## Returns
+
+Returns the computed result as `double`.

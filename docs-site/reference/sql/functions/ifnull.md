@@ -1,10 +1,25 @@
 ---
 title: IFNULL — Opteryx Function
-description: Returns first argument if not null, otherwise returns second argument.
+description: Selects the first argument when it is not null; otherwise uses the second argument.
 ---
 
 # IFNULL
 
-Returns first argument if not null, otherwise returns second argument.
+Selects the first argument when it is not null; otherwise uses the second argument.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+IFNULL(value, default)
+```
+
+## Arguments
+
+- **value**: Primary input value.
+- **default**: Fallback value returned when the primary value is null.
+
+## Returns
+
+Returns either the primary value or the fallback value using a type compatible with both arguments.

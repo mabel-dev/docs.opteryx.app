@@ -7,4 +7,14 @@ description: Golden ratio φ.
 
 Golden ratio φ.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+PHI()
+```
+
+## Returns
+
+Returns the computed result as `double`.

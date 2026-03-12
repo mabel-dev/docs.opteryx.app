@@ -7,4 +7,19 @@ description: Levenshtein edit distance between two strings.
 
 Levenshtein edit distance between two strings.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+LEVENSHTEIN(a, b)
+```
+
+## Arguments
+
+- **a**: First input value.
+- **b**: Second input value.
+
+## Returns
+
+Returns the computed result as `integer`.

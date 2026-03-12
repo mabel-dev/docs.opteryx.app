@@ -7,4 +7,19 @@ description: Test if array contains all items from set.
 
 Test if array contains all items from set.
 
-<!-- more details to be added -->
+**Category:** Array Functions
+
+## Syntax
+
+```
+ARRAY_CONTAINS_ALL(arr, items)
+```
+
+## Arguments
+
+- **arr**: Input array or vector value.
+- **items**: Collection of values to compare against the array.
+
+## Returns
+
+Returns `true` or `false` based on whether the function's condition is satisfied.

@@ -7,4 +7,18 @@ description: Base-10 logarithm.
 
 Base-10 logarithm.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+LOG10(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns the computed result as `double`.

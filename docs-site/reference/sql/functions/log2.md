@@ -7,4 +7,18 @@ description: Base-2 logarithm.
 
 Base-2 logarithm.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+LOG2(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns the computed result as `double`.

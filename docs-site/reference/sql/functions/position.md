@@ -7,4 +7,19 @@ description: Find position of substring.
 
 Find position of substring.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+POSITION(needle, haystack)
+```
+
+## Arguments
+
+- **needle**: Substring to search for.
+- **haystack**: String to search within.
+
+## Returns
+
+Returns the computed result as `integer`.

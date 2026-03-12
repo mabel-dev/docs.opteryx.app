@@ -7,4 +7,20 @@ description: Replace occurrences of substring.
 
 Replace occurrences of substring.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+REPLACE(str, search, replacement)
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **search**: Text or pattern to replace in the input.
+- **replacement**: Replacement text used for matched content.
+
+## Returns
+
+Returns the computed result as `varchar`.

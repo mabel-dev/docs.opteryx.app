@@ -7,4 +7,18 @@ description: Extract keys from JSON object.
 
 Extract keys from JSON object.
 
-<!-- more details to be added -->
+**Category:** Struct/JSON Functions
+
+## Syntax
+
+```
+JSONB_OBJECT_KEYS(json)
+```
+
+## Arguments
+
+- **json**: JSON object or document value to inspect.
+
+## Returns
+
+Returns the computed result as `array`.

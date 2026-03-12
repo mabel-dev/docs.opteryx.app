@@ -7,4 +7,18 @@ description: Convert codepoint to character.
 
 Convert codepoint to character.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+CHAR(val)
+```
+
+## Arguments
+
+- **val**: Input value.
+
+## Returns
+
+Returns the computed result as `varchar`.

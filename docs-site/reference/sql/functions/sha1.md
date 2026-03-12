@@ -7,4 +7,18 @@ description: SHA-1 hash.
 
 SHA-1 hash.
 
-<!-- more details to be added -->
+**Category:** Hash & Encoding Functions
+
+## Syntax
+
+```
+SHA1(val)
+```
+
+## Arguments
+
+- **val**: Input value.
+
+## Returns
+
+Returns the computed result as `blob`.

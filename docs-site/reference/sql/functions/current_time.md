@@ -7,4 +7,14 @@ description: Current time (SQL-92).
 
 Current time (SQL-92).
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+CURRENT_TIME()
+```
+
+## Returns
+
+Returns the computed result as `time`.

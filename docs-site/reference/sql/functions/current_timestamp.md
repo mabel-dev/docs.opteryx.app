@@ -7,4 +7,14 @@ description: Current timestamp (SQL-92).
 
 Current timestamp (SQL-92).
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+CURRENT_TIMESTAMP()
+```
+
+## Returns
+
+Returns the computed result as `timestamp`.

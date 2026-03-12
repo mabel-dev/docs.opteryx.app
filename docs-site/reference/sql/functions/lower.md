@@ -1,10 +1,24 @@
 ---
 title: LOWER — Opteryx Function
-description: Returns input string with all characters in lowercase.
+description: Transforms the input string to lowercase.
 ---
 
 # LOWER
 
-Returns input string with all characters in lowercase.
+Transforms the input string to lowercase.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+LOWER(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `varchar`.

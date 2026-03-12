@@ -7,4 +7,18 @@ description: Natural logarithm.
 
 Natural logarithm.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+LN(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns the computed result as `double`.

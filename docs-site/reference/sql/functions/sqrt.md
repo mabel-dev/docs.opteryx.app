@@ -1,10 +1,24 @@
 ---
 title: SQRT — Opteryx Function
-description: Returns square root of input number.
+description: Calculates the square root of the input number.
 ---
 
 # SQRT
 
-Returns square root of input number.
+Calculates the square root of the input number.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+SQRT(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns the computed result as `double`.

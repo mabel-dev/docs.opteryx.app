@@ -7,4 +7,18 @@ description: Generic hash.
 
 Generic hash.
 
-<!-- more details to be added -->
+**Category:** Hash & Encoding Functions
+
+## Syntax
+
+```
+HASH(val)
+```
+
+## Arguments
+
+- **val**: Input value.
+
+## Returns
+
+Returns the computed result as `blob`.

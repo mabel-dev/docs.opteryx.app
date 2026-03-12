@@ -1,10 +1,24 @@
 ---
 title: LEAST — Opteryx Function
-description: Returns the minimum element from an array column.
+description: Determines the minimum element in an array column.
 ---
 
 # LEAST
 
-Returns the minimum element from an array column.
+Determines the minimum element in an array column.
 
-<!-- more details to be added -->
+**Category:** Array Functions
+
+## Syntax
+
+```
+LEAST(arr)
+```
+
+## Arguments
+
+- **arr**: Input array or vector value.
+
+## Returns
+
+Returns a single element from `arr`, preserving the array's element type.

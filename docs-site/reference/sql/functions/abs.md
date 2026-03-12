@@ -1,10 +1,24 @@
 ---
 title: ABS — Opteryx Function
-description: Returns absolute value of input number.
+description: Calculates the absolute value of the input number.
 ---
 
 # ABS
 
-Returns absolute value of input number.
+Calculates the absolute value of the input number.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+ABS(num)
+```
+
+## Arguments
+
+- **num**: Numeric input value.
+
+## Returns
+
+Returns a value with the same type as `num`.

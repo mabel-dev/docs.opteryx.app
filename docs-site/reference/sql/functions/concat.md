@@ -1,10 +1,25 @@
 ---
 title: CONCAT — Opteryx Function
-description: Returns concatenation of all input strings.
+description: Concatenates all input strings.
 ---
 
 # CONCAT
 
-Returns concatenation of all input strings.
+Concatenates all input strings.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+CONCAT(str1, [more...])
+```
+
+## Arguments
+
+- **str1**: First input string value.
+- **more**: Additional input values. Optional. Can be repeated.
+
+## Returns
+
+Returns the computed result as `varchar`.

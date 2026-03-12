@@ -7,4 +7,18 @@ description: Base64 decode.
 
 Base64 decode.
 
-<!-- more details to be added -->
+**Category:** Hash & Encoding Functions
+
+## Syntax
+
+```
+BASE64_DECODE(blob)
+```
+
+## Arguments
+
+- **blob**: Binary or text value to encode, decode, or transform.
+
+## Returns
+
+Returns the computed result as `blob`.

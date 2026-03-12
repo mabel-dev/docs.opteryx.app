@@ -7,4 +7,18 @@ description: Convert Unix timestamp to TIMESTAMP.
 
 Convert Unix timestamp to TIMESTAMP.
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+FROM_UNIXTIME(ts)
+```
+
+## Arguments
+
+- **ts**: Unix timestamp expressed in seconds.
+
+## Returns
+
+Returns the computed result as `timestamp`.

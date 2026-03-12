@@ -1,10 +1,25 @@
 ---
 title: SUBSTRING — Opteryx Function
-description: Returns substring starting at position with optional length.
+description: Extracts a substring starting at the given position, with an optional length.
 ---
 
 # SUBSTRING
 
-Returns substring starting at position with optional length.
+Extracts a substring starting at the given position, with an optional length.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+SUBSTRING(str, start)
+```
+
+## Arguments
+
+- **str**: Input string to extract a substring from.
+- **start**: One-based starting position of the substring.
+
+## Returns
+
+Returns the computed result as `varchar`.

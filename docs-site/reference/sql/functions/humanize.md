@@ -7,4 +7,18 @@ description: Format number in human-readable form.
 
 Format number in human-readable form.
 
-<!-- more details to be added -->
+**Category:** Conversion Functions
+
+## Syntax
+
+```
+HUMANIZE(val)
+```
+
+## Arguments
+
+- **val**: Input value.
+
+## Returns
+
+Returns the computed result as `varchar`.

@@ -7,4 +7,19 @@ description: Test if array contains item.
 
 Test if array contains item.
 
-<!-- more details to be added -->
+**Category:** Array Functions
+
+## Syntax
+
+```
+ARRAY_CONTAINS(arr, item)
+```
+
+## Arguments
+
+- **arr**: Input array or vector value.
+- **item**: Single value to compare against the array.
+
+## Returns
+
+Returns `true` or `false` based on whether the function's condition is satisfied.

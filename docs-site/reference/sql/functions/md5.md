@@ -7,4 +7,18 @@ description: MD5 hash.
 
 MD5 hash.
 
-<!-- more details to be added -->
+**Category:** Hash & Encoding Functions
+
+## Syntax
+
+```
+MD5(val)
+```
+
+## Arguments
+
+- **val**: Input value.
+
+## Returns
+
+Returns the computed result as `blob`.

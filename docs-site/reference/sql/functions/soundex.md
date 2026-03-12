@@ -1,10 +1,24 @@
 ---
 title: SOUNDEX — Opteryx Function
-description: Return Soundex phonetic code.
+description: Computes soundex phonetic code.
 ---
 
 # SOUNDEX
 
-Return Soundex phonetic code.
+Computes soundex phonetic code.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+SOUNDEX(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `varchar`.

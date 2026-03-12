@@ -7,4 +7,14 @@ description: Current connection identifier.
 
 Current connection identifier.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+CONNECTION_ID()
+```
+
+## Returns
+
+Returns the computed result as `integer`.

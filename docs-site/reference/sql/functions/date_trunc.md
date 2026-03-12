@@ -7,4 +7,19 @@ description: Truncate date/timestamp to specified granularity.
 
 Truncate date/timestamp to specified granularity.
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+DATE_TRUNC(part, date)
+```
+
+## Arguments
+
+- **part**: Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression.
+- **date**: Date, time, or timestamp value to evaluate.
+
+## Returns
+
+Returns the computed result as `timestamp`.

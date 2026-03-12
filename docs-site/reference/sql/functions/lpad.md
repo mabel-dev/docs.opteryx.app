@@ -7,4 +7,20 @@ description: Left-pad string to width.
 
 Left-pad string to width.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+LPAD(str, width, [fill])
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **width**: Target width for the output.
+- **fill**: Padding text used when the input is shorter than the target width. Optional.
+
+## Returns
+
+Returns the computed result as `varchar`.

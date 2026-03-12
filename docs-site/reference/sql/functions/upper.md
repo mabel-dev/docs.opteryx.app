@@ -1,10 +1,24 @@
 ---
 title: UPPER — Opteryx Function
-description: Returns input string with all characters in uppercase.
+description: Transforms the input string to uppercase.
 ---
 
 # UPPER
 
-Returns input string with all characters in uppercase.
+Transforms the input string to uppercase.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+UPPER(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `varchar`.

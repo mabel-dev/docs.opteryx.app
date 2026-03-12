@@ -1,21 +1,20 @@
-# current_date
+---
+title: CURRENT_DATE — Opteryx Function
+description: Current date (SQL-92).
+---
 
-**Category:** Date & Time
+# CURRENT_DATE
 
-Signature: `current_date` — returns current date (UTC). No parentheses required.
+Current date (SQL-92).
+
+**Category:** Date & Time Functions
 
 ## Syntax
 
-## Examples
-
-```sql
-SELECT current_date;
+```
+CURRENT_DATE()
 ```
 
-## Related Functions
+## Returns
 
-current_time, current_timestamp
-
-## Notes
-
-Describe timezone behavior and precision.
+Returns the computed result as `date`.

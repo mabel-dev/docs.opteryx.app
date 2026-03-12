@@ -7,4 +7,18 @@ description: Capitalise first letter of each word.
 
 Capitalise first letter of each word.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+INITCAP(str)
+```
+
+## Arguments
+
+- **str**: Input string value.
+
+## Returns
+
+Returns the computed result as `varchar`.

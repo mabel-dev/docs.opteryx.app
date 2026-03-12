@@ -7,4 +7,23 @@ description: Cosine similarity over numeric vectors or lexical text inputs.
 
 Cosine similarity over numeric vectors or lexical text inputs.
 
-<!-- more details to be added -->
+**Category:** Vector / Embedding Functions
+
+## Syntax
+
+```
+COSINE_SIMILARITY(arr, vec)
+```
+
+```
+COSINE_SIMILARITY(arr, vec)
+```
+
+## Arguments
+
+- **arr**: First vector or text input.
+- **vec**: Second vector or text input.
+
+## Returns
+
+Returns the computed result as `double`.

@@ -7,4 +7,14 @@ description: Current user name.
 
 Current user name.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+USER()
+```
+
+## Returns
+
+Returns the computed result as `varchar`.

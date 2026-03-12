@@ -1,1492 +1,2747 @@
 {
-    "ABS": [
-        {
-            "label": "ABS(num)",
-            "documentation": "Returns absolute value of input number.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "ARRAY": [
-        {
-            "label": "ARRAY(expr, type_name)",
-            "documentation": "Constructs an array of the specified element type.",
-            "parameters": [
-                {
-                    "label": "expr",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
+    "ABS": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ABS(num)",
+                "category": "Numeric Functions",
+                "documentation": "Calculates the absolute value of the input number.",
+                "related_functions": [
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND",
+                    "TRUNC"
+                ],
+                "return_type": "same as `num`",
+                "returns": {
+                    "type": "same as `num`",
+                    "documentation": "Returns a value with the same type as `num`."
                 },
-                {
-                    "label": "type_name",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                }
-            ]
-        }
-    ],
-    "ARRAY_CONTAINS": [
-        {
-            "label": "ARRAY_CONTAINS(arr, item)",
-            "documentation": "Test if array contains item.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                },
-                {
-                    "label": "item",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "ARRAY_CONTAINS_ALL": [
-        {
-            "label": "ARRAY_CONTAINS_ALL(arr, items)",
-            "documentation": "Test if array contains all items from set.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                },
-                {
-                    "label": "items",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                }
-            ]
-        }
-    ],
-    "ARRAY_CONTAINS_ANY": [
-        {
-            "label": "ARRAY_CONTAINS_ANY(arr, items)",
-            "documentation": "Test if array contains any item from set.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                },
-                {
-                    "label": "items",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                }
-            ]
-        }
-    ],
-    "ASCII": [
-        {
-            "label": "ASCII(str)",
-            "documentation": "Return ASCII codepoint of first character.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "BASE64_DECODE": [
-        {
-            "label": "BASE64_DECODE(blob)",
-            "documentation": "Base64 decode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "BASE64_ENCODE": [
-        {
-            "label": "BASE64_ENCODE(blob)",
-            "documentation": "Base64 encode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "BASE85_DECODE": [
-        {
-            "label": "BASE85_DECODE(blob)",
-            "documentation": "Base85 decode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "BASE85_ENCODE": [
-        {
-            "label": "BASE85_ENCODE(blob)",
-            "documentation": "Base85 encode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "CASE": [
-        {
-            "label": "CASE(arg0, [args...])",
-            "documentation": "Returns a value based on conditional expressions.",
-            "parameters": [
-                {
-                    "label": "arg0",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "args",
-                    "type": "any",
-                    "documentation": "Argument of type `any`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "CEILING": [
-        {
-            "label": "CEILING(num, [scale...])",
-            "documentation": "Returns smallest integer greater than or equal to input.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                },
-                {
-                    "label": "scale",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "CHAR": [
-        {
-            "label": "CHAR(val)",
-            "documentation": "Convert codepoint to character.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "COALESCE": [
-        {
-            "label": "COALESCE(arg0, [args...])",
-            "documentation": "Returns the first non-null value from the list of arguments.",
-            "parameters": [
-                {
-                    "label": "arg0",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "args",
-                    "type": "any",
-                    "documentation": "Argument of type `any`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "CONCAT": [
-        {
-            "label": "CONCAT(str1, [more...])",
-            "documentation": "Returns concatenation of all input strings.",
-            "parameters": [
-                {
-                    "label": "str1",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "more",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "CONCAT_WS": [
-        {
-            "label": "CONCAT_WS(sep, str1, [more...])",
-            "documentation": "Concatenate with separator.",
-            "parameters": [
-                {
-                    "label": "sep",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "str1",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "more",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "CONNECTION_ID": [
-        {
-            "label": "CONNECTION_ID()",
-            "documentation": "Current connection identifier.",
-            "parameters": []
-        }
-    ],
-    "COSINE_DISTANCE": [
-        {
-            "label": "COSINE_DISTANCE(arr, vec)",
-            "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "vector",
-                    "documentation": "Argument of type `vector`."
-                },
-                {
-                    "label": "vec",
-                    "type": "vector",
-                    "documentation": "Argument of type `vector`."
-                }
-            ]
-        },
-        {
-            "label": "COSINE_DISTANCE(arr, vec)",
-            "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "vec",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "COSINE_SIMILARITY": [
-        {
-            "label": "COSINE_SIMILARITY(arr, vec)",
-            "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "vector",
-                    "documentation": "Argument of type `vector`."
-                },
-                {
-                    "label": "vec",
-                    "type": "vector",
-                    "documentation": "Argument of type `vector`."
-                }
-            ]
-        },
-        {
-            "label": "COSINE_SIMILARITY(arr, vec)",
-            "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "vec",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "CURRENT_DATE": [
-        {
-            "label": "CURRENT_DATE()",
-            "documentation": "Current date (SQL-92).",
-            "parameters": []
-        }
-    ],
-    "CURRENT_TIME": [
-        {
-            "label": "CURRENT_TIME()",
-            "documentation": "Current time (SQL-92).",
-            "parameters": []
-        }
-    ],
-    "CURRENT_TIMESTAMP": [
-        {
-            "label": "CURRENT_TIMESTAMP()",
-            "documentation": "Current timestamp (SQL-92).",
-            "parameters": []
-        }
-    ],
-    "DATABASE": [
-        {
-            "label": "DATABASE()",
-            "documentation": "Current database name.",
-            "parameters": []
-        }
-    ],
-    "DATEDIFF": [
-        {
-            "label": "DATEDIFF(part, date, end)",
-            "documentation": "Difference between two dates in the specified unit.",
-            "parameters": [
-                {
-                    "label": "part",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                },
-                {
-                    "label": "end",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "DATEPART": [
-        {
-            "label": "DATEPART(part, date)",
-            "documentation": "Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.",
-            "parameters": [
-                {
-                    "label": "part",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "DATETRUNC": [
-        {
-            "label": "DATETRUNC(part, date)",
-            "documentation": "Truncate date/timestamp to specified granularity. Alias for `DATE_TRUNC`.",
-            "parameters": [
-                {
-                    "label": "part",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "DATE_DIFF": [
-        {
-            "label": "DATE_DIFF(part, date, end)",
-            "documentation": "Difference between two dates in the specified unit. Alias for `DATEDIFF`.",
-            "parameters": [
-                {
-                    "label": "part",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                },
-                {
-                    "label": "end",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "DATE_FORMAT": [
-        {
-            "label": "DATE_FORMAT(date, pattern)",
-            "documentation": "Format date/timestamp as string.",
-            "parameters": [
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                },
-                {
-                    "label": "pattern",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                }
-            ]
-        }
-    ],
-    "DATE_TRUNC": [
-        {
-            "label": "DATE_TRUNC(part, date)",
-            "documentation": "Truncate date/timestamp to specified granularity.",
-            "parameters": [
-                {
-                    "label": "part",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "E": [
-        {
-            "label": "E()",
-            "documentation": "Euler's number e.",
-            "parameters": []
-        }
-    ],
-    "EMBED": [
-        {
-            "label": "EMBED(text)",
-            "documentation": "Embeds text using the configured engine embedding provider.",
-            "parameters": [
-                {
-                    "label": "text",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "FLOOR": [
-        {
-            "label": "FLOOR(num, [scale...])",
-            "documentation": "Returns largest integer less than or equal to input.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                },
-                {
-                    "label": "scale",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "FROM_UNIXTIME": [
-        {
-            "label": "FROM_UNIXTIME(ts)",
-            "documentation": "Convert Unix timestamp to TIMESTAMP.",
-            "parameters": [
-                {
-                    "label": "ts",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "GET_STRING": [
-        {
-            "label": "GET_STRING(struct, key)",
-            "documentation": "Extract string field from struct/map.",
-            "parameters": [
-                {
-                    "label": "struct",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "key",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "GREATEST": [
-        {
-            "label": "GREATEST(arr)",
-            "documentation": "Returns the maximum element from an array column.",
-            "parameters": [
-                {
-                    "label": "arr",
-                    "type": "array",
-                    "documentation": "Argument of type `array`."
-                }
-            ]
-        }
-    ],
-    "HASH": [
-        {
-            "label": "HASH(val)",
-            "documentation": "Generic hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "HEX_DECODE": [
-        {
-            "label": "HEX_DECODE(blob)",
-            "documentation": "Hex decode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "HEX_ENCODE": [
-        {
-            "label": "HEX_ENCODE(blob)",
-            "documentation": "Hex encode.",
-            "parameters": [
-                {
-                    "label": "blob",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "HUMANIZE": [
-        {
-            "label": "HUMANIZE(val)",
-            "documentation": "Format number in human-readable form.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "IFNOTNULL": [
-        {
-            "label": "IFNOTNULL(value, result)",
-            "documentation": "Returns second argument if first argument is not null, otherwise null.",
-            "parameters": [
-                {
-                    "label": "value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "result",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "IFNULL": [
-        {
-            "label": "IFNULL(value, default)",
-            "documentation": "Returns first argument if not null, otherwise returns second argument.",
-            "parameters": [
-                {
-                    "label": "value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "default",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "IIF": [
-        {
-            "label": "IIF(condition, true_value, false_value)",
-            "documentation": "Returns second argument if condition is true, otherwise third argument.",
-            "parameters": [
-                {
-                    "label": "condition",
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "ARRAY_CONTAINS": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ARRAY_CONTAINS(arr, item)",
+                "category": "Array Functions",
+                "documentation": "Test if array contains item.",
+                "related_functions": [
+                    "ARRAY_CONTAINS_ANY",
+                    "ARRAY_CONTAINS_ALL",
+                    "SORT",
+                    "GREATEST",
+                    "LEAST"
+                ],
+                "return_type": "boolean",
+                "returns": {
                     "type": "boolean",
-                    "documentation": "Argument of type `boolean`."
+                    "documentation": "Returns `true` or `false` based on whether the function's condition is satisfied."
                 },
-                {
-                    "label": "true_value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    },
+                    {
+                        "label": "item",
+                        "type": "any",
+                        "documentation": "Single value to compare against the array."
+                    }
+                ]
+            }
+        ]
+    },
+    "ARRAY_CONTAINS_ALL": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ARRAY_CONTAINS_ALL(arr, items)",
+                "category": "Array Functions",
+                "documentation": "Test if array contains all items from set.",
+                "related_functions": [
+                    "ARRAY_CONTAINS",
+                    "ARRAY_CONTAINS_ANY",
+                    "SORT",
+                    "GREATEST",
+                    "LEAST"
+                ],
+                "return_type": "boolean",
+                "returns": {
+                    "type": "boolean",
+                    "documentation": "Returns `true` or `false` based on whether the function's condition is satisfied."
                 },
-                {
-                    "label": "false_value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "INITCAP": [
-        {
-            "label": "INITCAP(str)",
-            "documentation": "Capitalise first letter of each word.",
-            "parameters": [
-                {
-                    "label": "str",
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    },
+                    {
+                        "label": "items",
+                        "type": "array",
+                        "documentation": "Collection of values to compare against the array."
+                    }
+                ]
+            }
+        ]
+    },
+    "ARRAY_CONTAINS_ANY": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ARRAY_CONTAINS_ANY(arr, items)",
+                "category": "Array Functions",
+                "documentation": "Test if array contains any item from set.",
+                "related_functions": [
+                    "ARRAY_CONTAINS",
+                    "ARRAY_CONTAINS_ALL",
+                    "SORT",
+                    "GREATEST",
+                    "LEAST"
+                ],
+                "return_type": "boolean",
+                "returns": {
+                    "type": "boolean",
+                    "documentation": "Returns `true` or `false` based on whether the function's condition is satisfied."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    },
+                    {
+                        "label": "items",
+                        "type": "array",
+                        "documentation": "Collection of values to compare against the array."
+                    }
+                ]
+            }
+        ]
+    },
+    "ASCII": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ASCII(str)",
+                "category": "String Functions",
+                "documentation": "Computes ascii codepoint of first character.",
+                "related_functions": [
+                    "CHAR",
+                    "LEFT",
+                    "RIGHT",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "integer",
+                "returns": {
+                    "type": "integer",
+                    "documentation": "Returns the computed result as `integer`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "BASE64_DECODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "BASE64_DECODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Base64 decode.",
+                "related_functions": [
+                    "BASE64_ENCODE",
+                    "BASE85_DECODE",
+                    "HEX_DECODE",
+                    "HASH",
+                    "MD5"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "BASE64_ENCODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "BASE64_ENCODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Base64 encode.",
+                "related_functions": [
+                    "BASE64_DECODE",
+                    "BASE85_ENCODE",
+                    "HEX_ENCODE",
+                    "HASH",
+                    "MD5"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "BASE85_DECODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "BASE85_DECODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Base85 decode.",
+                "related_functions": [
+                    "BASE85_ENCODE",
+                    "BASE64_DECODE",
+                    "HEX_DECODE",
+                    "HASH",
+                    "MD5"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "BASE85_ENCODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "BASE85_ENCODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Base85 encode.",
+                "related_functions": [
+                    "BASE85_DECODE",
+                    "BASE64_ENCODE",
+                    "HEX_ENCODE",
+                    "HASH",
+                    "MD5"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "CEILING": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CEILING(num, [scale...])",
+                "category": "Numeric Functions",
+                "documentation": "Calculates the smallest integer greater than or equal to the input.",
+                "related_functions": [
+                    "ROUND",
+                    "FLOOR",
+                    "TRUNCATE",
+                    "ABS",
+                    "CEIL"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric value to round upward."
+                    },
+                    {
+                        "label": "scale",
+                        "type": "integer",
+                        "documentation": "Decimal scale to apply before taking the ceiling. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated."
+                    }
+                ],
+                "notes": "When `scale` is provided, positive values affect digits to the right of the decimal point and negative values affect tens, hundreds, and larger positions."
+            }
+        ]
+    },
+    "CHAR": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CHAR(val)",
+                "category": "String Functions",
+                "documentation": "Convert codepoint to character.",
+                "related_functions": [
+                    "ASCII",
+                    "UPPER",
+                    "LOWER",
+                    "LENGTH",
+                    "TITLE"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "JSONB_OBJECT_KEYS": [
-        {
-            "label": "JSONB_OBJECT_KEYS(json)",
-            "documentation": "Extract keys from JSON object.",
-            "parameters": [
-                {
-                    "label": "json",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "LEAST": [
-        {
-            "label": "LEAST(arr)",
-            "documentation": "Returns the minimum element from an array column.",
-            "parameters": [
-                {
-                    "label": "arr",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "COALESCE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "COALESCE(arg0, [args...])",
+                "category": "Utility Functions",
+                "documentation": "Selects the first non-null value from the list of arguments.",
+                "related_functions": [
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF",
+                    "RAND"
+                ],
+                "return_type": "compatible input type",
+                "returns": {
+                    "type": "compatible input type",
+                    "documentation": "Returns the first non-null argument using a type compatible with the supplied values."
+                },
+                "parameters": [
+                    {
+                        "label": "arg0",
+                        "type": "any",
+                        "documentation": "First input value."
+                    },
+                    {
+                        "label": "args",
+                        "type": "any",
+                        "documentation": "Additional input values. Optional. Can be repeated."
+                    }
+                ]
+            }
+        ]
+    },
+    "CONCAT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CONCAT(str1, [more...])",
+                "category": "String Functions",
+                "documentation": "Concatenates all input strings.",
+                "related_functions": [
+                    "CONCAT_WS",
+                    "LEFT",
+                    "RIGHT",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str1",
+                        "type": "varchar",
+                        "documentation": "First input string value."
+                    },
+                    {
+                        "label": "more",
+                        "type": "varchar",
+                        "documentation": "Additional input values. Optional. Can be repeated."
+                    }
+                ]
+            }
+        ]
+    },
+    "CONCAT_WS": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CONCAT_WS(sep, str1, [more...])",
+                "category": "String Functions",
+                "documentation": "Concatenate with separator.",
+                "related_functions": [
+                    "CONCAT",
+                    "TRIM",
+                    "SUBSTRING",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "sep",
+                        "type": "varchar",
+                        "documentation": "Separator inserted between each concatenated string."
+                    },
+                    {
+                        "label": "str1",
+                        "type": "varchar",
+                        "documentation": "First string value to concatenate."
+                    },
+                    {
+                        "label": "more",
+                        "type": "varchar",
+                        "documentation": "Additional string values to concatenate after `str1`. Optional. Can be repeated."
+                    }
+                ]
+            }
+        ]
+    },
+    "CONNECTION_ID": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CONNECTION_ID()",
+                "category": "Utility Functions",
+                "documentation": "Current connection identifier.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "integer",
+                "returns": {
+                    "type": "integer",
+                    "documentation": "Returns the computed result as `integer`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "COSINE_DISTANCE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "COSINE_DISTANCE(arr, vec)",
+                "category": "Vector / Embedding Functions",
+                "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
+                "related_functions": [
+                    "COSINE_SIMILARITY",
+                    "EMBED"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "vector",
+                        "documentation": "First vector or text input."
+                    },
+                    {
+                        "label": "vec",
+                        "type": "vector",
+                        "documentation": "Second vector or text input."
+                    }
+                ]
+            },
+            {
+                "label": "COSINE_DISTANCE(arr, vec)",
+                "category": "Vector / Embedding Functions",
+                "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
+                "related_functions": [
+                    "COSINE_SIMILARITY",
+                    "EMBED"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "varchar",
+                        "documentation": "First vector or text input."
+                    },
+                    {
+                        "label": "vec",
+                        "type": "varchar",
+                        "documentation": "Second vector or text input."
+                    }
+                ]
+            }
+        ]
+    },
+    "COSINE_SIMILARITY": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "COSINE_SIMILARITY(arr, vec)",
+                "category": "Vector / Embedding Functions",
+                "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
+                "related_functions": [
+                    "COSINE_DISTANCE",
+                    "EMBED"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "vector",
+                        "documentation": "First vector or text input."
+                    },
+                    {
+                        "label": "vec",
+                        "type": "vector",
+                        "documentation": "Second vector or text input."
+                    }
+                ]
+            },
+            {
+                "label": "COSINE_SIMILARITY(arr, vec)",
+                "category": "Vector / Embedding Functions",
+                "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
+                "related_functions": [
+                    "COSINE_DISTANCE",
+                    "EMBED"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "varchar",
+                        "documentation": "First vector or text input."
+                    },
+                    {
+                        "label": "vec",
+                        "type": "varchar",
+                        "documentation": "Second vector or text input."
+                    }
+                ]
+            }
+        ]
+    },
+    "CURRENT_DATE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CURRENT_DATE()",
+                "category": "Date & Time Functions",
+                "documentation": "Current date (SQL-92).",
+                "related_functions": [
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE",
+                    "EXTRACT"
+                ],
+                "return_type": "date",
+                "returns": {
+                    "type": "date",
+                    "documentation": "Returns the computed result as `date`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "CURRENT_TIME": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "CURRENT_TIME()",
+                "category": "Date & Time Functions",
+                "documentation": "Current time (SQL-92).",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE",
+                    "EXTRACT"
+                ],
+                "return_type": "time",
+                "returns": {
+                    "type": "time",
+                    "documentation": "Returns the computed result as `time`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "CURRENT_TIMESTAMP": {
+        "aliases": [
+            "NOW"
+        ],
+        "overloads": [
+            {
+                "label": "CURRENT_TIMESTAMP()",
+                "category": "Date & Time Functions",
+                "documentation": "Current timestamp (SQL-92).",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "TODAY",
+                    "DATE",
+                    "EXTRACT"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "DATABASE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "DATABASE()",
+                "category": "Utility Functions",
+                "documentation": "Current database name.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "DATEDIFF": {
+        "aliases": [
+            "DATE_DIFF"
+        ],
+        "overloads": [
+            {
+                "label": "DATEDIFF(part, date, end)",
+                "category": "Date & Time Functions",
+                "documentation": "Difference between two dates in the specified unit.",
+                "related_functions": [
+                    "DATEPART",
+                    "DATE_TRUNC",
+                    "TIME_BUCKET",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "integer",
+                "returns": {
+                    "type": "integer",
+                    "documentation": "Returns the computed result as `integer`."
+                },
+                "parameters": [
+                    {
+                        "label": "part",
+                        "type": "varchar",
+                        "documentation": "Unit to measure the difference in, such as `day`, `month`, or `year`. Must be a constant expression."
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    },
+                    {
+                        "label": "end",
+                        "type": "temporal",
+                        "documentation": "Ending date, time, or timestamp value."
+                    }
+                ]
+            }
+        ]
+    },
+    "DATEPART": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "DATEPART(part, date)",
+                "category": "Date & Time Functions",
+                "documentation": "Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.",
+                "related_functions": [
+                    "DATE_TRUNC",
+                    "DATEDIFF",
+                    "TIME_BUCKET",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "integer | double | date",
+                "returns": {
+                    "type": "integer | double | date",
+                    "documentation": "Returns `double` for parts such as `epoch` and `julian`, `date` for `date`, and `integer` for most other parts."
+                },
+                "parameters": [
+                    {
+                        "label": "part",
+                        "type": "varchar",
+                        "documentation": "Date or time part to extract, such as `year`, `month`, `day`, or `epoch`. Must be a constant expression."
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    }
+                ],
+                "notes": "Return type depends on `part`: `epoch` and `julian` produce `double`, `date` produces `date`, and most other parts produce `integer`."
+            }
+        ]
+    },
+    "DATE_FORMAT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "DATE_FORMAT(date, pattern)",
+                "category": "Date & Time Functions",
+                "documentation": "Format date/timestamp as string.",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    },
+                    {
+                        "label": "pattern",
+                        "type": "varchar",
+                        "documentation": "Format string used to render the temporal value as text. Must be a constant expression."
+                    }
+                ]
+            }
+        ]
+    },
+    "DATE_TRUNC": {
+        "aliases": [
+            "DATETRUNC"
+        ],
+        "overloads": [
+            {
+                "label": "DATE_TRUNC(part, date)",
+                "category": "Date & Time Functions",
+                "documentation": "Truncate date/timestamp to specified granularity.",
+                "related_functions": [
+                    "DATEPART",
+                    "TIME_BUCKET",
+                    "DATEDIFF",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
+                },
+                "parameters": [
+                    {
+                        "label": "part",
+                        "type": "varchar",
+                        "documentation": "Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression."
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    }
+                ]
+            }
+        ]
+    },
+    "E": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "E()",
+                "category": "Numeric Functions",
+                "documentation": "Euler's number e.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "EMBED": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "EMBED(text)",
+                "category": "Vector / Embedding Functions",
+                "documentation": "Embeds text using the configured engine embedding provider.",
+                "related_functions": [
+                    "COSINE_SIMILARITY",
+                    "COSINE_DISTANCE"
+                ],
+                "return_type": "array<double>",
+                "returns": {
+                    "type": "array<double>",
+                    "documentation": "Returns an embedding vector represented as an array of doubles."
+                },
+                "parameters": [
+                    {
+                        "label": "text",
+                        "type": "varchar",
+                        "documentation": "Input text to convert into an embedding vector."
+                    }
+                ],
+                "notes": "This function depends on the configured embedding provider and returns a numeric vector as `array<double>`."
+            }
+        ]
+    },
+    "FLOOR": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "FLOOR(num, [scale...])",
+                "category": "Numeric Functions",
+                "documentation": "Calculates the largest integer less than or equal to the input.",
+                "related_functions": [
+                    "ROUND",
+                    "CEILING",
+                    "TRUNCATE",
+                    "ABS",
+                    "CEIL"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric value to round downward."
+                    },
+                    {
+                        "label": "scale",
+                        "type": "integer",
+                        "documentation": "Decimal scale to apply before taking the floor. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated."
+                    }
+                ],
+                "notes": "When `scale` is provided, positive values affect digits to the right of the decimal point and negative values affect tens, hundreds, and larger positions."
+            }
+        ]
+    },
+    "FROM_UNIXTIME": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "FROM_UNIXTIME(ts)",
+                "category": "Date & Time Functions",
+                "documentation": "Convert Unix timestamp to TIMESTAMP.",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
+                },
+                "parameters": [
+                    {
+                        "label": "ts",
+                        "type": "number",
+                        "documentation": "Unix timestamp expressed in seconds."
+                    }
+                ]
+            }
+        ]
+    },
+    "GREATEST": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "GREATEST(arr)",
+                "category": "Array Functions",
+                "documentation": "Determines the maximum element in an array column.",
+                "related_functions": [
+                    "LEAST",
+                    "SORT",
+                    "ARRAY_CONTAINS",
+                    "ARRAY_CONTAINS_ANY",
+                    "ARRAY_CONTAINS_ALL"
+                ],
+                "return_type": "element type of `arr`",
+                "returns": {
+                    "type": "element type of `arr`",
+                    "documentation": "Returns a single element from `arr`, preserving the array's element type."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    }
+                ]
+            }
+        ]
+    },
+    "HASH": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "HASH(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Generic hash.",
+                "related_functions": [
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256",
+                    "SHA384"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "HEX_DECODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "HEX_DECODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Hex decode.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "HEX_ENCODE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "HEX_ENCODE(blob)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "Hex encode.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "blob",
+                        "type": "any",
+                        "documentation": "Binary or text value to encode, decode, or transform."
+                    }
+                ]
+            }
+        ]
+    },
+    "HUMANIZE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "HUMANIZE(val)",
+                "category": "Conversion Functions",
+                "documentation": "Format number in human-readable form.",
+                "related_functions": [
+                    "CAST",
+                    "TRY_CAST",
+                    "BOOLEAN",
+                    "VARBINARY",
+                    "INTEGER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "IFNOTNULL": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "IFNOTNULL(value, result)",
+                "category": "Utility Functions",
+                "documentation": "Selects the second argument when the first argument is not null; otherwise yields null.",
+                "related_functions": [
+                    "IFNULL",
+                    "COALESCE",
+                    "NULLIF",
+                    "IIF",
+                    "RAND"
+                ],
+                "return_type": "compatible input type",
+                "returns": {
+                    "type": "compatible input type",
+                    "documentation": "Returns the result value using a type compatible with the supplied arguments when the first argument is not null."
+                },
+                "parameters": [
+                    {
+                        "label": "value",
+                        "type": "any",
+                        "documentation": "Primary input value."
+                    },
+                    {
+                        "label": "result",
+                        "type": "any",
+                        "documentation": "Value returned when the condition or null check succeeds."
+                    }
+                ]
+            }
+        ]
+    },
+    "IFNULL": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "IFNULL(value, default)",
+                "category": "Utility Functions",
+                "documentation": "Selects the first argument when it is not null; otherwise uses the second argument.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF",
+                    "RAND"
+                ],
+                "return_type": "compatible input type",
+                "returns": {
+                    "type": "compatible input type",
+                    "documentation": "Returns either the primary value or the fallback value using a type compatible with both arguments."
+                },
+                "parameters": [
+                    {
+                        "label": "value",
+                        "type": "any",
+                        "documentation": "Primary input value."
+                    },
+                    {
+                        "label": "default",
+                        "type": "any",
+                        "documentation": "Fallback value returned when the primary value is null."
+                    }
+                ]
+            }
+        ]
+    },
+    "IIF": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "IIF(condition, true_value, false_value)",
+                "category": "Utility Functions",
+                "documentation": "Selects between the second and third arguments based on the condition.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "RAND"
+                ],
+                "return_type": "same as `true_value`",
+                "returns": {
+                    "type": "same as `true_value`",
+                    "documentation": "Returns a value with the same type as `true_value`."
+                },
+                "parameters": [
+                    {
+                        "label": "condition",
+                        "type": "boolean",
+                        "documentation": "Boolean expression used to choose which result to return."
+                    },
+                    {
+                        "label": "true_value",
+                        "type": "any",
+                        "documentation": "Value returned when `condition` evaluates to true."
+                    },
+                    {
+                        "label": "false_value",
+                        "type": "any",
+                        "documentation": "Value returned when `condition` evaluates to false."
+                    }
+                ]
+            }
+        ]
+    },
+    "INITCAP": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "INITCAP(str)",
+                "category": "String Functions",
+                "documentation": "Capitalise first letter of each word.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "TRIM"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "JSONB_OBJECT_KEYS": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "JSONB_OBJECT_KEYS(json)",
+                "category": "Struct/JSON Functions",
+                "documentation": "Extract keys from JSON object.",
+                "related_functions": [],
+                "return_type": "array",
+                "returns": {
                     "type": "array",
-                    "documentation": "Argument of type `array`."
-                }
-            ]
-        }
-    ],
-    "LEFT": [
-        {
-            "label": "LEFT(str, n)",
-            "documentation": "Return leftmost N characters.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `array`."
                 },
-                {
-                    "label": "n",
+                "parameters": [
+                    {
+                        "label": "json",
+                        "type": "any",
+                        "documentation": "JSON object or document value to inspect."
+                    }
+                ]
+            }
+        ]
+    },
+    "LEAST": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LEAST(arr)",
+                "category": "Array Functions",
+                "documentation": "Determines the minimum element in an array column.",
+                "related_functions": [
+                    "GREATEST",
+                    "SORT",
+                    "ARRAY_CONTAINS",
+                    "ARRAY_CONTAINS_ANY",
+                    "ARRAY_CONTAINS_ALL"
+                ],
+                "return_type": "element type of `arr`",
+                "returns": {
+                    "type": "element type of `arr`",
+                    "documentation": "Returns a single element from `arr`, preserving the array's element type."
+                },
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LEFT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LEFT(str, n)",
+                "category": "String Functions",
+                "documentation": "Computes leftmost n characters.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "n",
+                        "type": "integer",
+                        "documentation": "Integer control value used by the function."
+                    }
+                ]
+            }
+        ]
+    },
+    "LENGTH": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LENGTH(str)",
+                "category": "String Functions",
+                "documentation": "Calculates the number of characters in the input string.",
+                "related_functions": [
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP",
+                    "TRIM"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "LENGTH": [
-        {
-            "label": "LENGTH(str)",
-            "documentation": "Returns the number of characters in the input string.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "LEVENSHTEIN": [
-        {
-            "label": "LEVENSHTEIN(a, b)",
-            "documentation": "Levenshtein edit distance between two strings.",
-            "parameters": [
-                {
-                    "label": "a",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "b",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "LN": [
-        {
-            "label": "LN(num)",
-            "documentation": "Natural logarithm.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "LOG": [
-        {
-            "label": "LOG(num, base)",
-            "documentation": "Logarithm with arbitrary base.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                },
-                {
-                    "label": "base",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "LOG10": [
-        {
-            "label": "LOG10(num)",
-            "documentation": "Base-10 logarithm.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "LOG2": [
-        {
-            "label": "LOG2(num)",
-            "documentation": "Base-2 logarithm.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "LOWER": [
-        {
-            "label": "LOWER(str)",
-            "documentation": "Returns input string with all characters in lowercase.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "LPAD": [
-        {
-            "label": "LPAD(str, width, [fill])",
-            "documentation": "Left-pad string to width.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "width",
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LEVENSHTEIN": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LEVENSHTEIN(a, b)",
+                "category": "String Functions",
+                "documentation": "Levenshtein edit distance between two strings.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "fill",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
-                }
-            ]
-        }
-    ],
-    "LTRIM": [
-        {
-            "label": "LTRIM(str, [chars])",
-            "documentation": "Trim leading characters.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                "parameters": [
+                    {
+                        "label": "a",
+                        "type": "varchar",
+                        "documentation": "First input value."
+                    },
+                    {
+                        "label": "b",
+                        "type": "varchar",
+                        "documentation": "Second input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LN": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LN(num)",
+                "category": "Numeric Functions",
+                "documentation": "Natural logarithm.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
                 },
-                {
-                    "label": "chars",
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LOG": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LOG(num, base)",
+                "category": "Numeric Functions",
+                "documentation": "Logarithm with arbitrary base.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    },
+                    {
+                        "label": "base",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LOG10": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LOG10(num)",
+                "category": "Numeric Functions",
+                "documentation": "Base-10 logarithm.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LOG2": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LOG2(num)",
+                "category": "Numeric Functions",
+                "documentation": "Base-2 logarithm.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LOWER": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LOWER(str)",
+                "category": "String Functions",
+                "documentation": "Transforms the input string to lowercase.",
+                "related_functions": [
+                    "UPPER",
+                    "TITLE",
+                    "INITCAP",
+                    "LENGTH",
+                    "TRIM"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
-                }
-            ]
-        }
-    ],
-    "MD5": [
-        {
-            "label": "MD5(val)",
-            "documentation": "MD5 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "NORMAL": [
-        {
-            "label": "NORMAL(n)",
-            "documentation": "Generate normally-distributed random numbers.",
-            "parameters": [
-                {
-                    "label": "n",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "LPAD": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LPAD(str, width, [fill])",
+                "category": "String Functions",
+                "documentation": "Left-pad string to width.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "width",
+                        "type": "integer",
+                        "documentation": "Target width for the output."
+                    },
+                    {
+                        "label": "fill",
+                        "type": "varchar",
+                        "documentation": "Padding text used when the input is shorter than the target width. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "LTRIM": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "LTRIM(str, [chars])",
+                "category": "String Functions",
+                "documentation": "Trim leading characters.",
+                "related_functions": [
+                    "TRIM",
+                    "RTRIM",
+                    "REPLACE",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "chars",
+                        "type": "varchar",
+                        "documentation": "Characters to remove from the input string. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "MD5": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "MD5(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "MD5 hash.",
+                "related_functions": [
+                    "HASH",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256",
+                    "SHA384"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "NORMAL": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "NORMAL(n)",
+                "category": "Utility Functions",
+                "documentation": "Generate normally-distributed random numbers.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "n",
+                        "type": "integer",
+                        "documentation": "Number of random values to generate."
+                    }
+                ],
+                "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
+            }
+        ]
+    },
+    "NULLIF": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "NULLIF(value, compare)",
+                "category": "Utility Functions",
+                "documentation": "Compares the two arguments and yields null when they are equal; otherwise preserves the first argument.",
+                "related_functions": [
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "COALESCE",
+                    "IIF",
+                    "RAND"
+                ],
+                "return_type": "same as `value`",
+                "returns": {
+                    "type": "same as `value`",
+                    "documentation": "Returns a value with the same type as `value`."
+                },
+                "parameters": [
+                    {
+                        "label": "value",
+                        "type": "any",
+                        "documentation": "Primary input value."
+                    },
+                    {
+                        "label": "compare",
+                        "type": "any",
+                        "documentation": "Value to compare against the primary input."
+                    }
+                ]
+            }
+        ]
+    },
+    "PHI": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "PHI()",
+                "category": "Numeric Functions",
+                "documentation": "Golden ratio \u03c6.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "PI": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "PI()",
+                "category": "Numeric Functions",
+                "documentation": "Mathematical constant \u03c0.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": []
+            }
+        ]
+    },
+    "POSITION": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "POSITION(needle, haystack)",
+                "category": "String Functions",
+                "documentation": "Find position of substring.",
+                "related_functions": [
+                    "SUBSTRING",
+                    "REPLACE",
+                    "REGEXP_REPLACE",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "NULLIF": [
-        {
-            "label": "NULLIF(value, compare)",
-            "documentation": "Returns null if arguments are equal, otherwise returns first argument.",
-            "parameters": [
-                {
-                    "label": "value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "compare",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "PASSTHRU": [
-        {
-            "label": "PASSTHRU(value)",
-            "documentation": "Returns the input value unchanged. Used for testing and compatibility.",
-            "parameters": [
-                {
-                    "label": "value",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "PHI": [
-        {
-            "label": "PHI()",
-            "documentation": "Golden ratio \u03c6.",
-            "parameters": []
-        }
-    ],
-    "PI": [
-        {
-            "label": "PI()",
-            "documentation": "Mathematical constant \u03c0.",
-            "parameters": []
-        }
-    ],
-    "POSITION": [
-        {
-            "label": "POSITION(needle, haystack)",
-            "documentation": "Find position of substring.",
-            "parameters": [
-                {
-                    "label": "needle",
+                "parameters": [
+                    {
+                        "label": "needle",
+                        "type": "varchar",
+                        "documentation": "Substring to search for."
+                    },
+                    {
+                        "label": "haystack",
+                        "type": "varchar",
+                        "documentation": "String to search within."
+                    }
+                ]
+            }
+        ]
+    },
+    "POWER": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "POWER(num, exp)",
+                "category": "Numeric Functions",
+                "documentation": "Raise base to exponent (SQL-92).",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    },
+                    {
+                        "label": "exp",
+                        "type": "number",
+                        "documentation": "Exponent to raise the base value by."
+                    }
+                ]
+            }
+        ]
+    },
+    "RANDOM": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "RANDOM(n)",
+                "category": "Utility Functions",
+                "documentation": "Generate random numbers.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "n",
+                        "type": "integer",
+                        "documentation": "Number of random values to generate."
+                    }
+                ],
+                "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
+            }
+        ]
+    },
+    "RANDOM_STRING": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "RANDOM_STRING(n)",
+                "category": "Utility Functions",
+                "documentation": "Generate random strings.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "n",
+                        "type": "integer",
+                        "documentation": "Length hint or row count used to generate random strings."
+                    }
+                ],
+                "notes": "This function is volatile. The integer argument controls the generated output rather than supplying a seed."
+            }
+        ]
+    },
+    "REGEXP_REPLACE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "REGEXP_REPLACE(str, pattern, replacement)",
+                "category": "String Functions",
+                "documentation": "Replace regex matches.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "pattern",
+                        "type": "varchar",
+                        "documentation": "Regular expression pattern to match in the input string."
+                    },
+                    {
+                        "label": "replacement",
+                        "type": "varchar",
+                        "documentation": "Replacement text used for matched content."
+                    }
+                ]
+            }
+        ]
+    },
+    "REPLACE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "REPLACE(str, search, replacement)",
+                "category": "String Functions",
+                "documentation": "Replace occurrences of substring.",
+                "related_functions": [
+                    "REGEXP_REPLACE",
+                    "SUBSTRING",
+                    "POSITION",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "haystack",
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "search",
+                        "type": "varchar",
+                        "documentation": "Text or pattern to replace in the input."
+                    },
+                    {
+                        "label": "replacement",
+                        "type": "varchar",
+                        "documentation": "Replacement text used for matched content."
+                    }
+                ]
+            }
+        ]
+    },
+    "REVERSE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "REVERSE(str)",
+                "category": "String Functions",
+                "documentation": "Reverse a string.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "POWER": [
-        {
-            "label": "POWER(num, exp)",
-            "documentation": "Raise base to exponent (SQL-92).",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "exp",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "RANDOM": [
-        {
-            "label": "RANDOM(n)",
-            "documentation": "Generate random numbers.",
-            "parameters": [
-                {
-                    "label": "n",
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "RIGHT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "RIGHT(str, n)",
+                "category": "String Functions",
+                "documentation": "Computes rightmost n characters.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "n",
+                        "type": "integer",
+                        "documentation": "Integer control value used by the function."
+                    }
+                ]
+            }
+        ]
+    },
+    "ROUND": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "ROUND(num, [precision...])",
+                "category": "Numeric Functions",
+                "documentation": "Rounds input number to nearest integer or specified decimal places.",
+                "related_functions": [
+                    "CEILING",
+                    "FLOOR",
+                    "TRUNCATE",
+                    "ABS",
+                    "CEIL"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric value to round."
+                    },
+                    {
+                        "label": "precision",
+                        "type": "integer",
+                        "documentation": "Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated."
+                    }
+                ],
+                "notes": "Uses PyArrow's default half-to-even rule to break ties when a value falls exactly between two candidates."
+            }
+        ]
+    },
+    "RPAD": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "RPAD(str, width, [fill])",
+                "category": "String Functions",
+                "documentation": "Right-pad string to width.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "width",
+                        "type": "integer",
+                        "documentation": "Target width for the output."
+                    },
+                    {
+                        "label": "fill",
+                        "type": "varchar",
+                        "documentation": "Padding text used when the input is shorter than the target width. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "RTRIM": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "RTRIM(str, [chars])",
+                "category": "String Functions",
+                "documentation": "Trim trailing characters.",
+                "related_functions": [
+                    "TRIM",
+                    "LTRIM",
+                    "REPLACE",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "chars",
+                        "type": "varchar",
+                        "documentation": "Characters to remove from the input string. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "SHA1": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SHA1(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "SHA-1 hash.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA224",
+                    "SHA256",
+                    "SHA384"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SHA224": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SHA224(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "SHA-224 hash.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA256",
+                    "SHA384"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SHA256": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SHA256(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "SHA-256 hash.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA384"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SHA384": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SHA384(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "SHA-384 hash.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SHA512": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SHA512(val)",
+                "category": "Hash & Encoding Functions",
+                "documentation": "SHA-512 hash.",
+                "related_functions": [
+                    "HASH",
+                    "MD5",
+                    "SHA1",
+                    "SHA224",
+                    "SHA256"
+                ],
+                "return_type": "blob",
+                "returns": {
+                    "type": "blob",
+                    "documentation": "Returns the computed result as `blob`."
+                },
+                "parameters": [
+                    {
+                        "label": "val",
+                        "type": "any",
+                        "documentation": "Input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SIGN": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SIGN(num)",
+                "category": "Numeric Functions",
+                "documentation": "Sign of number (-1, 0, 1).",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "RANDOM_STRING": [
-        {
-            "label": "RANDOM_STRING(n)",
-            "documentation": "Generate random strings.",
-            "parameters": [
-                {
-                    "label": "n",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "REGEXP_REPLACE": [
-        {
-            "label": "REGEXP_REPLACE(str, pattern, replacement)",
-            "documentation": "Replace regex matches.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "pattern",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SORT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SORT(arr)",
+                "category": "Array Functions",
+                "documentation": "Sorts an array column.",
+                "related_functions": [
+                    "GREATEST",
+                    "LEAST",
+                    "ARRAY_CONTAINS",
+                    "ARRAY_CONTAINS_ANY",
+                    "ARRAY_CONTAINS_ALL"
+                ],
+                "return_type": "same as `arr`",
+                "returns": {
+                    "type": "same as `arr`",
+                    "documentation": "Returns a sorted array while preserving the input array type."
                 },
-                {
-                    "label": "replacement",
+                "parameters": [
+                    {
+                        "label": "arr",
+                        "type": "array",
+                        "documentation": "Input array or vector value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SOUNDEX": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SOUNDEX(str)",
+                "category": "String Functions",
+                "documentation": "Computes soundex phonetic code.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "REPLACE": [
-        {
-            "label": "REPLACE(str, search, replacement)",
-            "documentation": "Replace occurrences of substring.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "search",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "replacement",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "REVERSE": [
-        {
-            "label": "REVERSE(str)",
-            "documentation": "Reverse a string.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "RIGHT": [
-        {
-            "label": "RIGHT(str, n)",
-            "documentation": "Return rightmost N characters.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "n",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "ROUND": [
-        {
-            "label": "ROUND(num, [precision...])",
-            "documentation": "Rounds input number to nearest integer or specified decimal places.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                },
-                {
-                    "label": "precision",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "RPAD": [
-        {
-            "label": "RPAD(str, width, [fill])",
-            "documentation": "Right-pad string to width.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "width",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                },
-                {
-                    "label": "fill",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
-                }
-            ]
-        }
-    ],
-    "RTRIM": [
-        {
-            "label": "RTRIM(str, [chars])",
-            "documentation": "Trim trailing characters.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                },
-                {
-                    "label": "chars",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
-                }
-            ]
-        }
-    ],
-    "SHA1": [
-        {
-            "label": "SHA1(val)",
-            "documentation": "SHA-1 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "SHA224": [
-        {
-            "label": "SHA224(val)",
-            "documentation": "SHA-224 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "SHA256": [
-        {
-            "label": "SHA256(val)",
-            "documentation": "SHA-256 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "SHA384": [
-        {
-            "label": "SHA384(val)",
-            "documentation": "SHA-384 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "SHA512": [
-        {
-            "label": "SHA512(val)",
-            "documentation": "SHA-512 hash.",
-            "parameters": [
-                {
-                    "label": "val",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                }
-            ]
-        }
-    ],
-    "SIGN": [
-        {
-            "label": "SIGN(num)",
-            "documentation": "Sign of number (-1, 0, 1).",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "SORT": [
-        {
-            "label": "SORT(arr)",
-            "documentation": "Returns a sorted version of an array column.",
-            "parameters": [
-                {
-                    "label": "arr",
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SPLIT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SPLIT(str, [delimiter], [limit])",
+                "category": "String Functions",
+                "documentation": "Split string into array.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP"
+                ],
+                "return_type": "array",
+                "returns": {
                     "type": "array",
-                    "documentation": "Argument of type `array`."
-                }
-            ]
-        }
-    ],
-    "SOUNDEX": [
-        {
-            "label": "SOUNDEX(str)",
-            "documentation": "Return Soundex phonetic code.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "SPLIT": [
-        {
-            "label": "SPLIT(str, [delimiter], [limit])",
-            "documentation": "Split string into array.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `array`."
                 },
-                {
-                    "label": "delimiter",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "delimiter",
+                        "type": "varchar",
+                        "documentation": "Separator used to split the input string. Optional."
+                    },
+                    {
+                        "label": "limit",
+                        "type": "integer",
+                        "documentation": "Maximum number of items or splits to return. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "SQRT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SQRT(num)",
+                "category": "Numeric Functions",
+                "documentation": "Calculates the square root of the input number.",
+                "related_functions": [
+                    "ABS",
+                    "CEIL",
+                    "CEILING",
+                    "FLOOR",
+                    "ROUND"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
                 },
-                {
-                    "label": "limit",
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric input value."
+                    }
+                ]
+            }
+        ]
+    },
+    "SUBSTRING": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "SUBSTRING(str, start)",
+                "category": "String Functions",
+                "documentation": "Extracts a substring starting at the given position, with an optional length.",
+                "related_functions": [
+                    "LEFT",
+                    "RIGHT",
+                    "POSITION",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string to extract a substring from."
+                    },
+                    {
+                        "label": "start",
+                        "type": "integer",
+                        "documentation": "One-based starting position of the substring."
+                    }
+                ]
+            }
+        ]
+    },
+    "TIMEDIFF": {
+        "aliases": [
+            "TIME_DIFF"
+        ],
+        "overloads": [
+            {
+                "label": "TIMEDIFF(time1, time2)",
+                "category": "Date & Time Functions",
+                "documentation": "Difference between two times.",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`. Optional."
-                }
-            ]
-        }
-    ],
-    "SQRT": [
-        {
-            "label": "SQRT(num)",
-            "documentation": "Returns square root of input number.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                }
-            ]
-        }
-    ],
-    "SUBSTRING": [
-        {
-            "label": "SUBSTRING(str, start)",
-            "documentation": "Returns substring starting at position with optional length.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "start",
+                "parameters": [
+                    {
+                        "label": "time1",
+                        "type": "temporal",
+                        "documentation": "First date, time, or timestamp value."
+                    },
+                    {
+                        "label": "time2",
+                        "type": "temporal",
+                        "documentation": "Second date, time, or timestamp value."
+                    }
+                ]
+            }
+        ]
+    },
+    "TIME_BUCKET": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "TIME_BUCKET(magnitude, units, date)",
+                "category": "Date & Time Functions",
+                "documentation": "Bucket date into fixed-width intervals.",
+                "related_functions": [
+                    "DATE_TRUNC",
+                    "DATEPART",
+                    "DATEDIFF",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
+                },
+                "parameters": [
+                    {
+                        "label": "magnitude",
+                        "type": "number",
+                        "documentation": "Bucket width for each interval."
+                    },
+                    {
+                        "label": "units",
+                        "type": "varchar",
+                        "documentation": "Unit for the bucket width, such as `minute`, `hour`, or `day`. Must be a constant expression."
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    }
+                ]
+            }
+        ]
+    },
+    "TITLE": {
+        "aliases": [
+            "TITLECASE"
+        ],
+        "overloads": [
+            {
+                "label": "TITLE(str)",
+                "category": "String Functions",
+                "documentation": "Convert string to title case.",
+                "related_functions": [
+                    "INITCAP",
+                    "UPPER",
+                    "LOWER",
+                    "LENGTH",
+                    "TRIM"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "TRIM": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "TRIM(str, [chars])",
+                "category": "String Functions",
+                "documentation": "Trim leading and trailing characters.",
+                "related_functions": [
+                    "LTRIM",
+                    "RTRIM",
+                    "REPLACE",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "chars",
+                        "type": "varchar",
+                        "documentation": "Characters to remove from the input string. Optional."
+                    }
+                ]
+            }
+        ]
+    },
+    "TRUNCATE": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "TRUNCATE(num, [scale...])",
+                "category": "Numeric Functions",
+                "documentation": "Truncate towards zero.",
+                "related_functions": [
+                    "ROUND",
+                    "CEILING",
+                    "FLOOR",
+                    "ABS",
+                    "CEIL"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric value to truncate."
+                    },
+                    {
+                        "label": "scale",
+                        "type": "integer",
+                        "documentation": "Decimal scale to keep before truncating toward zero. Optional. Can be repeated."
+                    }
+                ],
+                "notes": "Truncation is performed toward zero rather than toward negative infinity."
+            }
+        ]
+    },
+    "UNIXTIME": {
+        "aliases": [
+            "TO_UNIXTIME"
+        ],
+        "overloads": [
+            {
+                "label": "UNIXTIME(date)",
+                "category": "Date & Time Functions",
+                "documentation": "Convert TIMESTAMP to Unix epoch seconds.",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE"
+                ],
+                "return_type": "integer",
+                "returns": {
                     "type": "integer",
-                    "documentation": "Argument of type `integer`."
-                }
-            ]
-        }
-    ],
-    "TIMEDIFF": [
-        {
-            "label": "TIMEDIFF(time1, time2)",
-            "documentation": "Difference between two times.",
-            "parameters": [
-                {
-                    "label": "time1",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
+                    "documentation": "Returns the computed result as `integer`."
                 },
-                {
-                    "label": "time2",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "TIME_BUCKET": [
-        {
-            "label": "TIME_BUCKET(magnitude, units, date)",
-            "documentation": "Bucket date into fixed-width intervals.",
-            "parameters": [
-                {
-                    "label": "magnitude",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
+                "parameters": [
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    }
+                ]
+            }
+        ]
+    },
+    "UPPER": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "UPPER(str)",
+                "category": "String Functions",
+                "documentation": "Transforms the input string to uppercase.",
+                "related_functions": [
+                    "LOWER",
+                    "TITLE",
+                    "INITCAP",
+                    "LENGTH",
+                    "TRIM"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "units",
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    }
+                ]
+            }
+        ]
+    },
+    "USER": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "USER()",
+                "category": "Utility Functions",
+                "documentation": "Current user name.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "TIME_DIFF": [
-        {
-            "label": "TIME_DIFF(time1, time2)",
-            "documentation": "Difference between two times. Alias for `TIMEDIFF`.",
-            "parameters": [
-                {
-                    "label": "time1",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
+                "parameters": []
+            }
+        ]
+    },
+    "UTC_TIMESTAMP": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "UTC_TIMESTAMP()",
+                "category": "Utility Functions",
+                "documentation": "Current UTC timestamp.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
                 },
-                {
-                    "label": "time2",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "TITLE": [
-        {
-            "label": "TITLE(str)",
-            "documentation": "Convert string to title case.",
-            "parameters": [
-                {
-                    "label": "str",
+                "parameters": []
+            }
+        ]
+    },
+    "VERSION": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "VERSION()",
+                "category": "Utility Functions",
+                "documentation": "Database version string.",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "varchar",
+                "returns": {
                     "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "TITLECASE": [
-        {
-            "label": "TITLECASE(str)",
-            "documentation": "Convert string to title case. Alias for `TITLE`.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "TO_UNIXTIME": [
-        {
-            "label": "TO_UNIXTIME(date)",
-            "documentation": "Convert TIMESTAMP to Unix epoch seconds. Alias for `UNIXTIME`.",
-            "parameters": [
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "TRIM": [
-        {
-            "label": "TRIM(str, [chars])",
-            "documentation": "Trim leading and trailing characters.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
+                    "documentation": "Returns the computed result as `varchar`."
                 },
-                {
-                    "label": "chars",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Optional."
-                }
-            ]
-        }
-    ],
-    "TRUNCATE": [
-        {
-            "label": "TRUNCATE(num, [scale...])",
-            "documentation": "Truncate towards zero.",
-            "parameters": [
-                {
-                    "label": "num",
-                    "type": "number",
-                    "documentation": "Argument of type `number`."
-                },
-                {
-                    "label": "scale",
-                    "type": "integer",
-                    "documentation": "Argument of type `integer`. Can be repeated."
-                }
-            ]
-        }
-    ],
-    "TRY_ARRAY": [
-        {
-            "label": "TRY_ARRAY(expr, type_name)",
-            "documentation": "Like ARRAY but returns null on type conversion failure.",
-            "parameters": [
-                {
-                    "label": "expr",
-                    "type": "any",
-                    "documentation": "Argument of type `any`."
-                },
-                {
-                    "label": "type_name",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`. Must be a constant expression."
-                }
-            ]
-        }
-    ],
-    "UNIXTIME": [
-        {
-            "label": "UNIXTIME(date)",
-            "documentation": "Convert TIMESTAMP to Unix epoch seconds.",
-            "parameters": [
-                {
-                    "label": "date",
-                    "type": "temporal",
-                    "documentation": "Argument of type `temporal`."
-                }
-            ]
-        }
-    ],
-    "UPPER": [
-        {
-            "label": "UPPER(str)",
-            "documentation": "Returns input string with all characters in uppercase.",
-            "parameters": [
-                {
-                    "label": "str",
-                    "type": "varchar",
-                    "documentation": "Argument of type `varchar`."
-                }
-            ]
-        }
-    ],
-    "USER": [
-        {
-            "label": "USER()",
-            "documentation": "Current user name.",
-            "parameters": []
-        }
-    ],
-    "VERSION": [
-        {
-            "label": "VERSION()",
-            "documentation": "Database version string.",
-            "parameters": []
-        }
-    ]
+                "parameters": []
+            }
+        ]
+    }
 }

@@ -65,9 +65,6 @@
                   "ABS": "reference/sql/functions/abs.md"
                 },
                 {
-                  "ARRAY": "reference/sql/functions/array.md"
-                },
-                {
                   "ARRAY_CONTAINS": "reference/sql/functions/array_contains.md"
                 },
                 {
@@ -90,9 +87,6 @@
                 },
                 {
                   "BASE85_ENCODE": "reference/sql/functions/base85_encode.md"
-                },
-                {
-                  "CASE": "reference/sql/functions/case.md"
                 },
                 {
                   "CEILING": "reference/sql/functions/ceiling.md"
@@ -137,12 +131,6 @@
                   "DATEPART": "reference/sql/functions/datepart.md"
                 },
                 {
-                  "DATETRUNC": "reference/sql/functions/datetrunc.md"
-                },
-                {
-                  "DATE_DIFF": "reference/sql/functions/date_diff.md"
-                },
-                {
                   "DATE_FORMAT": "reference/sql/functions/date_format.md"
                 },
                 {
@@ -159,9 +147,6 @@
                 },
                 {
                   "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"
-                },
-                {
-                  "GET_STRING": "reference/sql/functions/get_string.md"
                 },
                 {
                   "GREATEST": "reference/sql/functions/greatest.md"
@@ -234,9 +219,6 @@
                 },
                 {
                   "NULLIF": "reference/sql/functions/nullif.md"
-                },
-                {
-                  "PASSTHRU": "reference/sql/functions/passthru.md"
                 },
                 {
                   "PHI": "reference/sql/functions/phi.md"
@@ -317,25 +299,13 @@
                   "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
                 },
                 {
-                  "TIME_DIFF": "reference/sql/functions/time_diff.md"
-                },
-                {
                   "TITLE": "reference/sql/functions/title.md"
-                },
-                {
-                  "TITLECASE": "reference/sql/functions/titlecase.md"
-                },
-                {
-                  "TO_UNIXTIME": "reference/sql/functions/to_unixtime.md"
                 },
                 {
                   "TRIM": "reference/sql/functions/trim.md"
                 },
                 {
                   "TRUNCATE": "reference/sql/functions/truncate.md"
-                },
-                {
-                  "TRY_ARRAY": "reference/sql/functions/try_array.md"
                 },
                 {
                   "UNIXTIME": "reference/sql/functions/unixtime.md"
@@ -345,6 +315,9 @@
                 },
                 {
                   "USER": "reference/sql/functions/user.md"
+                },
+                {
+                  "UTC_TIMESTAMP": "reference/sql/functions/utc_timestamp.md"
                 },
                 {
                   "VERSION": "reference/sql/functions/version.md"

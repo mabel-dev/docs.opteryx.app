@@ -7,4 +7,18 @@ description: Convert TIMESTAMP to Unix epoch seconds.
 
 Convert TIMESTAMP to Unix epoch seconds.
 
-<!-- more details to be added -->
+**Category:** Date & Time Functions
+
+## Syntax
+
+```
+UNIXTIME(date)
+```
+
+## Arguments
+
+- **date**: Date, time, or timestamp value to evaluate.
+
+## Returns
+
+Returns the computed result as `integer`.

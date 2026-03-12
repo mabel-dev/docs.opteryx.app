@@ -7,4 +7,19 @@ description: Truncate towards zero.
 
 Truncate towards zero.
 
-<!-- more details to be added -->
+**Category:** Numeric Functions
+
+## Syntax
+
+```
+TRUNCATE(num, [scale...])
+```
+
+## Arguments
+
+- **num**: Numeric value to truncate.
+- **scale**: Decimal scale to keep before truncating toward zero. Optional. Can be repeated.
+
+## Returns
+
+Returns the computed result as `double`.

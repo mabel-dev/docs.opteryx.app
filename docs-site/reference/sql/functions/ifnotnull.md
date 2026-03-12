@@ -1,10 +1,25 @@
 ---
 title: IFNOTNULL — Opteryx Function
-description: Returns second argument if first argument is not null, otherwise null.
+description: Selects the second argument when the first argument is not null; otherwise yields null.
 ---
 
 # IFNOTNULL
 
-Returns second argument if first argument is not null, otherwise null.
+Selects the second argument when the first argument is not null; otherwise yields null.
 
-<!-- more details to be added -->
+**Category:** Utility Functions
+
+## Syntax
+
+```
+IFNOTNULL(value, result)
+```
+
+## Arguments
+
+- **value**: Primary input value.
+- **result**: Value returned when the condition or null check succeeds.
+
+## Returns
+
+Returns the result value using a type compatible with the supplied arguments when the first argument is not null.

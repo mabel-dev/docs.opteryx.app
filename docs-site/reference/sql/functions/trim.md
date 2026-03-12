@@ -7,4 +7,19 @@ description: Trim leading and trailing characters.
 
 Trim leading and trailing characters.
 
-<!-- more details to be added -->
+**Category:** String Functions
+
+## Syntax
+
+```
+TRIM(str, [chars])
+```
+
+## Arguments
+
+- **str**: Input string value.
+- **chars**: Characters to remove from the input string. Optional.
+
+## Returns
+
+Returns the computed result as `varchar`.
