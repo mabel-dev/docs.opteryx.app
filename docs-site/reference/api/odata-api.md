@@ -47,7 +47,7 @@ resp = requests.get(url, auth=("", "YOUR_TOKEN_HERE"))
 print(resp.status_code, resp.json())
 ```
 
-Tokens (personal access tokens / API keys) are created and managed from Operyx Studio's Settings → API Tokens page. Use those tokens in `Authorization: Bearer` headers for long-lived programmatic access.
+Tokens (personal access tokens / API keys) are created and managed from Opteryx Studio's Settings → API Tokens page. Use those tokens in `Authorization: Bearer` headers for long-lived programmatic access.
 
 ## OData v4 Query Parameters (Phase 1)
 
