@@ -1,11 +1,11 @@
 ---
 title: COSINE_DISTANCE — Opteryx Function
-description: Cosine distance over numeric vectors or lexical text inputs.
+description: Cosine distance over numeric vectors or semantic text inputs.
 ---
 
 # COSINE_DISTANCE
 
-Cosine distance over numeric vectors or lexical text inputs.
+Cosine distance over numeric vectors or semantic text inputs.
 
 **Category:** Vector / Embedding Functions
 

@@ -1,11 +1,11 @@
 ---
 title: COSINE_SIMILARITY — Opteryx Function
-description: Cosine similarity over numeric vectors or lexical text inputs.
+description: Cosine similarity over numeric vectors or semantic text inputs.
 ---
 
 # COSINE_SIMILARITY
 
-Cosine similarity over numeric vectors or lexical text inputs.
+Cosine similarity over numeric vectors or semantic text inputs.
 
 **Category:** Vector / Embedding Functions
 

@@ -1,11 +1,11 @@
 ---
 title: RANDOM — Opteryx Function
-description: Generate random numbers.
+description: Computes uniform random float(s) in [0, 1).
 ---
 
 # RANDOM
 
-Generate random numbers.
+Computes uniform random float(s) in [0, 1).
 
 **Category:** Utility Functions
 
@@ -13,6 +13,10 @@ Generate random numbers.
 
 ```
 RANDOM(n)
+```
+
+```
+RANDOM()
 ```
 
 ## Arguments

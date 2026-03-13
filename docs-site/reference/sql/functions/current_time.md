@@ -12,7 +12,7 @@ Current time (SQL-92).
 ## Syntax
 
 ```
-CURRENT_TIME()
+CURRENT_TIME
 ```
 
 ## Returns

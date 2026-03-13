@@ -12,7 +12,7 @@ Trim leading and trailing characters.
 ## Syntax
 
 ```
-TRIM(str, [chars])
+TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)
 ```
 
 ## Arguments

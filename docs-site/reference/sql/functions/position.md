@@ -12,7 +12,7 @@ Find position of substring.
 ## Syntax
 
 ```
-POSITION(needle, haystack)
+POSITION(needle IN haystack)
 ```
 
 ## Arguments

@@ -7,11 +7,11 @@
                 "category": "Numeric Functions",
                 "documentation": "Calculates the absolute value of the input number.",
                 "related_functions": [
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
                     "ROUND",
-                    "TRUNC"
+                    "TRUNC",
+                    "SIGN"
                 ],
                 "return_type": "same as `num`",
                 "returns": {
@@ -276,7 +276,9 @@
         ]
     },
     "CEILING": {
-        "aliases": [],
+        "aliases": [
+            "CEIL"
+        ],
         "overloads": [
             {
                 "label": "CEILING(num, [scale...])",
@@ -285,9 +287,9 @@
                 "related_functions": [
                     "ROUND",
                     "FLOOR",
-                    "TRUNCATE",
+                    "TRUNC",
                     "ABS",
-                    "CEIL"
+                    "SIGN"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -322,7 +324,7 @@
                     "UPPER",
                     "LOWER",
                     "LENGTH",
-                    "TITLE"
+                    "INITCAP"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -351,7 +353,7 @@
                     "IFNOTNULL",
                     "NULLIF",
                     "IIF",
-                    "RAND"
+                    "RANDOM"
                 ],
                 "return_type": "compatible input type",
                 "returns": {
@@ -475,7 +477,7 @@
             {
                 "label": "COSINE_DISTANCE(arr, vec)",
                 "category": "Vector / Embedding Functions",
-                "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
+                "documentation": "Cosine distance over numeric vectors or semantic text inputs.",
                 "related_functions": [
                     "COSINE_SIMILARITY",
                     "EMBED"
@@ -501,7 +503,7 @@
             {
                 "label": "COSINE_DISTANCE(arr, vec)",
                 "category": "Vector / Embedding Functions",
-                "documentation": "Cosine distance over numeric vectors or lexical text inputs.",
+                "documentation": "Cosine distance over numeric vectors or semantic text inputs.",
                 "related_functions": [
                     "COSINE_SIMILARITY",
                     "EMBED"
@@ -532,7 +534,7 @@
             {
                 "label": "COSINE_SIMILARITY(arr, vec)",
                 "category": "Vector / Embedding Functions",
-                "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
+                "documentation": "Cosine similarity over numeric vectors or semantic text inputs.",
                 "related_functions": [
                     "COSINE_DISTANCE",
                     "EMBED"
@@ -558,7 +560,7 @@
             {
                 "label": "COSINE_SIMILARITY(arr, vec)",
                 "category": "Vector / Embedding Functions",
-                "documentation": "Cosine similarity over numeric vectors or lexical text inputs.",
+                "documentation": "Cosine similarity over numeric vectors or semantic text inputs.",
                 "related_functions": [
                     "COSINE_DISTANCE",
                     "EMBED"
@@ -587,7 +589,7 @@
         "aliases": [],
         "overloads": [
             {
-                "label": "CURRENT_DATE()",
+                "label": "CURRENT_DATE",
                 "category": "Date & Time Functions",
                 "documentation": "Current date (SQL-92).",
                 "related_functions": [
@@ -602,7 +604,8 @@
                     "type": "date",
                     "documentation": "Returns the computed result as `date`."
                 },
-                "parameters": []
+                "parameters": [],
+                "notes": "Canonical SQL-92 form is `CURRENT_DATE`. Opteryx also accepts `CURRENT_DATE()`."
             }
         ]
     },
@@ -610,7 +613,7 @@
         "aliases": [],
         "overloads": [
             {
-                "label": "CURRENT_TIME()",
+                "label": "CURRENT_TIME",
                 "category": "Date & Time Functions",
                 "documentation": "Current time (SQL-92).",
                 "related_functions": [
@@ -625,7 +628,8 @@
                     "type": "time",
                     "documentation": "Returns the computed result as `time`."
                 },
-                "parameters": []
+                "parameters": [],
+                "notes": "Canonical SQL-92 form is `CURRENT_TIME`. Opteryx also accepts `CURRENT_TIME()`."
             }
         ]
     },
@@ -635,7 +639,7 @@
         ],
         "overloads": [
             {
-                "label": "CURRENT_TIMESTAMP()",
+                "label": "CURRENT_TIMESTAMP",
                 "category": "Date & Time Functions",
                 "documentation": "Current timestamp (SQL-92).",
                 "related_functions": [
@@ -650,7 +654,8 @@
                     "type": "timestamp",
                     "documentation": "Returns the computed result as `timestamp`."
                 },
-                "parameters": []
+                "parameters": [],
+                "notes": "Canonical SQL-92 form is `CURRENT_TIMESTAMP`. Opteryx also accepts `CURRENT_TIMESTAMP()`."
             }
         ]
     },
@@ -687,8 +692,8 @@
                 "category": "Date & Time Functions",
                 "documentation": "Difference between two dates in the specified unit.",
                 "related_functions": [
-                    "DATEPART",
-                    "DATE_TRUNC",
+                    "EXTRACT",
+                    "TRUNC",
                     "TIME_BUCKET",
                     "CURRENT_DATE",
                     "CURRENT_TIME"
@@ -715,41 +720,6 @@
                         "documentation": "Ending date, time, or timestamp value."
                     }
                 ]
-            }
-        ]
-    },
-    "DATEPART": {
-        "aliases": [],
-        "overloads": [
-            {
-                "label": "DATEPART(part, date)",
-                "category": "Date & Time Functions",
-                "documentation": "Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.",
-                "related_functions": [
-                    "DATE_TRUNC",
-                    "DATEDIFF",
-                    "TIME_BUCKET",
-                    "CURRENT_DATE",
-                    "CURRENT_TIME"
-                ],
-                "return_type": "integer | double | date",
-                "returns": {
-                    "type": "integer | double | date",
-                    "documentation": "Returns `double` for parts such as `epoch` and `julian`, `date` for `date`, and `integer` for most other parts."
-                },
-                "parameters": [
-                    {
-                        "label": "part",
-                        "type": "varchar",
-                        "documentation": "Date or time part to extract, such as `year`, `month`, `day`, or `epoch`. Must be a constant expression."
-                    },
-                    {
-                        "label": "date",
-                        "type": "temporal",
-                        "documentation": "Date, time, or timestamp value to evaluate."
-                    }
-                ],
-                "notes": "Return type depends on `part`: `epoch` and `julian` produce `double`, `date` produces `date`, and most other parts produce `integer`."
             }
         ]
     },
@@ -787,42 +757,6 @@
             }
         ]
     },
-    "DATE_TRUNC": {
-        "aliases": [
-            "DATETRUNC"
-        ],
-        "overloads": [
-            {
-                "label": "DATE_TRUNC(part, date)",
-                "category": "Date & Time Functions",
-                "documentation": "Truncate date/timestamp to specified granularity.",
-                "related_functions": [
-                    "DATEPART",
-                    "TIME_BUCKET",
-                    "DATEDIFF",
-                    "CURRENT_DATE",
-                    "CURRENT_TIME"
-                ],
-                "return_type": "timestamp",
-                "returns": {
-                    "type": "timestamp",
-                    "documentation": "Returns the computed result as `timestamp`."
-                },
-                "parameters": [
-                    {
-                        "label": "part",
-                        "type": "varchar",
-                        "documentation": "Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression."
-                    },
-                    {
-                        "label": "date",
-                        "type": "temporal",
-                        "documentation": "Date, time, or timestamp value to evaluate."
-                    }
-                ]
-            }
-        ]
-    },
     "E": {
         "aliases": [],
         "overloads": [
@@ -832,10 +766,10 @@
                 "documentation": "Euler's number e.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -873,6 +807,41 @@
             }
         ]
     },
+    "EXTRACT": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "EXTRACT(part FROM date)",
+                "category": "Date & Time Functions",
+                "documentation": "Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.",
+                "related_functions": [
+                    "TRUNC",
+                    "DATEDIFF",
+                    "TIME_BUCKET",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "integer | double | date",
+                "returns": {
+                    "type": "integer | double | date",
+                    "documentation": "Returns `double` for parts such as `epoch` and `julian`, `date` for `date`, and `integer` for most other parts."
+                },
+                "parameters": [
+                    {
+                        "label": "part",
+                        "type": "varchar",
+                        "documentation": "Date or time part to extract, such as `year`, `month`, `day`, or `epoch`. Must be a constant expression."
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate."
+                    }
+                ],
+                "notes": "Canonical SQL-92 form is `EXTRACT(part FROM date)`. Return type depends on `part`: `epoch` and `julian` produce `double`, `date` produces `date`, and most other parts produce `integer`."
+            }
+        ]
+    },
     "FLOOR": {
         "aliases": [],
         "overloads": [
@@ -883,9 +852,9 @@
                 "related_functions": [
                     "ROUND",
                     "CEILING",
-                    "TRUNCATE",
+                    "TRUNC",
                     "ABS",
-                    "CEIL"
+                    "SIGN"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1094,7 +1063,7 @@
                     "COALESCE",
                     "NULLIF",
                     "IIF",
-                    "RAND"
+                    "RANDOM"
                 ],
                 "return_type": "compatible input type",
                 "returns": {
@@ -1128,7 +1097,7 @@
                     "IFNOTNULL",
                     "NULLIF",
                     "IIF",
-                    "RAND"
+                    "RANDOM"
                 ],
                 "return_type": "compatible input type",
                 "returns": {
@@ -1162,7 +1131,7 @@
                     "IFNULL",
                     "IFNOTNULL",
                     "NULLIF",
-                    "RAND"
+                    "RANDOM"
                 ],
                 "return_type": "same as `true_value`",
                 "returns": {
@@ -1190,7 +1159,10 @@
         ]
     },
     "INITCAP": {
-        "aliases": [],
+        "aliases": [
+            "TITLE",
+            "TITLECASE"
+        ],
         "overloads": [
             {
                 "label": "INITCAP(str)",
@@ -1200,8 +1172,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "TRIM"
+                    "TRIM",
+                    "LTRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -1281,8 +1253,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -1314,9 +1286,9 @@
                 "related_functions": [
                     "UPPER",
                     "LOWER",
-                    "TITLE",
                     "INITCAP",
-                    "TRIM"
+                    "TRIM",
+                    "LTRIM"
                 ],
                 "return_type": "integer",
                 "returns": {
@@ -1344,8 +1316,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "integer",
                 "returns": {
@@ -1376,10 +1348,10 @@
                 "documentation": "Natural logarithm.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1405,10 +1377,10 @@
                 "documentation": "Logarithm with arbitrary base.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1439,10 +1411,10 @@
                 "documentation": "Base-10 logarithm.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1468,10 +1440,10 @@
                 "documentation": "Base-2 logarithm.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1497,10 +1469,10 @@
                 "documentation": "Transforms the input string to lowercase.",
                 "related_functions": [
                     "UPPER",
-                    "TITLE",
                     "INITCAP",
                     "LENGTH",
-                    "TRIM"
+                    "TRIM",
+                    "LTRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -1528,8 +1500,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -1587,6 +1559,41 @@
                         "documentation": "Characters to remove from the input string. Optional."
                     }
                 ]
+            }
+        ]
+    },
+    "MATCH": {
+        "aliases": [],
+        "overloads": [
+            {
+                "label": "MATCH(str) AGAINST(pattern)",
+                "category": "String Functions",
+                "documentation": "Full-text match.",
+                "related_functions": [
+                    "LENGTH",
+                    "UPPER",
+                    "LOWER",
+                    "INITCAP",
+                    "TRIM"
+                ],
+                "return_type": "boolean",
+                "returns": {
+                    "type": "boolean",
+                    "documentation": "Returns `true` or `false` based on whether the function's condition is satisfied."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string value."
+                    },
+                    {
+                        "label": "pattern",
+                        "type": "varchar",
+                        "documentation": "Pattern string used to format, search, or match values."
+                    }
+                ],
+                "notes": "Canonical form is `MATCH(str) AGAINST(pattern)`. Opteryx normalizes this syntax to an internal helper."
             }
         ]
     },
@@ -1661,7 +1668,7 @@
                     "IFNOTNULL",
                     "COALESCE",
                     "IIF",
-                    "RAND"
+                    "RANDOM"
                 ],
                 "return_type": "same as `value`",
                 "returns": {
@@ -1692,10 +1699,10 @@
                 "documentation": "Golden ratio \u03c6.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1715,10 +1722,10 @@
                 "documentation": "Mathematical constant \u03c0.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1733,7 +1740,7 @@
         "aliases": [],
         "overloads": [
             {
-                "label": "POSITION(needle, haystack)",
+                "label": "POSITION(needle IN haystack)",
                 "category": "String Functions",
                 "documentation": "Find position of substring.",
                 "related_functions": [
@@ -1759,7 +1766,8 @@
                         "type": "varchar",
                         "documentation": "String to search within."
                     }
-                ]
+                ],
+                "notes": "Canonical SQL-92 form is `POSITION(needle IN haystack)`. Opteryx also accepts `POSITION(needle, haystack)`."
             }
         ]
     },
@@ -1772,10 +1780,10 @@
                 "documentation": "Raise base to exponent (SQL-92).",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -1798,12 +1806,14 @@
         ]
     },
     "RANDOM": {
-        "aliases": [],
+        "aliases": [
+            "RAND"
+        ],
         "overloads": [
             {
                 "label": "RANDOM(n)",
                 "category": "Utility Functions",
-                "documentation": "Generate random numbers.",
+                "documentation": "Computes uniform random float(s) in [0, 1).",
                 "related_functions": [
                     "COALESCE",
                     "IFNULL",
@@ -1823,6 +1833,25 @@
                         "documentation": "Number of random values to generate."
                     }
                 ],
+                "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
+            },
+            {
+                "label": "RANDOM()",
+                "category": "Utility Functions",
+                "documentation": "Computes uniform random float(s) in [0, 1).",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "parameters": [],
                 "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
             }
         ]
@@ -1868,8 +1897,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "blob",
                 "returns": {
@@ -1946,8 +1975,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -1975,8 +2004,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -2008,9 +2037,9 @@
                 "related_functions": [
                     "CEILING",
                     "FLOOR",
-                    "TRUNCATE",
+                    "TRUNC",
                     "ABS",
-                    "CEIL"
+                    "SIGN"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -2044,8 +2073,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -2260,10 +2289,10 @@
                 "documentation": "Sign of number (-1, 0, 1).",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "integer",
                 "returns": {
@@ -2320,8 +2349,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {
@@ -2349,8 +2378,8 @@
                     "LENGTH",
                     "UPPER",
                     "LOWER",
-                    "TITLE",
-                    "INITCAP"
+                    "INITCAP",
+                    "TRIM"
                 ],
                 "return_type": "array",
                 "returns": {
@@ -2386,10 +2415,10 @@
                 "documentation": "Calculates the square root of the input number.",
                 "related_functions": [
                     "ABS",
-                    "CEIL",
                     "CEILING",
                     "FLOOR",
-                    "ROUND"
+                    "ROUND",
+                    "TRUNC"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -2410,7 +2439,7 @@
         "aliases": [],
         "overloads": [
             {
-                "label": "SUBSTRING(str, start)",
+                "label": "SUBSTRING(str FROM start)",
                 "category": "String Functions",
                 "documentation": "Extracts a substring starting at the given position, with an optional length.",
                 "related_functions": [
@@ -2436,7 +2465,43 @@
                         "type": "integer",
                         "documentation": "One-based starting position of the substring."
                     }
-                ]
+                ],
+                "notes": "Canonical SQL-92 form is `SUBSTRING(str FROM start FOR length)`. Opteryx also accepts `SUBSTRING(str[, start[, length]])`."
+            },
+            {
+                "label": "SUBSTRING(str FROM start FOR length)",
+                "category": "String Functions",
+                "documentation": "Extracts a substring starting at the given position, with an optional length.",
+                "related_functions": [
+                    "LEFT",
+                    "RIGHT",
+                    "POSITION",
+                    "LENGTH",
+                    "UPPER"
+                ],
+                "return_type": "varchar",
+                "returns": {
+                    "type": "varchar",
+                    "documentation": "Returns the computed result as `varchar`."
+                },
+                "parameters": [
+                    {
+                        "label": "str",
+                        "type": "varchar",
+                        "documentation": "Input string to extract a substring from."
+                    },
+                    {
+                        "label": "start",
+                        "type": "integer",
+                        "documentation": "One-based starting position of the substring."
+                    },
+                    {
+                        "label": "length",
+                        "type": "integer",
+                        "documentation": "Integer input value."
+                    }
+                ],
+                "notes": "Canonical SQL-92 form is `SUBSTRING(str FROM start FOR length)`. Opteryx also accepts `SUBSTRING(str[, start[, length]])`."
             }
         ]
     },
@@ -2484,8 +2549,8 @@
                 "category": "Date & Time Functions",
                 "documentation": "Bucket date into fixed-width intervals.",
                 "related_functions": [
-                    "DATE_TRUNC",
-                    "DATEPART",
+                    "TRUNC",
+                    "EXTRACT",
                     "DATEDIFF",
                     "CURRENT_DATE",
                     "CURRENT_TIME"
@@ -2515,42 +2580,11 @@
             }
         ]
     },
-    "TITLE": {
-        "aliases": [
-            "TITLECASE"
-        ],
-        "overloads": [
-            {
-                "label": "TITLE(str)",
-                "category": "String Functions",
-                "documentation": "Convert string to title case.",
-                "related_functions": [
-                    "INITCAP",
-                    "UPPER",
-                    "LOWER",
-                    "LENGTH",
-                    "TRIM"
-                ],
-                "return_type": "varchar",
-                "returns": {
-                    "type": "varchar",
-                    "documentation": "Returns the computed result as `varchar`."
-                },
-                "parameters": [
-                    {
-                        "label": "str",
-                        "type": "varchar",
-                        "documentation": "Input string value."
-                    }
-                ]
-            }
-        ]
-    },
     "TRIM": {
         "aliases": [],
         "overloads": [
             {
-                "label": "TRIM(str, [chars])",
+                "label": "TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)",
                 "category": "String Functions",
                 "documentation": "Trim leading and trailing characters.",
                 "related_functions": [
@@ -2576,23 +2610,26 @@
                         "type": "varchar",
                         "documentation": "Characters to remove from the input string. Optional."
                     }
-                ]
+                ],
+                "notes": "Canonical SQL-92 form is `TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)`. Opteryx also accepts `TRIM(str[, chars])` as well as `LTRIM` and `RTRIM`."
             }
         ]
     },
-    "TRUNCATE": {
-        "aliases": [],
+    "TRUNC": {
+        "aliases": [
+            "TRUNCATE"
+        ],
         "overloads": [
             {
-                "label": "TRUNCATE(num, [scale...])",
+                "label": "TRUNC(num, [scale...])",
                 "category": "Numeric Functions",
-                "documentation": "Truncate towards zero.",
+                "documentation": "Truncates a numeric value toward zero at the requested scale.",
                 "related_functions": [
                     "ROUND",
                     "CEILING",
                     "FLOOR",
                     "ABS",
-                    "CEIL"
+                    "SIGN"
                 ],
                 "return_type": "double",
                 "returns": {
@@ -2612,6 +2649,36 @@
                     }
                 ],
                 "notes": "Truncation is performed toward zero rather than toward negative infinity."
+            },
+            {
+                "label": "TRUNC(value, unit)",
+                "category": "Date & Time Functions",
+                "documentation": "Truncates a temporal value to the start of the specified unit.",
+                "related_functions": [
+                    "EXTRACT",
+                    "TIME_BUCKET",
+                    "DATEDIFF",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "timestamp",
+                "returns": {
+                    "type": "timestamp",
+                    "documentation": "Returns the computed result as `timestamp`."
+                },
+                "parameters": [
+                    {
+                        "label": "value",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to truncate."
+                    },
+                    {
+                        "label": "unit",
+                        "type": "varchar",
+                        "documentation": "Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression."
+                    }
+                ],
+                "notes": "Truncates to the start of the specified unit. The `unit` argument must be a constant expression."
             }
         ]
     },
@@ -2655,10 +2722,10 @@
                 "documentation": "Transforms the input string to uppercase.",
                 "related_functions": [
                     "LOWER",
-                    "TITLE",
                     "INITCAP",
                     "LENGTH",
-                    "TRIM"
+                    "TRIM",
+                    "LTRIM"
                 ],
                 "return_type": "varchar",
                 "returns": {

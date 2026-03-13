@@ -12,7 +12,7 @@ Current timestamp (SQL-92).
 ## Syntax
 
 ```
-CURRENT_TIMESTAMP()
+CURRENT_TIMESTAMP
 ```
 
 ## Returns

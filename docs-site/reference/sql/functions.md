@@ -22,18 +22,17 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [CONCAT](functions/concat) — Concatenates all input strings.
 - [CONCAT_WS](functions/concat_ws) — Concatenate with separator.
 - [CONNECTION_ID](functions/connection_id) — Current connection identifier.
-- [COSINE_DISTANCE](functions/cosine_distance) — Cosine distance over numeric vectors or lexical text inputs.
-- [COSINE_SIMILARITY](functions/cosine_similarity) — Cosine similarity over numeric vectors or lexical text inputs.
+- [COSINE_DISTANCE](functions/cosine_distance) — Cosine distance over numeric vectors or semantic text inputs.
+- [COSINE_SIMILARITY](functions/cosine_similarity) — Cosine similarity over numeric vectors or semantic text inputs.
 - [CURRENT_DATE](functions/current_date) — Current date (SQL-92).
 - [CURRENT_TIME](functions/current_time) — Current time (SQL-92).
 - [CURRENT_TIMESTAMP](functions/current_timestamp) — Current timestamp (SQL-92).
 - [DATABASE](functions/database) — Current database name.
 - [DATEDIFF](functions/datediff) — Difference between two dates in the specified unit.
-- [DATEPART](functions/datepart) — Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.
 - [DATE_FORMAT](functions/date_format) — Format date/timestamp as string.
-- [DATE_TRUNC](functions/date_trunc) — Truncate date/timestamp to specified granularity.
 - [E](functions/e) — Euler's number e.
 - [EMBED](functions/embed) — Embeds text using the configured engine embedding provider.
+- [EXTRACT](functions/extract) — Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.
 - [FLOOR](functions/floor) — Calculates the largest integer less than or equal to the input.
 - [FROM_UNIXTIME](functions/from_unixtime) — Convert Unix timestamp to TIMESTAMP.
 - [GREATEST](functions/greatest) — Determines the maximum element in an array column.
@@ -57,6 +56,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [LOWER](functions/lower) — Transforms the input string to lowercase.
 - [LPAD](functions/lpad) — Left-pad string to width.
 - [LTRIM](functions/ltrim) — Trim leading characters.
+- [MATCH](functions/match) — Full-text match.
 - [MD5](functions/md5) — MD5 hash.
 - [NORMAL](functions/normal) — Generate normally-distributed random numbers.
 - [NULLIF](functions/nullif) — Compares the two arguments and yields null when they are equal; otherwise preserves the first argument.
@@ -64,7 +64,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [PI](functions/pi) — Mathematical constant π.
 - [POSITION](functions/position) — Find position of substring.
 - [POWER](functions/power) — Raise base to exponent (SQL-92).
-- [RANDOM](functions/random) — Generate random numbers.
+- [RANDOM](functions/random) — Computes uniform random float(s) in [0, 1).
 - [RANDOM_STRING](functions/random_string) — Generate random strings.
 - [REGEXP_REPLACE](functions/regexp_replace) — Replace regex matches.
 - [REPLACE](functions/replace) — Replace occurrences of substring.
@@ -86,9 +86,8 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [SUBSTRING](functions/substring) — Extracts a substring starting at the given position, with an optional length.
 - [TIMEDIFF](functions/timediff) — Difference between two times.
 - [TIME_BUCKET](functions/time_bucket) — Bucket date into fixed-width intervals.
-- [TITLE](functions/title) — Convert string to title case.
 - [TRIM](functions/trim) — Trim leading and trailing characters.
-- [TRUNCATE](functions/truncate) — Truncate towards zero.
+- [TRUNC](functions/trunc) — Truncates a numeric value toward zero at the requested scale.
 - [UNIXTIME](functions/unixtime) — Convert TIMESTAMP to Unix epoch seconds.
 - [UPPER](functions/upper) — Transforms the input string to uppercase.
 - [USER](functions/user) — Current user name.

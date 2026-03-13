@@ -128,19 +128,16 @@
                   "DATEDIFF": "reference/sql/functions/datediff.md"
                 },
                 {
-                  "DATEPART": "reference/sql/functions/datepart.md"
-                },
-                {
                   "DATE_FORMAT": "reference/sql/functions/date_format.md"
-                },
-                {
-                  "DATE_TRUNC": "reference/sql/functions/date_trunc.md"
                 },
                 {
                   "E": "reference/sql/functions/e.md"
                 },
                 {
                   "EMBED": "reference/sql/functions/embed.md"
+                },
+                {
+                  "EXTRACT": "reference/sql/functions/extract.md"
                 },
                 {
                   "FLOOR": "reference/sql/functions/floor.md"
@@ -210,6 +207,9 @@
                 },
                 {
                   "LTRIM": "reference/sql/functions/ltrim.md"
+                },
+                {
+                  "MATCH": "reference/sql/functions/match.md"
                 },
                 {
                   "MD5": "reference/sql/functions/md5.md"
@@ -299,13 +299,10 @@
                   "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
                 },
                 {
-                  "TITLE": "reference/sql/functions/title.md"
-                },
-                {
                   "TRIM": "reference/sql/functions/trim.md"
                 },
                 {
-                  "TRUNCATE": "reference/sql/functions/truncate.md"
+                  "TRUNC": "reference/sql/functions/trunc.md"
                 },
                 {
                   "UNIXTIME": "reference/sql/functions/unixtime.md"

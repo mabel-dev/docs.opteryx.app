@@ -12,7 +12,7 @@ Current date (SQL-92).
 ## Syntax
 
 ```
-CURRENT_DATE()
+CURRENT_DATE
 ```
 
 ## Returns
