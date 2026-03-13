@@ -17,7 +17,8 @@ SOUNDEX(str)
 
 ## Arguments
 
-- **str: varchar** — Input string value.
+- **str** `varchar`
+    Input string value.
 
 ## Returns
 

@@ -17,8 +17,10 @@ RIGHT(str, n)
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **n: integer** — Integer control value used by the function.
+- **str** `varchar`
+    Input string value.
+- **n** `integer`
+    Integer control value used by the function.
 
 ## Returns
 

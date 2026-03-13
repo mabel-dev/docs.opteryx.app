@@ -17,9 +17,12 @@ CONCAT_WS(sep, str1, [more...])
 
 ## Arguments
 
-- **sep: varchar** — Separator inserted between each concatenated string.
-- **str1: varchar** — First string value to concatenate.
-- **more: varchar** — Additional string values to concatenate after `str1`. Optional. Can be repeated.
+- **sep** `varchar`
+    Separator inserted between each concatenated string.
+- **str1** `varchar`
+    First string value to concatenate.
+- **more** `varchar` [optional | variadic]
+    Additional string values to concatenate after `str1`. Optional. Can be repeated.
 
 ## Returns
 

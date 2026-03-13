@@ -17,7 +17,8 @@ HASH(val)
 
 ## Arguments
 
-- **val: any** — Input value.
+- **val** `any`
+    Input value.
 
 ## Returns
 

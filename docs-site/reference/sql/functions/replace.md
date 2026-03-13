@@ -17,9 +17,12 @@ REPLACE(str, search, replacement)
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **search: varchar** — Text or pattern to replace in the input.
-- **replacement: varchar** — Replacement text used for matched content.
+- **str** `varchar`
+    Input string value.
+- **search** `varchar`
+    Text or pattern to replace in the input.
+- **replacement** `varchar`
+    Replacement text used for matched content.
 
 ## Returns
 

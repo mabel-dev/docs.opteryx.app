@@ -21,10 +21,14 @@ TRUNC(value, unit)
 
 ## Arguments
 
-- **num: number** — Numeric value to truncate.
-- **scale: integer** — Decimal scale to keep before truncating toward zero. Optional. Can be repeated.
-- **value: temporal** — Date, time, or timestamp value to truncate.
-- **unit: varchar** — Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression.
+- **num** `number`
+    Numeric value to truncate.
+- **scale** `integer` [optional | variadic]
+    Decimal scale to keep before truncating toward zero. Optional. Can be repeated.
+- **value** `temporal`
+    Date, time, or timestamp value to truncate.
+- **unit** `varchar` [constant]
+    Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression.
 
 ## Returns
 

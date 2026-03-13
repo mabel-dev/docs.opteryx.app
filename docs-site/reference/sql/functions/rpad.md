@@ -17,9 +17,12 @@ RPAD(str, width, [fill])
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **width: integer** — Target width for the output.
-- **fill: varchar** — Padding text used when the input is shorter than the target width. Optional.
+- **str** `varchar`
+    Input string value.
+- **width** `integer`
+    Target width for the output.
+- **fill** `varchar` [optional]
+    Padding text used when the input is shorter than the target width. Optional.
 
 ## Returns
 

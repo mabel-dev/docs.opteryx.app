@@ -17,7 +17,8 @@ EMBED(text)
 
 ## Arguments
 
-- **text: varchar** — Input text to convert into an embedding vector.
+- **text** `varchar`
+    Input text to convert into an embedding vector.
 
 ## Returns
 

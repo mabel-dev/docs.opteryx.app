@@ -21,7 +21,8 @@ RANDOM()
 
 ## Arguments
 
-- **n: integer** — Number of random values to generate.
+- **n** `integer`
+    Number of random values to generate.
 
 ## Returns
 

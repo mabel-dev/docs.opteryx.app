@@ -17,7 +17,8 @@ BASE85_DECODE(blob)
 
 ## Arguments
 
-- **blob: any** — Binary or text value to encode, decode, or transform.
+- **blob** `any`
+    Binary or text value to encode, decode, or transform.
 
 ## Returns
 

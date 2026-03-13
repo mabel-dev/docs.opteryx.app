@@ -17,8 +17,10 @@ COALESCE(arg0, [args...])
 
 ## Arguments
 
-- **arg0: any** — First input value.
-- **args: any** — Additional input values. Optional. Can be repeated.
+- **arg0** `any`
+    First input value.
+- **args** `any` [optional | variadic]
+    Additional input values. Optional. Can be repeated.
 
 ## Returns
 

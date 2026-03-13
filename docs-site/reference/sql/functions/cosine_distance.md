@@ -21,8 +21,10 @@ COSINE_DISTANCE(arr, vec)
 
 ## Arguments
 
-- **arr: vector** — First vector or text input.
-- **vec: vector** — Second vector or text input.
+- **arr** `vector`
+    First vector or text input.
+- **vec** `vector`
+    Second vector or text input.
 
 ## Returns
 

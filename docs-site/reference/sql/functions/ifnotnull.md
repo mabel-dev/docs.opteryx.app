@@ -17,8 +17,10 @@ IFNOTNULL(value, result)
 
 ## Arguments
 
-- **value: any** — Primary input value.
-- **result: any** — Value returned when the condition or null check succeeds.
+- **value** `any`
+    Primary input value.
+- **result** `any`
+    Value returned when the condition or null check succeeds.
 
 ## Returns
 

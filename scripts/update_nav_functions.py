@@ -51,10 +51,37 @@ for name, info in funcs.items():
     if args:
         lines.append('## Arguments\n')
         for label, typ, doc_str in args:
-            if typ:
-                lines.append(f'- **{label}: {typ}** — {doc_str}')
+            flags=[]
+            # optional/constant/variadic flags can be stored in param metadata
+            optional = False
+            constant = False
+            variadic = False
+            # attempt to detect from JSON (some fields may exist)
+            for ov in overloads:
+                for param in ov.get('parameters',[]):
+                    if param.get('label')==label:
+                        if param.get('optional'):
+                            optional=True
+                        if param.get('constant_only'):
+                            constant=True
+                        if param.get('variadic'):
+                            variadic=True
+            if optional:
+                flags.append('optional')
+            if constant:
+                flags.append('constant')
+            if variadic:
+                flags.append('variadic')
+
+            typ_text = f'`{typ}`' if typ else ''
+            flag_text = ''
+            if flags:
+                flag_text = ' [' + ' | '.join(flags) + ']'
+
+            if typ_text:
+                lines.append(f'- **{label}** {typ_text}{flag_text}\n    {doc_str}')
             else:
-                lines.append(f'- **{label}** — {doc_str}')
+                lines.append(f'- **{label}**{flag_text}\n    {doc_str}')
         lines.append('')
 
     # returns
@@ -95,7 +122,15 @@ for name, info in funcs.items():
         lines.append('')
     filepath.write_text('\n'.join(lines))
 
-# regenerate index list
+# regenerate index list grouped by category
+categories = {}
+for name, info in funcs.items():
+    overloads = info.get('overloads', [])
+    # use summary field if present, otherwise first overload documentation
+    summary = info.get('summary') or (overloads[0].get('documentation') if overloads else '')
+    category = (overloads[0].get('category') if overloads else 'Other') or 'Other'
+    categories.setdefault(category, []).append((name, summary))
+
 lines=[
 '---',
 'title: SQL Functions — Opteryx Reference',
@@ -103,10 +138,14 @@ lines=[
 '---','',
 '# Functions','',
 'The following functions are supported by Opteryx.  Click a name for details.','']
-for name in sorted(funcs.keys()):
-    slug=slug_map[name]
-    doc = funcs[name].get('documentation','') or (funcs[name].get('overloads',[{}])[0].get('documentation',''))
-    lines.append(f'- [{name}](functions/{slug}) — {doc}')
+
+for category in sorted(categories.keys()):
+    lines.append(f'## {category}\n')
+    for name, summary in sorted(categories[category], key=lambda x: x[0]):
+        slug = slug_map[name]
+        lines.append(f'- [{name}](functions/{slug}) — {summary}')
+    lines.append('')
+
 path=pathlib.Path('docs-site/reference/sql/functions.md')
 path.write_text("\n".join(lines))
 

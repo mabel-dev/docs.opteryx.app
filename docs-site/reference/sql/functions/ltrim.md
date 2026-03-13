@@ -17,8 +17,10 @@ LTRIM(str, [chars])
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **chars: varchar** — Characters to remove from the input string. Optional.
+- **str** `varchar`
+    Input string value.
+- **chars** `varchar` [optional]
+    Characters to remove from the input string. Optional.
 
 ## Returns
 

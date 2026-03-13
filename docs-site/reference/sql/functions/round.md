@@ -17,8 +17,10 @@ ROUND(num, [precision...])
 
 ## Arguments
 
-- **num: number** — Numeric value to round.
-- **precision: integer** — Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
+- **num** `number`
+    Numeric value to round.
+- **precision** `integer` [optional | variadic]
+    Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
 
 ## Returns
 

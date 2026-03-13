@@ -17,8 +17,10 @@ LOG(num, base)
 
 ## Arguments
 
-- **num: number** — Numeric input value.
-- **base: number** — Numeric input value.
+- **num** `number`
+    Numeric input value.
+- **base** `number`
+    Numeric input value.
 
 ## Returns
 

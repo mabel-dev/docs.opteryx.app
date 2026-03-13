@@ -17,9 +17,12 @@ REGEXP_REPLACE(str, pattern, replacement)
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **pattern: varchar** — Regular expression pattern to match in the input string.
-- **replacement: varchar** — Replacement text used for matched content.
+- **str** `varchar`
+    Input string value.
+- **pattern** `varchar`
+    Regular expression pattern to match in the input string.
+- **replacement** `varchar`
+    Replacement text used for matched content.
 
 ## Returns
 

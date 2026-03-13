@@ -17,7 +17,8 @@ GREATEST(arr)
 
 ## Arguments
 
-- **arr: array** — Input array or vector value.
+- **arr** `array`
+    Input array or vector value.
 
 ## Returns
 

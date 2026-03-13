@@ -17,8 +17,10 @@ POSITION(needle IN haystack)
 
 ## Arguments
 
-- **needle: varchar** — Substring to search for.
-- **haystack: varchar** — String to search within.
+- **needle** `varchar`
+    Substring to search for.
+- **haystack** `varchar`
+    String to search within.
 
 ## Returns
 

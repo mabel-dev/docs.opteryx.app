@@ -17,8 +17,10 @@ LEVENSHTEIN(a, b)
 
 ## Arguments
 
-- **a: varchar** — First input value.
-- **b: varchar** — Second input value.
+- **a** `varchar`
+    First input value.
+- **b** `varchar`
+    Second input value.
 
 ## Returns
 

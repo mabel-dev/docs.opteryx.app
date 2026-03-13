@@ -17,8 +17,10 @@ POWER(num, exp)
 
 ## Arguments
 
-- **num: number** — Numeric input value.
-- **exp: number** — Exponent to raise the base value by.
+- **num** `number`
+    Numeric input value.
+- **exp** `number`
+    Exponent to raise the base value by.
 
 ## Returns
 

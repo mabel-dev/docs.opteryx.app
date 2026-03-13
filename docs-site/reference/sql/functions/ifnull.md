@@ -17,8 +17,10 @@ IFNULL(value, default)
 
 ## Arguments
 
-- **value: any** — Primary input value.
-- **default: any** — Fallback value returned when the primary value is null.
+- **value** `any`
+    Primary input value.
+- **default** `any`
+    Fallback value returned when the primary value is null.
 
 ## Returns
 

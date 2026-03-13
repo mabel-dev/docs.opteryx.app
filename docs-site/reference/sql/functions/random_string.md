@@ -17,7 +17,8 @@ RANDOM_STRING(n)
 
 ## Arguments
 
-- **n: integer** — Length hint or row count used to generate random strings.
+- **n** `integer`
+    Length hint or row count used to generate random strings.
 
 ## Returns
 

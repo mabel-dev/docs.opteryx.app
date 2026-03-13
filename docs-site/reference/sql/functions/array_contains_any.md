@@ -17,8 +17,10 @@ ARRAY_CONTAINS_ANY(arr, items)
 
 ## Arguments
 
-- **arr: array** — Input array or vector value.
-- **items: array** — Collection of values to compare against the array.
+- **arr** `array`
+    Input array or vector value.
+- **items** `array`
+    Collection of values to compare against the array.
 
 ## Returns
 

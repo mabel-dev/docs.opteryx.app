@@ -21,9 +21,12 @@ SUBSTRING(str FROM start FOR length)
 
 ## Arguments
 
-- **str: varchar** — Input string to extract a substring from.
-- **start: integer** — One-based starting position of the substring.
-- **length: integer** — Integer input value.
+- **str** `varchar`
+    Input string to extract a substring from.
+- **start** `integer`
+    One-based starting position of the substring.
+- **length** `integer`
+    Integer input value.
 
 ## Returns
 

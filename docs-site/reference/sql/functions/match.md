@@ -17,8 +17,10 @@ MATCH(str) AGAINST(pattern)
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **pattern: varchar** — Pattern string used to format, search, or match values.
+- **str** `varchar`
+    Input string value.
+- **pattern** `varchar`
+    Pattern string used to format, search, or match values.
 
 ## Returns
 

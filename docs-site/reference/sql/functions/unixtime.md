@@ -17,7 +17,8 @@ UNIXTIME(date)
 
 ## Arguments
 
-- **date: temporal** — Date, time, or timestamp value to evaluate.
+- **date** `temporal`
+    Date, time, or timestamp value to evaluate.
 
 ## Returns
 

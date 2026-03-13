@@ -17,9 +17,12 @@ SPLIT(str, [delimiter], [limit])
 
 ## Arguments
 
-- **str: varchar** — Input string value.
-- **delimiter: varchar** — Separator used to split the input string. Optional.
-- **limit: integer** — Maximum number of items or splits to return. Optional.
+- **str** `varchar`
+    Input string value.
+- **delimiter** `varchar` [optional]
+    Separator used to split the input string. Optional.
+- **limit** `integer` [optional]
+    Maximum number of items or splits to return. Optional.
 
 ## Returns
 

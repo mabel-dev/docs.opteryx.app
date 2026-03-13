@@ -17,7 +17,8 @@ SQRT(num)
 
 ## Arguments
 
-- **num: number** — Numeric input value.
+- **num** `number`
+    Numeric input value.
 
 ## Returns
 

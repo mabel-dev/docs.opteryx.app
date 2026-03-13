@@ -17,9 +17,12 @@ TIME_BUCKET(magnitude, units, date)
 
 ## Arguments
 
-- **magnitude: number** — Bucket width for each interval.
-- **units: varchar** — Unit for the bucket width, such as `minute`, `hour`, or `day`. Must be a constant expression.
-- **date: temporal** — Date, time, or timestamp value to evaluate.
+- **magnitude** `number`
+    Bucket width for each interval.
+- **units** `varchar` [constant]
+    Unit for the bucket width, such as `minute`, `hour`, or `day`. Must be a constant expression.
+- **date** `temporal`
+    Date, time, or timestamp value to evaluate.
 
 ## Returns
 

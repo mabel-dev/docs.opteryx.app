@@ -17,8 +17,10 @@ NULLIF(value, compare)
 
 ## Arguments
 
-- **value: any** — Primary input value.
-- **compare: any** — Value to compare against the primary input.
+- **value** `any`
+    Primary input value.
+- **compare** `any`
+    Value to compare against the primary input.
 
 ## Returns
 
