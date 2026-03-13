@@ -17,9 +17,9 @@ NULLIF(value, compare)
 
 ## Arguments
 
-- **value**: Primary input value.
-- **compare**: Value to compare against the primary input.
+- **value: any** — Primary input value.
+- **compare: any** — Value to compare against the primary input.
 
 ## Returns
 
-Returns a value with the same type as `value`.
+**same as `value`** — Returns a value with the same type as `value`.

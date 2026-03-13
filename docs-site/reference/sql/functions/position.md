@@ -17,9 +17,13 @@ POSITION(needle IN haystack)
 
 ## Arguments
 
-- **needle**: Substring to search for.
-- **haystack**: String to search within.
+- **needle: varchar** — Substring to search for.
+- **haystack: varchar** — String to search within.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `POSITION(needle IN haystack)`. Opteryx also accepts `POSITION(needle, haystack)`.

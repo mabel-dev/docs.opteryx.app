@@ -17,8 +17,12 @@ NORMAL(n)
 
 ## Arguments
 
-- **n**: Number of random values to generate.
+- **n: integer** — Number of random values to generate.
 
 ## Returns
 
-Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.
+
+## Usage Notes
+
+This function is volatile. The integer argument controls how many values are generated, not a seed.

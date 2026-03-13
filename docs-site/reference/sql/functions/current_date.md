@@ -17,4 +17,8 @@ CURRENT_DATE
 
 ## Returns
 
-Returns the computed result as `date`.
+**date** — Returns the computed result as `date`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `CURRENT_DATE`. Opteryx also accepts `CURRENT_DATE()`.

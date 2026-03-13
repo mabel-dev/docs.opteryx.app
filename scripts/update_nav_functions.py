@@ -41,31 +41,58 @@ for name, info in funcs.items():
         lines.append(ov.get('label',''))
         lines.append('```\n')
     # arguments
-    args_seen={}
+    args=[]
     for ov in overloads:
         for param in ov.get('parameters',[]):
             label=param.get('label')
-            if label not in args_seen:
-                args_seen[label]=param.get('documentation','')
-    if args_seen:
+            if not any(a[0]==label for a in args):
+                args.append((label, param.get('type',''), param.get('documentation','')))
+
+    if args:
         lines.append('## Arguments\n')
-        for label, argdoc in args_seen.items():
-            lines.append(f'- **{label}**: {argdoc}')
+        for label, typ, doc_str in args:
+            if typ:
+                lines.append(f'- **{label}: {typ}** — {doc_str}')
+            else:
+                lines.append(f'- **{label}** — {doc_str}')
         lines.append('')
+
     # returns
-    returns_seen=[]
+    returns=[]
     for ov in overloads:
-        ret = ov.get('returns') or {}
-        rdoc = ret.get('documentation','') or ov.get('return_type','')
-        if rdoc and rdoc not in returns_seen:
-            returns_seen.append(rdoc)
+        ret=ov.get('returns') or {}
+        rtype=ret.get('type') or ov.get('return_type','')
+        rdoc=ret.get('documentation','')
+        if rtype:
+            returns.append((rtype, rdoc))
+        elif rdoc:
+            returns.append((None, rdoc))
+
     lines.append('## Returns\n')
-    if returns_seen:
-        for rdoc in returns_seen:
-            lines.append(rdoc)
+    if returns:
+        for rtype, rdoc in returns:
+            if rtype:
+                if rdoc:
+                    lines.append(f'**{rtype}** — {rdoc}')
+                else:
+                    lines.append(f'**{rtype}**')
+            else:
+                lines.append(rdoc)
     else:
         lines.append('_TBD_')
     lines.append('')
+
+    # usage notes
+    notes=[]
+    for ov in overloads:
+        note=ov.get('notes')
+        if note and note not in notes:
+            notes.append(note)
+    if notes:
+        lines.append('## Usage Notes\n')
+        for note in notes:
+            lines.append(note)
+        lines.append('')
     filepath.write_text('\n'.join(lines))
 
 # regenerate index list

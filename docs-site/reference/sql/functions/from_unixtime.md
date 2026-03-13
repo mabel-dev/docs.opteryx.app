@@ -17,8 +17,8 @@ FROM_UNIXTIME(ts)
 
 ## Arguments
 
-- **ts**: Unix timestamp expressed in seconds.
+- **ts: number** — Unix timestamp expressed in seconds.
 
 ## Returns
 
-Returns the computed result as `timestamp`.
+**timestamp** — Returns the computed result as `timestamp`.

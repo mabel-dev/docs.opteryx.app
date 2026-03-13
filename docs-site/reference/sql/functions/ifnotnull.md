@@ -17,9 +17,9 @@ IFNOTNULL(value, result)
 
 ## Arguments
 
-- **value**: Primary input value.
-- **result**: Value returned when the condition or null check succeeds.
+- **value: any** — Primary input value.
+- **result: any** — Value returned when the condition or null check succeeds.
 
 ## Returns
 
-Returns the result value using a type compatible with the supplied arguments when the first argument is not null.
+**compatible input type** — Returns the result value using a type compatible with the supplied arguments when the first argument is not null.

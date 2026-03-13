@@ -17,8 +17,8 @@ LENGTH(str)
 
 ## Arguments
 
-- **str**: Input string value.
+- **str: varchar** — Input string value.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

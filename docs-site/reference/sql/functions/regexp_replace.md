@@ -17,10 +17,10 @@ REGEXP_REPLACE(str, pattern, replacement)
 
 ## Arguments
 
-- **str**: Input string value.
-- **pattern**: Regular expression pattern to match in the input string.
-- **replacement**: Replacement text used for matched content.
+- **str: varchar** — Input string value.
+- **pattern: varchar** — Regular expression pattern to match in the input string.
+- **replacement: varchar** — Replacement text used for matched content.
 
 ## Returns
 
-Returns the computed result as `blob`.
+**blob** — Returns the computed result as `blob`.

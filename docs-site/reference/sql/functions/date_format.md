@@ -17,9 +17,9 @@ DATE_FORMAT(date, pattern)
 
 ## Arguments
 
-- **date**: Date, time, or timestamp value to evaluate.
-- **pattern**: Format string used to render the temporal value as text. Must be a constant expression.
+- **date: temporal** — Date, time, or timestamp value to evaluate.
+- **pattern: varchar** — Format string used to render the temporal value as text. Must be a constant expression.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.

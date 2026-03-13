@@ -17,8 +17,8 @@ LEAST(arr)
 
 ## Arguments
 
-- **arr**: Input array or vector value.
+- **arr: array** — Input array or vector value.
 
 ## Returns
 
-Returns a single element from `arr`, preserving the array's element type.
+**element type of `arr`** — Returns a single element from `arr`, preserving the array's element type.

@@ -188,16 +188,7 @@
                   "LEVENSHTEIN": "reference/sql/functions/levenshtein.md"
                 },
                 {
-                  "LN": "reference/sql/functions/ln.md"
-                },
-                {
                   "LOG": "reference/sql/functions/log.md"
-                },
-                {
-                  "LOG10": "reference/sql/functions/log10.md"
-                },
-                {
-                  "LOG2": "reference/sql/functions/log2.md"
                 },
                 {
                   "LOWER": "reference/sql/functions/lower.md"

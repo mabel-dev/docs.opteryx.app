@@ -17,9 +17,9 @@ LEVENSHTEIN(a, b)
 
 ## Arguments
 
-- **a**: First input value.
-- **b**: Second input value.
+- **a: varchar** — First input value.
+- **b: varchar** — Second input value.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

@@ -17,8 +17,12 @@ RANDOM_STRING(n)
 
 ## Arguments
 
-- **n**: Length hint or row count used to generate random strings.
+- **n: integer** — Length hint or row count used to generate random strings.
 
 ## Returns
 
-Returns the computed result as `blob`.
+**blob** — Returns the computed result as `blob`.
+
+## Usage Notes
+
+This function is volatile. The integer argument controls the generated output rather than supplying a seed.

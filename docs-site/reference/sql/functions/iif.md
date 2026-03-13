@@ -17,10 +17,10 @@ IIF(condition, true_value, false_value)
 
 ## Arguments
 
-- **condition**: Boolean expression used to choose which result to return.
-- **true_value**: Value returned when `condition` evaluates to true.
-- **false_value**: Value returned when `condition` evaluates to false.
+- **condition: boolean** — Boolean expression used to choose which result to return.
+- **true_value: any** — Value returned when `condition` evaluates to true.
+- **false_value: any** — Value returned when `condition` evaluates to false.
 
 ## Returns
 
-Returns a value with the same type as `true_value`.
+**same as `true_value`** — Returns a value with the same type as `true_value`.

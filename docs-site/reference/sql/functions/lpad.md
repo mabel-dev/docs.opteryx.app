@@ -17,10 +17,10 @@ LPAD(str, width, [fill])
 
 ## Arguments
 
-- **str**: Input string value.
-- **width**: Target width for the output.
-- **fill**: Padding text used when the input is shorter than the target width. Optional.
+- **str: varchar** — Input string value.
+- **width: integer** — Target width for the output.
+- **fill: varchar** — Padding text used when the input is shorter than the target width. Optional.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.

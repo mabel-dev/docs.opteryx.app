@@ -17,9 +17,9 @@ TIMEDIFF(time1, time2)
 
 ## Arguments
 
-- **time1**: First date, time, or timestamp value.
-- **time2**: Second date, time, or timestamp value.
+- **time1: temporal** — First date, time, or timestamp value.
+- **time2: temporal** — Second date, time, or timestamp value.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

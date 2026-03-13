@@ -17,8 +17,8 @@ SHA1(val)
 
 ## Arguments
 
-- **val**: Input value.
+- **val: any** — Input value.
 
 ## Returns
 
-Returns the computed result as `blob`.
+**blob** — Returns the computed result as `blob`.

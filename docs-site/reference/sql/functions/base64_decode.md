@@ -17,8 +17,8 @@ BASE64_DECODE(blob)
 
 ## Arguments
 
-- **blob**: Binary or text value to encode, decode, or transform.
+- **blob: any** — Binary or text value to encode, decode, or transform.
 
 ## Returns
 
-Returns the computed result as `blob`.
+**blob** — Returns the computed result as `blob`.

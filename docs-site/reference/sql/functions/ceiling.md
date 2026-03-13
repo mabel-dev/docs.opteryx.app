@@ -17,9 +17,13 @@ CEILING(num, [scale...])
 
 ## Arguments
 
-- **num**: Numeric value to round upward.
-- **scale**: Decimal scale to apply before taking the ceiling. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
+- **num: number** — Numeric value to round upward.
+- **scale: integer** — Decimal scale to apply before taking the ceiling. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
 
 ## Returns
 
-Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.
+
+## Usage Notes
+
+When `scale` is provided, positive values affect digits to the right of the decimal point and negative values affect tens, hundreds, and larger positions.

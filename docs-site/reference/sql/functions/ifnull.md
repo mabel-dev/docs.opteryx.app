@@ -17,9 +17,9 @@ IFNULL(value, default)
 
 ## Arguments
 
-- **value**: Primary input value.
-- **default**: Fallback value returned when the primary value is null.
+- **value: any** — Primary input value.
+- **default: any** — Fallback value returned when the primary value is null.
 
 ## Returns
 
-Returns either the primary value or the fallback value using a type compatible with both arguments.
+**compatible input type** — Returns either the primary value or the fallback value using a type compatible with both arguments.

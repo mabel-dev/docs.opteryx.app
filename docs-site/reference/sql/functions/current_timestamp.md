@@ -17,4 +17,8 @@ CURRENT_TIMESTAMP
 
 ## Returns
 
-Returns the computed result as `timestamp`.
+**timestamp** — Returns the computed result as `timestamp`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `CURRENT_TIMESTAMP`. Opteryx also accepts `CURRENT_TIMESTAMP()`.

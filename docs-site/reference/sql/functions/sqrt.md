@@ -17,8 +17,8 @@ SQRT(num)
 
 ## Arguments
 
-- **num**: Numeric input value.
+- **num: number** — Numeric input value.
 
 ## Returns
 
-Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.

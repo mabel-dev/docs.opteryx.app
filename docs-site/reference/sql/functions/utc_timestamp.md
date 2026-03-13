@@ -17,4 +17,4 @@ UTC_TIMESTAMP()
 
 ## Returns
 
-Returns the computed result as `timestamp`.
+**timestamp** — Returns the computed result as `timestamp`.

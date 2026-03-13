@@ -17,4 +17,8 @@ CURRENT_TIME
 
 ## Returns
 
-Returns the computed result as `time`.
+**time** — Returns the computed result as `time`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `CURRENT_TIME`. Opteryx also accepts `CURRENT_TIME()`.

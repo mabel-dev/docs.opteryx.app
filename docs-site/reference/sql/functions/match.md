@@ -17,9 +17,13 @@ MATCH(str) AGAINST(pattern)
 
 ## Arguments
 
-- **str**: Input string value.
-- **pattern**: Pattern string used to format, search, or match values.
+- **str: varchar** — Input string value.
+- **pattern: varchar** — Pattern string used to format, search, or match values.
 
 ## Returns
 
-Returns `true` or `false` based on whether the function's condition is satisfied.
+**boolean** — Returns `true` or `false` based on whether the function's condition is satisfied.
+
+## Usage Notes
+
+Canonical form is `MATCH(str) AGAINST(pattern)`. Opteryx normalizes this syntax to an internal helper.

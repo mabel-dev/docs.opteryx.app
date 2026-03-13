@@ -17,9 +17,9 @@ COALESCE(arg0, [args...])
 
 ## Arguments
 
-- **arg0**: First input value.
-- **args**: Additional input values. Optional. Can be repeated.
+- **arg0: any** — First input value.
+- **args: any** — Additional input values. Optional. Can be repeated.
 
 ## Returns
 
-Returns the first non-null argument using a type compatible with the supplied values.
+**compatible input type** — Returns the first non-null argument using a type compatible with the supplied values.

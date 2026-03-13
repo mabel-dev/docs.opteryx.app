@@ -17,8 +17,8 @@ SORT(arr)
 
 ## Arguments
 
-- **arr**: Input array or vector value.
+- **arr: array** — Input array or vector value.
 
 ## Returns
 
-Returns a sorted array while preserving the input array type.
+**same as `arr`** — Returns a sorted array while preserving the input array type.

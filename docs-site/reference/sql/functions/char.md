@@ -17,8 +17,8 @@ CHAR(val)
 
 ## Arguments
 
-- **val**: Input value.
+- **val: any** — Input value.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.

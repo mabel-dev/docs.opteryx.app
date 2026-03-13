@@ -17,9 +17,9 @@ RIGHT(str, n)
 
 ## Arguments
 
-- **str**: Input string value.
-- **n**: Integer control value used by the function.
+- **str: varchar** — Input string value.
+- **n: integer** — Integer control value used by the function.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.

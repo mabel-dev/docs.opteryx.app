@@ -17,9 +17,9 @@ ARRAY_CONTAINS_ANY(arr, items)
 
 ## Arguments
 
-- **arr**: Input array or vector value.
-- **items**: Collection of values to compare against the array.
+- **arr: array** — Input array or vector value.
+- **items: array** — Collection of values to compare against the array.
 
 ## Returns
 
-Returns `true` or `false` based on whether the function's condition is satisfied.
+**boolean** — Returns `true` or `false` based on whether the function's condition is satisfied.

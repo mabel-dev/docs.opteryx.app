@@ -1339,35 +1339,6 @@
             }
         ]
     },
-    "LN": {
-        "aliases": [],
-        "overloads": [
-            {
-                "label": "LN(num)",
-                "category": "Numeric Functions",
-                "documentation": "Natural logarithm.",
-                "related_functions": [
-                    "ABS",
-                    "CEILING",
-                    "FLOOR",
-                    "ROUND",
-                    "TRUNC"
-                ],
-                "return_type": "double",
-                "returns": {
-                    "type": "double",
-                    "documentation": "Returns the computed result as `double`."
-                },
-                "parameters": [
-                    {
-                        "label": "num",
-                        "type": "number",
-                        "documentation": "Numeric input value."
-                    }
-                ]
-            }
-        ]
-    },
     "LOG": {
         "aliases": [],
         "overloads": [
@@ -1395,64 +1366,6 @@
                     },
                     {
                         "label": "base",
-                        "type": "number",
-                        "documentation": "Numeric input value."
-                    }
-                ]
-            }
-        ]
-    },
-    "LOG10": {
-        "aliases": [],
-        "overloads": [
-            {
-                "label": "LOG10(num)",
-                "category": "Numeric Functions",
-                "documentation": "Base-10 logarithm.",
-                "related_functions": [
-                    "ABS",
-                    "CEILING",
-                    "FLOOR",
-                    "ROUND",
-                    "TRUNC"
-                ],
-                "return_type": "double",
-                "returns": {
-                    "type": "double",
-                    "documentation": "Returns the computed result as `double`."
-                },
-                "parameters": [
-                    {
-                        "label": "num",
-                        "type": "number",
-                        "documentation": "Numeric input value."
-                    }
-                ]
-            }
-        ]
-    },
-    "LOG2": {
-        "aliases": [],
-        "overloads": [
-            {
-                "label": "LOG2(num)",
-                "category": "Numeric Functions",
-                "documentation": "Base-2 logarithm.",
-                "related_functions": [
-                    "ABS",
-                    "CEILING",
-                    "FLOOR",
-                    "ROUND",
-                    "TRUNC"
-                ],
-                "return_type": "double",
-                "returns": {
-                    "type": "double",
-                    "documentation": "Returns the computed result as `double`."
-                },
-                "parameters": [
-                    {
-                        "label": "num",
                         "type": "number",
                         "documentation": "Numeric input value."
                     }

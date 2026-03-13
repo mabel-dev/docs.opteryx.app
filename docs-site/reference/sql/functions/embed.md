@@ -17,8 +17,12 @@ EMBED(text)
 
 ## Arguments
 
-- **text**: Input text to convert into an embedding vector.
+- **text: varchar** — Input text to convert into an embedding vector.
 
 ## Returns
 
-Returns an embedding vector represented as an array of doubles.
+**array<double>** — Returns an embedding vector represented as an array of doubles.
+
+## Usage Notes
+
+This function depends on the configured embedding provider and returns a numeric vector as `array<double>`.

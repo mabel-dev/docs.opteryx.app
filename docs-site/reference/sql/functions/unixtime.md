@@ -17,8 +17,8 @@ UNIXTIME(date)
 
 ## Arguments
 
-- **date**: Date, time, or timestamp value to evaluate.
+- **date: temporal** — Date, time, or timestamp value to evaluate.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

@@ -21,10 +21,15 @@ SUBSTRING(str FROM start FOR length)
 
 ## Arguments
 
-- **str**: Input string to extract a substring from.
-- **start**: One-based starting position of the substring.
-- **length**: Integer input value.
+- **str: varchar** — Input string to extract a substring from.
+- **start: integer** — One-based starting position of the substring.
+- **length: integer** — Integer input value.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `SUBSTRING(str FROM start FOR length)`. Opteryx also accepts `SUBSTRING(str[, start[, length]])`.

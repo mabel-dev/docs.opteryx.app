@@ -17,8 +17,8 @@ ABS(num)
 
 ## Arguments
 
-- **num**: Numeric input value.
+- **num: number** — Numeric input value.
 
 ## Returns
 
-Returns a value with the same type as `num`.
+**same as `num`** — Returns a value with the same type as `num`.

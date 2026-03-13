@@ -17,4 +17,4 @@ VERSION()
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.

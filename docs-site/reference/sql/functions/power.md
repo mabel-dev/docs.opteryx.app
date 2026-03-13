@@ -17,9 +17,9 @@ POWER(num, exp)
 
 ## Arguments
 
-- **num**: Numeric input value.
-- **exp**: Exponent to raise the base value by.
+- **num: number** — Numeric input value.
+- **exp: number** — Exponent to raise the base value by.
 
 ## Returns
 
-Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.

@@ -17,9 +17,13 @@ TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)
 
 ## Arguments
 
-- **str**: Input string value.
-- **chars**: Characters to remove from the input string. Optional.
+- **str: varchar** — Input string value.
+- **chars: varchar** — Characters to remove from the input string. Optional.
 
 ## Returns
 
-Returns the computed result as `varchar`.
+**varchar** — Returns the computed result as `varchar`.
+
+## Usage Notes
+
+Canonical SQL-92 form is `TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)`. Opteryx also accepts `TRIM(str[, chars])` as well as `LTRIM` and `RTRIM`.

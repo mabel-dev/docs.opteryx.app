@@ -17,10 +17,10 @@ DATEDIFF(part, date, end)
 
 ## Arguments
 
-- **part**: Unit to measure the difference in, such as `day`, `month`, or `year`. Must be a constant expression.
-- **date**: Date, time, or timestamp value to evaluate.
-- **end**: Ending date, time, or timestamp value.
+- **part: varchar** — Unit to measure the difference in, such as `day`, `month`, or `year`. Must be a constant expression.
+- **date: temporal** — Date, time, or timestamp value to evaluate.
+- **end: temporal** — Ending date, time, or timestamp value.
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

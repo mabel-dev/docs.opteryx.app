@@ -17,4 +17,4 @@ CONNECTION_ID()
 
 ## Returns
 
-Returns the computed result as `integer`.
+**integer** — Returns the computed result as `integer`.

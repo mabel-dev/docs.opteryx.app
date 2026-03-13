@@ -17,8 +17,8 @@ JSONB_OBJECT_KEYS(json)
 
 ## Arguments
 
-- **json**: JSON object or document value to inspect.
+- **json: any** — JSON object or document value to inspect.
 
 ## Returns
 
-Returns the computed result as `array`.
+**array** — Returns the computed result as `array`.

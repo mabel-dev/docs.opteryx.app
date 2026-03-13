@@ -21,9 +21,10 @@ COSINE_SIMILARITY(arr, vec)
 
 ## Arguments
 
-- **arr**: First vector or text input.
-- **vec**: Second vector or text input.
+- **arr: vector** — First vector or text input.
+- **vec: vector** — Second vector or text input.
 
 ## Returns
 
-Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.
+**double** — Returns the computed result as `double`.
