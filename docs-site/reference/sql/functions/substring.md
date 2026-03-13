@@ -31,7 +31,6 @@ SUBSTRING(str FROM start FOR length)
 ## Returns
 
 **varchar** — Returns the computed result as `varchar`.
-**varchar** — Returns the computed result as `varchar`.
 
 ## Usage Notes
 

@@ -29,4 +29,3 @@ COSINE_DISTANCE(arr, vec)
 ## Returns
 
 **double** — Returns the computed result as `double`.
-**double** — Returns the computed result as `double`.

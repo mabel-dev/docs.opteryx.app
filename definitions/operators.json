@@ -1,0 +1,2686 @@
+{
+    "And": {
+        "internal_name": "And",
+        "display_name": "And",
+        "token": null,
+        "category": "logical",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "boolean"
+        ],
+        "right_types": [
+            "boolean"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "boolean",
+                "right_type": "boolean",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "ArrayContainsAll": {
+        "internal_name": "ArrayContainsAll",
+        "display_name": "@>>",
+        "token": "@>>",
+        "category": "comparison",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "array"
+        ],
+        "right_types": [
+            "array"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "array",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Arrow": {
+        "internal_name": "Arrow",
+        "display_name": "->",
+        "token": "->",
+        "category": "extraction",
+        "signature_count": 8,
+        "has_dynamic_result": true,
+        "left_types": [
+            "blob",
+            "jsonb",
+            "struct",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "blob",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "varchar",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "blob",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "varchar",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "AtArrow": {
+        "internal_name": "AtArrow",
+        "display_name": "@>",
+        "token": "@>",
+        "category": "comparison",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "array"
+        ],
+        "right_types": [
+            "array"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "array",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "AtQuestion": {
+        "internal_name": "AtQuestion",
+        "display_name": "@?",
+        "token": "@?",
+        "category": "comparison",
+        "signature_count": 8,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "jsonb",
+            "struct",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "BitwiseAnd": {
+        "internal_name": "BitwiseAnd",
+        "display_name": "&",
+        "token": "&",
+        "category": "binary",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "BitwiseOr": {
+        "internal_name": "BitwiseOr",
+        "display_name": "|",
+        "token": "|",
+        "category": "binary",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "integer",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "integer",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean",
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "BitwiseXor": {
+        "internal_name": "BitwiseXor",
+        "display_name": "^",
+        "token": "^",
+        "category": "binary",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Divide": {
+        "internal_name": "Divide",
+        "display_name": "/",
+        "token": "/",
+        "category": "binary",
+        "signature_count": 7,
+        "has_dynamic_result": false,
+        "left_types": [
+            "decimal",
+            "double",
+            "integer"
+        ],
+        "right_types": [
+            "decimal",
+            "double",
+            "integer"
+        ],
+        "result_types": [
+            "decimal",
+            "double"
+        ],
+        "signatures": [
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Eq": {
+        "internal_name": "Eq",
+        "display_name": "=",
+        "token": "=",
+        "category": "comparison",
+        "signature_count": 23,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "boolean",
+                "right_type": "boolean",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Gt": {
+        "internal_name": "Gt",
+        "display_name": ">",
+        "token": ">",
+        "category": "comparison",
+        "signature_count": 22,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "GtEq": {
+        "internal_name": "GtEq",
+        "display_name": ">=",
+        "token": ">=",
+        "category": "comparison",
+        "signature_count": 22,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "ILike": {
+        "internal_name": "ILike",
+        "display_name": "ILike",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "InList": {
+        "internal_name": "InList",
+        "display_name": "InList",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 8,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "array"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "boolean",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Like": {
+        "internal_name": "Like",
+        "display_name": "Like",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "LongArrow": {
+        "internal_name": "LongArrow",
+        "display_name": "->>",
+        "token": "->>",
+        "category": "extraction",
+        "signature_count": 8,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "jsonb",
+            "struct",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "blob"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "jsonb",
+                "right_type": "varchar",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "struct",
+                "right_type": "varchar",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Lt": {
+        "internal_name": "Lt",
+        "display_name": "<",
+        "token": "<",
+        "category": "comparison",
+        "signature_count": 22,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "LtEq": {
+        "internal_name": "LtEq",
+        "display_name": "<=",
+        "token": "<=",
+        "category": "comparison",
+        "signature_count": 22,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "MapAccess": {
+        "internal_name": "MapAccess",
+        "display_name": "[]",
+        "token": "[]",
+        "category": "extraction",
+        "signature_count": 3,
+        "has_dynamic_result": true,
+        "left_types": [
+            "array",
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "blob",
+            "varchar"
+        ],
+        "signatures": [
+            {
+                "left_type": "array",
+                "right_type": "integer",
+                "result_type": null,
+                "result_type_is_dynamic": true,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "integer",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "integer",
+                "result_type": "varchar",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Minus": {
+        "internal_name": "Minus",
+        "display_name": "-",
+        "token": "-",
+        "category": "binary",
+        "signature_count": 20,
+        "has_dynamic_result": false,
+        "left_types": [
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "right_types": [
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "result_types": [
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "signatures": [
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "interval",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "date",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "timestamp",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "interval",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Modulo": {
+        "internal_name": "Modulo",
+        "display_name": "%",
+        "token": "%",
+        "category": "binary",
+        "signature_count": 2,
+        "has_dynamic_result": false,
+        "left_types": [
+            "double",
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "double",
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Multiply": {
+        "internal_name": "Multiply",
+        "display_name": "*",
+        "token": "*",
+        "category": "binary",
+        "signature_count": 7,
+        "has_dynamic_result": false,
+        "left_types": [
+            "decimal",
+            "double",
+            "integer"
+        ],
+        "right_types": [
+            "decimal",
+            "double",
+            "integer"
+        ],
+        "result_types": [
+            "decimal",
+            "double",
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "MyIntegerDivide": {
+        "internal_name": "MyIntegerDivide",
+        "display_name": "div",
+        "token": "div",
+        "category": "binary",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "NotEq": {
+        "internal_name": "NotEq",
+        "display_name": "!=",
+        "token": "!=",
+        "category": "comparison",
+        "signature_count": 23,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "boolean",
+                "right_type": "boolean",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "date",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "integer",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "timestamp",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "NotILike": {
+        "internal_name": "NotILike",
+        "display_name": "NotILike",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "NotInList": {
+        "internal_name": "NotInList",
+        "display_name": "NotInList",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 8,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "boolean",
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "timestamp",
+            "varchar"
+        ],
+        "right_types": [
+            "array"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "boolean",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "date",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "array",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "NotLike": {
+        "internal_name": "NotLike",
+        "display_name": "NotLike",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "NotRLike": {
+        "internal_name": "NotRLike",
+        "display_name": "NotRLike",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Or": {
+        "internal_name": "Or",
+        "display_name": "Or",
+        "token": null,
+        "category": "logical",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "boolean"
+        ],
+        "right_types": [
+            "boolean"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "boolean",
+                "right_type": "boolean",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Plus": {
+        "internal_name": "Plus",
+        "display_name": "+",
+        "token": "+",
+        "category": "binary",
+        "signature_count": 12,
+        "has_dynamic_result": false,
+        "left_types": [
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "right_types": [
+            "date",
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "result_types": [
+            "decimal",
+            "double",
+            "integer",
+            "interval",
+            "timestamp"
+        ],
+        "signatures": [
+            {
+                "left_type": "date",
+                "right_type": "interval",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "decimal",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "decimal",
+                "right_type": "integer",
+                "result_type": "decimal",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "double",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "decimal",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "double",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "date",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "interval",
+                "result_type": "interval",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "interval",
+                "right_type": "timestamp",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "timestamp",
+                "right_type": "interval",
+                "result_type": "timestamp",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "RLike": {
+        "internal_name": "RLike",
+        "display_name": "RLike",
+        "token": null,
+        "category": "comparison",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "boolean",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "ShiftLeft": {
+        "internal_name": "ShiftLeft",
+        "display_name": "<<",
+        "token": "<<",
+        "category": "binary",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "ShiftRight": {
+        "internal_name": "ShiftRight",
+        "display_name": ">>",
+        "token": ">>",
+        "category": "binary",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "integer"
+        ],
+        "right_types": [
+            "integer"
+        ],
+        "result_types": [
+            "integer"
+        ],
+        "signatures": [
+            {
+                "left_type": "integer",
+                "right_type": "integer",
+                "result_type": "integer",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "StringConcat": {
+        "internal_name": "StringConcat",
+        "display_name": "||",
+        "token": "||",
+        "category": "binary",
+        "signature_count": 4,
+        "has_dynamic_result": false,
+        "left_types": [
+            "blob",
+            "varchar"
+        ],
+        "right_types": [
+            "blob",
+            "varchar"
+        ],
+        "result_types": [
+            "blob",
+            "varchar"
+        ],
+        "signatures": [
+            {
+                "left_type": "blob",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "blob",
+                "right_type": "varchar",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "blob",
+                "result_type": "blob",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            },
+            {
+                "left_type": "varchar",
+                "right_type": "varchar",
+                "result_type": "varchar",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    }
+}

@@ -425,6 +425,16 @@
                 "Working with timestamps": "reference/sql/advanced/adv-working-with-timestamps.md"
               }
             ]
+          },
+          {
+            "Operators": {
+              "href": "reference/sql/operators.md"
+            }
+          },
+          {
+            "Types": {
+              "href": "reference/sql/types.md"
+            }
           }
         ]
       },
