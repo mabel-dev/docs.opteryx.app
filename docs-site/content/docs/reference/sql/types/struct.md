@@ -1,9 +1,9 @@
 ---
-title: struct — Opteryx Type
+title: STRUCT — Opteryx Type
 description: STRUCT
 ---
 
-# struct
+# STRUCT
 
 **Canonical name:** STRUCT
 

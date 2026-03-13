@@ -1,9 +1,9 @@
 ---
-title: null — Opteryx Type
+title: NULL — Opteryx Type
 description: NULL
 ---
 
-# null
+# NULL
 
 **Canonical name:** NULL
 

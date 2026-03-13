@@ -1,6 +1,6 @@
 ---
-title: != — Opteryx Operator
-description: 
+title: NotEq — Opteryx Operator
+description: Token: !=
 ---
 
 # !=

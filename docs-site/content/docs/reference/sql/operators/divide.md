@@ -1,6 +1,6 @@
 ---
-title: / — Opteryx Operator
-description: 
+title: Divide — Opteryx Operator
+description: Token: /
 ---
 
 # /

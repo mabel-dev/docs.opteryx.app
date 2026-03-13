@@ -1,9 +1,9 @@
 ---
-title: varchar — Opteryx Type
+title: VARCHAR — Opteryx Type
 description: VARCHAR
 ---
 
-# varchar
+# VARCHAR
 
 **Canonical name:** VARCHAR
 

@@ -1,9 +1,9 @@
 ---
-title: interval — Opteryx Type
+title: INTERVAL — Opteryx Type
 description: INTERVAL
 ---
 
-# interval
+# INTERVAL
 
 **Canonical name:** INTERVAL
 

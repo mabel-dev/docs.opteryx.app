@@ -1,9 +1,9 @@
 ---
-title: decimal — Opteryx Type
+title: DECIMAL — Opteryx Type
 description: DECIMAL
 ---
 
-# decimal
+# DECIMAL
 
 **Canonical name:** DECIMAL
 

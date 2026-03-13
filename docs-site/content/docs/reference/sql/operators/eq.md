@@ -1,6 +1,6 @@
 ---
-title: = — Opteryx Operator
-description: 
+title: Eq — Opteryx Operator
+description: Token: =
 ---
 
 # =

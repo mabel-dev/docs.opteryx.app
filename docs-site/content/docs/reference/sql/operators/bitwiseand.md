@@ -1,6 +1,6 @@
 ---
-title: & — Opteryx Operator
-description: 
+title: BitwiseAnd — Opteryx Operator
+description: Token: &
 ---
 
 # &

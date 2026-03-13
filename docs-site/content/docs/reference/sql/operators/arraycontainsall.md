@@ -1,6 +1,6 @@
 ---
-title: @>> — Opteryx Operator
-description: 
+title: ArrayContainsAll — Opteryx Operator
+description: Token: @>>
 ---
 
 # @>>

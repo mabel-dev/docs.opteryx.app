@@ -1,9 +1,9 @@
 ---
-title: array — Opteryx Type
+title: ARRAY — Opteryx Type
 description: ARRAY
 ---
 
-# array
+# ARRAY
 
 **Canonical name:** ARRAY
 

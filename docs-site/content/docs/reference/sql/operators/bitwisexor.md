@@ -1,6 +1,6 @@
 ---
-title: ^ — Opteryx Operator
-description: 
+title: BitwiseXor — Opteryx Operator
+description: Token: ^
 ---
 
 # ^

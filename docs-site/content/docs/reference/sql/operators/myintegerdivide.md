@@ -1,6 +1,6 @@
 ---
-title: div — Opteryx Operator
-description: 
+title: MyIntegerDivide — Opteryx Operator
+description: Token: div
 ---
 
 # div

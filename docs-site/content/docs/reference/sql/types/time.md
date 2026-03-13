@@ -1,9 +1,9 @@
 ---
-title: time — Opteryx Type
+title: TIME — Opteryx Type
 description: TIME
 ---
 
-# time
+# TIME
 
 **Canonical name:** TIME
 

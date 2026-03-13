@@ -1,9 +1,9 @@
 ---
-title: double — Opteryx Type
+title: DOUBLE — Opteryx Type
 description: DOUBLE
 ---
 
-# double
+# DOUBLE
 
 **Canonical name:** DOUBLE
 

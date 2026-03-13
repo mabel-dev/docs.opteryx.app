@@ -1,9 +1,9 @@
 ---
-title: timestamp — Opteryx Type
+title: TIMESTAMP — Opteryx Type
 description: TIMESTAMP
 ---
 
-# timestamp
+# TIMESTAMP
 
 **Canonical name:** TIMESTAMP
 

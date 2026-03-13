@@ -1,9 +1,9 @@
 ---
-title: blob — Opteryx Type
+title: BLOB — Opteryx Type
 description: BLOB
 ---
 
-# blob
+# BLOB
 
 **Canonical name:** BLOB
 

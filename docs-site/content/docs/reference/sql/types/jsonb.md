@@ -1,9 +1,9 @@
 ---
-title: jsonb — Opteryx Type
+title: JSONB — Opteryx Type
 description: JSONB
 ---
 
-# jsonb
+# JSONB
 
 **Canonical name:** JSONB
 

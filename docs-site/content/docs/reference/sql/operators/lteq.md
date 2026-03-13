@@ -1,6 +1,6 @@
 ---
-title: <= — Opteryx Operator
-description: 
+title: LtEq — Opteryx Operator
+description: Token: <=
 ---
 
 # <=

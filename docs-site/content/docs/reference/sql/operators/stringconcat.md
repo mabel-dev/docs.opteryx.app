@@ -1,6 +1,6 @@
 ---
-title: || — Opteryx Operator
-description: 
+title: StringConcat — Opteryx Operator
+description: Token: ||
 ---
 
 # ||

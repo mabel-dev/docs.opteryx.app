@@ -1,6 +1,6 @@
 ---
-title: * — Opteryx Operator
-description: 
+title: Multiply — Opteryx Operator
+description: Token: *
 ---
 
 # *

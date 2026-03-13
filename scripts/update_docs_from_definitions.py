@@ -192,8 +192,11 @@ def build_operators_docs(ops_def: dict):
 
         lines = []
         lines.append('---')
-        lines.append(f'title: {display or name} — Opteryx Operator')
-        lines.append(f'description: {info.get("summary","") or ""}')
+        lines.append(f'title: {name} — Opteryx Operator')
+        desc = info.get('summary','') or ''
+        if token:
+            desc = ((desc + ' ').strip() + f' Token: {token}').strip()
+        lines.append(f'description: {desc}')
         lines.append('---\n')
         lines.append(f'# {display or name}\n')
         if category:
@@ -229,12 +232,7 @@ def build_operators_docs(ops_def: dict):
 
 
 def build_types_docs(types_def: dict):
-    # group by family
-    families: dict[str, list[str]] = {}
-    for name, info in types_def.items():
-        family = info.get('family') or 'Other'
-        families.setdefault(family, []).append(name)
-
+    # flat list of types (no categorization)
     lines = [
         '---',
         'title: SQL Data Types — Opteryx Reference',
@@ -244,14 +242,12 @@ def build_types_docs(types_def: dict):
         'The following data types are supported by Opteryx.  Click a name for details.',''
     ]
 
-    for family in sorted(families.keys()):
-        lines.append(f'## {family}\n')
-        for name in sorted(families[family]):
-            slug = slugify(name)
-            info = types_def[name]
-            summary = info.get('canonical_name','')
-            lines.append(f'- [{name}](types/{slug}) — {summary}')
-        lines.append('')
+    for name in sorted(types_def.keys()):
+        slug = slugify(name)
+        info = types_def[name]
+        summary = info.get('canonical_name','')
+        lines.append(f'- [{summary or name}](types/{slug}) — {summary}')
+    lines.append('')
 
     write_md(REF_SQL_DIR / 'data-types.md', lines)
 
@@ -260,11 +256,14 @@ def build_types_docs(types_def: dict):
         path = REF_SQL_DIR / 'types' / f'{slug}.md'
 
         lines = []
+        canonical = info.get('canonical_name')
+        title_text = canonical or name.upper()
+
         lines.append('---')
-        lines.append(f'title: {name} — Opteryx Type')
-        lines.append(f'description: {info.get("canonical_name","")}')
+        lines.append(f'title: {title_text} — Opteryx Type')
+        lines.append(f'description: {canonical or name}')
         lines.append('---\n')
-        lines.append(f'# {name}\n')
+        lines.append(f'# {title_text}\n')
 
         canonical = info.get('canonical_name')
         if canonical:

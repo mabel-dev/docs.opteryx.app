@@ -1,6 +1,6 @@
 ---
-title: ->> — Opteryx Operator
-description: 
+title: LongArrow — Opteryx Operator
+description: Token: ->>
 ---
 
 # ->>

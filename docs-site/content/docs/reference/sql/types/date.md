@@ -1,9 +1,9 @@
 ---
-title: date — Opteryx Type
+title: DATE — Opteryx Type
 description: DATE
 ---
 
-# date
+# DATE
 
 **Canonical name:** DATE
 

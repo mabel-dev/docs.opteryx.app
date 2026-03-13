@@ -1,9 +1,9 @@
 ---
-title: boolean — Opteryx Type
+title: BOOLEAN — Opteryx Type
 description: BOOLEAN
 ---
 
-# boolean
+# BOOLEAN
 
 **Canonical name:** BOOLEAN
 

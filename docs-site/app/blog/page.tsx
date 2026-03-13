@@ -26,6 +26,8 @@ function parseFrontmatter(source: string) {
   return { frontmatter: fm, body }
 }
 
+export const dynamic = 'force-dynamic'
+
 type PostMeta = {
   slug: string
   title: string
@@ -34,8 +36,10 @@ type PostMeta = {
 }
 
 export default function Page() {
+  const defaultBlogDir = path.join(process.cwd(), 'content', 'blog')
   const blogDir = path.join(getContentDocsDir(), '../blog')
-  const indexMarkdown = readMarkdownFile(path.join(blogDir, 'index.md'))
+  const resolvedBlogDir = fs.existsSync(defaultBlogDir) ? defaultBlogDir : blogDir
+  const indexMarkdown = readMarkdownFile(path.join(resolvedBlogDir, 'index.md'))
 
   const posts: PostMeta[] = []
   try {

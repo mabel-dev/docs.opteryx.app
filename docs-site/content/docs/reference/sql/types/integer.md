@@ -1,9 +1,9 @@
 ---
-title: integer — Opteryx Type
+title: INTEGER — Opteryx Type
 description: INTEGER
 ---
 
-# integer
+# INTEGER
 
 **Canonical name:** INTEGER
 
