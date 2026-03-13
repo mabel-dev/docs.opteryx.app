@@ -42,17 +42,21 @@ export default function Page() {
   const indexMarkdown = readMarkdownFile(path.join(resolvedBlogDir, 'index.md'))
 
   const posts: PostMeta[] = []
+  const postFiles: string[] = []
+
   try {
     const files = fs
-      .readdirSync(blogDir)
+      .readdirSync(resolvedBlogDir)
       .filter((f) => {
         const lower = f.toLowerCase()
         return (lower.endsWith('.md') || lower.endsWith('.mdx')) && lower !== 'index.md' && lower !== 'index.mdx'
       })
 
+    postFiles.push(...files)
+
     for (const file of files) {
       const slug = file.replace(/\.(md|mdx)$/i, '')
-      const fullPath = path.join(blogDir, file)
+      const fullPath = path.join(resolvedBlogDir, file)
       const raw = fs.readFileSync(fullPath, 'utf8')
       const { frontmatter } = parseFrontmatter(raw)
       const title =
@@ -94,6 +98,16 @@ export default function Page() {
             </Link>
           ))}
         </div>
+      )}
+
+      {process.env.DEBUG_BLOG === '1' && (
+        <pre className="mt-8 p-4 bg-gray-50 text-xs text-gray-800 rounded">
+          {JSON.stringify({
+            resolvedBlogDir,
+            postFiles,
+            posts,
+          }, null, 2)}
+        </pre>
       )}
     </div>
   )
