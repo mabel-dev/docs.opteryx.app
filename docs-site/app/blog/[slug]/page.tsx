@@ -7,21 +7,18 @@ import { readMarkdownFile } from '@/app/lib/readMarkdownFile'
 
 type Props = {
   params: {
-    slug: string[]
+    slug: string
   }
 }
 
 // no revalidation; static
 export const revalidate = false
 
-function normalizeSlug(slug: string[] | undefined): string[] {
-  if (!slug || !Array.isArray(slug) || slug.length === 0) {
-    return []
+function normalizeSlug(slug: string | undefined): string {
+  if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
+    return ''
   }
-  const normalized = [...slug]
-  const lastIndex = normalized.length - 1
-  normalized[lastIndex] = normalized[lastIndex].replace(/\.md$/i, '')
-  return normalized
+  return slug.replace(/\.md$/i, '')
 }
 
 export function generateStaticParams() {
@@ -30,20 +27,20 @@ export function generateStaticParams() {
   return listMarkdownSlugs(blogDir)
     .filter((slug) => Array.isArray(slug) && slug.length > 0)
     .filter((slug) => !(slug.length === 1 && slug[0] === 'index'))
-    .map((slug) => ({ slug }))
+    .map((slug) => ({ slug: slug.join('/') }))
 }
 
 export default async function Page({ params }: Props) {
   const resolvedParams = await Promise.resolve(params)
-  if (!resolvedParams || !resolvedParams.slug || !Array.isArray(resolvedParams.slug)) {
+  if (!resolvedParams || !resolvedParams.slug || typeof resolvedParams.slug !== 'string') {
     return notFound()
   }
   const normalizedSlug = normalizeSlug(resolvedParams.slug)
-  if (normalizedSlug.length === 0) {
+  if (!normalizedSlug) {
     return notFound()
   }
 
-  const mdPath = path.join(getContentDocsDir(), '../blog', ...normalizedSlug) + '.md'
+  const mdPath = path.join(getContentDocsDir(), '../blog', normalizedSlug + '.md')
   const source = readMarkdownFile(mdPath)
   if (!source) {
     return notFound()
