@@ -1,8 +1,10 @@
 ---
 title: Rewriting the I/O Stack
+description: The new I/O layer and why it matters.
 date: 2026-03-12
 author: Justin Joyce
 role: Opteryx Engineering
+image: /blog/2026-03-12-io-stack.png
 tags:
   - performance
   - storage
@@ -12,7 +14,7 @@ tags:
 
 ## TL;DR
 
-Cold queries over ~100 million rows stored as Parquet on object storage originally took **~5 minutes** in Opteryx. Profiling showed the execution engine repeatedly stalling while waiting for the IO buffer to refill.
+Cold queries over 100 million rows stored as Parquet on object storage originally took **5 minutes** in Opteryx. Profiling showed the execution engine repeatedly stalling while waiting for the IO buffer to refill.
 
 We rewrote the IO stack to schedule **fine-grained byte-range reads based on Parquet metadata (column chunks within row groups)** and pipelined reads, decompression, and decoding.
 

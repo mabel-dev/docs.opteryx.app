@@ -33,6 +33,7 @@ type PostMeta = {
   title: string
   description?: string
   date?: string
+  image?: string
 }
 
 export default function Page() {
@@ -64,8 +65,9 @@ export default function Page() {
         slug.replace(/\d{4}-\d{2}-\d{2}-/, '').replace(/-/g, ' ')
       const description = frontmatter.description as string | undefined
       const date = frontmatter.date as string | undefined
+      const image = frontmatter.image as string | undefined
 
-      posts.push({ slug, title, description, date })
+      posts.push({ slug, title, description, date, image })
     }
   } catch (err) {
     // ignore if dir missing
@@ -92,6 +94,16 @@ export default function Page() {
               href={`/blog/${post.slug}`}
               className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:border-opteryx-teal hover:shadow-md transition"
             >
+              {post.image ? (
+                <div className="mb-4 h-40 overflow-hidden rounded-md bg-gray-100">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : null}
+
               <h3 className="text-lg font-semibold">{post.title}</h3>
               {post.date ? <p className="text-sm text-gray-500">{post.date}</p> : null}
               {post.description ? <p className="mt-2 text-gray-700">{post.description}</p> : null}
