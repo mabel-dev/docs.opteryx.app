@@ -1,3 +1,4 @@
+import DocRenderer from '@/app/components/DocRenderer'
 import Link from 'next/link'
 import path from 'path'
 import fs from 'fs'
