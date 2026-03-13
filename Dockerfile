@@ -4,6 +4,8 @@ WORKDIR /app
 
 # Copy the entire docs-site directory
 COPY docs-site/ ./
+# Copy blog content (outside docs-site) so it is available at runtime
+COPY content/blog ./content/blog
 
 # Ensure native build tools are available for any native modules on Alpine
 RUN apk add --no-cache python3 build-base
@@ -25,6 +27,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/package-lock.json ./
+# Ensure blog content is available at runtime
+COPY --from=builder /app/content ./content
 
 # Copy next.config so Next.js can read it
 COPY --from=builder /app/next.config.mjs ./
