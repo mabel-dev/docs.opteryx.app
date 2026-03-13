@@ -7,7 +7,8 @@ DEFS = ROOT / 'definitions'
 DOCS = ROOT / 'docs-site'
 
 NAV_PATH = DOCS / 'nav.json'
-REF_SQL_DIR = DOCS / 'reference' / 'sql'
+CONTENT_DIR = DOCS / 'content' / 'docs'
+REF_SQL_DIR = CONTENT_DIR / 'reference' / 'sql'
 
 
 def slugify(name: str) -> str:
@@ -236,10 +237,10 @@ def build_types_docs(types_def: dict):
 
     lines = [
         '---',
-        'title: SQL Types — Opteryx Reference',
+        'title: SQL Data Types — Opteryx Reference',
         'description: Reference for SQL data types supported by Opteryx.',
         '---','',
-        '# Types','',
+        '# Data Types','',
         'The following data types are supported by Opteryx.  Click a name for details.',''
     ]
 
@@ -252,7 +253,7 @@ def build_types_docs(types_def: dict):
             lines.append(f'- [{name}](types/{slug}) — {summary}')
         lines.append('')
 
-    write_md(REF_SQL_DIR / 'types.md', lines)
+    write_md(REF_SQL_DIR / 'data-types.md', lines)
 
     for name, info in types_def.items():
         slug = slugify(name)
@@ -344,7 +345,19 @@ def update_nav():
 
     ensure_section('Functions', {'href': 'reference/sql/functions.md'})
     ensure_section('Operators', {'href': 'reference/sql/operators.md'})
-    ensure_section('Types', {'href': 'reference/sql/types.md'})
+    ensure_section('Data Types', {'href': 'reference/sql/data-types.md'})
+
+    # remove any stray 'Types' section that might be left over
+    for item in list(sql_block):
+        if 'Types' in item and isinstance(item['Types'], dict):
+            sql_block.remove(item)
+
+    # fix: remove Expressions accidentally nested under Statements
+    for item in sql_block:
+        if 'Statements' in item and isinstance(item['Statements'], dict):
+            items = item['Statements'].get('items')
+            if isinstance(items, list):
+                item['Statements']['items'] = [sub for sub in items if not (isinstance(sub, dict) and 'Expressions' in sub)]
 
     NAV_PATH.write_text(json.dumps(nav, indent=2))
 
