@@ -44,6 +44,7 @@ export default function Page() {
 
   const posts: PostMeta[] = []
   const postFiles: string[] = []
+  const debug = process.env.DEBUG_BLOG === '1'
 
   try {
     const files = fs
