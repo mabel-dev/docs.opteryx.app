@@ -149,30 +149,46 @@ export default async function Page({ params }: Props) {
       <DocRenderer source={source} />
 
       {showLatest ? (
-        <div className="mt-12 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold">Latest article</h2>
-          <Link
-            href={`/blog/${latest.slug}`}
-            className="mt-4 block rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:border-opteryx-teal hover:shadow-md transition"
-          >
-            {latest.image ? (
-              <div className="mb-4 h-40 overflow-hidden rounded-md bg-gray-100">
-                <img
-                  src={latest.image}
-                  alt={latest.title}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ) : null}
+        <div className="mt-12 rounded-lg border border-gray-200 bg-[#f3fbfa] p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Recent Posts</h2>
 
-            <h3 className="text-lg font-semibold">{latest.title}</h3>
-            {latest.date ? (
-              <p className="text-sm text-gray-500">{latest.date}</p>
-            ) : null}
-            {latest.description ? (
-              <p className="mt-2 text-gray-700">{latest.description}</p>
-            ) : null}
-          </Link>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div>
+              <Link
+                href={`/blog/${latest.slug}`}
+                className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:border-opteryx-teal hover:shadow-md transition"
+              >
+                {latest.image ? (
+                  <div className="mb-4 h-40 overflow-hidden rounded-md bg-gray-100">
+                    <img
+                      src={latest.image}
+                      alt={latest.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ) : null}
+
+                <h3 className="text-lg font-semibold">{latest.title}</h3>
+                {latest.date ? (
+                  <p className="text-sm text-gray-500">{latest.date}</p>
+                ) : null}
+                {latest.description ? (
+                  <p className="mt-2 text-gray-700">{latest.description}</p>
+                ) : null}
+              </Link>
+
+              <div className="mt-4">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center justify-center rounded border border-opteryx-teal bg-white px-4 py-2 text-sm font-medium text-opteryx-teal hover:bg-opteryx-teal/10"
+                >
+                  All Blog Posts
+                </Link>
+              </div>
+            </div>
+
+            <div />
+          </div>
         </div>
       ) : null}
     </>
