@@ -17,7 +17,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 - [INTERVAL](types/interval) — INTERVAL
 - [JSONB](types/jsonb) — JSONB
 - [NULL](types/null) — NULL
-- [STRUCT](types/struct) — STRUCT
 - [TIME](types/time) — TIME
 - [TIMESTAMP](types/timestamp) — TIMESTAMP
 - [VARCHAR](types/varchar) — VARCHAR
+- [VECTOR](types/vector) — VECTOR

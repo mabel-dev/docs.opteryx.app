@@ -5,6 +5,18 @@ description: NULL
 
 # NULL
 
+Null value.
+
+## Example
+
+```
+NULL
+```
+
+## Notes
+
+Represents absence of a value.
+
 **Canonical name:** NULL
 
 **Accepted spellings:** null

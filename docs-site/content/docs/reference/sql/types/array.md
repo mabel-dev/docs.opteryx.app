@@ -5,6 +5,18 @@ description: ARRAY
 
 # ARRAY
 
+Array of values of a single type.
+
+## Example
+
+```
+[1, 2, 3]
+```
+
+## Notes
+
+Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc.
+
 **Canonical name:** ARRAY
 
 **Accepted spellings:** array

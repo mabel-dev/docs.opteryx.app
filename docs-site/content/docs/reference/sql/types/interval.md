@@ -5,6 +5,18 @@ description: INTERVAL
 
 # INTERVAL
 
+Time interval/duration.
+
+## Example
+
+```
+1 day 02:03:04
+```
+
+## Notes
+
+Represented as a Python timedelta.
+
 **Canonical name:** INTERVAL
 
 **Accepted spellings:** interval

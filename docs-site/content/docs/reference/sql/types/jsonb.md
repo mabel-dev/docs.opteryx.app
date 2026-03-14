@@ -5,6 +5,18 @@ description: JSONB
 
 # JSONB
 
+JSON binary data.
+
+## Example
+
+```
+{'key': 'value'}
+```
+
+## Notes
+
+Stored as a binary JSON blob.
+
 **Canonical name:** JSONB
 
 **Accepted spellings:** jsonb

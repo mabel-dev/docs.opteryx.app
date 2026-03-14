@@ -265,6 +265,34 @@ def build_types_docs(types_def: dict):
         lines.append('---\n')
         lines.append(f'# {title_text}\n')
 
+        metadata = info.get('metadata', {}) or {}
+        description = metadata.get('description')
+        if description:
+            lines.append(description + '\n')
+
+        example = metadata.get('example')
+        if example is not None:
+            lines.append('## Example\n')
+            lines.append('```')
+            lines.append(str(example))
+            lines.append('```\n')
+
+        min_value = metadata.get('min')
+        max_value = metadata.get('max')
+        if min_value is not None or max_value is not None:
+            lines.append('## Range\n')
+            if min_value is not None:
+                lines.append(f'- **Min:** `{min_value}`')
+            if max_value is not None:
+                lines.append(f'- **Max:** `{max_value}`')
+            lines.append('')
+
+        notes = metadata.get('notes')
+        if notes:
+            lines.append('## Notes\n')
+            lines.append(notes)
+            lines.append('')
+
         canonical = info.get('canonical_name')
         if canonical:
             lines.append(f'**Canonical name:** {canonical}\n')
