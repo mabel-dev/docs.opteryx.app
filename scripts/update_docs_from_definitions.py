@@ -434,7 +434,7 @@ def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
         node['items'] = items
 
     populate_nav_items(functions_item, 'reference/sql/functions', functions_def, lambda name, _: name)
-    populate_nav_items(operators_item, 'reference/sql/operators', operators_def, lambda name, info: info.get('display_name') or name)
+    populate_nav_items(operators_item, 'reference/sql/operators', operators_def, lambda name, info: info.get('friendly_name') or info.get('display_name') or name)
     populate_nav_items(types_item, 'reference/sql/types', types_def, lambda name, info: info.get('canonical_name') or name.upper())
 
     # remove any stray 'Types' section that might be left over
