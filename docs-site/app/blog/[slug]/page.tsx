@@ -148,10 +148,10 @@ export default async function Page({ params }: Props) {
     <>
       <DocRenderer source={source} />
 
-      {showLatest ? (
-        <div className="mt-12 rounded-lg border border-gray-200 bg-[#f3fbfa] p-6 shadow-sm">
-          <h2 className="text-lg font-semibold">Recent Posts</h2>
+      <div className="mt-12 rounded-lg border border-gray-200 bg-[#f3fbfa] p-6 shadow-sm">
+        <h2 className="text-lg font-semibold">Recent Posts</h2>
 
+        {showLatest ? (
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div>
               <Link
@@ -189,8 +189,17 @@ export default async function Page({ params }: Props) {
 
             <div />
           </div>
-        </div>
-      ) : null}
+        ) : (
+          <div className="mt-4 flex justify-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center justify-center rounded border border-opteryx-teal bg-white px-4 py-2 text-sm font-medium text-opteryx-teal hover:bg-opteryx-teal/10"
+            >
+              All Blog Posts
+            </Link>
+          </div>
+        )}
+      </div>
     </>
   )
 }
