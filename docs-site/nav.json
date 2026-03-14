@@ -53,7 +53,51 @@
         "SQL Language Reference": [
           {
             "Data Types": {
-              "href": "reference/sql/data-types.md"
+              "href": "reference/sql/data-types.md",
+              "items": [
+                {
+                  "ARRAY": "reference/sql/types/array.md"
+                },
+                {
+                  "BLOB": "reference/sql/types/blob.md"
+                },
+                {
+                  "BOOLEAN": "reference/sql/types/boolean.md"
+                },
+                {
+                  "DATE": "reference/sql/types/date.md"
+                },
+                {
+                  "DECIMAL": "reference/sql/types/decimal.md"
+                },
+                {
+                  "DOUBLE": "reference/sql/types/double.md"
+                },
+                {
+                  "INTEGER": "reference/sql/types/integer.md"
+                },
+                {
+                  "INTERVAL": "reference/sql/types/interval.md"
+                },
+                {
+                  "JSONB": "reference/sql/types/jsonb.md"
+                },
+                {
+                  "NULL": "reference/sql/types/null.md"
+                },
+                {
+                  "TIME": "reference/sql/types/time.md"
+                },
+                {
+                  "TIMESTAMP": "reference/sql/types/timestamp.md"
+                },
+                {
+                  "VARCHAR": "reference/sql/types/varchar.md"
+                },
+                {
+                  "VECTOR": "reference/sql/types/vector.md"
+                }
+              ]
             }
           },
           {
@@ -427,7 +471,111 @@
           },
           {
             "Operators": {
-              "href": "reference/sql/operators.md"
+              "href": "reference/sql/operators.md",
+              "items": [
+                {
+                  "And": "reference/sql/operators/and.md"
+                },
+                {
+                  "@>>": "reference/sql/operators/arraycontainsall.md"
+                },
+                {
+                  "->": "reference/sql/operators/arrow.md"
+                },
+                {
+                  "@>": "reference/sql/operators/atarrow.md"
+                },
+                {
+                  "@?": "reference/sql/operators/atquestion.md"
+                },
+                {
+                  "&": "reference/sql/operators/bitwiseand.md"
+                },
+                {
+                  "|": "reference/sql/operators/bitwiseor.md"
+                },
+                {
+                  "^": "reference/sql/operators/bitwisexor.md"
+                },
+                {
+                  "/": "reference/sql/operators/divide.md"
+                },
+                {
+                  "=": "reference/sql/operators/eq.md"
+                },
+                {
+                  ">": "reference/sql/operators/gt.md"
+                },
+                {
+                  ">=": "reference/sql/operators/gteq.md"
+                },
+                {
+                  "ILike": "reference/sql/operators/ilike.md"
+                },
+                {
+                  "InList": "reference/sql/operators/inlist.md"
+                },
+                {
+                  "Like": "reference/sql/operators/like.md"
+                },
+                {
+                  "->>": "reference/sql/operators/longarrow.md"
+                },
+                {
+                  "<": "reference/sql/operators/lt.md"
+                },
+                {
+                  "<=": "reference/sql/operators/lteq.md"
+                },
+                {
+                  "[]": "reference/sql/operators/mapaccess.md"
+                },
+                {
+                  "-": "reference/sql/operators/minus.md"
+                },
+                {
+                  "%": "reference/sql/operators/modulo.md"
+                },
+                {
+                  "*": "reference/sql/operators/multiply.md"
+                },
+                {
+                  "div": "reference/sql/operators/myintegerdivide.md"
+                },
+                {
+                  "!=": "reference/sql/operators/noteq.md"
+                },
+                {
+                  "NotILike": "reference/sql/operators/notilike.md"
+                },
+                {
+                  "NotInList": "reference/sql/operators/notinlist.md"
+                },
+                {
+                  "NotLike": "reference/sql/operators/notlike.md"
+                },
+                {
+                  "NotRLike": "reference/sql/operators/notrlike.md"
+                },
+                {
+                  "Or": "reference/sql/operators/or.md"
+                },
+                {
+                  "+": "reference/sql/operators/plus.md"
+                },
+                {
+                  "RLike": "reference/sql/operators/rlike.md"
+                },
+                {
+                  "<<": "reference/sql/operators/shiftleft.md"
+                },
+                {
+                  ">>": "reference/sql/operators/shiftright.md"
+                },
+                {
+                  "||": "reference/sql/operators/stringconcat.md"
+                }
+              ]
             }
           }
         ]

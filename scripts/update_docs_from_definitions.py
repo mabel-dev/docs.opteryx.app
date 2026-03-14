@@ -334,7 +334,7 @@ def build_types_docs(types_def: dict):
         write_md(path, lines)
 
 
-def update_nav():
+def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
     nav = load_json(NAV_PATH)
 
     # remove Engineering Blog if present
@@ -370,9 +370,28 @@ def update_nav():
         sql_block.append(new_item)
         return new_item
 
-    ensure_section('Functions', {'href': 'reference/sql/functions.md'})
-    ensure_section('Operators', {'href': 'reference/sql/operators.md'})
-    ensure_section('Data Types', {'href': 'reference/sql/data-types.md'})
+    functions_item = ensure_section('Functions', {'href': 'reference/sql/functions.md'})
+    operators_item = ensure_section('Operators', {'href': 'reference/sql/operators.md'})
+    types_item = ensure_section('Data Types', {'href': 'reference/sql/data-types.md'})
+
+    # populate nav items for functions/operators/types so the sidebar can expand when viewing specific entries
+    def populate_nav_items(item: dict, prefix: str, entries: dict, title_fn):
+        if not isinstance(item.get(list(item.keys())[0]), dict):
+            return
+        key = list(item.keys())[0]
+        node = item[key]
+        if not isinstance(node, dict):
+            return
+        items = []
+        for name in sorted(entries.keys()):
+            slug = slugify(name)
+            title = title_fn(name, entries[name])
+            items.append({title: f'{prefix}/{slug}.md'})
+        node['items'] = items
+
+    populate_nav_items(functions_item, 'reference/sql/functions', functions_def, lambda name, _: name)
+    populate_nav_items(operators_item, 'reference/sql/operators', operators_def, lambda name, info: info.get('display_name') or name)
+    populate_nav_items(types_item, 'reference/sql/types', types_def, lambda name, info: info.get('canonical_name') or name.upper())
 
     # remove any stray 'Types' section that might be left over
     for item in list(sql_block):
@@ -397,7 +416,7 @@ def main():
     build_functions_docs(functions_def)
     build_operators_docs(operators_def)
     build_types_docs(types_def)
-    update_nav()
+    update_nav(functions_def, operators_def, types_def)
     print('docs regenerated')
 
 
