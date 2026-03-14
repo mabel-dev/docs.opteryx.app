@@ -1,13 +1,25 @@
 ---
-title: Eq — Opteryx Operator
-description: Token: =
+title: Equals — Opteryx Operator
+description: Returns true when both operands compare equal. Symbol: =
 ---
 
-# =
+# Equals
+
+Equality comparison.
+
+Returns true when both operands compare equal.
 
 **Category:** comparison
 
-**Token:** `=`
+**Node kind:** comparison
+
+**SQL symbol:** `=`
+
+## Example
+
+```sql
+SELECT col1 = col2 FROM table;
+```
 
 **Signatures:** 23
 

@@ -1,13 +1,25 @@
 ---
-title: BitwiseXor — Opteryx Operator
-description: Token: ^
+title: Bitwise XOR — Opteryx Operator
+description: Combines integer operands using a bitwise exclusive OR operation. Symbol: ^
 ---
 
-# ^
+# Bitwise XOR
+
+Bitwise XOR operator.
+
+Combines integer operands using a bitwise exclusive OR operation.
 
 **Category:** binary
 
-**Token:** `^`
+**Node kind:** binary
+
+**SQL symbol:** `^`
+
+## Example
+
+```sql
+SELECT col1 ^ col2 FROM table;
+```
 
 **Signatures:** 1
 

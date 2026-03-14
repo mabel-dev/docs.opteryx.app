@@ -1,13 +1,25 @@
 ---
-title: GtEq — Opteryx Operator
-description: Token: >=
+title: Greater than or equal — Opteryx Operator
+description: Returns true when the left operand is greater than or equal to the right operand. Symbol: >=
 ---
 
-# >=
+# Greater than or equal
+
+Greater-than-or-equal comparison.
+
+Returns true when the left operand is greater than or equal to the right operand.
 
 **Category:** comparison
 
-**Token:** `>=`
+**Node kind:** comparison
+
+**SQL symbol:** `>=`
+
+## Example
+
+```sql
+SELECT col1 >= col2 FROM table;
+```
 
 **Signatures:** 22
 

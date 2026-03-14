@@ -1,13 +1,25 @@
 ---
-title: Plus — Opteryx Operator
-description: Token: +
+title: Addition — Opteryx Operator
+description: Returns the sum of two numeric or interval-compatible operands. Symbol: +
 ---
 
-# +
+# Addition
+
+Addition operator.
+
+Returns the sum of two numeric or interval-compatible operands.
 
 **Category:** binary
 
-**Token:** `+`
+**Node kind:** binary
+
+**SQL symbol:** `+`
+
+## Example
+
+```sql
+SELECT col1 + col2 FROM table;
+```
 
 **Signatures:** 12
 

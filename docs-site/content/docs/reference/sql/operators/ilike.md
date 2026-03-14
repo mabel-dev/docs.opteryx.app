@@ -1,20 +1,34 @@
 ---
-title: ILike — Opteryx Operator
-description: 
+title: Case-insensitive like — Opteryx Operator
+description: Returns true when the left string matches the SQL ILIKE pattern on the right without case sensitivity. Symbol: ILIKE
 ---
 
-# ILike
+# Case-insensitive like
+
+Case-insensitive pattern match comparison.
+
+Returns true when the left string matches the SQL ILIKE pattern on the right without case sensitivity.
 
 **Category:** comparison
+
+**Node kind:** comparison
+
+**SQL symbol:** `ILIKE`
+
+## Example
+
+```sql
+SELECT col1 ILIKE col2 FROM table;
+```
 
 **Signatures:** 4
 
 ## Signatures
 
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `blob ILIKE blob` → boolean
+- `blob ILIKE varchar` → boolean
+- `varchar ILIKE blob` → boolean
+- `varchar ILIKE varchar` → boolean
 
 ## Types
 

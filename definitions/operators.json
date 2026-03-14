@@ -1,9 +1,12 @@
 {
     "And": {
-        "internal_name": "And",
-        "display_name": "And",
-        "token": null,
+        "ast_symbol": "And",
+        "friendly_name": "Logical AND",
+        "sql_symbol": "AND",
+        "node_kind": "logical",
         "category": "logical",
+        "description": "Logical conjunction.",
+        "documentation": "Returns true only when both boolean operands evaluate to true.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -26,10 +29,13 @@
         ]
     },
     "ArrayContainsAll": {
-        "internal_name": "ArrayContainsAll",
-        "display_name": "@>>",
-        "token": "@>>",
+        "ast_symbol": "ArrayContainsAll",
+        "friendly_name": "Array contains all",
+        "sql_symbol": "@>>",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Array contains-all operator.",
+        "documentation": "Returns true when the left array contains all values from the right array.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -52,10 +58,13 @@
         ]
     },
     "Arrow": {
-        "internal_name": "Arrow",
-        "display_name": "->",
-        "token": "->",
+        "ast_symbol": "Arrow",
+        "friendly_name": "JSON extract",
+        "sql_symbol": "->",
+        "node_kind": "extraction",
         "category": "extraction",
+        "description": "JSON extraction operator.",
+        "documentation": "Returns the selected JSON value from a document or JSON-like value.",
         "signature_count": 8,
         "has_dynamic_result": true,
         "left_types": [
@@ -126,13 +135,17 @@
                 "result_type_is_dynamic": true,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "The result type is dynamic because the selected JSON value may be scalar, object, array, or null."
     },
     "AtArrow": {
-        "internal_name": "AtArrow",
-        "display_name": "@>",
-        "token": "@>",
+        "ast_symbol": "AtArrow",
+        "friendly_name": "Array contains any",
+        "sql_symbol": "@>",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Array containment operator.",
+        "documentation": "Returns true when the left array contains any of the values provided by the right array.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -155,10 +168,13 @@
         ]
     },
     "AtQuestion": {
-        "internal_name": "AtQuestion",
-        "display_name": "@?",
-        "token": "@?",
+        "ast_symbol": "AtQuestion",
+        "friendly_name": "JSON path exists",
+        "sql_symbol": "@?",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "JSON path existence operator.",
+        "documentation": "Returns true when the supplied JSON path expression matches within the left document.",
         "signature_count": 8,
         "has_dynamic_result": false,
         "left_types": [
@@ -234,10 +250,13 @@
         ]
     },
     "BitwiseAnd": {
-        "internal_name": "BitwiseAnd",
-        "display_name": "&",
-        "token": "&",
+        "ast_symbol": "BitwiseAnd",
+        "friendly_name": "Bitwise AND",
+        "sql_symbol": "&",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Bitwise AND operator.",
+        "documentation": "Combines integer operands using a bitwise AND operation.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -260,10 +279,13 @@
         ]
     },
     "BitwiseOr": {
-        "internal_name": "BitwiseOr",
-        "display_name": "|",
-        "token": "|",
+        "ast_symbol": "BitwiseOr",
+        "friendly_name": "Bitwise OR",
+        "sql_symbol": "|",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Bitwise OR operator.",
+        "documentation": "Combines integer operands using a bitwise OR operation.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -309,13 +331,17 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "The same token may also appear in non-bitwise contexts depending on operand types."
     },
     "BitwiseXor": {
-        "internal_name": "BitwiseXor",
-        "display_name": "^",
-        "token": "^",
+        "ast_symbol": "BitwiseXor",
+        "friendly_name": "Bitwise XOR",
+        "sql_symbol": "^",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Bitwise XOR operator.",
+        "documentation": "Combines integer operands using a bitwise exclusive OR operation.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -338,10 +364,13 @@
         ]
     },
     "Divide": {
-        "internal_name": "Divide",
-        "display_name": "/",
-        "token": "/",
+        "ast_symbol": "Divide",
+        "friendly_name": "Division",
+        "sql_symbol": "/",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Division operator.",
+        "documentation": "Returns the quotient of two numeric operands.",
         "signature_count": 7,
         "has_dynamic_result": false,
         "left_types": [
@@ -411,10 +440,13 @@
         ]
     },
     "Eq": {
-        "internal_name": "Eq",
-        "display_name": "=",
-        "token": "=",
+        "ast_symbol": "Eq",
+        "friendly_name": "Equals",
+        "sql_symbol": "=",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Equality comparison.",
+        "documentation": "Returns true when both operands compare equal.",
         "signature_count": 23,
         "has_dynamic_result": false,
         "left_types": [
@@ -607,10 +639,13 @@
         ]
     },
     "Gt": {
-        "internal_name": "Gt",
-        "display_name": ">",
-        "token": ">",
+        "ast_symbol": "Gt",
+        "friendly_name": "Greater than",
+        "sql_symbol": ">",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Greater-than comparison.",
+        "documentation": "Returns true when the left operand is greater than the right operand.",
         "signature_count": 22,
         "has_dynamic_result": false,
         "left_types": [
@@ -794,10 +829,13 @@
         ]
     },
     "GtEq": {
-        "internal_name": "GtEq",
-        "display_name": ">=",
-        "token": ">=",
+        "ast_symbol": "GtEq",
+        "friendly_name": "Greater than or equal",
+        "sql_symbol": ">=",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Greater-than-or-equal comparison.",
+        "documentation": "Returns true when the left operand is greater than or equal to the right operand.",
         "signature_count": 22,
         "has_dynamic_result": false,
         "left_types": [
@@ -981,10 +1019,13 @@
         ]
     },
     "ILike": {
-        "internal_name": "ILike",
-        "display_name": "ILike",
-        "token": null,
+        "ast_symbol": "ILike",
+        "friendly_name": "Case-insensitive like",
+        "sql_symbol": "ILIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Case-insensitive pattern match comparison.",
+        "documentation": "Returns true when the left string matches the SQL ILIKE pattern on the right without case sensitivity.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -1030,10 +1071,13 @@
         ]
     },
     "InList": {
-        "internal_name": "InList",
-        "display_name": "InList",
-        "token": null,
+        "ast_symbol": "InList",
+        "friendly_name": "In list",
+        "sql_symbol": "IN",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Membership comparison.",
+        "documentation": "Returns true when the left operand matches any element in the right-hand list or array.",
         "signature_count": 8,
         "has_dynamic_result": false,
         "left_types": [
@@ -1112,10 +1156,13 @@
         ]
     },
     "Like": {
-        "internal_name": "Like",
-        "display_name": "Like",
-        "token": null,
+        "ast_symbol": "Like",
+        "friendly_name": "Like",
+        "sql_symbol": "LIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Pattern match comparison.",
+        "documentation": "Returns true when the left string matches the SQL LIKE pattern on the right.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -1161,10 +1208,13 @@
         ]
     },
     "LongArrow": {
-        "internal_name": "LongArrow",
-        "display_name": "->>",
-        "token": "->>",
+        "ast_symbol": "LongArrow",
+        "friendly_name": "JSON extract text",
+        "sql_symbol": "->>",
+        "node_kind": "extraction",
         "category": "extraction",
+        "description": "JSON text extraction operator.",
+        "documentation": "Returns the selected JSON value encoded as a blob or text-like binary value.",
         "signature_count": 8,
         "has_dynamic_result": false,
         "left_types": [
@@ -1240,10 +1290,13 @@
         ]
     },
     "Lt": {
-        "internal_name": "Lt",
-        "display_name": "<",
-        "token": "<",
+        "ast_symbol": "Lt",
+        "friendly_name": "Less than",
+        "sql_symbol": "<",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Less-than comparison.",
+        "documentation": "Returns true when the left operand is less than the right operand.",
         "signature_count": 22,
         "has_dynamic_result": false,
         "left_types": [
@@ -1427,10 +1480,13 @@
         ]
     },
     "LtEq": {
-        "internal_name": "LtEq",
-        "display_name": "<=",
-        "token": "<=",
+        "ast_symbol": "LtEq",
+        "friendly_name": "Less than or equal",
+        "sql_symbol": "<=",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Less-than-or-equal comparison.",
+        "documentation": "Returns true when the left operand is less than or equal to the right operand.",
         "signature_count": 22,
         "has_dynamic_result": false,
         "left_types": [
@@ -1614,22 +1670,27 @@
         ]
     },
     "MapAccess": {
-        "internal_name": "MapAccess",
-        "display_name": "[]",
-        "token": "[]",
+        "ast_symbol": "MapAccess",
+        "friendly_name": "Subscript access",
+        "sql_symbol": "[]",
+        "node_kind": "extraction",
         "category": "extraction",
-        "signature_count": 3,
+        "description": "Subscript access operator.",
+        "documentation": "Returns the element at the requested index from an array, string, or blob-like value.",
+        "signature_count": 4,
         "has_dynamic_result": true,
         "left_types": [
             "array",
             "blob",
-            "varchar"
+            "varchar",
+            "vector"
         ],
         "right_types": [
             "integer"
         ],
         "result_types": [
             "blob",
+            "double",
             "varchar"
         ],
         "signatures": [
@@ -1653,14 +1714,25 @@
                 "result_type": "varchar",
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
+            },
+            {
+                "left_type": "vector",
+                "right_type": "integer",
+                "result_type": "double",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "For arrays the result type depends on the array element type, so the exported result type may be dynamic."
     },
     "Minus": {
-        "internal_name": "Minus",
-        "display_name": "-",
-        "token": "-",
+        "ast_symbol": "Minus",
+        "friendly_name": "Subtraction",
+        "sql_symbol": "-",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Subtraction operator.",
+        "documentation": "Returns the difference between two numeric, date, timestamp, or interval-compatible operands.",
         "signature_count": 20,
         "has_dynamic_result": false,
         "left_types": [
@@ -1830,10 +1902,13 @@
         ]
     },
     "Modulo": {
-        "internal_name": "Modulo",
-        "display_name": "%",
-        "token": "%",
+        "ast_symbol": "Modulo",
+        "friendly_name": "Modulo",
+        "sql_symbol": "%",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Modulo operator.",
+        "documentation": "Returns the remainder after division of the left numeric operand by the right numeric operand.",
         "signature_count": 2,
         "has_dynamic_result": false,
         "left_types": [
@@ -1865,10 +1940,13 @@
         ]
     },
     "Multiply": {
-        "internal_name": "Multiply",
-        "display_name": "*",
-        "token": "*",
+        "ast_symbol": "Multiply",
+        "friendly_name": "Multiplication",
+        "sql_symbol": "*",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Multiplication operator.",
+        "documentation": "Returns the product of two numeric operands.",
         "signature_count": 7,
         "has_dynamic_result": false,
         "left_types": [
@@ -1939,10 +2017,13 @@
         ]
     },
     "MyIntegerDivide": {
-        "internal_name": "MyIntegerDivide",
-        "display_name": "div",
-        "token": "div",
+        "ast_symbol": "MyIntegerDivide",
+        "friendly_name": "Integer division",
+        "sql_symbol": "DIV",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Integer division operator.",
+        "documentation": "Divides two integers and truncates the result toward zero.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -1965,10 +2046,13 @@
         ]
     },
     "NotEq": {
-        "internal_name": "NotEq",
-        "display_name": "!=",
-        "token": "!=",
+        "ast_symbol": "NotEq",
+        "friendly_name": "Not equals",
+        "sql_symbol": "!=",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Inequality comparison.",
+        "documentation": "Returns true when the operands do not compare equal.",
         "signature_count": 23,
         "has_dynamic_result": false,
         "left_types": [
@@ -2161,10 +2245,13 @@
         ]
     },
     "NotILike": {
-        "internal_name": "NotILike",
-        "display_name": "NotILike",
-        "token": null,
+        "ast_symbol": "NotILike",
+        "friendly_name": "Not case-insensitive like",
+        "sql_symbol": "NOT ILIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Negated case-insensitive pattern match comparison.",
+        "documentation": "Returns true when the left string does not match the SQL ILIKE pattern on the right.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -2210,10 +2297,13 @@
         ]
     },
     "NotInList": {
-        "internal_name": "NotInList",
-        "display_name": "NotInList",
-        "token": null,
+        "ast_symbol": "NotInList",
+        "friendly_name": "Not in list",
+        "sql_symbol": "NOT IN",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Negated membership comparison.",
+        "documentation": "Returns true when the left operand does not match any element in the right-hand list or array.",
         "signature_count": 8,
         "has_dynamic_result": false,
         "left_types": [
@@ -2292,10 +2382,13 @@
         ]
     },
     "NotLike": {
-        "internal_name": "NotLike",
-        "display_name": "NotLike",
-        "token": null,
+        "ast_symbol": "NotLike",
+        "friendly_name": "Not like",
+        "sql_symbol": "NOT LIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Negated pattern match comparison.",
+        "documentation": "Returns true when the left string does not match the SQL LIKE pattern on the right.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -2341,10 +2434,13 @@
         ]
     },
     "NotRLike": {
-        "internal_name": "NotRLike",
-        "display_name": "NotRLike",
-        "token": null,
+        "ast_symbol": "NotRLike",
+        "friendly_name": "Not regex like",
+        "sql_symbol": "NOT RLIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Negated regular expression match comparison.",
+        "documentation": "Returns true when the left string does not match the regular expression on the right.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -2390,10 +2486,13 @@
         ]
     },
     "Or": {
-        "internal_name": "Or",
-        "display_name": "Or",
-        "token": null,
+        "ast_symbol": "Or",
+        "friendly_name": "Logical OR",
+        "sql_symbol": "OR",
+        "node_kind": "logical",
         "category": "logical",
+        "description": "Logical disjunction.",
+        "documentation": "Returns true when either boolean operand evaluates to true.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -2416,10 +2515,13 @@
         ]
     },
     "Plus": {
-        "internal_name": "Plus",
-        "display_name": "+",
-        "token": "+",
+        "ast_symbol": "Plus",
+        "friendly_name": "Addition",
+        "sql_symbol": "+",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Addition operator.",
+        "documentation": "Returns the sum of two numeric or interval-compatible operands.",
         "signature_count": 12,
         "has_dynamic_result": false,
         "left_types": [
@@ -2533,10 +2635,13 @@
         ]
     },
     "RLike": {
-        "internal_name": "RLike",
-        "display_name": "RLike",
-        "token": null,
+        "ast_symbol": "RLike",
+        "friendly_name": "Regex like",
+        "sql_symbol": "RLIKE",
+        "node_kind": "comparison",
         "category": "comparison",
+        "description": "Regular expression match comparison.",
+        "documentation": "Returns true when the left string matches the regular expression on the right.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -2582,10 +2687,13 @@
         ]
     },
     "ShiftLeft": {
-        "internal_name": "ShiftLeft",
-        "display_name": "<<",
-        "token": "<<",
+        "ast_symbol": "ShiftLeft",
+        "friendly_name": "Left shift",
+        "sql_symbol": "<<",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Left shift operator.",
+        "documentation": "Shifts the bits of the left integer operand left by the number of positions in the right operand.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -2608,10 +2716,13 @@
         ]
     },
     "ShiftRight": {
-        "internal_name": "ShiftRight",
-        "display_name": ">>",
-        "token": ">>",
+        "ast_symbol": "ShiftRight",
+        "friendly_name": "Right shift",
+        "sql_symbol": ">>",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "Right shift operator.",
+        "documentation": "Shifts the bits of the left integer operand right by the number of positions in the right operand.",
         "signature_count": 1,
         "has_dynamic_result": false,
         "left_types": [
@@ -2634,10 +2745,13 @@
         ]
     },
     "StringConcat": {
-        "internal_name": "StringConcat",
-        "display_name": "||",
-        "token": "||",
+        "ast_symbol": "StringConcat",
+        "friendly_name": "Concatenation",
+        "sql_symbol": "||",
+        "node_kind": "binary",
         "category": "binary",
+        "description": "String concatenation operator.",
+        "documentation": "Concatenates the left and right string or blob operands.",
         "signature_count": 4,
         "has_dynamic_result": false,
         "left_types": [
@@ -2678,6 +2792,35 @@
                 "left_type": "varchar",
                 "right_type": "varchar",
                 "result_type": "varchar",
+                "result_type_is_dynamic": false,
+                "cost_estimate": 100.0
+            }
+        ]
+    },
+    "Xor": {
+        "ast_symbol": "Xor",
+        "friendly_name": "Logical XOR",
+        "sql_symbol": "XOR",
+        "node_kind": "logical",
+        "category": "logical",
+        "description": "Logical exclusive OR.",
+        "documentation": "Returns true when exactly one boolean operand evaluates to true.",
+        "signature_count": 1,
+        "has_dynamic_result": false,
+        "left_types": [
+            "boolean"
+        ],
+        "right_types": [
+            "boolean"
+        ],
+        "result_types": [
+            "boolean"
+        ],
+        "signatures": [
+            {
+                "left_type": "boolean",
+                "right_type": "boolean",
+                "result_type": "boolean",
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }

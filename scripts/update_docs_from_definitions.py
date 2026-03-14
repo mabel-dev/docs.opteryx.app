@@ -154,11 +154,10 @@ def build_functions_docs(functions_def: dict):
 
 def build_operators_docs(ops_def: dict):
     # index grouped by category
-    categories: dict[str, list[tuple[str,str]]] = {}
+    categories: dict[str, list[tuple[str, dict]]] = {}
     for name, info in ops_def.items():
         category = info.get('category') or 'Other'
-        summary = info.get('summary') or info.get('display_name','')
-        categories.setdefault(category, []).append((name, summary))
+        categories.setdefault(category, []).append((name, info))
 
     lines = [
         '---',
@@ -171,9 +170,12 @@ def build_operators_docs(ops_def: dict):
 
     for category in sorted(categories.keys()):
         lines.append(f'## {category}\n')
-        for name, summary in sorted(categories[category], key=lambda x: x[0]):
+        for name, info in sorted(categories[category], key=lambda x: x[0]):
             slug = slugify(name)
-            lines.append(f'- [{name}](operators/{slug}) — {summary}')
+            display = info.get('friendly_name') or name
+            sql_symbol = info.get('sql_symbol') or info.get('token')
+            label = f"{display} `{sql_symbol}`" if sql_symbol else display
+            lines.append(f'- [{label}](operators/{slug})')
         lines.append('')
 
     write_md(REF_SQL_DIR / 'operators.md', lines)
@@ -181,10 +183,15 @@ def build_operators_docs(ops_def: dict):
     for name, info in ops_def.items():
         slug = slugify(name)
         path = REF_SQL_DIR / 'operators' / f'{slug}.md'
-        display = info.get('display_name')
-        token = info.get('token')
+        display = info.get('friendly_name') or info.get('display_name') or name
+        sql_symbol = info.get('sql_symbol') or info.get('token')
+        ast_symbol = info.get('ast_symbol')
+        node_kind = info.get('node_kind')
         category = info.get('category')
+        description = info.get('description')
+        documentation = info.get('documentation')
         sig_count = info.get('signature_count')
+        has_dynamic_result = info.get('has_dynamic_result')
         left = info.get('left_types', [])
         right = info.get('right_types', [])
         result = info.get('result_types', [])
@@ -192,17 +199,38 @@ def build_operators_docs(ops_def: dict):
 
         lines = []
         lines.append('---')
-        lines.append(f'title: {name} — Opteryx Operator')
-        desc = info.get('summary','') or ''
-        if token:
-            desc = ((desc + ' ').strip() + f' Token: {token}').strip()
+        lines.append(f'title: {display} — Opteryx Operator')
+        desc = (documentation or description or '').strip()
+        if sql_symbol:
+            desc = ((desc + ' ').strip() + f' Symbol: {sql_symbol}').strip()
         lines.append(f'description: {desc}')
         lines.append('---\n')
-        lines.append(f'# {display or name}\n')
+        lines.append(f'# {display}\n')
+
+        if description:
+            lines.append(description + '\n')
+        if documentation:
+            lines.append(documentation + '\n')
+
         if category:
             lines.append(f'**Category:** {category}\n')
-        if token:
-            lines.append(f'**Token:** `{token}`\n')
+        if node_kind:
+            lines.append(f'**Node kind:** {node_kind}\n')
+        if sql_symbol:
+            lines.append(f'**SQL symbol:** `{sql_symbol}`\n')
+
+        # Example usage
+        if sql_symbol and signatures:
+            first = signatures[0]
+            lt = first.get('left_type')
+            rt = first.get('right_type')
+            if lt and rt:
+                lines.append('## Example\n')
+                lines.append('```sql')
+                lines.append(f'SELECT col1 {sql_symbol} col2 FROM table;')
+                lines.append('```\n')
+
+        # Dynamic result explanation
         if sig_count is not None:
             lines.append(f'**Signatures:** {sig_count}\n')
 
@@ -212,10 +240,20 @@ def build_operators_docs(ops_def: dict):
                 lt = sig.get('left_type')
                 rt = sig.get('right_type')
                 res = sig.get('result_type')
-                if token and lt and rt:
-                    lines.append(f'- `{lt} {token} {rt}` → {res or "<dynamic>"}')
+                cost = sig.get('cost_estimate')
+                dyn = sig.get('result_type_is_dynamic')
+
+                sig_line = ''
+                if sql_symbol and lt and rt:
+                    sig_line = f'`{lt} {sql_symbol} {rt}`'
                 else:
-                    lines.append(f'- {sig}')
+                    sig_line = str(sig)
+
+
+                if res is not None:
+                    sig_line += f' → {res}'
+
+                lines.append(f'- {sig_line}')
             lines.append('')
 
         if left or right or result:
@@ -226,6 +264,12 @@ def build_operators_docs(ops_def: dict):
                 lines.append(f'- **Right:** {", ".join(right)}')
             if result:
                 lines.append(f'- **Result:** {", ".join(result)}')
+            lines.append('')
+
+        notes = info.get('notes')
+        if notes:
+            lines.append('## Notes\n')
+            lines.append(notes)
             lines.append('')
 
         write_md(path, lines)

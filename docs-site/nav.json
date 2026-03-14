@@ -477,37 +477,37 @@
                   "And": "reference/sql/operators/and.md"
                 },
                 {
-                  "@>>": "reference/sql/operators/arraycontainsall.md"
+                  "ArrayContainsAll": "reference/sql/operators/arraycontainsall.md"
                 },
                 {
-                  "->": "reference/sql/operators/arrow.md"
+                  "Arrow": "reference/sql/operators/arrow.md"
                 },
                 {
-                  "@>": "reference/sql/operators/atarrow.md"
+                  "AtArrow": "reference/sql/operators/atarrow.md"
                 },
                 {
-                  "@?": "reference/sql/operators/atquestion.md"
+                  "AtQuestion": "reference/sql/operators/atquestion.md"
                 },
                 {
-                  "&": "reference/sql/operators/bitwiseand.md"
+                  "BitwiseAnd": "reference/sql/operators/bitwiseand.md"
                 },
                 {
-                  "|": "reference/sql/operators/bitwiseor.md"
+                  "BitwiseOr": "reference/sql/operators/bitwiseor.md"
                 },
                 {
-                  "^": "reference/sql/operators/bitwisexor.md"
+                  "BitwiseXor": "reference/sql/operators/bitwisexor.md"
                 },
                 {
-                  "/": "reference/sql/operators/divide.md"
+                  "Divide": "reference/sql/operators/divide.md"
                 },
                 {
-                  "=": "reference/sql/operators/eq.md"
+                  "Eq": "reference/sql/operators/eq.md"
                 },
                 {
-                  ">": "reference/sql/operators/gt.md"
+                  "Gt": "reference/sql/operators/gt.md"
                 },
                 {
-                  ">=": "reference/sql/operators/gteq.md"
+                  "GtEq": "reference/sql/operators/gteq.md"
                 },
                 {
                   "ILike": "reference/sql/operators/ilike.md"
@@ -519,31 +519,31 @@
                   "Like": "reference/sql/operators/like.md"
                 },
                 {
-                  "->>": "reference/sql/operators/longarrow.md"
+                  "LongArrow": "reference/sql/operators/longarrow.md"
                 },
                 {
-                  "<": "reference/sql/operators/lt.md"
+                  "Lt": "reference/sql/operators/lt.md"
                 },
                 {
-                  "<=": "reference/sql/operators/lteq.md"
+                  "LtEq": "reference/sql/operators/lteq.md"
                 },
                 {
-                  "[]": "reference/sql/operators/mapaccess.md"
+                  "MapAccess": "reference/sql/operators/mapaccess.md"
                 },
                 {
-                  "-": "reference/sql/operators/minus.md"
+                  "Minus": "reference/sql/operators/minus.md"
                 },
                 {
-                  "%": "reference/sql/operators/modulo.md"
+                  "Modulo": "reference/sql/operators/modulo.md"
                 },
                 {
-                  "*": "reference/sql/operators/multiply.md"
+                  "Multiply": "reference/sql/operators/multiply.md"
                 },
                 {
-                  "div": "reference/sql/operators/myintegerdivide.md"
+                  "MyIntegerDivide": "reference/sql/operators/myintegerdivide.md"
                 },
                 {
-                  "!=": "reference/sql/operators/noteq.md"
+                  "NotEq": "reference/sql/operators/noteq.md"
                 },
                 {
                   "NotILike": "reference/sql/operators/notilike.md"
@@ -561,19 +561,22 @@
                   "Or": "reference/sql/operators/or.md"
                 },
                 {
-                  "+": "reference/sql/operators/plus.md"
+                  "Plus": "reference/sql/operators/plus.md"
                 },
                 {
                   "RLike": "reference/sql/operators/rlike.md"
                 },
                 {
-                  "<<": "reference/sql/operators/shiftleft.md"
+                  "ShiftLeft": "reference/sql/operators/shiftleft.md"
                 },
                 {
-                  ">>": "reference/sql/operators/shiftright.md"
+                  "ShiftRight": "reference/sql/operators/shiftright.md"
                 },
                 {
-                  "||": "reference/sql/operators/stringconcat.md"
+                  "StringConcat": "reference/sql/operators/stringconcat.md"
+                },
+                {
+                  "Xor": "reference/sql/operators/xor.md"
                 }
               ]
             }

@@ -1,17 +1,31 @@
 ---
-title: Or — Opteryx Operator
-description: 
+title: Logical OR — Opteryx Operator
+description: Returns true when either boolean operand evaluates to true. Symbol: OR
 ---
 
-# Or
+# Logical OR
+
+Logical disjunction.
+
+Returns true when either boolean operand evaluates to true.
 
 **Category:** logical
+
+**Node kind:** logical
+
+**SQL symbol:** `OR`
+
+## Example
+
+```sql
+SELECT col1 OR col2 FROM table;
+```
 
 **Signatures:** 1
 
 ## Signatures
 
-- {'left_type': 'boolean', 'right_type': 'boolean', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `boolean OR boolean` → boolean
 
 ## Types
 

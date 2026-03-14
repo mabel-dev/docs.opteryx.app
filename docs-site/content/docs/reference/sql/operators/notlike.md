@@ -1,20 +1,34 @@
 ---
-title: NotLike — Opteryx Operator
-description: 
+title: Not like — Opteryx Operator
+description: Returns true when the left string does not match the SQL LIKE pattern on the right. Symbol: NOT LIKE
 ---
 
-# NotLike
+# Not like
+
+Negated pattern match comparison.
+
+Returns true when the left string does not match the SQL LIKE pattern on the right.
 
 **Category:** comparison
+
+**Node kind:** comparison
+
+**SQL symbol:** `NOT LIKE`
+
+## Example
+
+```sql
+SELECT col1 NOT LIKE col2 FROM table;
+```
 
 **Signatures:** 4
 
 ## Signatures
 
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `blob NOT LIKE blob` → boolean
+- `blob NOT LIKE varchar` → boolean
+- `varchar NOT LIKE blob` → boolean
+- `varchar NOT LIKE varchar` → boolean
 
 ## Types
 

@@ -1,24 +1,38 @@
 ---
-title: NotInList — Opteryx Operator
-description: 
+title: Not in list — Opteryx Operator
+description: Returns true when the left operand does not match any element in the right-hand list or array. Symbol: NOT IN
 ---
 
-# NotInList
+# Not in list
+
+Negated membership comparison.
+
+Returns true when the left operand does not match any element in the right-hand list or array.
 
 **Category:** comparison
+
+**Node kind:** comparison
+
+**SQL symbol:** `NOT IN`
+
+## Example
+
+```sql
+SELECT col1 NOT IN col2 FROM table;
+```
 
 **Signatures:** 8
 
 ## Signatures
 
-- {'left_type': 'blob', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'boolean', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'date', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'decimal', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'double', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'integer', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'timestamp', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `blob NOT IN array` → boolean
+- `boolean NOT IN array` → boolean
+- `date NOT IN array` → boolean
+- `decimal NOT IN array` → boolean
+- `double NOT IN array` → boolean
+- `integer NOT IN array` → boolean
+- `timestamp NOT IN array` → boolean
+- `varchar NOT IN array` → boolean
 
 ## Types
 

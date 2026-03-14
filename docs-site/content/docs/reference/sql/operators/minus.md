@@ -1,13 +1,25 @@
 ---
-title: Minus — Opteryx Operator
-description: Token: -
+title: Subtraction — Opteryx Operator
+description: Returns the difference between two numeric, date, timestamp, or interval-compatible operands. Symbol: -
 ---
 
-# -
+# Subtraction
+
+Subtraction operator.
+
+Returns the difference between two numeric, date, timestamp, or interval-compatible operands.
 
 **Category:** binary
 
-**Token:** `-`
+**Node kind:** binary
+
+**SQL symbol:** `-`
+
+## Example
+
+```sql
+SELECT col1 - col2 FROM table;
+```
 
 **Signatures:** 20
 

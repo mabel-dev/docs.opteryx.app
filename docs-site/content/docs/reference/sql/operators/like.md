@@ -1,20 +1,34 @@
 ---
 title: Like — Opteryx Operator
-description: 
+description: Returns true when the left string matches the SQL LIKE pattern on the right. Symbol: LIKE
 ---
 
 # Like
 
+Pattern match comparison.
+
+Returns true when the left string matches the SQL LIKE pattern on the right.
+
 **Category:** comparison
+
+**Node kind:** comparison
+
+**SQL symbol:** `LIKE`
+
+## Example
+
+```sql
+SELECT col1 LIKE col2 FROM table;
+```
 
 **Signatures:** 4
 
 ## Signatures
 
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `blob LIKE blob` → boolean
+- `blob LIKE varchar` → boolean
+- `varchar LIKE blob` → boolean
+- `varchar LIKE varchar` → boolean
 
 ## Types
 

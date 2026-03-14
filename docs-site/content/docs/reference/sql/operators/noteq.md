@@ -1,13 +1,25 @@
 ---
-title: NotEq — Opteryx Operator
-description: Token: !=
+title: Not equals — Opteryx Operator
+description: Returns true when the operands do not compare equal. Symbol: !=
 ---
 
-# !=
+# Not equals
+
+Inequality comparison.
+
+Returns true when the operands do not compare equal.
 
 **Category:** comparison
 
-**Token:** `!=`
+**Node kind:** comparison
+
+**SQL symbol:** `!=`
+
+## Example
+
+```sql
+SELECT col1 != col2 FROM table;
+```
 
 **Signatures:** 23
 

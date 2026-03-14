@@ -1,13 +1,25 @@
 ---
-title: Multiply — Opteryx Operator
-description: Token: *
+title: Multiplication — Opteryx Operator
+description: Returns the product of two numeric operands. Symbol: *
 ---
 
-# *
+# Multiplication
+
+Multiplication operator.
+
+Returns the product of two numeric operands.
 
 **Category:** binary
 
-**Token:** `*`
+**Node kind:** binary
+
+**SQL symbol:** `*`
+
+## Example
+
+```sql
+SELECT col1 * col2 FROM table;
+```
 
 **Signatures:** 7
 

@@ -1,20 +1,34 @@
 ---
-title: RLike — Opteryx Operator
-description: 
+title: Regex like — Opteryx Operator
+description: Returns true when the left string matches the regular expression on the right. Symbol: RLIKE
 ---
 
-# RLike
+# Regex like
+
+Regular expression match comparison.
+
+Returns true when the left string matches the regular expression on the right.
 
 **Category:** comparison
+
+**Node kind:** comparison
+
+**SQL symbol:** `RLIKE`
+
+## Example
+
+```sql
+SELECT col1 RLIKE col2 FROM table;
+```
 
 **Signatures:** 4
 
 ## Signatures
 
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
+- `blob RLIKE blob` → boolean
+- `blob RLIKE varchar` → boolean
+- `varchar RLIKE blob` → boolean
+- `varchar RLIKE varchar` → boolean
 
 ## Types
 

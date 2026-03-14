@@ -1,13 +1,25 @@
 ---
-title: AtQuestion — Opteryx Operator
-description: Token: @?
+title: JSON path exists — Opteryx Operator
+description: Returns true when the supplied JSON path expression matches within the left document. Symbol: @?
 ---
 
-# @?
+# JSON path exists
+
+JSON path existence operator.
+
+Returns true when the supplied JSON path expression matches within the left document.
 
 **Category:** comparison
 
-**Token:** `@?`
+**Node kind:** comparison
+
+**SQL symbol:** `@?`
+
+## Example
+
+```sql
+SELECT col1 @? col2 FROM table;
+```
 
 **Signatures:** 8
 
