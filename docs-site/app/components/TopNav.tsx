@@ -12,7 +12,6 @@ export default function TopNav(){
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-gray-600">
             <Link href="/docs" className="hover:text-opteryx-teal">Guides</Link>
-            <Link href="/tutorials" className="hover:text-opteryx-teal">Tutorials</Link>
             <Link href="/blog" className="hover:text-opteryx-teal">Blog</Link>
             <Link href="/releases" className="hover:text-opteryx-teal">Releases</Link>
           </nav>

@@ -11,6 +11,16 @@ Placeholder: notes for website updates, content changes, and documentation site 
 Examples:
 - 2026-01-06: Updated build to skip global npm upgrade on Alpine images.
 - 2025-12-10: Added new tutorials index.
+
+---
+
+### How to add notes
+
+Edit **app/releases/web/page.tsx** and add entries under the appropriate year section.
+
+\`\`\`
+app/releases/web/page.tsx
+\`\`\`
 `
   return <DocRenderer source={source} />
 }

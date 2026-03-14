@@ -18,7 +18,19 @@ This page contains release notes and changelogs for the project. Choose a sectio
 
 [Release Notes](/releases/sql)
 
-Each section will contain chronological notes about changes, fixes, and improvements.
+---
+
+### How to add new release notes
+
+To add notes, edit the corresponding file under **app/releases/**:
+
+\`\`\`
+app/releases/web/page.tsx
+app/releases/api/page.tsx
+app/releases/sql/page.tsx
+\`\`\`
+
+Just insert new entries under the appropriate year heading.
 `
   return <DocRenderer source={source} />
 }

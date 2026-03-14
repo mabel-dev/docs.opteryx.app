@@ -23,9 +23,9 @@
 			<p class="opteryx-card__desc">Run your first query in minutes and explore Opteryx capabilities.</p>
 		</article>
 		<article class="opteryx-card">
-			<img src="/docs/assets/images/icon-architecture.svg" class="icon" alt="Tutorials icon">
-			<h3 class="opteryx-card__title"><a href="/tutorials">Tutorials</a></h3>
-			<p class="opteryx-card__desc">Hands-on tutorials, including Jupyter Notebook examples and interactive guides.</p>
+			<img src="/docs/assets/images/icon-architecture.svg" class="icon" alt="Blog icon">
+			<h3 class="opteryx-card__title"><a href="/blog">Blog</a></h3>
+			<p class="opteryx-card__desc">Latest engineering updates, release notes, and how-tos from the Opteryx team.</p>
 		</article>
 		<article class="opteryx-card">
 			<img src="/docs/assets/images/icon-security.svg" class="icon" alt="Releases icon">

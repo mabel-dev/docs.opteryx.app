@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { sidebarNav, type DocsNavItem } from '@/app/lib/docsNav'
+import { sidebarNav, type DocsNavItem, type DocsNavSection } from '@/app/lib/docsNav'
 
 export default function DocsSidebar() {
   const pathname = usePathname()
@@ -183,10 +183,26 @@ export default function DocsSidebar() {
     )
   }
 
+  const isReleasesPage = pathname.startsWith('/releases')
+
+  const releasesNav: DocsNavSection[] = [
+    {
+      title: 'Releases',
+      items: [
+        { title: 'Overview', href: '/releases' },
+        { title: 'Web site', href: '/releases/web' },
+        { title: 'API', href: '/releases/api' },
+        { title: 'SQL', href: '/releases/sql' },
+      ],
+    },
+  ]
+
+  const navToRender = isReleasesPage ? releasesNav : sidebarNav
+
   return (
     <aside className="docs-sidebar hidden md:block md:w-64 lg:w-72 border-r border-gray-200 overflow-y-auto sticky top-0 h-screen pt-4">
       <nav className="px-4 pb-8">
-        {sidebarNav.map((section) => (
+        {navToRender.map((section) => (
           <div key={section.title} className="mb-4">
             <div className="font-bold text-gray-900 mb-2 px-2">{section.title}</div>
             <div className="space-y-0.5">
