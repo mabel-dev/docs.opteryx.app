@@ -1,7 +1,5 @@
 # Cost Model
 
-## Overview
-
 Opteryx uses a simple, usage-based pricing model.
 You pay only for the resources you consume, with a Free allowance included each month.
 
