@@ -23,10 +23,10 @@ SELECT 'a'[1];
 
 ## Signatures
 
-- `array [] integer`
-- `blob [] integer` → blob
-- `varchar [] integer` → varchar
-- `vector [] integer` → double
+- `array[integer]` → dynamic
+- `blob[integer]` → blob
+- `varchar[integer]` → varchar
+- `vector[integer]` → double
 
 ## Types
 

@@ -23,14 +23,14 @@ SELECT 'a' -> 'a';
 
 ## Signatures
 
-- `blob -> blob`
-- `blob -> varchar`
-- `jsonb -> blob`
-- `jsonb -> varchar`
-- `struct -> blob`
-- `struct -> varchar`
-- `varchar -> blob`
-- `varchar -> varchar`
+- `blob -> blob` → dynamic
+- `blob -> varchar` → dynamic
+- `jsonb -> blob` → dynamic
+- `jsonb -> varchar` → dynamic
+- `struct -> blob` → dynamic
+- `struct -> varchar` → dynamic
+- `varchar -> blob` → dynamic
+- `varchar -> varchar` → dynamic
 
 ## Types
 

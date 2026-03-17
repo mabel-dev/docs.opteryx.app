@@ -368,18 +368,20 @@ def build_operators_docs(ops_def: dict):
                 lt = sig.get('left_type')
                 rt = sig.get('right_type')
                 res = sig.get('result_type')
-                cost = sig.get('cost_estimate')
                 dyn = sig.get('result_type_is_dynamic')
 
-                sig_line = ''
-                if sql_symbol and lt and rt:
+                # Prefer readable formatting for subscript access (`[]`)
+                if sql_symbol == '[]' and lt and rt:
+                    sig_line = f'`{lt}[{rt}]`'
+                elif sql_symbol and lt and rt:
                     sig_line = f'`{lt} {sql_symbol} {rt}`'
                 else:
                     sig_line = str(sig)
 
-
                 if res is not None:
                     sig_line += f' → {res}'
+                elif dyn:
+                    sig_line += ' → dynamic'
 
                 lines.append(f'- {sig_line}')
             lines.append('')
