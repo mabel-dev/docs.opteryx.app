@@ -9,7 +9,7 @@ Bitwise XOR operator.
 
 Combines integer operands using a bitwise exclusive OR operation.
 
-**Category:** binary
+**Category:** bitwise
 
 **SQL symbol:** `^`
 

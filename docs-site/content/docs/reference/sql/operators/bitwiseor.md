@@ -1,15 +1,15 @@
 ---
 title: Bitwise OR — Opteryx Operator
-description: Combines integer operands using a bitwise OR operation. Symbol: |
+description: Combines integer operands using a bitwise OR operation. When used with address and CIDR-compatible operands, the same `|` token acts as an IP containment predicate and returns a boolean result. Symbol: |
 ---
 
 # Bitwise OR
 
-Bitwise OR operator.
+Bitwise OR and IP containment operator.
 
-Combines integer operands using a bitwise OR operation.
+Combines integer operands using a bitwise OR operation. When used with address and CIDR-compatible operands, the same `|` token acts as an IP containment predicate and returns a boolean result.
 
-**Category:** binary
+**Category:** bitwise
 
 **SQL symbol:** `|`
 
@@ -34,4 +34,4 @@ SELECT 1 | 1;
 
 ## Notes
 
-The same token may also appear in non-bitwise contexts depending on operand types.
+This operator is overloaded by operand type: integer inputs perform bitwise OR, while address/CIDR-style inputs use `|` for containment checks.

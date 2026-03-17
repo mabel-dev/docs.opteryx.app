@@ -9,18 +9,21 @@ The following operators are supported by Opteryx.  Click a name for details.
 
 ## binary
 
-- [Bitwise AND `&`](operators/bitwiseand)
-- [Bitwise OR `|`](operators/bitwiseor)
-- [Bitwise XOR `^`](operators/bitwisexor)
 - [Division `/`](operators/divide)
 - [Subtraction `-`](operators/minus)
 - [Modulo `%`](operators/modulo)
 - [Multiplication `*`](operators/multiply)
 - [Integer division `DIV`](operators/myintegerdivide)
 - [Addition `+`](operators/plus)
+- [Concatenation `||`](operators/stringconcat)
+
+## bitwise
+
+- [Bitwise AND `&`](operators/bitwiseand)
+- [Bitwise OR `|`](operators/bitwiseor)
+- [Bitwise XOR `^`](operators/bitwisexor)
 - [Left shift `<<`](operators/shiftleft)
 - [Right shift `>>`](operators/shiftright)
-- [Concatenation `||`](operators/stringconcat)
 
 ## comparison
 

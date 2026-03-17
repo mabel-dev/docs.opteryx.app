@@ -36,4 +36,4 @@ SELECT 'a'[1];
 
 ## Notes
 
-For arrays the result type depends on the array element type, so the exported result type may be dynamic.
+Subcript access is zero-based, the first element is at index 0. For arrays the result type depends on the array element type, so the exported result type may be dynamic.

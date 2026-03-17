@@ -9,7 +9,7 @@ Bitwise AND operator.
 
 Combines integer operands using a bitwise AND operation.
 
-**Category:** binary
+**Category:** bitwise
 
 **SQL symbol:** `&`
 

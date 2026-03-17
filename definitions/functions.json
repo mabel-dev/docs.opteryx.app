@@ -39,7 +39,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": [
@@ -96,7 +97,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 8.0
                 },
                 "parameters": [
@@ -162,7 +164,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 8.0
                 },
                 "parameters": [
@@ -228,7 +231,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 8.0
                 },
                 "parameters": [
@@ -294,7 +298,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -351,7 +356,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -408,7 +414,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -465,7 +472,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -522,7 +530,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -581,7 +590,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -648,7 +658,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -705,7 +716,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -771,7 +783,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "draken",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 8.0
                 },
                 "parameters": [
@@ -837,7 +850,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "draken",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -912,7 +926,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -956,7 +971,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 30.0
                 },
                 "parameters": [
@@ -1001,7 +1017,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 30.0
                 },
                 "parameters": [
@@ -1064,7 +1081,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 30.0
                 },
                 "parameters": [
@@ -1109,7 +1127,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 30.0
                 },
                 "parameters": [
@@ -1175,7 +1194,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": [],
@@ -1223,7 +1243,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": [],
@@ -1273,7 +1294,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": [],
@@ -1321,7 +1343,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -1370,7 +1393,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -1445,7 +1469,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 6.0
                 },
                 "parameters": [
@@ -1511,7 +1536,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -1543,10 +1569,10 @@
                     "COSINE_SIMILARITY",
                     "COSINE_DISTANCE"
                 ],
-                "return_type": "array<double>",
+                "return_type": "vector",
                 "returns": {
-                    "type": "array<double>",
-                    "documentation": "Returns an embedding vector represented as an array of doubles."
+                    "type": "vector",
+                    "documentation": "Returns an embedding vector."
                 },
                 "arity": {
                     "minimum": 1,
@@ -1555,7 +1581,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 120.0
                 },
                 "parameters": [
@@ -1569,7 +1596,7 @@
                         "null_handling": "strict"
                     }
                 ],
-                "notes": "This function depends on the configured embedding provider and returns a numeric vector as `array<double>`."
+                "notes": "This function depends on the configured embedding provider and returns a numeric `vector`."
             }
         ]
     },
@@ -1613,7 +1640,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -1629,6 +1657,56 @@
                     {
                         "label": "date",
                         "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate.",
+                        "optional": false,
+                        "variadic": false,
+                        "constant_only": false,
+                        "null_handling": "strict"
+                    }
+                ],
+                "notes": "Canonical SQL-92 form is `EXTRACT(part FROM date)`. Return type depends on `part`: `epoch` and `julian` produce `double`, `date` produces `date`, and most other parts produce `integer`."
+            },
+            {
+                "id": "EXTRACT_INT",
+                "label": "EXTRACT(part FROM date)",
+                "category": "Date & Time Functions",
+                "documentation": "Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.",
+                "related_functions": [
+                    "TRUNC",
+                    "DATEDIFF",
+                    "TIME_BUCKET",
+                    "CURRENT_DATE",
+                    "CURRENT_TIME"
+                ],
+                "return_type": "integer | double | date",
+                "returns": {
+                    "type": "integer | double | date",
+                    "documentation": "Returns `double` for parts such as `epoch` and `julian`, `date` for `date`, and `integer` for most other parts."
+                },
+                "arity": {
+                    "minimum": 2,
+                    "maximum": 2,
+                    "variadic": false
+                },
+                "execution": {
+                    "kernel_id": "default",
+                    "engine": "arrow",
+                    "null_policy": "compress",
+                    "cost_us_per_million": 4.0
+                },
+                "parameters": [
+                    {
+                        "label": "part",
+                        "type": "varchar",
+                        "documentation": "Date or time part to extract, such as `year`, `month`, `day`, or `epoch`. Must be a constant expression.",
+                        "optional": false,
+                        "variadic": false,
+                        "constant_only": true,
+                        "null_handling": "strict"
+                    },
+                    {
+                        "label": "date",
+                        "type": "integer",
                         "documentation": "Date, time, or timestamp value to evaluate.",
                         "optional": false,
                         "variadic": false,
@@ -1680,7 +1758,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -1747,7 +1826,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -1804,7 +1884,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -1861,7 +1942,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 15.0
                 },
                 "parameters": [
@@ -1918,7 +2000,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -1975,7 +2058,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -2032,7 +2116,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -2089,7 +2174,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -2155,7 +2241,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -2221,7 +2308,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "draken",
+                    "null_policy": "bypass",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -2299,7 +2387,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -2350,7 +2439,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 15.0
                 },
                 "parameters": [
@@ -2407,7 +2497,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -2464,7 +2555,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -2530,7 +2622,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -2587,7 +2680,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 50.0
                 },
                 "parameters": [
@@ -2653,7 +2747,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -2719,7 +2814,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -2776,7 +2872,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -2851,7 +2948,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -2917,7 +3015,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 20.0
                 },
                 "parameters": [
@@ -2984,7 +3083,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 12.0
                 },
                 "parameters": [
@@ -3021,7 +3121,7 @@
                 "id": "NORMAL_default",
                 "label": "NORMAL(n)",
                 "category": "Utility Functions",
-                "documentation": "Generate normally-distributed random numbers.",
+                "documentation": "Computes normally-distributed random float(s).",
                 "related_functions": [
                     "COALESCE",
                     "IFNULL",
@@ -3041,7 +3141,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -3055,6 +3156,37 @@
                         "null_handling": "strict"
                     }
                 ],
+                "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
+            },
+            {
+                "id": "NORMAL_0",
+                "label": "NORMAL()",
+                "category": "Utility Functions",
+                "documentation": "Computes normally-distributed random float(s).",
+                "related_functions": [
+                    "COALESCE",
+                    "IFNULL",
+                    "IFNOTNULL",
+                    "NULLIF",
+                    "IIF"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "arity": {
+                    "minimum": 0,
+                    "maximum": 0,
+                    "variadic": false
+                },
+                "execution": {
+                    "kernel_id": "zero_arg",
+                    "engine": "arrow",
+                    "null_policy": "compress",
+                    "cost_us_per_million": 10.0
+                },
+                "parameters": [],
                 "notes": "This function is volatile. The integer argument controls how many values are generated, not a seed."
             }
         ]
@@ -3099,7 +3231,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -3165,7 +3298,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -3212,7 +3346,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -3259,7 +3394,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "draken",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3326,7 +3462,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3394,7 +3531,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -3434,7 +3572,8 @@
                 },
                 "execution": {
                     "kernel_id": "zero_arg",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [],
@@ -3482,7 +3621,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 10.0
                 },
                 "parameters": [
@@ -3540,7 +3680,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 30.0
                 },
                 "parameters": [
@@ -3615,7 +3756,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3690,7 +3832,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3747,7 +3890,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3791,7 +3935,7 @@
         "overloads": [
             {
                 "id": "ROUND_1",
-                "label": "ROUND(num, [precision...])",
+                "label": "ROUND(num)",
                 "category": "Numeric Functions",
                 "documentation": "Rounds input number to nearest integer or specified decimal places.",
                 "related_functions": [
@@ -3808,12 +3952,54 @@
                 },
                 "arity": {
                     "minimum": 1,
-                    "maximum": null,
-                    "variadic": true
+                    "maximum": 1,
+                    "variadic": false
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "draken",
+                    "null_policy": "compress",
+                    "cost_us_per_million": 2.0
+                },
+                "parameters": [
+                    {
+                        "label": "num",
+                        "type": "number",
+                        "documentation": "Numeric value to round.",
+                        "optional": false,
+                        "variadic": false,
+                        "constant_only": false,
+                        "null_handling": "strict"
+                    }
+                ],
+                "notes": "Uses PyArrow's default half-to-even rule to break ties when a value falls exactly between two candidates."
+            },
+            {
+                "id": "ROUND_2",
+                "label": "ROUND(num, precision)",
+                "category": "Numeric Functions",
+                "documentation": "Rounds input number to nearest integer or specified decimal places.",
+                "related_functions": [
+                    "CEILING",
+                    "FLOOR",
+                    "TRUNC",
+                    "ABS",
+                    "SIGN"
+                ],
+                "return_type": "double",
+                "returns": {
+                    "type": "double",
+                    "documentation": "Returns the computed result as `double`."
+                },
+                "arity": {
+                    "minimum": 2,
+                    "maximum": 2,
+                    "variadic": false
+                },
+                "execution": {
+                    "kernel_id": "default",
+                    "engine": "draken",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -3829,9 +4015,9 @@
                     {
                         "label": "precision",
                         "type": "integer",
-                        "documentation": "Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.",
-                        "optional": true,
-                        "variadic": true,
+                        "documentation": "Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions.",
+                        "optional": false,
+                        "variadic": false,
                         "constant_only": false,
                         "null_handling": "strict"
                     }
@@ -3880,7 +4066,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -3955,7 +4142,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4021,7 +4209,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 12.0
                 },
                 "parameters": [
@@ -4078,7 +4267,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 14.0
                 },
                 "parameters": [
@@ -4135,7 +4325,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 14.0
                 },
                 "parameters": [
@@ -4192,7 +4383,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 14.0
                 },
                 "parameters": [
@@ -4249,7 +4441,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 14.0
                 },
                 "parameters": [
@@ -4306,7 +4499,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -4363,7 +4557,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4420,7 +4615,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4477,7 +4673,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4552,7 +4749,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -4609,7 +4807,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 6.0
                 },
                 "parameters": [
@@ -4658,7 +4857,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 6.0
                 },
                 "parameters": [
@@ -4736,7 +4936,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4802,7 +5003,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -4877,7 +5079,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "passthrough",
+                    "engine": "arrow",
+                    "null_policy": "passthru",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -4946,7 +5149,8 @@
                 },
                 "execution": {
                     "kernel_id": "numeric",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 2.0
                 },
                 "parameters": [
@@ -4995,7 +5199,8 @@
                 },
                 "execution": {
                     "kernel_id": "temporal",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 4.0
                 },
                 "parameters": [
@@ -5064,7 +5269,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 3.0
                 },
                 "parameters": [
@@ -5121,7 +5327,8 @@
                 },
                 "execution": {
                     "kernel_id": "default",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 5.0
                 },
                 "parameters": [
@@ -5178,7 +5385,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -5225,7 +5433,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []
@@ -5272,7 +5481,8 @@
                 },
                 "execution": {
                     "kernel_id": "constant",
-                    "null_policy": "strict",
+                    "engine": "arrow",
+                    "null_policy": "compress",
                     "cost_us_per_million": 0.1
                 },
                 "parameters": []

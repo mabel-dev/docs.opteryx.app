@@ -9,7 +9,7 @@ Left shift operator.
 
 Shifts the bits of the left integer operand left by the number of positions in the right operand.
 
-**Category:** binary
+**Category:** bitwise
 
 **SQL symbol:** `<<`
 

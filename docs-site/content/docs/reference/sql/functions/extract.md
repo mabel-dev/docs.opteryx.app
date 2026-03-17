@@ -15,6 +15,10 @@ Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.
 EXTRACT(part FROM date)
 ```
 
+```
+EXTRACT(part FROM date)
+```
+
 ## Arguments
 
 - **part** `varchar` [constant]
