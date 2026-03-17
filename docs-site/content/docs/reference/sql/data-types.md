@@ -7,17 +7,43 @@ description: Reference for SQL data types supported by Opteryx.
 
 The following data types are supported by Opteryx.  Click a name for details.
 
-- [ARRAY](types/array) — ARRAY
-- [BLOB](types/blob) — BLOB
-- [BOOLEAN](types/boolean) — BOOLEAN
-- [DATE](types/date) — DATE
+## Numeric types
+
 - [DECIMAL](types/decimal) — DECIMAL
 - [DOUBLE](types/double) — DOUBLE
 - [INTEGER](types/integer) — INTEGER
-- [INTERVAL](types/interval) — INTERVAL
-- [JSONB](types/jsonb) — JSONB
-- [NULL](types/null) — NULL
+
+## Temporal types
+
+- [DATE](types/date) — DATE
 - [TIME](types/time) — TIME
 - [TIMESTAMP](types/timestamp) — TIMESTAMP
+
+## Interval types
+
+- [INTERVAL](types/interval) — INTERVAL
+
+## Text types
+
 - [VARCHAR](types/varchar) — VARCHAR
+
+## Binary types
+
+- [BLOB](types/blob) — BLOB
+
+## Boolean types
+
+- [BOOLEAN](types/boolean) — BOOLEAN
+
+## Collection types
+
+- [ARRAY](types/array) — ARRAY
+- [JSONB](types/jsonb) — JSONB
+
+## Vector types
+
 - [VECTOR](types/vector) — VECTOR
+
+## Null type
+
+- [NULL](types/null) — NULL

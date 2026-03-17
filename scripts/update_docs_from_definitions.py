@@ -276,7 +276,7 @@ def build_operators_docs(ops_def: dict):
 
 
 def build_types_docs(types_def: dict):
-    # flat list of types (no categorization)
+    # Categorize types by family so the generated page has a structured TOC.
     lines = [
         '---',
         'title: SQL Data Types — Opteryx Reference',
@@ -286,12 +286,51 @@ def build_types_docs(types_def: dict):
         'The following data types are supported by Opteryx.  Click a name for details.',''
     ]
 
-    for name in sorted(types_def.keys()):
-        slug = slugify(name)
-        info = types_def[name]
-        summary = info.get('canonical_name','')
-        lines.append(f'- [{summary or name}](types/{slug}) — {summary}')
-    lines.append('')
+    # Group types by their "family" metadata field to create distinct sections
+    groups: dict[str, list[tuple[str, dict]]] = {}
+    for name, info in types_def.items():
+        family = info.get('family') or 'other'
+        groups.setdefault(family, []).append((name, info))
+
+    # Display order for families/categories
+    family_order = [
+        'numeric',
+        'temporal',
+        'interval',
+        'text',
+        'binary',
+        'boolean',
+        'nested',
+        'vector',
+        'null',
+        'other',
+    ]
+
+    family_titles = {
+        'numeric': 'Numeric types',
+        'temporal': 'Temporal types',
+        'interval': 'Interval types',
+        'text': 'Text types',
+        'binary': 'Binary types',
+        'boolean': 'Boolean types',
+        'nested': 'Collection types',
+        'vector': 'Vector types',
+        'null': 'Null type',
+        'other': 'Other types',
+    }
+
+    for family in family_order:
+        items = groups.get(family)
+        if not items:
+            continue
+
+        lines.append(f'## {family_titles.get(family, family.title())}\n')
+
+        for name, info in sorted(items, key=lambda x: x[0]):
+            slug = slugify(name)
+            summary = info.get('canonical_name', '')
+            lines.append(f'- [{summary or name}](types/{slug}) — {summary}')
+        lines.append('')
 
     write_md(REF_SQL_DIR / 'data-types.md', lines)
 
