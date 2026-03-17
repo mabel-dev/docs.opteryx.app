@@ -11,17 +11,13 @@ Returns the remainder after division of the left numeric operand by the right nu
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `%`
 
 ## Example
 
 ```sql
-SELECT col1 % col2 FROM table;
+SELECT 1.5 % 1; -- expected: 0.5
 ```
-
-**Signatures:** 2
 
 ## Signatures
 

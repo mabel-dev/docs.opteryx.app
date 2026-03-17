@@ -11,17 +11,15 @@ Returns the selected JSON value from a document or JSON-like value.
 
 **Category:** extraction
 
-**Node kind:** extraction
-
 **SQL symbol:** `->`
 
 ## Example
 
 ```sql
-SELECT col1 -> col2 FROM table;
+SELECT 'a' -> 'a';
 ```
 
-**Signatures:** 8
+**Dynamic result:** yes
 
 ## Signatures
 

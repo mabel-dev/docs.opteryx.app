@@ -11,17 +11,13 @@ Returns true when the left string does not match the regular expression on the r
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `NOT RLIKE`
 
 ## Example
 
 ```sql
-SELECT col1 NOT RLIKE col2 FROM table;
+SELECT 'a' NOT RLIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

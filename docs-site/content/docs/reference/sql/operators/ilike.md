@@ -11,17 +11,13 @@ Returns true when the left string matches the SQL ILIKE pattern on the right wit
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `ILIKE`
 
 ## Example
 
 ```sql
-SELECT col1 ILIKE col2 FROM table;
+SELECT 'a' ILIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

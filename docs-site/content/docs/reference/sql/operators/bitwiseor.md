@@ -11,17 +11,13 @@ Combines integer operands using a bitwise OR operation.
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `|`
 
 ## Example
 
 ```sql
-SELECT col1 | col2 FROM table;
+SELECT 1 | 1;
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

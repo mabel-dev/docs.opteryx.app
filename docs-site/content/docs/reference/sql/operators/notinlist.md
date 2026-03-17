@@ -11,17 +11,13 @@ Returns true when the left operand does not match any element in the right-hand 
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `NOT IN`
 
 ## Example
 
 ```sql
-SELECT col1 NOT IN col2 FROM table;
+SELECT CAST('0102' AS BLOB) NOT IN ARRAY[1,2];
 ```
-
-**Signatures:** 8
 
 ## Signatures
 

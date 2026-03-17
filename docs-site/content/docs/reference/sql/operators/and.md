@@ -11,17 +11,13 @@ Returns true only when both boolean operands evaluate to true.
 
 **Category:** logical
 
-**Node kind:** logical
-
 **SQL symbol:** `AND`
 
 ## Example
 
 ```sql
-SELECT col1 AND col2 FROM table;
+SELECT TRUE AND TRUE; -- expected: TRUE
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

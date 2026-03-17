@@ -11,17 +11,13 @@ Returns true when both operands compare equal.
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `=`
 
 ## Example
 
 ```sql
-SELECT col1 = col2 FROM table;
+SELECT TRUE = TRUE; -- expected: TRUE
 ```
-
-**Signatures:** 23
 
 ## Signatures
 

@@ -11,17 +11,13 @@ Concatenates the left and right string or blob operands.
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `||`
 
 ## Example
 
 ```sql
-SELECT col1 || col2 FROM table;
+SELECT 'a' || 'a'; -- expected: 'aa'
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

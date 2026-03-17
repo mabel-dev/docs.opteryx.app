@@ -11,17 +11,13 @@ Returns true when the supplied JSON path expression matches within the left docu
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `@?`
 
 ## Example
 
 ```sql
-SELECT col1 @? col2 FROM table;
+SELECT 'a' @? 'a';
 ```
-
-**Signatures:** 8
 
 ## Signatures
 

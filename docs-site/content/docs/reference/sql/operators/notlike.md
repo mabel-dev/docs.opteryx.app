@@ -11,17 +11,13 @@ Returns true when the left string does not match the SQL LIKE pattern on the rig
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `NOT LIKE`
 
 ## Example
 
 ```sql
-SELECT col1 NOT LIKE col2 FROM table;
+SELECT 'a' NOT LIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

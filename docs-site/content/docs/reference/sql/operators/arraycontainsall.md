@@ -11,17 +11,13 @@ Returns true when the left array contains all values from the right array.
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `@>>`
 
 ## Example
 
 ```sql
-SELECT col1 @>> col2 FROM table;
+SELECT ARRAY[1,2] @>> ARRAY[1,2];
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

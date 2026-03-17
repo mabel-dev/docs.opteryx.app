@@ -11,17 +11,13 @@ Returns true when the left string matches the SQL LIKE pattern on the right.
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `LIKE`
 
 ## Example
 
 ```sql
-SELECT col1 LIKE col2 FROM table;
+SELECT 'a' LIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

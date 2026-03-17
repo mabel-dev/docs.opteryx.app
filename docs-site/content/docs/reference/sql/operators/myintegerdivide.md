@@ -11,17 +11,13 @@ Divides two integers and truncates the result toward zero.
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `DIV`
 
 ## Example
 
 ```sql
-SELECT col1 DIV col2 FROM table;
+SELECT 1 DIV 1;
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

@@ -11,17 +11,13 @@ Returns true when the left array contains any of the values provided by the righ
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `@>`
 
 ## Example
 
 ```sql
-SELECT col1 @> col2 FROM table;
+SELECT ARRAY[1,2] @> ARRAY[1,2]; -- expected: TRUE
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

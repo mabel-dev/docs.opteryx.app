@@ -11,17 +11,13 @@ Returns true when the left operand matches any element in the right-hand list or
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `IN`
 
 ## Example
 
 ```sql
-SELECT col1 IN col2 FROM table;
+SELECT CAST('0102' AS BLOB) IN ARRAY[1,2];
 ```
-
-**Signatures:** 8
 
 ## Signatures
 

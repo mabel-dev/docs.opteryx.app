@@ -11,17 +11,13 @@ Returns the product of two numeric operands.
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `*`
 
 ## Example
 
 ```sql
-SELECT col1 * col2 FROM table;
+SELECT 1.5 * 1.5; -- expected: 2.25
 ```
-
-**Signatures:** 7
 
 ## Signatures
 

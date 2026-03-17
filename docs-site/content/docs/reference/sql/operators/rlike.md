@@ -11,17 +11,13 @@ Returns true when the left string matches the regular expression on the right.
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `RLIKE`
 
 ## Example
 
 ```sql
-SELECT col1 RLIKE col2 FROM table;
+SELECT 'a' RLIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

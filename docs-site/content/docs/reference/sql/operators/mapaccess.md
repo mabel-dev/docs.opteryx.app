@@ -11,17 +11,15 @@ Returns the element at the requested index from an array, string, or blob-like v
 
 **Category:** extraction
 
-**Node kind:** extraction
-
 **SQL symbol:** `[]`
 
 ## Example
 
 ```sql
-SELECT col1 [] col2 FROM table;
+SELECT 'a'[1];
 ```
 
-**Signatures:** 4
+**Dynamic result:** yes
 
 ## Signatures
 

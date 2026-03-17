@@ -11,17 +11,13 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `-`
 
 ## Example
 
 ```sql
-SELECT col1 - col2 FROM table;
+SELECT DATE '2024-01-01' - DATE '2024-01-01';
 ```
-
-**Signatures:** 20
 
 ## Signatures
 

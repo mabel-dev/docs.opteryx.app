@@ -11,17 +11,13 @@ Returns true when the left operand is greater than or equal to the right operand
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `>=`
 
 ## Example
 
 ```sql
-SELECT col1 >= col2 FROM table;
+SELECT DATE '2024-01-01' >= DATE '2024-01-01';
 ```
-
-**Signatures:** 22
 
 ## Signatures
 

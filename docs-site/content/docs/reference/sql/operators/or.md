@@ -11,17 +11,13 @@ Returns true when either boolean operand evaluates to true.
 
 **Category:** logical
 
-**Node kind:** logical
-
 **SQL symbol:** `OR`
 
 ## Example
 
 ```sql
-SELECT col1 OR col2 FROM table;
+SELECT TRUE OR TRUE; -- expected: TRUE
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

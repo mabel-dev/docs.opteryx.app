@@ -11,17 +11,13 @@ Returns true when the left string does not match the SQL ILIKE pattern on the ri
 
 **Category:** comparison
 
-**Node kind:** comparison
-
 **SQL symbol:** `NOT ILIKE`
 
 ## Example
 
 ```sql
-SELECT col1 NOT ILIKE col2 FROM table;
+SELECT 'a' NOT ILIKE 'a';
 ```
-
-**Signatures:** 4
 
 ## Signatures
 

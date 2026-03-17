@@ -11,17 +11,13 @@ Shifts the bits of the left integer operand right by the number of positions in 
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `>>`
 
 ## Example
 
 ```sql
-SELECT col1 >> col2 FROM table;
+SELECT 1 >> 1;
 ```
-
-**Signatures:** 1
 
 ## Signatures
 

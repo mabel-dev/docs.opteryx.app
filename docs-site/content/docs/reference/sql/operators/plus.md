@@ -11,17 +11,13 @@ Returns the sum of two numeric or interval-compatible operands.
 
 **Category:** binary
 
-**Node kind:** binary
-
 **SQL symbol:** `+`
 
 ## Example
 
 ```sql
-SELECT col1 + col2 FROM table;
+SELECT 1.5 + 1.5; -- expected: 3.0
 ```
-
-**Signatures:** 12
 
 ## Signatures
 

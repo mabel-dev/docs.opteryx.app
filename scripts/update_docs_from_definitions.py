@@ -152,6 +152,123 @@ def build_functions_docs(functions_def: dict):
         write_md(path, lines)
 
 
+def _literal_for_type(type_name: str):
+    """Return a (literal_sql, python_value) tuple for a given type.
+
+    python_value may be None if evaluation is not supported.
+    """
+    t = type_name.lower()
+    if t in ('integer', 'int'):
+        return '1', 1
+    if t in ('double', 'float', 'real'):
+        return '1.5', 1.5
+    if t == 'decimal':
+        return '1.5', 1.5
+    if t in ('varchar', 'string', 'text'):
+        return "'a'", 'a'
+    if t == 'boolean':
+        return 'TRUE', True
+    if t == 'date':
+        return "DATE '2024-01-01'", None
+    if t == 'timestamp':
+        return "TIMESTAMP '2024-01-01 00:00:00'", None
+    if t == 'time':
+        return "TIME '00:00:00'", None
+    if t == 'interval':
+        return "INTERVAL '1' DAY", None
+    if t == 'array':
+        return 'ARRAY[1,2]', [1, 2]
+    if t in ('jsonb', 'struct'):
+        return "'{\"a\": 1}'", {'a': 1}
+    if t == 'blob':
+        # Opteryx does not support the SQL x'...' hex literal prefix.
+        # Use a CAST to BLOB instead (this should parse in Opteryx).
+        return "CAST('0102' AS BLOB)", None
+    if t == 'null':
+        return 'NULL', None
+    # fallback
+    return 'NULL', None
+
+
+def _format_expected_result(val):
+    """Return an SQL-friendly string for an expected result."""
+    if val is None:
+        return 'NULL'
+    if isinstance(val, bool):
+        return 'TRUE' if val else 'FALSE'
+    if isinstance(val, str):
+        return f"'{val}'"
+    if isinstance(val, (int, float)):
+        return str(val)
+    if isinstance(val, list):
+        return 'ARRAY[' + ', '.join(str(x) for x in val) + ']'
+    if isinstance(val, dict):
+        # Represent JSON-like dicts as JSON string
+        return f"'{json.dumps(val)}'"
+    return str(val)
+
+
+def _pick_example_signature(signatures: list[dict]):
+    """Pick the most sensible signature to use for an example.
+
+    Prefer common scalar types (integer, boolean, varchar, double) over
+    more exotic ones (blob, array, struct)."""
+    preferred = {'integer', 'boolean', 'varchar', 'double', 'decimal', 'date', 'timestamp'}
+
+    for sig in signatures:
+        lt = sig.get('left_type')
+        rt = sig.get('right_type')
+        if lt in preferred and rt in preferred:
+            return sig
+
+    # fallback: first signature
+    return signatures[0] if signatures else None
+
+
+def _compute_expected_result(sql_symbol: str, left_val, right_val):
+    """Try to compute an expected result for common SQL operators."""
+    if left_val is None or right_val is None:
+        return None
+
+    try:
+        sym = sql_symbol.strip().upper()
+        if sym in ('+', '-', '*', '/', '%'):
+            return eval(f'{left_val}{sym}{right_val}')
+        if sym in ('=', '=='):
+            return left_val == right_val
+        if sym in ('<>', '!='):
+            return left_val != right_val
+        if sym == '<':
+            return left_val < right_val
+        if sym == '<=':
+            return left_val <= right_val
+        if sym == '>':
+            return left_val > right_val
+        if sym == '>=':
+            return left_val >= right_val
+        if sym == 'AND':
+            return bool(left_val and right_val)
+        if sym == 'OR':
+            return bool(left_val or right_val)
+        if sym == '||':
+            return str(left_val) + str(right_val)
+        if sym == '@>':
+            # array contains all
+            return all(x in left_val for x in right_val)
+        if sym == '<@':
+            # array contained by
+            return all(x in right_val for x in left_val)
+        if sym == '->':
+            # simple json extract by key
+            if isinstance(left_val, dict) and isinstance(right_val, str):
+                return left_val.get(right_val)
+        if sym == 'IN':
+            return left_val in right_val
+    except Exception:
+        return None
+
+    return None
+
 def build_operators_docs(ops_def: dict):
     # index grouped by category
     categories: dict[str, list[tuple[str, dict]]] = {}
@@ -186,11 +303,10 @@ def build_operators_docs(ops_def: dict):
         display = info.get('friendly_name') or info.get('display_name') or name
         sql_symbol = info.get('sql_symbol') or info.get('token')
         ast_symbol = info.get('ast_symbol')
-        node_kind = info.get('node_kind')
+        # node_kind is not surfaced in docs (too internal)
         category = info.get('category')
         description = info.get('description')
         documentation = info.get('documentation')
-        sig_count = info.get('signature_count')
         has_dynamic_result = info.get('has_dynamic_result')
         left = info.get('left_types', [])
         right = info.get('right_types', [])
@@ -214,25 +330,37 @@ def build_operators_docs(ops_def: dict):
 
         if category:
             lines.append(f'**Category:** {category}\n')
-        if node_kind:
-            lines.append(f'**Node kind:** {node_kind}\n')
         if sql_symbol:
             lines.append(f'**SQL symbol:** `{sql_symbol}`\n')
 
         # Example usage
         if sql_symbol and signatures:
-            first = signatures[0]
-            lt = first.get('left_type')
-            rt = first.get('right_type')
-            if lt and rt:
-                lines.append('## Example\n')
-                lines.append('```sql')
-                lines.append(f'SELECT col1 {sql_symbol} col2 FROM table;')
-                lines.append('```\n')
+            sig = _pick_example_signature(signatures)
+            if sig:
+                lt = sig.get('left_type')
+                rt = sig.get('right_type')
+                if lt and rt:
+                    left_sql, left_val = _literal_for_type(lt)
+                    right_sql, right_val = _literal_for_type(rt)
+                    expected = _compute_expected_result(sql_symbol, left_val, right_val)
+                    expected_comment = ''
+                    if expected is not None:
+                        expected_comment = f' -- expected: {_format_expected_result(expected)}'
+
+                    # Special-case non-infix operators (like map/array indexing)
+                    if sql_symbol == '[]':
+                        example_expr = f'{left_sql}[{right_sql}]'
+                    else:
+                        example_expr = f'{left_sql} {sql_symbol} {right_sql}'
+
+                    lines.append('## Example\n')
+                    lines.append('```sql')
+                    lines.append(f'SELECT {example_expr};{expected_comment}')
+                    lines.append('```\n')
 
         # Dynamic result explanation
-        if sig_count is not None:
-            lines.append(f'**Signatures:** {sig_count}\n')
+        if has_dynamic_result:
+            lines.append('**Dynamic result:** yes\n')
 
         if signatures:
             lines.append('## Signatures\n')
