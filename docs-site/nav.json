@@ -171,10 +171,10 @@
                   "DATABASE": "reference/sql/functions/database.md"
                 },
                 {
-                  "DATEDIFF": "reference/sql/functions/datediff.md"
+                  "DATE_FORMAT": "reference/sql/functions/date_format.md"
                 },
                 {
-                  "DATE_FORMAT": "reference/sql/functions/date_format.md"
+                  "DATEDIFF": "reference/sql/functions/datediff.md"
                 },
                 {
                   "E": "reference/sql/functions/e.md"
@@ -330,10 +330,10 @@
                   "SUBSTRING": "reference/sql/functions/substring.md"
                 },
                 {
-                  "TIMEDIFF": "reference/sql/functions/timediff.md"
+                  "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
                 },
                 {
-                  "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
+                  "TIMEDIFF": "reference/sql/functions/timediff.md"
                 },
                 {
                   "TRIM": "reference/sql/functions/trim.md"
@@ -474,19 +474,13 @@
               "href": "reference/sql/operators.md",
               "items": [
                 {
-                  "Logical AND": "reference/sql/operators/and.md"
+                  "Addition": "reference/sql/operators/plus.md"
                 },
                 {
                   "Array contains all": "reference/sql/operators/arraycontainsall.md"
                 },
                 {
-                  "JSON extract": "reference/sql/operators/arrow.md"
-                },
-                {
                   "Array contains any": "reference/sql/operators/atarrow.md"
-                },
-                {
-                  "JSON path exists": "reference/sql/operators/atquestion.md"
                 },
                 {
                   "Bitwise AND": "reference/sql/operators/bitwiseand.md"
@@ -496,6 +490,12 @@
                 },
                 {
                   "Bitwise XOR": "reference/sql/operators/bitwisexor.md"
+                },
+                {
+                  "Case-insensitive like": "reference/sql/operators/ilike.md"
+                },
+                {
+                  "Concatenation": "reference/sql/operators/stringconcat.md"
                 },
                 {
                   "Division": "reference/sql/operators/divide.md"
@@ -510,16 +510,22 @@
                   "Greater than or equal": "reference/sql/operators/gteq.md"
                 },
                 {
-                  "Case-insensitive like": "reference/sql/operators/ilike.md"
-                },
-                {
                   "In list": "reference/sql/operators/inlist.md"
                 },
                 {
-                  "Like": "reference/sql/operators/like.md"
+                  "Integer division": "reference/sql/operators/myintegerdivide.md"
+                },
+                {
+                  "JSON extract": "reference/sql/operators/arrow.md"
                 },
                 {
                   "JSON extract text": "reference/sql/operators/longarrow.md"
+                },
+                {
+                  "JSON path exists": "reference/sql/operators/atquestion.md"
+                },
+                {
+                  "Left shift": "reference/sql/operators/shiftleft.md"
                 },
                 {
                   "Less than": "reference/sql/operators/lt.md"
@@ -528,10 +534,16 @@
                   "Less than or equal": "reference/sql/operators/lteq.md"
                 },
                 {
-                  "Subscript access": "reference/sql/operators/mapaccess.md"
+                  "Like": "reference/sql/operators/like.md"
                 },
                 {
-                  "Subtraction": "reference/sql/operators/minus.md"
+                  "Logical AND": "reference/sql/operators/and.md"
+                },
+                {
+                  "Logical OR": "reference/sql/operators/or.md"
+                },
+                {
+                  "Logical XOR": "reference/sql/operators/xor.md"
                 },
                 {
                   "Modulo": "reference/sql/operators/modulo.md"
@@ -540,13 +552,10 @@
                   "Multiplication": "reference/sql/operators/multiply.md"
                 },
                 {
-                  "Integer division": "reference/sql/operators/myintegerdivide.md"
+                  "Not case-insensitive like": "reference/sql/operators/notilike.md"
                 },
                 {
                   "Not equals": "reference/sql/operators/noteq.md"
-                },
-                {
-                  "Not case-insensitive like": "reference/sql/operators/notilike.md"
                 },
                 {
                   "Not in list": "reference/sql/operators/notinlist.md"
@@ -558,25 +567,16 @@
                   "Not regex like": "reference/sql/operators/notrlike.md"
                 },
                 {
-                  "Logical OR": "reference/sql/operators/or.md"
-                },
-                {
-                  "Addition": "reference/sql/operators/plus.md"
-                },
-                {
                   "Regex like": "reference/sql/operators/rlike.md"
-                },
-                {
-                  "Left shift": "reference/sql/operators/shiftleft.md"
                 },
                 {
                   "Right shift": "reference/sql/operators/shiftright.md"
                 },
                 {
-                  "Concatenation": "reference/sql/operators/stringconcat.md"
+                  "Subscript access": "reference/sql/operators/mapaccess.md"
                 },
                 {
-                  "Logical XOR": "reference/sql/operators/xor.md"
+                  "Subtraction": "reference/sql/operators/minus.md"
                 }
               ]
             }

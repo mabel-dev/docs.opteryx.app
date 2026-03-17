@@ -595,12 +595,16 @@ def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
         node = item[key]
         if not isinstance(node, dict):
             return
+
+        # Sort nav entries alphabetically by their visible title, not by the internal key.
         items = []
-        for name in sorted(entries.keys()):
+        for name, info in entries.items():
             slug = slugify(name)
-            title = title_fn(name, entries[name])
-            items.append({title: f'{prefix}/{slug}.md'})
-        node['items'] = items
+            title = title_fn(name, info)
+            items.append((title, slug))
+        items.sort(key=lambda x: x[0].lower())
+
+        node['items'] = [{title: f'{prefix}/{slug}.md'} for title, slug in items]
 
     populate_nav_items(functions_item, 'reference/sql/functions', functions_def, lambda name, _: name)
     populate_nav_items(operators_item, 'reference/sql/operators', operators_def, lambda name, info: info.get('friendly_name') or info.get('display_name') or name)
