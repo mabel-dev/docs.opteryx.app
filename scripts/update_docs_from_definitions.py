@@ -27,6 +27,13 @@ API_DOC_SPECS = {
         'base_url': 'https://jobs.opteryx.app',
         'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
     },
+    'api-opteryx-odata.json': {
+        'slug': 'odata-api',
+        'title': 'OData API',
+        'status': 'Published',
+        'base_url': 'https://odata.opteryx.app',
+        'summary': 'OData service discovery, metadata, and dataset query endpoints for compatible clients and BI tools.',
+    },
     'api-opteryx-policy.json': {
         'slug': 'policy-api',
         'title': 'Policy API',
@@ -42,6 +49,14 @@ API_DOC_SPECS = {
         'summary': 'Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.',
     },
 }
+
+API_MANUAL_DOC_SPECS = [
+    {
+        'slug': 'jobs-api',
+        'title': 'Jobs API',
+        'summary': 'Job submission, status tracking, and result retrieval.',
+    },
+]
 
 
 def slugify(name: str) -> str:
@@ -172,15 +187,30 @@ def _sort_api_operations(spec: dict) -> list[tuple[str, str, dict]]:
     return sorted(operations, key=lambda item: (item[0], method_order.get(item[1], 99), item[1]))
 
 
+def _get_available_api_docs(generated_specs: list[dict] | None = None) -> tuple[list[dict], list[dict]]:
+    generated = []
+    if generated_specs is not None:
+        generated = sorted(generated_specs, key=lambda item: item['title'].lower())
+    else:
+        for def_name, meta in API_DOC_SPECS.items():
+            if (DEFS / def_name).exists():
+                generated.append(meta)
+        generated.sort(key=lambda item: item['title'].lower())
+
+    generated_by_slug = {spec['slug'] for spec in generated}
+    manual = []
+    for spec in API_MANUAL_DOC_SPECS:
+        if spec['slug'] in generated_by_slug:
+            continue
+        if (REF_API_DIR / f"{spec['slug']}.md").exists():
+            manual.append(spec)
+
+    manual.sort(key=lambda item: item['title'].lower())
+    return generated, manual
+
+
 def _build_api_index(generated_specs: list[dict]):
-    generated_by_slug = {spec['slug']: spec for spec in generated_specs}
-    manual_specs = [
-        {
-            'slug': 'jobs-api',
-            'title': 'Jobs API',
-            'summary': 'Job submission, status tracking, and result retrieval.',
-        },
-    ]
+    generated_specs, manual_specs = _get_available_api_docs(generated_specs)
 
     lines = [
         '# API Reference',
@@ -191,15 +221,13 @@ def _build_api_index(generated_specs: list[dict]):
         '',
     ]
 
-    for spec in sorted(generated_specs, key=lambda item: item['title'].lower()):
+    for spec in generated_specs:
         lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
     lines.append('')
 
     lines.append('## Additional API Docs')
     lines.append('')
-    for spec in sorted(manual_specs, key=lambda item: item['title'].lower()):
-        if spec['slug'] in generated_by_slug:
-            continue
+    for spec in manual_specs:
         lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
     lines.append('')
 
@@ -838,6 +866,18 @@ def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
     else:
         ref_section = []
         nav.append({'Reference': ref_section})
+
+    # rebuild API Reference entries from available docs so generated APIs appear
+    # automatically and missing definitions do not leave broken links behind.
+    generated_api_docs, manual_api_docs = _get_available_api_docs()
+    api_items = [{spec['title']: f"reference/api/{spec['slug']}.md"} for spec in generated_api_docs + manual_api_docs]
+
+    for item in ref_section:
+        if 'API Reference' in item:
+            item['API Reference'] = api_items
+            break
+    else:
+        ref_section.insert(0, {'API Reference': api_items})
 
     # find or create SQL Language Reference block
     sql_block = None
