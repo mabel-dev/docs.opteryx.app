@@ -1,14 +1,10 @@
 # Authentication API
 
-**Status:** Published
-
 Base URL: https://authenticate.opteryx.app
 
 ## Overview
 
 Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.
-
-Generated from `definitions/api-opteryx-authenticate.json`.
 
 ## Endpoints
 

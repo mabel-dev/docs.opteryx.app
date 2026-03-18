@@ -1,14 +1,10 @@
 # Upload API
 
-**Status:** Published
-
 Base URL: https://upload.opteryx.app
 
 ## Overview
 
 Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.
-
-Generated from `definitions/api-opteryx-upload.json`.
 
 ## Endpoints
 

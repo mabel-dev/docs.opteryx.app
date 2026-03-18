@@ -1,14 +1,10 @@
 # Policy API
 
-**Status:** Published
-
 Base URL: https://policy.opteryx.app
 
 ## Overview
 
 Workspace policy listing, inspection, creation, updates, and deletion for access-control management.
-
-Generated from `definitions/api-opteryx-policy.json`.
 
 ## Endpoints
 
