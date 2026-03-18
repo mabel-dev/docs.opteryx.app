@@ -1,57 +1,201 @@
 # Jobs API
 
-**Status:** Published
-
 Base URL: https://jobs.opteryx.app
 
 ## Overview
 
-The Jobs service accepts SQL statements for execution and exposes job status and results endpoints. Incoming requests must present a valid Bearer JWT verified against the Authentication service JWKS.
+Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.
 
-**Endpoints**
+## Endpoints
 
-End Point            | GET | POST | PATCH | DELETE
--------------------- | --- | ---- | ----- | ----
-`/api/v1/jobs` | - | Create Job | - | -
-`/api/v1/jobs/recent` | Get Recent Queries | - | - | -
-`/api/v1/jobs/{identifier}/status` | Get Job Status | - | - | -
-`/api/v1/jobs/{identifier}/results` | Get Job Results | - | - | -
-`/api/v1/jobs/{identifier}/cancel` | - | Cancel Job | - | -
+Endpoint | Method | Summary
+--- | --- | ---
+`/api/v1/jobs` | `POST` | Create and execute SQL job
+`/api/v1/jobs/estimate` | `POST` | Estimate result size
+`/api/v1/jobs/recent` | `GET` | Retrieve recent user queries
+`/api/v1/jobs/{identifier}/cancel` | `POST` | Cancel job execution
+`/api/v1/jobs/{identifier}/download` | `GET` | Download job results
+`/api/v1/jobs/{identifier}/results` | `GET` | Get job results
+`/api/v1/jobs/{identifier}/status` | `GET` | Get job status
+`/health` | `GET` | Health
 
-## Create Statement
+## Create and execute SQL job
 
 **Request:** `[POST] /api/v1/jobs`
 
-Request JSON: `{ "sql_text": "SELECT ...", "parameters": {...} }`
+**Tags:** Jobs Management
 
-Response (201): `execution_id`, `status`, `created_at`, `status_url`.
+Submit a SQL job for execution.
 
-## Get Recent User Queries
+### Header Parameters
 
-**Request:** `[GET] /api/v1/jobs/recent?filter={value}`
+- **authorization** `string | null` [header; optional]
 
-Requires Bearer token. Returns array of recent query job objects from the currently authenticated user.
+### Request Body
 
-Optional query parameter:
-- `filter` (string): case-insensitive substring filter against `sql_text`
+- **Content-Type:** `application/json`
+  Schema: `JobCreateRequest`
+  - **sql_text** `string` [required]
+    SQL statement to execute
+  - **client_info** `object | null` [optional]
+    Client information, e.g. application name/version
+  - **parameters** `object | null` [optional]
+    Query parameters, key-value pairs
 
-Response (200): Array of recent job objects with fields: `execution_id`, `sql_text`, `created_at`, `status`, `llm_described`, `time_taken_s`, and optional `error` and `client_info`.
+### Responses
 
-## Get Statement Status
+- **201** — Successful Response (`application/json` `JobCreateResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Estimate result size
+
+**Request:** `[POST] /api/v1/jobs/estimate`
+
+**Tags:** Jobs Management
+
+Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `EstimateRequest`
+  - **sql_text** `string` [required]
+    SQL statement to estimate
+  - **parameters** `object | null` [optional]
+    Optional query parameters
+
+### Responses
+
+- **200** — Successful Response (`application/json` `EstimateResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Retrieve recent user queries
+
+**Request:** `[GET] /api/v1/jobs/recent`
+
+**Tags:** Jobs Management
+
+Get recent user queries.
+
+### Query Parameters
+
+- **filter** `string | null` [query; optional]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `array<QueryJob>`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Cancel job execution
+
+**Request:** `[POST] /api/v1/jobs/{identifier}/cancel`
+
+**Tags:** Jobs Management
+
+Cancel a running job.
+
+### Path Parameters
+
+- **identifier** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `JobCancelResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Download job results
+
+**Request:** `[GET] /api/v1/jobs/{identifier}/download`
+
+**Tags:** Jobs Management
+
+Download the results of a previously submitted job as CSV or JSON lines.
+
+### Path Parameters
+
+- **identifier** `string` [path; required]
+
+### Query Parameters
+
+- **file_format** `string` [query; optional]
+- **limit** `integer` [query; optional]
+- **offset** `integer` [query; optional]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get job results
+
+**Request:** `[GET] /api/v1/jobs/{identifier}/results`
+
+**Tags:** Jobs Management
+
+Retrieve the results of a previously submitted job.
+
+### Path Parameters
+
+- **identifier** `string` [path; required]
+
+### Query Parameters
+
+- **num_rows** `integer` [query; optional]
+- **offset** `integer` [query; optional]
+- **verbose** `boolean` [query; optional]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `JobResultsResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get job status
 
 **Request:** `[GET] /api/v1/jobs/{identifier}/status`
 
-Response: `execution_id`, `status`, `finished_at`, `results_url`, `error_message`.
+**Tags:** Jobs Management
 
-## Get Statement Results
+Retrieve the execution status of a previously submitted job.
 
-**Request:** `[GET] /api/v1/jobs/{identifier}/results?num_rows={num_rows}&offset={offset}`
+### Path Parameters
 
-Response: `execution_id`, `created_at`, `sql_text`, `total_rows`, `data` (array of row objects), `next_page`.
+- **identifier** `string` [path; required]
 
-## Errors and Codes
-- 201 Created, 200 OK, 400 Bad Request, 403 Forbidden, 404 Not Found, 504 Dependent service unavailable.
+### Header Parameters
 
-Authentication
-- Bearer JWT required for protected endpoints. Tokens are validated against JWKS from the Authentication service. `JOBS_AUDIENCE` expected in `aud` claim.
+- **authorization** `string | null` [header; optional]
 
+### Responses
+
+- **200** — Successful Response (`application/json` `JobStatusResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Health
+
+**Request:** `[GET] /health`
+
+**Tags:** service
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)

@@ -20,6 +20,13 @@ API_DOC_SPECS = {
         'base_url': 'https://authenticate.opteryx.app',
         'summary': 'Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.',
     },
+    'api-opteryx-jobs.json': {
+        'slug': 'jobs-api',
+        'title': 'Jobs API',
+        'status': 'Published',
+        'base_url': 'https://jobs.opteryx.app',
+        'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
+    },
     'api-opteryx-policy.json': {
         'slug': 'policy-api',
         'title': 'Policy API',
