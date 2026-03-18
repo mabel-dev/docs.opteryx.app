@@ -6,48 +6,333 @@ Base URL: https://authenticate.opteryx.app
 
 ## Overview
 
-The Authentication service issues and validates JWTs, provides JWKS, manages Personal Access Tokens (PATs) for machine clients, and implements OAuth2 flows (client credentials, authorization code + PKCE, refresh tokens).
+Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.
 
-**Endpoints**
+Generated from `definitions/api-opteryx-authenticate.json`.
 
-End Point                                    | GET | POST | PATCH | DELETE
--------------------------------------------- | --- | ---- | ----- | -----
-`/health`                                    | Read Health | - | - | -
-`/jwks`                                      | Read JWKS | - | - | -
-`/token`                                     | - | Token Endpoint (all grants) | - | -
-`/oauth/authorize`                           | Start Authorization | - | - | -
-`/oauth/token`                               | - | Exchange Auth Code | - | -
-`/clients/{client_id}/credentials`           | List Credentials | Create Credential (PAT) | - | -
-`/clients/{client_id}/credentials/{cred_id}` | - | - | - | Revoke Credential
-`/keys/ensure`                               | - | Ensure Key Exists | - | -
-`/auth/{provider}/authorize`                 | Start External OAuth | - | - | -
-`/auth/{provider}/callback`                  | OAuth Callback | - | - | -
+## Endpoints
 
-**Authentication flows**
-- Client Credentials: `POST /token` with `grant_type=client_credentials` and `client_id`/`client_secret` (confidential clients, PATs allowed).
-- Authorization Code + PKCE: `GET /oauth/authorize` then `POST /oauth/token` exchanging the code with `code_verifier` for public clients.
-- Refresh tokens: exchanged via `POST /token` with `grant_type=refresh_token` (rotate on use).
-- Personal Access Tokens (PATs): created via `POST /clients/{client_id}/credentials` and used as `client_secret` in client_credentials grants.
+Endpoint | Method | Summary
+--- | --- | ---
+`/.well-known/oauth-authorization-server` | `GET` | OAuth discovery document
+`/.well-known/openid-configuration` | `GET` | OpenID Connect discovery document
+`/auth/github/authorize` | `GET` | Start GitHub sign-in
+`/auth/google/authorize` | `GET` | Start Google sign-in
+`/auth/microsoft/authorize` | `GET` | Start Microsoft sign-in
+`/clients/{client_id}/credentials` | `GET` | List Credentials
+`/clients/{client_id}/credentials` | `POST` | Create Credential
+`/clients/{client_id}/credentials/{credential_id}` | `DELETE` | Revoke Credential
+`/health` | `GET` | Health check
+`/jwks` | `GET` | Get signing keys
+`/me` | `GET` | Get current user
+`/oauth/authorize` | `GET` | Start OAuth authorization
+`/oauth/introspect` | `POST` | Introspect a token
+`/oauth/revoke` | `POST` | Revoke a token
+`/oauth/token` | `POST` | Exchange OAuth tokens
+`/oauth/userinfo` | `GET` | Get user profile claims
+`/token` | `POST` | Issue an access token
 
-## Get JWKS
+## OAuth discovery document
+
+**Request:** `[GET] /.well-known/oauth-authorization-server`
+
+Returns machine-readable metadata describing the OAuth 2.0 endpoints supported by this service.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## OpenID Connect discovery document
+
+**Request:** `[GET] /.well-known/openid-configuration`
+
+Returns machine-readable metadata describing the OpenID Connect endpoints and capabilities of this service.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Start GitHub sign-in
+
+**Request:** `[GET] /auth/github/authorize`
+
+Redirects the user to GitHub so they can authenticate with their GitHub identity.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Start Google sign-in
+
+**Request:** `[GET] /auth/google/authorize`
+
+Redirects the user to Google so they can sign in and authorize the Opteryx authentication flow.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Start Microsoft sign-in
+
+**Request:** `[GET] /auth/microsoft/authorize`
+
+Redirects the user to Microsoft Entra ID so they can authenticate with their Microsoft account.
+
+### Query Parameters
+
+- **redirect_uri** `string | null` [query; optional]
+
+### Responses
+
+- **307** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## List Credentials
+
+**Request:** `[GET] /clients/{client_id}/credentials`
+
+**Tags:** credentials
+
+List all active credentials for a client (without secrets).
+
+Args:
+    client_id: Client identifier
+
+Returns:
+    List of credential metadata (excluding secrets)
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+
+### Responses
+
+- **200** — Successful Response (`application/json` `array<CredentialMetadata>`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Create Credential
+
+**Request:** `[POST] /clients/{client_id}/credentials`
+
+**Tags:** credentials
+
+Create a new client credential (PAT).
+
+This creates a Personal Access Token (PAT) for machine-to-machine authentication.
+The secret is shown only once and must be stored securely by the caller.
+
+Args:
+    client_id: Client identifier
+    request: Credential creation parameters
+
+Returns:
+    Credential metadata with plaintext secret (shown only once)
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `CreateCredentialRequest`
+  - **type** `string` [optional]
+  - **expires_in_days** `integer` [optional]
+  - **scopes** `array<string>` [optional]
+  - **permissions** `array<array<string>>` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `CreateCredentialResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Revoke Credential
+
+**Request:** `[DELETE] /clients/{client_id}/credentials/{credential_id}`
+
+**Tags:** credentials
+
+Revoke a credential by deleting it.
+
+Args:
+    client_id: Client identifier
+    credential_id: Credential ID to revoke
+
+Returns:
+    Success message
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+- **credential_id** `string` [path; required]
+  Credential ID to revoke
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Health check
+
+**Request:** `[GET] /health`
+
+**Tags:** service
+
+Returns a simple service status payload so monitoring systems can confirm the API is reachable.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Get signing keys
 
 **Request:** `[GET] /jwks`
 
-Response: JSON Web Key Set containing public keys used to verify tokens.
+**Tags:** authentication
 
-## Create Token
+Returns the JSON Web Key Set used to verify access tokens issued by this service.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Get current user
+
+**Request:** `[GET] /me`
+
+Validates the bearer token and returns the caller identity and token scope details.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Start OAuth authorization
+
+**Request:** `[GET] /oauth/authorize`
+
+Validates the client redirect URI and creates a short-lived authorization code for PKCE-based sign-in flows.
+
+### Query Parameters
+
+- **response_type** `string` [query; required]
+- **client_id** `string` [query; required]
+- **redirect_uri** `string` [query; required]
+- **scope** `string | null` [query; optional]
+- **state** `string | null` [query; optional]
+- **code_challenge** `string | null` [query; optional]
+- **code_challenge_method** `string | null` [query; optional]
+- **nonce** `string | null` [query; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Introspect a token
+
+**Request:** `[POST] /oauth/introspect`
+
+Returns whether a token is active and, when valid, exposes a small set of standard claims.
+
+### Request Body
+
+- **Content-Type:** `application/x-www-form-urlencoded`
+  Schema: `Body_introspect_oauth_introspect_post`
+  - **token** `string` [required]
+  - **token_type_hint** `string | null` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Revoke a token
+
+**Request:** `[POST] /oauth/revoke`
+
+Revokes a refresh token and returns a success response compatible with OAuth token revocation semantics.
+
+### Request Body
+
+- **Content-Type:** `application/x-www-form-urlencoded`
+  Schema: `Body_revoke_oauth_revoke_post`
+  - **token** `string` [required]
+  - **token_type_hint** `string | null` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Exchange OAuth tokens
+
+**Request:** `[POST] /oauth/token`
+
+Exchanges an authorization code or refresh token for a new access token in the OAuth 2.0 flow.
+
+### Request Body
+
+- **Content-Type:** `application/x-www-form-urlencoded`
+  Schema: `Body_oauth_token_oauth_token_post`
+  - **grant_type** `string` [required]
+  - **code** `string | null` [optional]
+  - **redirect_uri** `string | null` [optional]
+  - **client_id** `string | null` [optional]
+  - **client_secret** `string | null` [optional]
+  - **refresh_token** `string | null` [optional]
+  - **code_verifier** `string | null` [optional]
+  - **scope** `string | null` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get user profile claims
+
+**Request:** `[GET] /oauth/userinfo`
+
+Validates the bearer token and returns the basic OpenID Connect user claims for the authenticated caller.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Issue an access token
 
 **Request:** `[POST] /token`
 
-Content-Type: application/x-www-form-urlencoded
+**Tags:** authentication
 
-Form parameters include `grant_type`, `client_id`, `client_secret` (confidential clients), `code_verifier` (PKCE), and `scope`.
+Creates access tokens for client credentials or refresh-token exchanges used by customer integrations.
 
-Response: JSON with `access_token`, `token_type`, `expires_in`, optional `refresh_token` and `scope`.
+### Query Parameters
 
-## Security Notes
-- Keys may be stored in GCP Secret Manager or filesystem fallback. Set `SECRET_STORE_BACKEND=gcp` to enforce Secret Manager.
-- Rate limiting and CORS configurable via environment (`RATE_LIMITING`, `CORS_ORIGINS`).
-- Use PKCE for public/browser clients; do not use `client_credentials` from browser code.
+- **set_cookie** `boolean` [query; optional]
 
-Example PKCE flow (high level): generate `code_verifier` and `code_challenge`, redirect to `GET /oauth/authorize`, exchange code at `POST /oauth/token` using `code_verifier`.
+### Request Body
+
+- **Content-Type:** `application/x-www-form-urlencoded`
+  Schema: `Body_token_endpoint_token_post`
+  - **grant_type** `string` [optional]
+  - **client_id** `string` [optional]
+  - **client_secret** `string` [optional]
+  - **refresh_token** `string` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `TokenResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)

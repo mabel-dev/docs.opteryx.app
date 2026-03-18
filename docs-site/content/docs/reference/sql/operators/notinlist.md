@@ -16,7 +16,7 @@ Returns true when the left operand does not match any element in the right-hand 
 ## Example
 
 ```sql
-SELECT CAST('0102' AS BLOB) NOT IN ARRAY[1,2];
+SELECT b'0102' NOT IN ARRAY[1,2];
 ```
 
 ## Signatures

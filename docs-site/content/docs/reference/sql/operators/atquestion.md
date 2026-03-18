@@ -16,7 +16,7 @@ Returns true when the supplied JSON path expression matches within the left docu
 ## Example
 
 ```sql
-SELECT 'a' @? 'a';
+SELECT '{"index": 1}' @? '$.index';
 ```
 
 ## Signatures

@@ -16,7 +16,7 @@ Returns the selected JSON value from a document or JSON-like value.
 ## Example
 
 ```sql
-SELECT 'a' -> 'a';
+SELECT '{"index": 1}' -> 'index'; -- expected: 1
 ```
 
 **Dynamic result:** yes

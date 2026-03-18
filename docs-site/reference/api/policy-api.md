@@ -1,4 +1,3 @@
-
 # Policy API
 
 **Status:** Published
@@ -7,34 +6,249 @@ Base URL: https://policy.opteryx.app
 
 ## Overview
 
-Manage and inspect access policies for workspaces. Create, update, list and delete policy documents that control who can access resources.
+Workspace policy listing, inspection, creation, updates, and deletion for access-control management.
 
-## List Workspace Policies
+Generated from `definitions/api-opteryx-policy.json`.
 
-**Request:** `[GET] /v1/policies/workspace/{workspace}`
+## Endpoints
 
-Returns policy principals for the workspace `{ "principals": [ {"identity":"...","role":"...","pattern":"...","policy":"id"}, ... ] }`.
+Endpoint | Method | Summary
+--- | --- | ---
+`/health` | `GET` | Health check
+`/v1/access/workspace/{workspace}` | `GET` | List workspace policies
+`/v1/access/workspace/{workspace}/policies` | `POST` | Create policy
+`/v1/access/workspace/{workspace}/policies/{policy_id}` | `GET` | Get policy details
+`/v1/access/workspace/{workspace}/policies/{policy_id}` | `PUT` | Update policy
+`/v1/access/workspace/{workspace}/policies/{policy_id}` | `DELETE` | Delete policy
+`/v1/cost/{workspace}` | `GET` | Get cost policy
+`/v1/cost/{workspace}` | `POST` | Create/update cost policy
+`/v1/cost/{workspace}` | `DELETE` | Delete cost policy
 
-## Get Policy Details
+## Health check
 
-**Request:** `[GET] /v1/policies/workspace/{workspace}/policies/{policy}`
+**Request:** `[GET] /health`
 
-Returns full policy document details including `principal`, `role`, `pattern`, `created_at`, `updated_at`, `updated_by`.
+**Tags:** Health
 
-## Create Policy
+Returns service health status.
 
-**Request:** `[POST] /v1/policies/workspace/{workspace}/policies`
+### Responses
 
-Request body: `{ "principal": {"identity":"justin"}, "role": "owner", "pattern": "analytics.*" }`.
+- **200** — Successful Response (`application/json` `object`)
 
-## Update Policy
+## List workspace policies
 
-**Request:** `[PUT] /v1/policies/workspace/{workspace}/policies/{policy}`
+**Request:** `[GET] /v1/access/workspace/{workspace}`
 
-Request body: `{ "role": "owner", "pattern": "analytics.*" }`.
+**Tags:** Access Control
 
-## Delete Policy
+Get all access policies for a workspace. Requires owner or admin access.
 
-**Request:** `[DELETE] /v1/policies/workspace/{workspace}/policies/{policy}`
+### Path Parameters
 
-Removes the specified policy.
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `WorkspacePoliciesResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Create policy
+
+**Request:** `[POST] /v1/access/workspace/{workspace}/policies`
+
+**Tags:** Access Control
+
+Create a new access policy for a user in the workspace.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `CreatePolicyRequest`
+  - **principal** `Principal` [required]
+    User to grant access to
+  - **role** `string` [required]
+    Role to grant (e.g., 'owner', 'reader', 'writer')
+  - **pattern** `string` [required]
+    Resource pattern (e.g., 'analytics.*')
+
+### Responses
+
+- **201** — Successful Response (`application/json` `CreatePolicyResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get policy details
+
+**Request:** `[GET] /v1/access/workspace/{workspace}/policies/{policy_id}`
+
+**Tags:** Access Control
+
+Get detailed information about a specific policy.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+- **policy_id** `string` [path; required]
+  Policy ID
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `PolicyDetail`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Update policy
+
+**Request:** `[PUT] /v1/access/workspace/{workspace}/policies/{policy_id}`
+
+**Tags:** Access Control
+
+Update an existing access policy.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+- **policy_id** `string` [path; required]
+  Policy ID
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `UpdatePolicyRequest`
+  - **role** `string` [required]
+    Updated role
+  - **pattern** `string` [required]
+    Updated resource pattern
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Delete policy
+
+**Request:** `[DELETE] /v1/access/workspace/{workspace}/policies/{policy_id}`
+
+**Tags:** Access Control
+
+Remove an access policy from the workspace.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+- **policy_id** `string` [path; required]
+  Policy ID
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get cost policy
+
+**Request:** `[GET] /v1/cost/{workspace}`
+
+**Tags:** Cost Control
+
+Retrieve the cost policy for a workspace.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `CostPolicyRequest`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Create/update cost policy
+
+**Request:** `[POST] /v1/cost/{workspace}`
+
+**Tags:** Cost Control
+
+Create or update the cost policy for a workspace.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `CostPolicyRequest`
+  - **collection** `string` [required]
+    Collection the policy applies to
+  - **budget_limit** `number` [required]
+    Budget limit for the collection
+  - **window** `string` [required]
+    Time window for the budget (e.g., calendar_month)
+  - **violation_action** `string` [required]
+    Action to take on violation (e.g., block)
+  - **warn_at** `array<integer>` [required]
+    Warning thresholds as percentages
+
+### Responses
+
+- **201** — Successful Response (`application/json` `PolicyStoredResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Delete cost policy
+
+**Request:** `[DELETE] /v1/cost/{workspace}`
+
+**Tags:** Cost Control
+
+Delete the cost policy for a workspace.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `PolicyStoredResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)

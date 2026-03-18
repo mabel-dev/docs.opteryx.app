@@ -16,7 +16,7 @@ Returns true when the left operand matches any element in the right-hand list or
 ## Example
 
 ```sql
-SELECT CAST('0102' AS BLOB) IN ARRAY[1,2];
+SELECT b'0102' IN ARRAY[1,2];
 ```
 
 ## Signatures

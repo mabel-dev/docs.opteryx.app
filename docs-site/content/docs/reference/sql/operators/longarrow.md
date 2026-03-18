@@ -16,7 +16,7 @@ Returns the selected JSON value encoded as a blob or text-like binary value.
 ## Example
 
 ```sql
-SELECT 'a' ->> 'a';
+SELECT '{"index": 1}' ->> 'index';
 ```
 
 ## Signatures

@@ -1,0 +1,889 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Opteryx Policy Service",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/access/workspace/{workspace}": {
+      "get": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "List workspace policies",
+        "description": "Get all access policies for a workspace. Requires owner or admin access.",
+        "operationId": "list_workspace_policies_v1_access_workspace__workspace__get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspacePoliciesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/access/workspace/{workspace}/policies/{policy_id}": {
+      "get": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Get policy details",
+        "description": "Get detailed information about a specific policy.",
+        "operationId": "get_policy_v1_access_workspace__workspace__policies__policy_id__get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Policy ID",
+              "title": "Policy Id"
+            },
+            "description": "Policy ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Update policy",
+        "description": "Update an existing access policy.",
+        "operationId": "update_policy_v1_access_workspace__workspace__policies__policy_id__put",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Policy ID",
+              "title": "Policy Id"
+            },
+            "description": "Policy ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Update Policy V1 Access Workspace  Workspace  Policies  Policy Id  Put"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Delete policy",
+        "description": "Remove an access policy from the workspace.",
+        "operationId": "delete_policy_v1_access_workspace__workspace__policies__policy_id__delete",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Policy ID",
+              "title": "Policy Id"
+            },
+            "description": "Policy ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Delete Policy V1 Access Workspace  Workspace  Policies  Policy Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/access/workspace/{workspace}/policies": {
+      "post": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Create policy",
+        "description": "Create a new access policy for a user in the workspace.",
+        "operationId": "create_policy_v1_access_workspace__workspace__policies_post",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePolicyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check",
+        "description": "Returns service health status.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Check Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cost/{workspace}": {
+      "get": {
+        "tags": [
+          "Cost Control"
+        ],
+        "summary": "Get cost policy",
+        "description": "Retrieve the cost policy for a workspace.",
+        "operationId": "get_cost_policy_v1_cost__workspace__get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostPolicyRequest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cost Control"
+        ],
+        "summary": "Create/update cost policy",
+        "description": "Create or update the cost policy for a workspace.",
+        "operationId": "upsert_cost_policy_v1_cost__workspace__post",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CostPolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyStoredResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cost Control"
+        ],
+        "summary": "Delete cost policy",
+        "description": "Delete the cost policy for a workspace.",
+        "operationId": "delete_cost_policy_v1_cost__workspace__delete",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyStoredResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CostPolicyRequest": {
+        "properties": {
+          "collection": {
+            "type": "string",
+            "title": "Collection",
+            "description": "Collection the policy applies to"
+          },
+          "budget_limit": {
+            "type": "number",
+            "title": "Budget Limit",
+            "description": "Budget limit for the collection"
+          },
+          "window": {
+            "type": "string",
+            "title": "Window",
+            "description": "Time window for the budget (e.g., calendar_month)"
+          },
+          "violation_action": {
+            "type": "string",
+            "title": "Violation Action",
+            "description": "Action to take on violation (e.g., block)"
+          },
+          "warn_at": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Warn At",
+            "description": "Warning thresholds as percentages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "collection",
+          "budget_limit",
+          "window",
+          "violation_action",
+          "warn_at"
+        ],
+        "title": "CostPolicyRequest",
+        "description": "Represents a cost policy for a workspace."
+      },
+      "CreatePolicyRequest": {
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "User to grant access to"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Role to grant (e.g., 'owner', 'reader', 'writer')"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Resource pattern (e.g., 'analytics.*')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "principal",
+          "role",
+          "pattern"
+        ],
+        "title": "CreatePolicyRequest",
+        "description": "Request to create a new policy."
+      },
+      "CreatePolicyResponse": {
+        "properties": {
+          "policy": {
+            "type": "string",
+            "title": "Policy",
+            "description": "ID of the created policy"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy",
+          "message"
+        ],
+        "title": "CreatePolicyResponse",
+        "description": "Response after creating a policy."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PolicyDetail": {
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "User this policy applies to"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Role granted"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Resource pattern"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "When the policy was created (ISO format)"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "When the policy was last updated (ISO format)"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Principal"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Who last updated the policy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "principal",
+          "role",
+          "pattern"
+        ],
+        "title": "PolicyDetail",
+        "description": "Detailed information about a specific policy."
+      },
+      "PolicyInfo": {
+        "properties": {
+          "identity": {
+            "type": "string",
+            "title": "Identity",
+            "description": "User identity this policy applies to"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Role granted (e.g., 'owner', 'reader', 'writer')"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Resource pattern (e.g., 'analytics.*', 'analytics.sales.*')"
+          },
+          "policy": {
+            "type": "string",
+            "title": "Policy",
+            "description": "Policy document ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identity",
+          "role",
+          "pattern",
+          "policy"
+        ],
+        "title": "PolicyInfo",
+        "description": "Information about a single policy."
+      },
+      "PolicyStoredResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Result message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "PolicyStoredResponse",
+        "description": "Generic response for stored policy documents."
+      },
+      "Principal": {
+        "properties": {
+          "identity": {
+            "type": "string",
+            "title": "Identity",
+            "description": "User identity (e.g., username, email, subject)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identity"
+        ],
+        "title": "Principal",
+        "description": "Represents a principal (user) in a policy."
+      },
+      "UpdatePolicyRequest": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Updated role"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Updated resource pattern"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "pattern"
+        ],
+        "title": "UpdatePolicyRequest",
+        "description": "Request to update an existing policy."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WorkspacePoliciesResponse": {
+        "properties": {
+          "principals": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyInfo"
+            },
+            "type": "array",
+            "title": "Principals",
+            "description": "List of policies"
+          }
+        },
+        "type": "object",
+        "required": [
+          "principals"
+        ],
+        "title": "WorkspacePoliciesResponse",
+        "description": "Response with all policies for a workspace."
+      }
+    }
+  }
+}
