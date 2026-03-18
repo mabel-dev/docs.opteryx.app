@@ -69,9 +69,13 @@ Returns:
 - **Content-Type:** `application/json`
   Schema: `CreateCredentialRequest`
   - **type** `string` [optional]
+    Default: `interactive`
   - **expires_in_days** `integer` [optional]
+    Default: `90`
   - **scopes** `array<string>` [optional]
+    Default: `[]`
   - **permissions** `array<array<string>>` [optional]
+    Default: `[]`
 
 ### Responses
 
@@ -143,12 +147,14 @@ Creates access tokens for client credentials or refresh-token exchanges used by 
 ### Query Parameters
 
 - **set_cookie** `boolean` [query; optional]
+  Default: `false`
 
 ### Request Body
 
 - **Content-Type:** `application/x-www-form-urlencoded`
   Schema: `Body_token_endpoint_token_post`
   - **grant_type** `string` [optional]
+    Default: `client_credentials`
   - **client_id** `string` [optional]
   - **client_secret** `string` [optional]
   - **refresh_token** `string` [optional]

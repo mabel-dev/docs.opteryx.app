@@ -124,65 +124,6 @@
         }
       }
     },
-    "/api/v1/jobs/{identifier}/cancel": {
-      "post": {
-        "tags": [
-          "Jobs Management"
-        ],
-        "summary": "Cancel job execution",
-        "description": "Cancel a running job.",
-        "operationId": "cancel_job_api_v1_jobs__identifier__cancel_post",
-        "parameters": [
-          {
-            "name": "identifier",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Identifier"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCancelResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/jobs/{identifier}/results": {
       "get": {
         "tags": [
@@ -295,6 +236,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "csv",
+                "json"
+              ],
               "type": "string",
               "default": "csv",
               "title": "File Format"
@@ -488,25 +433,6 @@
           }
         }
       }
-    },
-    "/health": {
-      "get": {
-        "tags": [
-          "service"
-        ],
-        "summary": "Health",
-        "operationId": "health_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -564,30 +490,6 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
-      },
-      "JobCancelResponse": {
-        "properties": {
-          "execution_id": {
-            "type": "string",
-            "title": "Execution Id"
-          },
-          "cancelled": {
-            "type": "boolean",
-            "title": "Cancelled"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current state of the job"
-          }
-        },
-        "type": "object",
-        "required": [
-          "execution_id",
-          "cancelled",
-          "status"
-        ],
-        "title": "JobCancelResponse"
       },
       "JobCreateRequest": {
         "properties": {

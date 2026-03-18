@@ -87,6 +87,7 @@ Endpoint | Method | Summary
   - **target** `Target` [required]
   - **snapshot_message** `string | null` [optional]
   - **conflict_resolution** `ConflictResolution` [optional]
+    Allowed values: `fail`, `overwrite`, `append`
 
 ### Responses
 

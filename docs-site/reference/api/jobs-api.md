@@ -13,11 +13,9 @@ Endpoint | Method | Summary
 `/api/v1/jobs` | `POST` | Create and execute SQL job
 `/api/v1/jobs/estimate` | `POST` | Estimate result size
 `/api/v1/jobs/recent` | `GET` | Retrieve recent user queries
-`/api/v1/jobs/{identifier}/cancel` | `POST` | Cancel job execution
 `/api/v1/jobs/{identifier}/download` | `GET` | Download job results
 `/api/v1/jobs/{identifier}/results` | `GET` | Get job results
 `/api/v1/jobs/{identifier}/status` | `GET` | Get job status
-`/health` | `GET` | Health
 
 ## Create and execute SQL job
 
@@ -94,27 +92,6 @@ Get recent user queries.
 - **200** — Successful Response (`application/json` `array<QueryJob>`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
-## Cancel job execution
-
-**Request:** `[POST] /api/v1/jobs/{identifier}/cancel`
-
-**Tags:** Jobs Management
-
-Cancel a running job.
-
-### Path Parameters
-
-- **identifier** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `JobCancelResponse`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
 ## Download job results
 
 **Request:** `[GET] /api/v1/jobs/{identifier}/download`
@@ -130,8 +107,12 @@ Download the results of a previously submitted job as CSV or JSON lines.
 ### Query Parameters
 
 - **file_format** `string` [query; optional]
+  Allowed values: `csv`, `json`
+  Default: `csv`
 - **limit** `integer` [query; optional]
+  Default: `10000`
 - **offset** `integer` [query; optional]
+  Default: `0`
 
 ### Header Parameters
 
@@ -157,8 +138,11 @@ Retrieve the results of a previously submitted job.
 ### Query Parameters
 
 - **num_rows** `integer` [query; optional]
+  Default: `5000`
 - **offset** `integer` [query; optional]
+  Default: `0`
 - **verbose** `boolean` [query; optional]
+  Default: `false`
 
 ### Header Parameters
 
@@ -189,13 +173,3 @@ Retrieve the execution status of a previously submitted job.
 
 - **200** — Successful Response (`application/json` `JobStatusResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-## Health
-
-**Request:** `[GET] /health`
-
-**Tags:** service
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)

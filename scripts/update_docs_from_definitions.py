@@ -107,6 +107,64 @@ def _schema_to_type(schema: dict | None) -> str:
     return 'object'
 
 
+def _resolve_schema(schema: dict | None, schemas: dict | None = None) -> dict:
+    if not schema:
+        return {}
+
+    ref = schema.get('$ref')
+    if isinstance(ref, str) and schemas is not None:
+        schema_name = ref.rsplit('/', 1)[-1]
+        resolved = schemas.get(schema_name)
+        if isinstance(resolved, dict):
+            return resolved
+
+    return schema
+
+
+def _schema_allowed_values(schema: dict | None, schemas: dict | None = None) -> list[str]:
+    resolved = _resolve_schema(schema, schemas)
+
+    enum_values = resolved.get('enum')
+    if isinstance(enum_values, list):
+        return [json.dumps(value) if not isinstance(value, str) else value for value in enum_values]
+
+    if 'const' in resolved:
+        value = resolved['const']
+        return [json.dumps(value) if not isinstance(value, str) else value]
+
+    any_of = resolved.get('anyOf')
+    if isinstance(any_of, list):
+        collected = []
+        for item in any_of:
+            collected.extend(_schema_allowed_values(item, schemas))
+        # preserve order while removing duplicates
+        return list(dict.fromkeys(collected))
+
+    return []
+
+
+def _format_schema_value(value) -> str:
+    if isinstance(value, str):
+        return value
+    return json.dumps(value)
+
+
+def _schema_default_value(schema: dict | None, schemas: dict | None = None) -> str | None:
+    resolved = _resolve_schema(schema, schemas)
+
+    if 'default' in resolved:
+        return _format_schema_value(resolved['default'])
+
+    any_of = resolved.get('anyOf')
+    if isinstance(any_of, list):
+        for item in any_of:
+            default = _schema_default_value(item, schemas)
+            if default is not None:
+                return default
+
+    return None
+
+
 def _render_parameter_list(lines: list[str], heading: str, parameters: list[dict]):
     if not parameters:
         return
@@ -118,10 +176,16 @@ def _render_parameter_list(lines: list[str], heading: str, parameters: list[dict
         location = param.get('in', 'query')
         schema_type = _schema_to_type(param.get('schema', {}))
         description = param.get('description') or param.get('schema', {}).get('description') or ''
+        allowed_values = _schema_allowed_values(param.get('schema', {}))
+        default_value = _schema_default_value(param.get('schema', {}))
 
         lines.append(f'- **{name}** `{schema_type}` [{location}; {required}]')
         if description:
             lines.append(f'  {description}')
+        if allowed_values:
+            lines.append(f"  Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
+        if default_value is not None:
+            lines.append(f"  Default: `{default_value}`")
     lines.append('')
 
 
@@ -148,10 +212,16 @@ def _render_request_body(lines: list[str], request_body: dict, schemas: dict):
             for field_name, field_schema in properties.items():
                 required_text = 'required' if field_name in required else 'optional'
                 field_type = _schema_to_type(field_schema)
+                allowed_values = _schema_allowed_values(field_schema, schemas)
+                default_value = _schema_default_value(field_schema, schemas)
                 lines.append(f'  - **{field_name}** `{field_type}` [{required_text}]')
                 field_description = field_schema.get('description')
                 if field_description:
                     lines.append(f'    {field_description}')
+                if allowed_values:
+                    lines.append(f"    Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
+                if default_value is not None:
+                    lines.append(f"    Default: `{default_value}`")
         lines.append('')
 
 
