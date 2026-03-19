@@ -2,6 +2,8 @@ import json
 import pathlib
 import re
 
+from typing import Any, Dict, List, Optional, Tuple
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFS = ROOT / 'definitions'
 DOCS = ROOT / 'docs-site'
@@ -67,12 +69,12 @@ def load_json(path: pathlib.Path):
     return json.loads(path.read_text())
 
 
-def write_md(path: pathlib.Path, lines: list[str]):
+def write_md(path: pathlib.Path, lines: List[str]):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text('\n'.join(lines))
 
 
-def _schema_to_type(schema: dict | None) -> str:
+def _schema_to_type(schema: Optional[Dict[str, Any]]) -> str:
     if not schema:
         return 'object'
 
@@ -107,7 +109,7 @@ def _schema_to_type(schema: dict | None) -> str:
     return 'object'
 
 
-def _resolve_schema(schema: dict | None, schemas: dict | None = None) -> dict:
+def _resolve_schema(schema: Optional[Dict[str, Any]], schemas: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     if not schema:
         return {}
 
@@ -121,7 +123,7 @@ def _resolve_schema(schema: dict | None, schemas: dict | None = None) -> dict:
     return schema
 
 
-def _schema_allowed_values(schema: dict | None, schemas: dict | None = None) -> list[str]:
+def _schema_allowed_values(schema: Optional[Dict[str, Any]], schemas: Optional[Dict[str, Any]] = None) -> List[str]:
     resolved = _resolve_schema(schema, schemas)
 
     enum_values = resolved.get('enum')
@@ -149,7 +151,7 @@ def _format_schema_value(value) -> str:
     return json.dumps(value)
 
 
-def _schema_default_value(schema: dict | None, schemas: dict | None = None) -> str | None:
+def _schema_default_value(schema: Optional[Dict[str, Any]], schemas: Optional[Dict[str, Any]] = None) -> Optional[str]:
     resolved = _resolve_schema(schema, schemas)
 
     if 'default' in resolved:
@@ -165,7 +167,7 @@ def _schema_default_value(schema: dict | None, schemas: dict | None = None) -> s
     return None
 
 
-def _render_parameter_list(lines: list[str], heading: str, parameters: list[dict]):
+def _render_parameter_list(lines: List[str], heading: str, parameters: List[Dict[str, Any]]):
     if not parameters:
         return
 
@@ -189,7 +191,7 @@ def _render_parameter_list(lines: list[str], heading: str, parameters: list[dict
     lines.append('')
 
 
-def _render_request_body(lines: list[str], request_body: dict, schemas: dict):
+def _render_request_body(lines: List[str], request_body: Dict[str, Any], schemas: Dict[str, Any]):
     if not request_body:
         return
 
@@ -225,7 +227,7 @@ def _render_request_body(lines: list[str], request_body: dict, schemas: dict):
         lines.append('')
 
 
-def _render_responses(lines: list[str], responses: dict):
+def _render_responses(lines: List[str], responses: Dict[str, Any]):
     if not responses:
         return
 
@@ -245,8 +247,8 @@ def _render_responses(lines: list[str], responses: dict):
     lines.append('')
 
 
-def _sort_api_operations(spec: dict) -> list[tuple[str, str, dict]]:
-    operations = []
+def _sort_api_operations(spec: Dict[str, Any]) -> List[Tuple[str, str, Dict[str, Any]]]:
+    operations: List[Tuple[str, str, Dict[str, Any]]] = []
     for route, methods in spec.get('paths', {}).items():
         for method, operation in methods.items():
             if method.lower() not in {'get', 'post', 'put', 'patch', 'delete'}:
@@ -257,8 +259,8 @@ def _sort_api_operations(spec: dict) -> list[tuple[str, str, dict]]:
     return sorted(operations, key=lambda item: (item[0], method_order.get(item[1], 99), item[1]))
 
 
-def _get_available_api_docs(generated_specs: list[dict] | None = None) -> tuple[list[dict], list[dict]]:
-    generated = []
+def _get_available_api_docs(generated_specs: Optional[List[Dict[str, Any]]] = None) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    generated: List[Dict[str, Any]] = []
     if generated_specs is not None:
         generated = sorted(generated_specs, key=lambda item: item['title'].lower())
     else:
@@ -373,9 +375,9 @@ def build_api_docs():
     _build_api_index(generated_specs)
 
 
-def build_functions_docs(functions_def: dict):
+def build_functions_docs(functions_def: Dict[str, Any]):
     # build index grouped by category
-    categories: dict[str, list[tuple[str, str]]] = {}
+    categories: Dict[str, List[Tuple[str, str]]] = {}
     for name, info in functions_def.items():
         overloads = info.get('overloads', [])
         summary = info.get('summary') or (overloads[0].get('documentation') if overloads else '')
@@ -635,9 +637,9 @@ def _compute_expected_result(sql_symbol: str, left_val, right_val):
 
     return None
 
-def build_operators_docs(ops_def: dict):
+def build_operators_docs(ops_def: Dict[str, Any]):
     # index grouped by category
-    categories: dict[str, list[tuple[str, dict]]] = {}
+    categories: Dict[str, List[Tuple[str, Dict[str, Any]]]] = {}
     for name, info in ops_def.items():
         category = info.get('category') or 'Other'
         categories.setdefault(category, []).append((name, info))
@@ -780,7 +782,7 @@ def build_operators_docs(ops_def: dict):
         write_md(path, lines)
 
 
-def build_types_docs(types_def: dict):
+def build_types_docs(types_def: Dict[str, Any]):
     # Categorize types by family so the generated page has a structured TOC.
     lines = [
         '---',
@@ -792,7 +794,7 @@ def build_types_docs(types_def: dict):
     ]
 
     # Group types by their "family" metadata field to create distinct sections
-    groups: dict[str, list[tuple[str, dict]]] = {}
+    groups: Dict[str, List[Tuple[str, Dict[str, Any]]]] = {}
     for name, info in types_def.items():
         family = info.get('family') or 'other'
         groups.setdefault(family, []).append((name, info))
@@ -903,7 +905,60 @@ def build_types_docs(types_def: dict):
         write_md(path, lines)
 
 
-def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
+def build_aggregates_docs(aggregates_def: Dict[str, Any]):
+    # Build the aggregates reference page from definitions.
+    categories: Dict[str, List[Tuple[str, Dict[str, Any]]]] = {}
+    for name, info in aggregates_def.items():
+        category = info.get('category') or 'Other'
+        categories.setdefault(category, []).append((name, info))
+
+    lines = [
+        '---',
+        'title: Aggregates — Opteryx Reference',
+        'description: Quick reference for SQL aggregate functions supported by Opteryx.',
+        '---',
+        '',
+        '# Aggregates',
+        '',
+        'Aggregates combine multiple rows into single summary values and are typically used with `GROUP BY`. Aggregates generally ignore `NULL` inputs.',
+        '',
+        '## Supported aggregates',
+        ''
+    ]
+
+    for category in sorted(categories.keys()):
+        lines.append(f'### {category.capitalize()}')
+        lines.append('')
+        for name, info in sorted(categories[category], key=lambda x: x[0]):
+            summary = info.get('summary', '')
+            sql_forms = info.get('sql_forms', []) or []
+            documentation = info.get('documentation', '')
+            support = info.get('support', {}) or {}
+
+            lines.append(f'- **{name}** — {summary}')
+            if sql_forms:
+                sql_forms_display = ', '.join(f'`{form}`' for form in sql_forms)
+                lines.append(f'  - SQL forms: {sql_forms_display}')
+
+            flags = []
+            if support.get('global'):
+                flags.append('global')
+            if support.get('grouped'):
+                flags.append('grouped')
+            if support.get('strict_grouped'):
+                flags.append('strict_grouped')
+            if flags:
+                lines.append(f'  - Support: {", ".join(flags)}')
+
+            if documentation:
+                lines.append(f'  - Notes: {documentation}')
+        lines.append('')
+
+    # Write to the reference docs directory.
+    write_md(REF_SQL_DIR / 'aggregates.md', lines)
+
+
+def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], types_def: Dict[str, Any]):
     nav = load_json(NAV_PATH)
 
     # remove Engineering Blog if present
@@ -997,10 +1052,12 @@ def main():
     functions_def = load_json(DEFS / 'functions.json')
     operators_def = load_json(DEFS / 'operators.json')
     types_def = load_json(DEFS / 'types.json')
+    aggregates_def = load_json(DEFS / 'aggregates.json')
 
     build_functions_docs(functions_def)
     build_operators_docs(operators_def)
     build_types_docs(types_def)
+    build_aggregates_docs(aggregates_def)
     build_api_docs()
     update_nav(functions_def, operators_def, types_def)
     print('docs regenerated')
