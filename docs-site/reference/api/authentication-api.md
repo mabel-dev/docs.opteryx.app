@@ -1,53 +1,165 @@
 # Authentication API
 
-**Status:** Published
-
 Base URL: https://authenticate.opteryx.app
 
 ## Overview
 
-The Authentication service issues and validates JWTs, provides JWKS, manages Personal Access Tokens (PATs) for machine clients, and implements OAuth2 flows (client credentials, authorization code + PKCE, refresh tokens).
+Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.
 
-**Endpoints**
+## Endpoints
 
-End Point                                    | GET | POST | PATCH | DELETE
--------------------------------------------- | --- | ---- | ----- | -----
-`/health`                                    | Read Health | - | - | -
-`/jwks`                                      | Read JWKS | - | - | -
-`/token`                                     | - | Token Endpoint (all grants) | - | -
-`/oauth/authorize`                           | Start Authorization | - | - | -
-`/oauth/token`                               | - | Exchange Auth Code | - | -
-`/clients/{client_id}/credentials`           | List Credentials | Create Credential (PAT) | - | -
-`/clients/{client_id}/credentials/{cred_id}` | - | - | - | Revoke Credential
-`/keys/ensure`                               | - | Ensure Key Exists | - | -
-`/auth/{provider}/authorize`                 | Start External OAuth | - | - | -
-`/auth/{provider}/callback`                  | OAuth Callback | - | - | -
+Endpoint | Method | Summary
+--- | --- | ---
+`/clients/{client_id}/credentials` | `GET` | List Credentials
+`/clients/{client_id}/credentials` | `POST` | Create Credential
+`/clients/{client_id}/credentials/{credential_id}` | `DELETE` | Revoke Credential
+`/jwks` | `GET` | Get signing keys
+`/me` | `GET` | Get current user
+`/token` | `POST` | Issue an access token
 
-**Authentication flows**
-- Client Credentials: `POST /token` with `grant_type=client_credentials` and `client_id`/`client_secret` (confidential clients, PATs allowed).
-- Authorization Code + PKCE: `GET /oauth/authorize` then `POST /oauth/token` exchanging the code with `code_verifier` for public clients.
-- Refresh tokens: exchanged via `POST /token` with `grant_type=refresh_token` (rotate on use).
-- Personal Access Tokens (PATs): created via `POST /clients/{client_id}/credentials` and used as `client_secret` in client_credentials grants.
+## List Credentials
 
-## Get JWKS
+**Request:** `[GET] /clients/{client_id}/credentials`
+
+**Tags:** credentials
+
+List all active credentials for a client (without secrets).
+
+Args:
+    client_id: Client identifier
+
+Returns:
+    List of credential metadata (excluding secrets)
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+
+### Responses
+
+- **200** — Successful Response (`application/json` `array<CredentialMetadata>`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Create Credential
+
+**Request:** `[POST] /clients/{client_id}/credentials`
+
+**Tags:** credentials
+
+Create a new client credential (PAT).
+
+This creates a Personal Access Token (PAT) for machine-to-machine authentication.
+The secret is shown only once and must be stored securely by the caller.
+
+Args:
+    client_id: Client identifier
+    request: Credential creation parameters
+
+Returns:
+    Credential metadata with plaintext secret (shown only once)
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `CreateCredentialRequest`
+  - **type** `string` [optional]
+    Default: `interactive`
+  - **expires_in_days** `integer` [optional]
+    Default: `90`
+  - **scopes** `array<string>` [optional]
+    Default: `[]`
+  - **permissions** `array<array<string>>` [optional]
+    Default: `[]`
+
+### Responses
+
+- **200** — Successful Response (`application/json` `CreateCredentialResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Revoke Credential
+
+**Request:** `[DELETE] /clients/{client_id}/credentials/{credential_id}`
+
+**Tags:** credentials
+
+Revoke a credential by deleting it.
+
+Args:
+    client_id: Client identifier
+    credential_id: Credential ID to revoke
+
+Returns:
+    Success message
+
+### Path Parameters
+
+- **client_id** `string` [path; required]
+  Client identifier
+- **credential_id** `string` [path; required]
+  Credential ID to revoke
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Get signing keys
 
 **Request:** `[GET] /jwks`
 
-Response: JSON Web Key Set containing public keys used to verify tokens.
+**Tags:** authentication
 
-## Create Token
+Returns the JSON Web Key Set used to verify access tokens issued by this service.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+
+## Get current user
+
+**Request:** `[GET] /me`
+
+Validates the bearer token and returns the caller identity and token scope details.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+## Issue an access token
 
 **Request:** `[POST] /token`
 
-Content-Type: application/x-www-form-urlencoded
+**Tags:** authentication
 
-Form parameters include `grant_type`, `client_id`, `client_secret` (confidential clients), `code_verifier` (PKCE), and `scope`.
+Creates access tokens for client credentials or refresh-token exchanges used by customer integrations.
 
-Response: JSON with `access_token`, `token_type`, `expires_in`, optional `refresh_token` and `scope`.
+### Query Parameters
 
-## Security Notes
-- Keys may be stored in GCP Secret Manager or filesystem fallback. Set `SECRET_STORE_BACKEND=gcp` to enforce Secret Manager.
-- Rate limiting and CORS configurable via environment (`RATE_LIMITING`, `CORS_ORIGINS`).
-- Use PKCE for public/browser clients; do not use `client_credentials` from browser code.
+- **set_cookie** `boolean` [query; optional]
+  Default: `false`
 
-Example PKCE flow (high level): generate `code_verifier` and `code_challenge`, redirect to `GET /oauth/authorize`, exchange code at `POST /oauth/token` using `code_verifier`.
+### Request Body
+
+- **Content-Type:** `application/x-www-form-urlencoded`
+  Schema: `Body_token_endpoint_token_post`
+  - **grant_type** `string` [optional]
+    Default: `client_credentials`
+  - **client_id** `string` [optional]
+  - **client_secret** `string` [optional]
+  - **refresh_token** `string` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `TokenResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)

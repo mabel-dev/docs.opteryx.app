@@ -9,6 +9,54 @@ DOCS = ROOT / 'docs-site'
 NAV_PATH = DOCS / 'nav.json'
 CONTENT_DIR = DOCS / 'content' / 'docs'
 REF_SQL_DIR = CONTENT_DIR / 'reference' / 'sql'
+REF_API_DIR = DOCS / 'reference' / 'api'
+API_INDEX_PATH = CONTENT_DIR / 'reference' / 'api.md'
+
+API_DOC_SPECS = {
+    'api-opteryx-authenticate.json': {
+        'slug': 'authentication-api',
+        'title': 'Authentication API',
+        'status': 'Published',
+        'base_url': 'https://authenticate.opteryx.app',
+        'summary': 'Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.',
+    },
+    'api-opteryx-jobs.json': {
+        'slug': 'jobs-api',
+        'title': 'Jobs API',
+        'status': 'Published',
+        'base_url': 'https://jobs.opteryx.app',
+        'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
+    },
+    'api-opteryx-odata.json': {
+        'slug': 'odata-api',
+        'title': 'OData API',
+        'status': 'Published',
+        'base_url': 'https://odata.opteryx.app',
+        'summary': 'OData service discovery, metadata, and dataset query endpoints for compatible clients and BI tools.',
+    },
+    'api-opteryx-policy.json': {
+        'slug': 'policy-api',
+        'title': 'Policy API',
+        'status': 'Published',
+        'base_url': 'https://policy.opteryx.app',
+        'summary': 'Workspace policy listing, inspection, creation, updates, and deletion for access-control management.',
+    },
+    'api-opteryx-upload.json': {
+        'slug': 'upload-api',
+        'title': 'Upload API',
+        'status': 'Published',
+        'base_url': 'https://upload.opteryx.app',
+        'summary': 'Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.',
+    },
+}
+
+API_MANUAL_DOC_SPECS = [
+    {
+        'slug': 'jobs-api',
+        'title': 'Jobs API',
+        'summary': 'Job submission, status tracking, and result retrieval.',
+    },
+]
 
 
 def slugify(name: str) -> str:
@@ -22,6 +70,307 @@ def load_json(path: pathlib.Path):
 def write_md(path: pathlib.Path, lines: list[str]):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text('\n'.join(lines))
+
+
+def _schema_to_type(schema: dict | None) -> str:
+    if not schema:
+        return 'object'
+
+    ref = schema.get('$ref')
+    if isinstance(ref, str):
+        return ref.rsplit('/', 1)[-1]
+
+    any_of = schema.get('anyOf')
+    if isinstance(any_of, list) and any_of:
+        options = []
+        nullable = False
+        for item in any_of:
+            if item.get('type') == 'null':
+                nullable = True
+                continue
+            options.append(_schema_to_type(item))
+
+        if not options:
+            return 'null'
+
+        joined = ' | '.join(dict.fromkeys(options))
+        return f'{joined} | null' if nullable else joined
+
+    schema_type = schema.get('type')
+    if schema_type == 'array':
+        return f"array<{_schema_to_type(schema.get('items', {}))}>"
+    if schema_type == 'object':
+        return 'object'
+    if schema_type:
+        return str(schema_type)
+
+    return 'object'
+
+
+def _resolve_schema(schema: dict | None, schemas: dict | None = None) -> dict:
+    if not schema:
+        return {}
+
+    ref = schema.get('$ref')
+    if isinstance(ref, str) and schemas is not None:
+        schema_name = ref.rsplit('/', 1)[-1]
+        resolved = schemas.get(schema_name)
+        if isinstance(resolved, dict):
+            return resolved
+
+    return schema
+
+
+def _schema_allowed_values(schema: dict | None, schemas: dict | None = None) -> list[str]:
+    resolved = _resolve_schema(schema, schemas)
+
+    enum_values = resolved.get('enum')
+    if isinstance(enum_values, list):
+        return [json.dumps(value) if not isinstance(value, str) else value for value in enum_values]
+
+    if 'const' in resolved:
+        value = resolved['const']
+        return [json.dumps(value) if not isinstance(value, str) else value]
+
+    any_of = resolved.get('anyOf')
+    if isinstance(any_of, list):
+        collected = []
+        for item in any_of:
+            collected.extend(_schema_allowed_values(item, schemas))
+        # preserve order while removing duplicates
+        return list(dict.fromkeys(collected))
+
+    return []
+
+
+def _format_schema_value(value) -> str:
+    if isinstance(value, str):
+        return value
+    return json.dumps(value)
+
+
+def _schema_default_value(schema: dict | None, schemas: dict | None = None) -> str | None:
+    resolved = _resolve_schema(schema, schemas)
+
+    if 'default' in resolved:
+        return _format_schema_value(resolved['default'])
+
+    any_of = resolved.get('anyOf')
+    if isinstance(any_of, list):
+        for item in any_of:
+            default = _schema_default_value(item, schemas)
+            if default is not None:
+                return default
+
+    return None
+
+
+def _render_parameter_list(lines: list[str], heading: str, parameters: list[dict]):
+    if not parameters:
+        return
+
+    lines.append(f'### {heading}\n')
+    for param in parameters:
+        name = param.get('name', 'parameter')
+        required = 'required' if param.get('required') else 'optional'
+        location = param.get('in', 'query')
+        schema_type = _schema_to_type(param.get('schema', {}))
+        description = param.get('description') or param.get('schema', {}).get('description') or ''
+        allowed_values = _schema_allowed_values(param.get('schema', {}))
+        default_value = _schema_default_value(param.get('schema', {}))
+
+        lines.append(f'- **{name}** `{schema_type}` [{location}; {required}]')
+        if description:
+            lines.append(f'  {description}')
+        if allowed_values:
+            lines.append(f"  Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
+        if default_value is not None:
+            lines.append(f"  Default: `{default_value}`")
+    lines.append('')
+
+
+def _render_request_body(lines: list[str], request_body: dict, schemas: dict):
+    if not request_body:
+        return
+
+    content = request_body.get('content', {}) or {}
+    if not content:
+        return
+
+    lines.append('### Request Body\n')
+    for content_type, content_info in content.items():
+        schema = content_info.get('schema', {}) or {}
+        lines.append(f'- **Content-Type:** `{content_type}`')
+        lines.append(f'  Schema: `{_schema_to_type(schema)}`')
+
+        ref = schema.get('$ref')
+        if isinstance(ref, str):
+            schema_name = ref.rsplit('/', 1)[-1]
+            schema_def = schemas.get(schema_name, {})
+            properties = schema_def.get('properties', {}) or {}
+            required = set(schema_def.get('required', []))
+            for field_name, field_schema in properties.items():
+                required_text = 'required' if field_name in required else 'optional'
+                field_type = _schema_to_type(field_schema)
+                allowed_values = _schema_allowed_values(field_schema, schemas)
+                default_value = _schema_default_value(field_schema, schemas)
+                lines.append(f'  - **{field_name}** `{field_type}` [{required_text}]')
+                field_description = field_schema.get('description')
+                if field_description:
+                    lines.append(f'    {field_description}')
+                if allowed_values:
+                    lines.append(f"    Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
+                if default_value is not None:
+                    lines.append(f"    Default: `{default_value}`")
+        lines.append('')
+
+
+def _render_responses(lines: list[str], responses: dict):
+    if not responses:
+        return
+
+    lines.append('### Responses\n')
+    for status_code, response in responses.items():
+        description = response.get('description') or 'Response'
+        content = response.get('content', {}) or {}
+
+        rendered = []
+        for content_type, content_info in content.items():
+            rendered.append(f'`{content_type}` `{_schema_to_type(content_info.get("schema", {}))}`')
+
+        if rendered:
+            lines.append(f'- **{status_code}** — {description} ({", ".join(rendered)})')
+        else:
+            lines.append(f'- **{status_code}** — {description}')
+    lines.append('')
+
+
+def _sort_api_operations(spec: dict) -> list[tuple[str, str, dict]]:
+    operations = []
+    for route, methods in spec.get('paths', {}).items():
+        for method, operation in methods.items():
+            if method.lower() not in {'get', 'post', 'put', 'patch', 'delete'}:
+                continue
+            operations.append((route, method.upper(), operation))
+
+    method_order = {'GET': 0, 'POST': 1, 'PUT': 2, 'PATCH': 3, 'DELETE': 4}
+    return sorted(operations, key=lambda item: (item[0], method_order.get(item[1], 99), item[1]))
+
+
+def _get_available_api_docs(generated_specs: list[dict] | None = None) -> tuple[list[dict], list[dict]]:
+    generated = []
+    if generated_specs is not None:
+        generated = sorted(generated_specs, key=lambda item: item['title'].lower())
+    else:
+        for def_name, meta in API_DOC_SPECS.items():
+            if (DEFS / def_name).exists():
+                generated.append(meta)
+        generated.sort(key=lambda item: item['title'].lower())
+
+    generated_by_slug = {spec['slug'] for spec in generated}
+    manual = []
+    for spec in API_MANUAL_DOC_SPECS:
+        if spec['slug'] in generated_by_slug:
+            continue
+        if (REF_API_DIR / f"{spec['slug']}.md").exists():
+            manual.append(spec)
+
+    manual.sort(key=lambda item: item['title'].lower())
+    return generated, manual
+
+
+def _build_api_index(generated_specs: list[dict]):
+    generated_specs, manual_specs = _get_available_api_docs(generated_specs)
+
+    lines = [
+        '# API Reference',
+        '',
+        'This section documents the HTTP APIs exposed by Opteryx services.',
+        '',
+        '## Generated from OpenAPI',
+        '',
+    ]
+
+    for spec in generated_specs:
+        lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
+    lines.append('')
+
+    lines.append('## Additional API Docs')
+    lines.append('')
+    for spec in manual_specs:
+        lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
+    lines.append('')
+
+    write_md(API_INDEX_PATH, lines)
+
+
+def build_api_docs():
+    generated_specs = []
+
+    for def_name, doc_meta in API_DOC_SPECS.items():
+        path = DEFS / def_name
+        if not path.exists():
+            continue
+
+        spec = load_json(path)
+        info = spec.get('info', {}) or {}
+        schemas = spec.get('components', {}).get('schemas', {}) or {}
+        output_path = REF_API_DIR / f"{doc_meta['slug']}.md"
+
+        lines = [
+            f"# {doc_meta['title']}",
+            '',
+            f"Base URL: {doc_meta['base_url']}",
+            '',
+            '## Overview',
+            '',
+            doc_meta.get('summary') or info.get('description') or f"Reference for {info.get('title', doc_meta['title'])}.",
+            '',
+            '## Endpoints',
+            '',
+            'Endpoint | Method | Summary',
+            '--- | --- | ---',
+        ]
+
+        operations = _sort_api_operations(spec)
+        for route, method, operation in operations:
+            summary = operation.get('summary') or operation.get('operationId') or route
+            lines.append(f'`{route}` | `{method}` | {summary}')
+        lines.append('')
+
+        for route, method, operation in operations:
+            summary = operation.get('summary') or route
+            description = operation.get('description') or ''
+            tags = operation.get('tags') or []
+
+            lines.append(f'## {summary}')
+            lines.append('')
+            lines.append(f'**Request:** `[{method}] {route}`')
+            lines.append('')
+
+            if tags:
+                lines.append(f"**Tags:** {', '.join(tags)}")
+                lines.append('')
+
+            if description:
+                lines.append(description)
+                lines.append('')
+
+            parameters = operation.get('parameters', []) or []
+            path_parameters = [p for p in parameters if p.get('in') == 'path']
+            query_parameters = [p for p in parameters if p.get('in') == 'query']
+            header_parameters = [p for p in parameters if p.get('in') == 'header']
+
+            _render_parameter_list(lines, 'Path Parameters', path_parameters)
+            _render_parameter_list(lines, 'Query Parameters', query_parameters)
+            _render_parameter_list(lines, 'Header Parameters', header_parameters)
+            _render_request_body(lines, operation.get('requestBody') or {}, schemas)
+            _render_responses(lines, operation.get('responses') or {})
+
+        write_md(output_path, lines)
+        generated_specs.append({**doc_meta, 'definition': def_name})
+
+    _build_api_index(generated_specs)
 
 
 def build_functions_docs(functions_def: dict):
@@ -86,7 +435,7 @@ def build_functions_docs(functions_def: dict):
             for param in ov.get('parameters', []):
                 label = param.get('label')
                 if label and not any(a[0] == label for a in args):
-                    args.append((label, param.get('type',''), param.get('documentation',''), param.get('optional', False), param.get('constant_only', False), param.get('variadic', False)))
+                    args.append((label, param.get('type', ''), param.get('documentation', ''), param.get('optional', False), param.get('constant_only', False), param.get('variadic', False)))
 
         if args:
             lines.append('## Arguments\n')
@@ -112,8 +461,8 @@ def build_functions_docs(functions_def: dict):
         returns = []
         for ov in overloads:
             ret = ov.get('returns') or {}
-            rtype = ret.get('type') or ov.get('return_type','')
-            rdoc = ret.get('documentation','')
+            rtype = ret.get('type') or ov.get('return_type', '')
+            rdoc = ret.get('documentation', '')
             if rtype:
                 pair = (rtype, rdoc)
             elif rdoc:
@@ -179,11 +528,10 @@ def _literal_for_type(type_name: str):
     if t == 'array':
         return 'ARRAY[1,2]', [1, 2]
     if t in ('jsonb', 'struct'):
-        return "'{\"a\": 1}'", {'a': 1}
+        # Use a simple JSON object so examples demonstrate JSON extraction.
+        return "'{\"index\": 1}'", {'index': 1}
     if t == 'blob':
-        # Opteryx does not support the SQL x'...' hex literal prefix.
-        # Use a CAST to BLOB instead (this should parse in Opteryx).
-        return "CAST('0102' AS BLOB)", None
+        return "b'0102'", None
     if t == 'null':
         return 'NULL', None
     # fallback
@@ -208,13 +556,31 @@ def _format_expected_result(val):
     return str(val)
 
 
-def _pick_example_signature(signatures: list[dict]):
+def _pick_example_signature(sql_symbol: str, signatures: list[dict]):
     """Pick the most sensible signature to use for an example.
 
     Prefer common scalar types (integer, boolean, varchar, double) over
-    more exotic ones (blob, array, struct)."""
-    preferred = {'integer', 'boolean', 'varchar', 'double', 'decimal', 'date', 'timestamp'}
+    more exotic ones (blob, array, struct).
 
+    Special-case JSON accessors so examples use a JSON object and a string key/path."""
+
+    if sql_symbol in ('->', '->>'):
+        for sig in signatures:
+            if sig.get('left_type') in ('jsonb', 'struct') and sig.get('right_type') == 'varchar':
+                return sig
+        for sig in signatures:
+            if sig.get('left_type') in ('jsonb', 'struct'):
+                return sig
+
+    if sql_symbol == '@?':
+        for sig in signatures:
+            if sig.get('left_type') in ('jsonb', 'struct') and sig.get('right_type') == 'varchar':
+                return sig
+        for sig in signatures:
+            if sig.get('left_type') in ('jsonb', 'struct'):
+                return sig
+
+    preferred = {'integer', 'boolean', 'varchar', 'double', 'decimal', 'date', 'timestamp'}
     for sig in signatures:
         lt = sig.get('left_type')
         rt = sig.get('right_type')
@@ -335,13 +701,22 @@ def build_operators_docs(ops_def: dict):
 
         # Example usage
         if sql_symbol and signatures:
-            sig = _pick_example_signature(signatures)
+            sig = _pick_example_signature(sql_symbol, signatures)
             if sig:
                 lt = sig.get('left_type')
                 rt = sig.get('right_type')
                 if lt and rt:
                     left_sql, left_val = _literal_for_type(lt)
                     right_sql, right_val = _literal_for_type(rt)
+
+                    # For JSON extraction, use a realistic key string rather than a generic varchar.
+                    if sql_symbol in ('->', '->>') and rt == 'varchar':
+                        right_sql, right_val = "'index'", 'index'
+
+                    # For JSON path existence, use a simple JSONPath expression.
+                    if sql_symbol == '@?' and rt == 'varchar':
+                        right_sql, right_val = "'$.index'", '$.index'
+
                     expected = _compute_expected_result(sql_symbol, left_val, right_val)
                     expected_comment = ''
                     if expected is not None:
@@ -562,6 +937,18 @@ def update_nav(functions_def: dict, operators_def: dict, types_def: dict):
         ref_section = []
         nav.append({'Reference': ref_section})
 
+    # rebuild API Reference entries from available docs so generated APIs appear
+    # automatically and missing definitions do not leave broken links behind.
+    generated_api_docs, manual_api_docs = _get_available_api_docs()
+    api_items = [{spec['title']: f"reference/api/{spec['slug']}.md"} for spec in generated_api_docs + manual_api_docs]
+
+    for item in ref_section:
+        if 'API Reference' in item:
+            item['API Reference'] = api_items
+            break
+    else:
+        ref_section.insert(0, {'API Reference': api_items})
+
     # find or create SQL Language Reference block
     sql_block = None
     for item in ref_section:
@@ -633,6 +1020,7 @@ def main():
     build_functions_docs(functions_def)
     build_operators_docs(operators_def)
     build_types_docs(types_def)
+    build_api_docs()
     update_nav(functions_def, operators_def, types_def)
     print('docs regenerated')
 
