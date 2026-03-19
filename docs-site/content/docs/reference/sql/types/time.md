@@ -22,10 +22,6 @@ Time of day (HH:MM:SS).
 
 Parsed from ISO time strings.
 
-**Canonical name:** TIME
-
-**Accepted spellings:** time
-
 **Family:** temporal
 
 ## Flags
@@ -34,7 +30,3 @@ Parsed from ISO time strings.
 - **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: time...

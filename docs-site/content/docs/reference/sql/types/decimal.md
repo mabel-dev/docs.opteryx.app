@@ -22,10 +22,6 @@ Fixed-point decimal number with configurable precision and scale.
 
 If precision/scale are not defined, defaults to precision=38 and scale=21.
 
-**Canonical name:** DECIMAL
-
-**Accepted spellings:** decimal
-
 **Family:** numeric
 
 ## Flags
@@ -38,7 +34,3 @@ If precision/scale are not defined, defaults to precision=38 and scale=21.
 ## Parameterized Forms
 
 - `DECIMAL(10,2)`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: decimal(...)

@@ -17,10 +17,6 @@ NULL
 
 Represents absence of a value.
 
-**Canonical name:** NULL
-
-**Accepted spellings:** null
-
 **Family:** null
 
 ## Flags
@@ -29,6 +25,3 @@ Represents absence of a value.
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-

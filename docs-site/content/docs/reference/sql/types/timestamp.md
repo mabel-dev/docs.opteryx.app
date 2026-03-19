@@ -22,10 +22,6 @@ Timestamp including date and time.
 
 Parsed from ISO 8601 strings and unix timestamps.
 
-**Canonical name:** TIMESTAMP
-
-**Accepted spellings:** timestamp
-
 **Family:** temporal
 
 ## Flags
@@ -34,7 +30,3 @@ Parsed from ISO 8601 strings and unix timestamps.
 - **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: timestamp...

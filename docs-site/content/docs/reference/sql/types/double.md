@@ -22,12 +22,6 @@ Double-precision floating point number.
 
 Supports scientific notation (e.g. 1.23e5).
 
-**Canonical name:** DOUBLE
-
-**Aliases:** float, float32, float64
-
-**Accepted spellings:** double, float, float32, float64
-
 **Family:** numeric
 
 ## Flags
@@ -36,8 +30,3 @@ Supports scientific notation (e.g. 1.23e5).
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_physical**: double, float, float32, float64
-- **jsonl**: double

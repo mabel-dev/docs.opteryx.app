@@ -881,18 +881,6 @@ def build_types_docs(types_def: dict):
             lines.append(notes)
             lines.append('')
 
-        canonical = info.get('canonical_name')
-        if canonical:
-            lines.append(f'**Canonical name:** {canonical}\n')
-
-        aliases = info.get('aliases', [])
-        if aliases:
-            lines.append(f'**Aliases:** {", ".join(aliases)}\n')
-
-        accepted = info.get('accepted_spellings', [])
-        if accepted:
-            lines.append(f'**Accepted spellings:** {", ".join(accepted)}\n')
-
         family = info.get('family')
         if family:
             lines.append(f'**Family:** {family}\n')
@@ -911,13 +899,6 @@ def build_types_docs(types_def: dict):
                 lines.append(f'- `{form}`')
             lines.append('')
 
-        ingestion = info.get('ingestion_mappings', {})
-        if ingestion:
-            lines.append('## Ingestion Mappings\n')
-            for src, vals in ingestion.items():
-                if vals:
-                    lines.append(f'- **{src}**: {", ".join(vals)}')
-            lines.append('')
 
         write_md(path, lines)
 
