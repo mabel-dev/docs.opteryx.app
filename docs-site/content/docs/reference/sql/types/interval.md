@@ -17,10 +17,6 @@ Time interval/duration.
 
 Represented as a Python timedelta.
 
-**Canonical name:** INTERVAL
-
-**Accepted spellings:** interval
-
 **Family:** interval
 
 ## Flags
@@ -29,6 +25,3 @@ Represented as a Python timedelta.
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-

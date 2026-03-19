@@ -17,10 +17,6 @@ JSON binary data.
 
 Stored as a binary JSON blob.
 
-**Canonical name:** JSONB
-
-**Accepted spellings:** jsonb
-
 **Family:** nested
 
 ## Flags
@@ -29,8 +25,3 @@ Stored as a binary JSON blob.
 - **temporal**: `False`
 - **collection**: `True`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical**: json, jsonb, struct
-- **jsonl**: object

@@ -22,12 +22,6 @@ TRUE
 
 Accepted values include TRUE/FALSE, 1/0, YES/NO, ON/OFF (case-insensitive).
 
-**Canonical name:** BOOLEAN
-
-**Aliases:** bool
-
-**Accepted spellings:** bool, boolean
-
 **Family:** boolean
 
 ## Flags
@@ -36,9 +30,3 @@ Accepted values include TRUE/FALSE, 1/0, YES/NO, ON/OFF (case-insensitive).
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_physical**: boolean
-- **parquet_logical**: boolean
-- **jsonl**: boolean

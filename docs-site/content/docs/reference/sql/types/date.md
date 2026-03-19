@@ -22,10 +22,6 @@ Calendar date (YYYY-MM-DD).
 
 Parsed from ISO date strings and timestamps.
 
-**Canonical name:** DATE
-
-**Accepted spellings:** date
-
 **Family:** temporal
 
 ## Flags
@@ -34,7 +30,3 @@ Parsed from ISO date strings and timestamps.
 - **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical**: date, date32[day]

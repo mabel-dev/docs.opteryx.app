@@ -17,10 +17,6 @@ Array of values of a single type.
 
 Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc.
 
-**Canonical name:** ARRAY
-
-**Accepted spellings:** array
-
 **Family:** nested
 
 ## Flags
@@ -33,8 +29,3 @@ Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc.
 ## Parameterized Forms
 
 - `ARRAY<INTEGER>`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: array<...>
-- **jsonl_patterns**: array<...>

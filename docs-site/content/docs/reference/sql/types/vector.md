@@ -17,10 +17,6 @@ Fixed-length numeric vector.
 
 Length can be specified as VECTOR[<size>].
 
-**Canonical name:** VECTOR
-
-**Accepted spellings:** vector
-
 **Family:** vector
 
 ## Flags
@@ -29,6 +25,3 @@ Length can be specified as VECTOR[<size>].
 - **temporal**: `False`
 - **collection**: `True`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-

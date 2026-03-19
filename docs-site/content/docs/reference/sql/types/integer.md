@@ -22,12 +22,6 @@ Signed 64-bit integer.
 
 Parsed from strings, floats, and booleans.
 
-**Canonical name:** INTEGER
-
-**Aliases:** int16, int32, int64, int8
-
-**Accepted spellings:** int16, int32, int64, int8, integer
-
 **Family:** numeric
 
 ## Flags
@@ -36,8 +30,3 @@ Parsed from strings, floats, and booleans.
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_physical**: int16, int32, int64, int8
-- **jsonl**: int64
