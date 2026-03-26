@@ -15,9 +15,6 @@
   {
     "Core Concepts": [
       {
-        "Data structure": "core-concepts/storage-formats.md"
-      },
-      {
         "Access and permissions": "core-concepts/access-and-permissions.md"
       },
       {
