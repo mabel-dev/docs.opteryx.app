@@ -4,7 +4,7 @@ description: How optimising the LIKE operator — especially the '%needle%' form
 date: 2026-04-10
 author: Justin Joyce
 role: Opteryx Engineering
-image: /blog/2026-04-10-like-performance.png
+image: /blog/2026-04-10-like-improvements.png
 tags:
   - performance
   - operators
