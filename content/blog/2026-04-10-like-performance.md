@@ -1,6 +1,6 @@
 ---
 title: Making LIKE Faster: From 93 Seconds to Single Digits
-description: How optimising the LIKE operator — especially the '%needle%' form — turned a 93-second query into sub-10-second execution through algorithmic improvements and GIL-aware design.
+description: How optimising the LIKE operator — turned a 93-second query into sub-10-second execution through algorithmic improvements and GIL-aware design.
 date: 2026-04-10
 author: Justin Joyce
 role: Opteryx Engineering
