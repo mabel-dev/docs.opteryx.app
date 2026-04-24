@@ -1,5 +1,5 @@
 ---
-title: Stop Using Regex for REGEXP_REPLACE
+title: When we Stopped Using Regex for REGEXP_REPLACE
 description: REGEXP_REPLACE dominated query time. Swapping regex engines didn't help. We built a specialised DFA instead.
 date: 2026-04-24
 author: Justin Joyce
