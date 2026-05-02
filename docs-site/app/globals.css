@@ -3082,3 +3082,191 @@ kbd {
     font-size: 11.5px;
     color: var(--muted-2);
 }
+
+/* ============== Docs Index Page ================================ */
+
+.docs-hero {
+    max-width: 800px;
+    margin: 0 auto 64px;
+    padding: 80px 28px 64px;
+    text-align: center;
+}
+
+.docs-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text-deep);
+    margin: 0 0 18px;
+    text-wrap: balance;
+}
+
+.docs-hero-lead {
+    font-size: 18px;
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0 0 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.docs-hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: var(--r-xs);
+    text-decoration: none;
+    transition:
+        background-color var(--t-fast),
+        color var(--t-fast),
+        border-color var(--t-fast);
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background: var(--opteryx-teal);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #05626f;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-deep);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-secondary);
+    border-color: var(--opteryx-teal);
+    text-decoration: none;
+}
+
+.btn-link {
+    padding: 0;
+    font-size: 15px;
+    color: var(--opteryx-teal);
+    background: transparent;
+}
+
+.btn-link:hover {
+    color: #05626f;
+    text-decoration: none;
+}
+
+.docs-section {
+    max-width: 1200px;
+    margin: 0 auto 72px;
+    padding: 0 28px;
+}
+
+.docs-section-header {
+    margin-bottom: 40px;
+}
+
+.docs-section-header h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--text-deep);
+    margin: 0 0 8px;
+}
+
+.docs-section-header p {
+    font-size: 15px;
+    color: var(--text);
+    margin: 0;
+}
+
+.docs-help {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--r-s);
+    padding: 56px 28px;
+    text-align: center;
+}
+
+.docs-help-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.docs-help h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text-deep);
+    margin: 0 0 12px;
+}
+
+.docs-help p {
+    font-size: 15px;
+    color: var(--text);
+    margin: 0 0 28px;
+}
+
+@media (max-width: 880px) {
+    .docs-hero {
+        padding: 56px 28px 48px;
+    }
+
+    .docs-hero h1 {
+        font-size: 36px;
+    }
+
+    .docs-hero-lead {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    .docs-section {
+        margin-bottom: 56px;
+    }
+
+    .docs-section-header h2 {
+        font-size: 24px;
+    }
+
+    .docs-help {
+        padding: 40px 28px;
+    }
+
+    .docs-help h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 640px) {
+    .docs-hero-ctas {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
