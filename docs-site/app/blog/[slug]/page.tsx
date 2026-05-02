@@ -2,10 +2,11 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DocRenderer from "@/app/components/DocRenderer";
+import { marked } from "marked";
 import { getContentDocsDir } from "@/app/lib/getContentDocsDir";
 import { listMarkdownSlugs } from "@/app/lib/listMarkdownSlugs";
 import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
+import BlogPostTOC from "@/app/blog/BlogPostTOC";
 
 type Props = {
   params: {
@@ -142,144 +143,86 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
+  const { frontmatter, body } = parseFrontmatter(source);
+  const postDate = frontmatter.date as string | undefined;
+  const html = String(marked.parse(body));
+
   const posts = readBlogPosts(blogDir);
   const latest = posts[0];
   const showLatest = latest && latest.slug !== normalizedSlug;
 
   return (
     <>
-      <DocRenderer source={source} />
-
-      <div
-        style={{
-          marginTop: "48px",
-          borderRadius: "var(--r-s)",
-          border: "1px solid var(--border)",
-          background: "var(--opteryx-pale-teal)",
-          padding: "28px 32px",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 600,
-            fontSize: "16px",
-            color: "var(--text-deep)",
-            margin: "0 0 16px",
-          }}
-        >
-          Recent posts
-        </h2>
-
-        {showLatest ? (
-          <>
-            <Link
-              href={`/blog/${latest.slug}`}
-              className="lp-ed-tile"
-              style={{
-                display: "block",
-                textDecoration: "none",
-                maxWidth: "360px",
-              }}
-            >
-              {latest.image ? (
-                <div
-                  style={{
-                    marginBottom: "12px",
-                    height: "140px",
-                    overflow: "hidden",
-                    borderRadius: "var(--r-m)",
-                    background: "var(--panel)",
-                  }}
-                >
-                  <img
-                    src={latest.image}
-                    alt={latest.title}
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </div>
-              ) : null}
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  color: "var(--text-deep)",
-                  margin: "0 0 6px",
-                }}
-              >
-                {latest.title}
-              </h3>
-              {latest.date ? (
-                <p
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "12px",
-                    color: "var(--muted)",
-                    margin: "0 0 6px",
-                  }}
-                >
-                  {latest.date}
-                </p>
-              ) : null}
-              {latest.description ? (
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "var(--muted)",
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  {latest.description}
-                </p>
-              ) : null}
-            </Link>
-            <div style={{ marginTop: "16px" }}>
-              <Link
-                href="/blog"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 600,
-                  fontSize: "13px",
-                  color: "var(--opteryx-teal)",
-                  border: "1px solid var(--opteryx-teal)",
-                  borderRadius: "var(--r-m)",
-                  padding: "7px 14px",
-                  background: "#fff",
-                  textDecoration: "none",
-                }}
-              >
-                All blog posts
-              </Link>
-            </div>
-          </>
-        ) : (
-          <Link
-            href="/blog"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              fontFamily: "var(--font-display)",
-              fontWeight: 600,
-              fontSize: "13px",
-              color: "var(--opteryx-teal)",
-              border: "1px solid var(--opteryx-teal)",
-              borderRadius: "var(--r-m)",
-              padding: "7px 14px",
-              background: "#fff",
-              textDecoration: "none",
-            }}
-          >
-            All blog posts
+      <div className="post-shell">
+        {/* Left meta rail */}
+        <aside className="post-meta-rail">
+          <Link href="/blog" className="back-link">
+            ← All posts
           </Link>
-        )}
+          <div className="meta-block">
+            <div className="label">Author</div>
+            <div className="meta-author">
+              <span className="author-avatar">JJ</span>
+              <div className="who">
+                <div className="name">Justin Joyce</div>
+                <div className="role">Maintainer</div>
+              </div>
+            </div>
+          </div>
+          {postDate && (
+            <div className="meta-block">
+              <div className="label">Published</div>
+              <div className="value">{postDate}</div>
+            </div>
+          )}
+        </aside>
+
+        {/* Post body */}
+        <article className="post-body">
+          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          <div className="post-footer">
+            <div className="post-author-card">
+              <span className="author-avatar">JJ</span>
+              <div className="who">
+                <div className="name">Justin Joyce</div>
+                <div className="role">Maintainer, Opteryx</div>
+                <p className="bio">
+                  Building Opteryx — a read-only SQL engine for analytical
+                  workloads on object storage.
+                </p>
+              </div>
+            </div>
+            {showLatest && (
+              <div className="related">
+                <h4>Related posts</h4>
+                <div className="related-grid">
+                  <Link href={`/blog/${latest.slug}`} className="related-card">
+                    <div className="stamp">
+                      <span className="tag-mini">latest</span>
+                      {latest.date && <span>{latest.date}</span>}
+                    </div>
+                    <h5>{latest.title}</h5>
+                    {latest.description && (
+                      <p className="ex">{latest.description}</p>
+                    )}
+                  </Link>
+                  <Link href="/blog" className="related-card">
+                    <div className="stamp">
+                      <span className="tag-mini">index</span>
+                    </div>
+                    <h5>All posts</h5>
+                    <p className="ex">
+                      Browse all engineering posts from the Opteryx team.
+                    </p>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </article>
+
+        {/* Right TOC — client component */}
+        <BlogPostTOC />
       </div>
     </>
   );

@@ -1,4 +1,3 @@
-import DocRenderer from "@/app/components/DocRenderer";
 import Link from "next/link";
 import path from "path";
 import fs from "fs";
@@ -42,13 +41,8 @@ export default function Page() {
   const resolvedBlogDir = fs.existsSync(defaultBlogDir)
     ? defaultBlogDir
     : blogDir;
-  const indexMarkdown = readMarkdownFile(
-    path.join(resolvedBlogDir, "index.md"),
-  );
 
   const posts: PostMeta[] = [];
-  const postFiles: string[] = [];
-  const debug = process.env.DEBUG_BLOG === "1";
 
   try {
     const files = fs.readdirSync(resolvedBlogDir).filter((f) => {
@@ -59,8 +53,6 @@ export default function Page() {
         lower !== "index.mdx"
       );
     });
-
-    postFiles.push(...files);
 
     for (const file of files) {
       const slug = file.replace(/\.(md|mdx)$/i, "");
@@ -87,106 +79,99 @@ export default function Page() {
     return a.title.localeCompare(b.title);
   });
 
+  const firstPost = posts[0];
+
   return (
-    <>
-      <DocRenderer
-        source={
-          indexMarkdown ||
-          "# Engineering Blog\n\nThis section will contain the latest posts from the engineering team.\n"
-        }
-      />
+    <main className="page">
+      <section className="index-masthead-simple">
+        <div className="eyebrow">Engineering Blog</div>
+        <h1>
+          Written by the people
+          <br />
+          who built <em>Opteryx.</em>
+        </h1>
+        <p className="lede">
+          Engine internals, query planning, storage, and the occasional field
+          note. No fluff.
+        </p>
+      </section>
 
-      {posts.length > 0 && (
-        <div
-          style={{
-            marginTop: "40px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="lp-ed-tile"
-              style={{ display: "block", textDecoration: "none" }}
-            >
-              {post.image ? (
-                <div
-                  style={{
-                    marginBottom: "16px",
-                    height: "160px",
-                    overflow: "hidden",
-                    borderRadius: "var(--r-m)",
-                    background: "var(--panel)",
-                  }}
-                >
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </div>
-              ) : null}
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 600,
-                  fontSize: "17px",
-                  color: "var(--text-deep)",
-                  margin: "0 0 6px",
-                }}
-              >
-                {post.title}
-              </h3>
-              {post.date ? (
-                <p
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "12px",
-                    color: "var(--muted)",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  {post.date}
-                </p>
-              ) : null}
-              {post.description ? (
-                <p
-                  style={{
-                    fontSize: "14px",
-                    color: "var(--muted)",
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}
-                >
-                  {post.description}
-                </p>
-              ) : null}
-            </Link>
-          ))}
-        </div>
+      {firstPost && (
+        <section className="lead">
+          <Link href={`/blog/${firstPost.slug}`} className="lead-card">
+            <div className="lead-art">
+              <div className="lead-art-stripes" aria-hidden="true" />
+              <div className="lead-art-panel">
+                <span className="lbl">{firstPost.slug}</span>
+                <span className="ln">
+                  <span className="tok-kw">SELECT</span> *{" "}
+                  <span className="tok-kw">FROM</span>{" "}
+                  <span className="tok-fn">insights</span>
+                </span>
+                <span className="ln">
+                  <span className="tok-com">
+                    -- {firstPost.description || firstPost.title}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div className="lead-body">
+              <div className="lead-cat">Latest post</div>
+              <h2>{firstPost.title}</h2>
+              {firstPost.description && <p>{firstPost.description}</p>}
+              <div className="lead-foot">
+                <span className="author-avatar">JJ</span>
+                <span className="who">Justin Joyce</span>
+                {firstPost.date && (
+                  <>
+                    <span className="sep">·</span>
+                    <span>{firstPost.date}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </Link>
+        </section>
       )}
 
-      {process.env.DEBUG_BLOG === "1" && (
-        <pre
-          style={{
-            marginTop: "32px",
-            padding: "16px",
-            background: "var(--muted-surface)",
-            fontSize: "12px",
-            color: "var(--text)",
-            borderRadius: "var(--r-m)",
-          }}
-        >
-          {JSON.stringify({ resolvedBlogDir, postFiles, posts }, null, 2)}
-        </pre>
+      {posts.length > 1 && (
+        <>
+          <div className="grid-heading">
+            <h3>More posts</h3>
+          </div>
+          <section className="card-grid">
+            {posts.slice(1).map((post, i) => {
+              const tones = ["tone-teal", "tone-orange", "tone-navy"];
+              const tone = tones[i % 3];
+              return (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="post-card"
+                >
+                  <div className={`post-card-art ${tone}`}>
+                    <span className="art-glyph">
+                      {post.slug
+                        .replace(/\d{4}-\d{2}-\d{2}-/, "")
+                        .replace(/-/g, " ")
+                        .slice(0, 12)
+                        .toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="post-card-body">
+                    <div className="post-card-cat">Engineering</div>
+                    <h3>{post.title}</h3>
+                    {post.description && <p>{post.description}</p>}
+                    <div className="post-card-foot">
+                      {post.date && <span>{post.date}</span>}
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </section>
+        </>
       )}
-    </>
+    </main>
   );
 }
