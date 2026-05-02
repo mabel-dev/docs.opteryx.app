@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="tab-results" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"></path>
+    <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"></path>
+  </symbol>
+  <symbol id="tab-details" viewBox="0 0 512 512" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" stroke-linecap="round">
+    <rect x="96" y="48" width="320" height="416" rx="48" ry="48"></rect>
+    <path d="M176 128h160M176 208h160M176 288h80"></path>
+  </symbol>
+  <symbol id="tab-plan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <circle cx="12" cy="6" r="3"></circle>
+    <rect x="2" y="16" width="8" height="5" rx="2"></rect>
+    <rect x="14" y="16" width="8" height="5" rx="2"></rect>
+    <path d="M6 16V14a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path>
+    <line x1="12" y1="9" x2="12" y2="12"></line>
+  </symbol>
+</svg>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Opteryx — Blog</title>
+  <link rel="icon" href="../../assets/opteryx-favicon.svg" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <header class="blog-header">
+    <div class="blog-header-inner">
+      <a class="blog-logo" href="#">
+        <img src="../../assets/opteryx-icon.svg" alt="Opteryx" />
+        <span>Opteryx</span>
+        <span class="sep">/</span>
+        <span class="pill">Blog</span>
+      </a>
+      <nav class="blog-nav">
+        <a href="#">Product</a>
+        <a href="#">Docs</a>
+        <a href="#" class="active">Blog</a>
+        <a href="#">Changelog</a>
+      </nav>
+      <span class="header-spacer"></span>
+      <a class="blog-cta" href="#">Start for free</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Hero / lead -->
+    <section class="lead">
+      <a class="lead-card" href="post.html">
+        <div class="lead-art">
+          <div class="lead-art-stripes" aria-hidden="true"></div>
+          <div class="lead-art-panel">
+            <span class="lbl">execution/string_ops.rs</span>
+            <span class="ln"><span class="tok-com">// before — 1.7M rows/s</span></span>
+            <span class="ln"><span class="tok-kw">fn</span> <span class="tok-fn">regex_replace</span>(col, pat, rep) { ... }</span>
+            <span class="ln"><span class="tok-com">// after — 11.4M rows/s</span></span>
+            <span class="ln"><span class="tok-kw">fn</span> <span class="tok-fn">regex_replace_simd</span>(col, pat, rep) { ... }</span>
+          </div>
+        </div>
+        <div class="lead-body">
+          <div class="lead-cat">Engine internals</div>
+          <h2>Inside REGEX_REPLACE: how a string-rewriting function compiles down to vectorised SIMD</h2>
+          <p>A look at the patch that brought a real, vectorised string-rewriting function to the Opteryx execution engine — and why the obvious implementation was the wrong one.</p>
+          <div class="lead-foot">
+            <span class="author-avatar">JJ</span>
+            <span class="who">Justin Joyce</span>
+            <span class="sep">·</span>
+            <span>Apr 24, 2026</span>
+            <span class="sep">·</span>
+            <span>8 min read</span>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <!-- Section heading -->
+    <div class="grid-heading">
+      <h3>More posts</h3>
+      <a class="rss-inline" href="#">RSS</a>
+    </div>
+
+    <!-- Card grid -->
+    <section class="card-grid">
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-teal">
+          <span class="art-glyph">PUSHDOWN</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Engine internals</div>
+          <h3>Predicate pushdown across joins, when the right side is a view</h3>
+          <p>When the planner has to reason about a view it can't see through, it has two choices: be conservative, or be clever.</p>
+          <div class="post-card-foot">
+            <span>Apr 17</span>
+            <span class="sep">·</span>
+            <span>11 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-orange">
+          <span class="art-glyph">.parquet</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Storage &amp; Parquet</div>
+          <h3>Why the Parquet reader skips the page index — most of the time</h3>
+          <p>The Parquet page index is fast, but reading it is not free. I measured the break-even and rebuilt the planner around the answer.</p>
+          <div class="post-card-foot">
+            <span>Apr 10</span>
+            <span class="sep">·</span>
+            <span>14 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-navy">
+          <span class="art-glyph">POLICY</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Governance</div>
+          <h3>The smallest governance model that still works</h3>
+          <p>Most data governance is policy theatre. Here is the minimum you actually need — and where I drew Opteryx's line.</p>
+          <div class="post-card-foot">
+            <span>Apr 03</span>
+            <span class="sep">·</span>
+            <span>7 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-teal">
+          <span class="art-glyph">$ EXPLAIN</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Engine internals</div>
+          <h3>Cost-aware execution: pricing a query before you run it</h3>
+          <p>Showing scan size up-front changes user behaviour more than any quota does. I instrumented the planner to surface a number, and watched bills fall.</p>
+          <div class="post-card-foot">
+            <span>Mar 27</span>
+            <span class="sep">·</span>
+            <span>9 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-navy">
+          <span class="art-glyph">$filter=</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">SQL</div>
+          <h3>OData as a read-only secondary: a thirty-year-old protocol, fit for purpose</h3>
+          <p>Opteryx speaks SQL first, but a surprising number of consumers don't. Here is why I kept OData around, and how I kept it honest.</p>
+          <div class="post-card-foot">
+            <span>Mar 20</span>
+            <span class="sep">·</span>
+            <span>6 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-orange">
+          <span class="art-glyph">bloom()</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Engine internals</div>
+          <h3>Adaptive bloom filters for join pruning, without the pain</h3>
+          <p>Bloom filters are easy to add and hard to keep. I tracked their actual selectivity and let the planner drop the ones that stopped earning their keep.</p>
+          <div class="post-card-foot">
+            <span>Mar 13</span>
+            <span class="sep">·</span>
+            <span>15 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-teal">
+          <span class="art-glyph">PLAN ▸</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Engine internals</div>
+          <h3>Trust by transparency: shipping the execution plan with every result</h3>
+          <p>If a user can't see what the engine did, they can't trust the answer. The default response now carries the plan that produced it.</p>
+          <div class="post-card-foot">
+            <span>Mar 06</span>
+            <span class="sep">·</span>
+            <span>8 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-orange">
+          <span class="art-glyph">1.3 × 10¹²</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Storage &amp; Parquet</div>
+          <h3>Reading 1.3 trillion rows on a laptop, slowly but honestly</h3>
+          <p>Most "trillion rows on a laptop" demos cheat. This one doesn't — and the honest numbers are still surprising.</p>
+          <div class="post-card-foot">
+            <span>Feb 27</span>
+            <span class="sep">·</span>
+            <span>10 min</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="post-card" href="post.html">
+        <div class="post-card-art tone-navy">
+          <span class="art-glyph">READ-ONLY</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat">Field notes</div>
+          <h3>Why Opteryx is read-only — and why that's a feature</h3>
+          <p>Saying no to writes was the most important architectural decision I made. Here is what it bought us.</p>
+          <div class="post-card-foot">
+            <span>Feb 20</span>
+            <span class="sep">·</span>
+            <span>5 min</span>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <div class="grid-footer">
+      <a href="#" class="more-link">View all 17 posts →</a>
+    </div>
+  </main>
+
+  <footer class="blog-footer-simple">
+    <div class="blog-footer-simple-inner">
+      <span>© 2026 Opteryx · Written by Justin Joyce</span>
+      <span class="links">
+        <a href="#">Product</a>
+        <a href="#">Docs</a>
+        <a href="#">Changelog</a>
+        <a href="#">RSS</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

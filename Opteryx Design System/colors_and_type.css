@@ -1,0 +1,229 @@
+/* ===========================================================================
+   Opteryx — Colors & Type tokens
+   Source of truth for brand color palette, typography, spacing, radii, shadows.
+   Values lifted directly from opteryx.studio (web.opteryx/static/css/style.css
+   and opteryx-sql-ide/src/styles/tailwind.css).
+   =========================================================================== */
+
+/* Webfonts — self-hosted under /fonts/ ---------------------------------- */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('fonts/space-grotesk-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('fonts/space-grotesk-600.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fonts/ibm-plex-sans-200.woff2') format('woff2');
+  font-weight: 200; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fonts/ibm-plex-sans-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fonts/ibm-plex-sans-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('fonts/jetbrains-mono-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('fonts/jetbrains-mono-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* --- Brand palette (from site + app) -------------------------------- */
+  --opteryx-teal:     #07797C; /* primary accent. logo mark background. */
+  --opteryx-orange:   #FE7701; /* secondary accent. active tab underline, CTA hover, links on marketing. */
+  --opteryx-navy:     #1F2E61; /* deep navy. primary CTA bg on marketing, IDE body text. */
+  --opteryx-indigo-line: #666699; /* header/footer rule in IDE shell. */
+  --opteryx-pale-teal:#F3FBFA; /* surface tint. table header bg, badges bg. */
+
+  /* --- Neutrals ------------------------------------------------------- */
+  --bg:               #FFFFFF;
+  --panel:            #F6F8FB;  /* IDE side panels. */
+  --panel-2:          #EEF3F5;
+  --header-surface:   #EAF1F3;
+  --muted-surface:    #F8FAFC;  /* slate-50 tone used on marketing hero tiles */
+  --text:             #3D4A4E;  /* marketing body */
+  --text-deep:        #1F2E61;  /* IDE text, marketing h1 */
+  --muted:            #5F6B78;  /* IDE secondary text */
+  --muted-2:          #94A3B8;  /* slate-400; placeholder, inactive icons */
+  --border:           #D9E2E8;  /* IDE panel rule */
+  --border-2:         #CBD7DE;
+  --muted-border:     rgba(61, 74, 78, 0.08); /* marketing hairline */
+
+  /* --- Semantic status ----------------------------------------------- */
+  --success:          #188038;
+  --danger:           #D50000;
+  --warning:          #FFA503;
+  --gold:             #C89427;
+  --info:             #FE7701; /* orange used as "info" hue in IDE */
+
+  /* Alpha variants used throughout */
+  --accent-soft:      rgba(7, 121, 124, 0.08);
+  --accent-soft-2:    rgba(7, 121, 124, 0.12);
+  --accent-soft-3:    rgba(7, 121, 124, 0.28); /* gutter, focus ring */
+  --accent-ring:      rgba(7, 121, 124, 0.18); /* focus outline */
+  --orange-soft:      rgba(254, 119, 1, 0.08);
+  --navy-soft:        rgba(31, 46, 97, 0.04);
+  --success-soft:     rgba(24, 128, 56, 0.10);
+  --danger-soft:      rgba(213, 0, 0, 0.08);
+  --warning-soft:     rgba(255, 165, 3, 0.08);
+
+  /* --- Aliases (legacy names from opteryx codebases) ---------------- */
+  --accent:   var(--opteryx-teal);
+  --accent-2: var(--opteryx-orange);
+  --accent-3: var(--opteryx-navy);
+  --pale-accent: var(--opteryx-pale-teal);
+
+  /* --- Type stacks --------------------------------------------------- */
+  --font-display:
+    'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body:
+    'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* Sizes --------------------------------------------------------------- */
+  --fs-display-xl: 60px; /* hero — marketing */
+  --fs-display-l:  48px;
+  --fs-display-m:  32px;
+  --fs-h1:         28px;
+  --fs-h2:         22px;
+  --fs-h3:         18px;
+  --fs-body-l:     16px;
+  --fs-body:       14px;
+  --fs-body-s:     13px; /* IDE base */
+  --fs-caption:    12px;
+  --fs-micro:      11px;
+
+  --lh-tight:   1.1;
+  --lh-heading: 1.2;
+  --lh-body:    1.6;
+
+  /* Spacing (4px base) ------------------------------------------------- */
+  --sp-0:  0px;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Radii — small & sober. IDE uses 5–6px, marketing uses 8–14px -------- */
+  --r-xs: 2px;
+  --r-s:  5px;  /* .btn in IDE */
+  --r-m:  6px;  /* input, icon-btn */
+  --r-l:  8px;  /* marketing .btn */
+  --r-xl: 12px; /* cards, hero tile, search, leader-card */
+  --r-2xl:14px; /* hero section, user-menu */
+  --r-pill: 999px;
+
+  /* Shadows — very soft. Marketing only; IDE is flat/hairline. ---------- */
+  --shadow-xs: 0 6px 18px rgba(15, 23, 42, 0.02);
+  --shadow-s:  0 6px 18px rgba(7, 121, 124, 0.08); /* btn-primary */
+  --shadow-m:  0 8px 24px rgba(15, 23, 42, 0.035); /* feature card */
+  --shadow-l:  0 8px 30px rgba(15, 23, 42, 0.04);  /* leader card */
+  --shadow-menu: 0 16px 36px rgba(15, 23, 42, 0.12); /* user menu */
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.10);
+
+  /* Motion ------------------------------------------------------------- */
+  --t-fast:  120ms ease;
+  --t-base:  150ms ease;
+  --t-slow:  200ms ease-in-out;
+}
+
+/* ===========================================================================
+   Semantic element styles
+   =========================================================================== */
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display type — marketing hero uses Space Grotesk bold, navy */
+.display-xl, h1.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-display-xl);
+  line-height: var(--lh-tight);
+  color: var(--text-deep);
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  color: var(--text-deep);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  color: var(--text-deep);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  color: var(--text-deep);
+}
+
+p {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+
+.text-muted { color: var(--muted); }
+.text-micro { font-size: var(--fs-micro); color: var(--muted-2); }
+
+code, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-s);
+}
+
+a {
+  color: var(--opteryx-orange);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--opteryx-teal); }
+
+:focus-visible {
+  outline: 3px solid var(--accent-ring);
+  outline-offset: 2px;
+}

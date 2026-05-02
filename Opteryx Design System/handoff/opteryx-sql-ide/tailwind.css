@@ -1,0 +1,415 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand tokens — single source of truth. Do not redeclare brand colors,
+   font stacks, radii, or shadows below; reference the variables this file
+   exposes. See DESIGN.md. */
+@import "./tokens.css";
+
+@font-face {
+    font-family: "Space Grotesk";
+    src: url("/fonts/space-grotesk-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Space Grotesk";
+    src: url("/fonts/space-grotesk-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/fonts/ibm-plex-sans-200.woff2") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/fonts/ibm-plex-sans-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/fonts/ibm-plex-sans-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/jetbrains-mono-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/jetbrains-mono-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: var(--fs-body-s);
+}
+
+header,
+footer {
+    background: var(--panel);
+    border-color: var(--border-2);
+}
+
+.btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    padding: 4px 10px;
+    border-radius: var(--r-s);
+    font-size: var(--fs-caption);
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #f7f9fb;
+    border-color: #c2ccd5;
+}
+
+.btn:active {
+    background: #eef2f7;
+}
+
+.btn-primary {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    color: white;
+}
+
+.btn-primary:hover {
+    filter: brightness(0.92);
+}
+
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    border-radius: var(--r-m);
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background: rgba(7, 121, 124, 0.06);
+    color: var(--text);
+}
+
+.icon-btn.active {
+    color: var(--accent);
+    background: var(--accent-soft-2);
+}
+
+/* Boxy tab appearance (left-aligned tabs, active tab connected to content) */
+.tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    height: 44px;
+    padding: 6px 8px;
+}
+
+/* Individual tab as a box */
+.tab-btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--muted);
+    padding: 0 14px;
+    height: 36px;
+    cursor: pointer;
+    font-size: var(--fs-body-s);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    box-shadow: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Hover state */
+.tab-btn:hover {
+    color: var(--text);
+    background: var(--panel-2);
+}
+
+/* Active tab looks connected to the content area */
+.tab-btn.active {
+    color: var(--text);
+    background: var(--bg);
+    border-bottom: none;
+    position: relative;
+    z-index: 2;
+}
+
+.panel-section {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-section strong {
+    display: block;
+    font-size: var(--fs-caption);
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.panel-section .text-sm {
+    font-size: var(--fs-caption);
+    color: var(--muted);
+}
+
+.panel-title {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: var(--fs-body-s);
+    color: var(--text);
+    background: linear-gradient(180deg, var(--header) 0%, #f3f7f8 100%);
+    font-weight: 400;
+}
+
+/* Tighten spacing for dataset Profile rows in the left panel details */
+.details-panel .profile-list {
+    gap: 0;
+}
+
+.details-panel .profile-row {
+    padding: 0px 0;
+    gap: 10px;
+    min-height: 32px;
+}
+
+/* Slightly tighten spacing between icon and column name */
+.details-panel .profile-left {
+    gap: 6px;
+}
+
+/* Remove background on the type icons (left-panel profile) and keep them visually aligned */
+.details-panel .type-icon {
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.history-item {
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    background: white;
+    padding: 8px;
+}
+
+.history-item .timestamp {
+    color: var(--muted);
+    font-size: var(--fs-micro);
+    margin-bottom: 4px;
+}
+
+.history-item .sql {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    word-break: break-word;
+}
+
+.user-menu {
+    font-size: var(--fs-body-s);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--r-2xl);
+    background: white;
+    box-shadow: var(--shadow-menu);
+    padding: 8px 0;
+}
+
+.menu-item {
+    width: 100%;
+    text-align: left;
+    padding: 14px 18px;
+    background: white;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.menu-item:hover {
+    background: #f9fafb;
+}
+
+.menu-item.danger {
+    color: var(--error);
+}
+
+.menu-item-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+    object-fit: contain;
+    flex: 0 0 22px;
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0;
+}
+
+/* Split gutters: thin like editor apps */
+.gutter {
+    background: var(--border) !important;
+    border: 0 !important;
+}
+
+.gutter:hover {
+    transition: background var(--t-base) !important;
+}
+
+.gutter.gutter-horizontal {
+    cursor: ew-resize;
+    width: 1px !important;
+    background: var(--accent-soft-3) !important;
+}
+
+.gutter.gutter-horizontal:hover,
+.gutter.gutter-horizontal:active {
+    background: rgba(7, 121, 124, 0.42) !important;
+}
+
+.gutter.gutter-vertical {
+    cursor: ns-resize;
+    height: 1px !important;
+    background: var(--accent-soft-3) !important;
+}
+
+.gutter.gutter-vertical:hover,
+.gutter.gutter-vertical:active {
+    background: rgba(7, 121, 124, 0.42) !important;
+}
+
+/* Custom vertical drag handles for left and center panels */
+.left-gutter,
+.center-gutter {
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 4.5px,
+        var(--accent-soft-3) 4.5px,
+        var(--accent-soft-3) 5.5px,
+        transparent 5.5px,
+        transparent 100%
+    ) !important;
+    cursor: row-resize !important;
+    transition: background var(--t-base) !important;
+    height: 10px !important;
+}
+
+.left-gutter:hover,
+.center-gutter:hover,
+.left-gutter:active,
+.center-gutter:active {
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 4.5px,
+        rgba(7, 121, 124, 0.42) 4.5px,
+        rgba(7, 121, 124, 0.42) 5.5px,
+        transparent 5.5px,
+        transparent 100%
+    ) !important;
+}
+
+/* CodeMirror */
+.cm-editor {
+    height: 100%;
+    background: white !important;
+    color: var(--text) !important;
+}
+
+.cm-scroller {
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+}
+
+.cm-gutters {
+    background: #f7f9fb !important;
+    color: #7b8794 !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+.cm-cursor {
+    border-left-color: var(--accent) !important;
+}
+
+.cm-selectionBackground {
+    background: var(--accent-soft-2) !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7d2da;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8c98a4;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}

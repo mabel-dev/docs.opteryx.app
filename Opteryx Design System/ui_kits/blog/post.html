@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Inside REGEX_REPLACE — Opteryx Blog</title>
+  <link rel="icon" href="../../assets/opteryx-favicon.svg" />
+  <link rel="stylesheet" href="blog.css" />
+  <style>
+    /* ============== Single-column post (v2) ============================
+       One reading column, generous side margins. Metadata sits inline
+       above the title. No sticky rail; no inline TOC. A small floating
+       progress + jump-to-top chip handles long-scroll navigation. */
+
+    .v2-shell { max-width: 720px; margin: 0 auto; padding: 64px 28px 0; }
+
+    .v2-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-weight: 500;
+      font-size: 13px; color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 56px;
+    }
+    .v2-back:hover { color: var(--opteryx-teal); text-decoration: none; }
+
+    .v2-cat {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--opteryx-teal);
+    }
+
+    .v2-title {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 44px; line-height: 1.1; letter-spacing: -0.018em;
+      color: var(--text-deep);
+      margin: 18px 0 24px;
+      text-wrap: balance;
+    }
+
+    .v2-lede {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 20px; line-height: 1.5;
+      color: var(--text);
+      margin: 0 0 36px;
+      text-wrap: pretty;
+    }
+
+    .v2-byline {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-display); font-size: 13.5px;
+      color: var(--muted);
+    }
+    .v2-byline .author-avatar { width: 36px; height: 36px; font-size: 13px; flex-shrink: 0; }
+    .v2-byline .who { color: var(--text-deep); font-weight: 600; }
+    .v2-byline .role { color: var(--muted); font-weight: 400; }
+    .v2-byline .spacer { flex: 1; }
+    .v2-byline .meta {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .v2-byline .meta .stamp { color: var(--text-deep); display: block; }
+
+    /* Hero figure — sits below byline, full reading-column width */
+    .v2-figure {
+      margin: 40px 0 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-l);
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(7,121,124,0.08), rgba(31,46,97,0.03) 70%);
+      position: relative;
+    }
+    .v2-figure-stripes {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(135deg, rgba(7,121,124,0.06) 0 1px, transparent 1px 18px);
+      pointer-events: none;
+    }
+    .v2-figure-inner {
+      position: relative;
+      padding: 28px 28px;
+      font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+      color: var(--text-deep);
+    }
+    .v2-figure-inner .lbl {
+      display: block;
+      font-family: var(--font-display); font-size: 10.5px;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .v2-figure-inner .ln { display: block; }
+    .v2-figure-inner .tok-kw  { color: var(--opteryx-teal);   font-weight: 600; }
+    .v2-figure-inner .tok-fn  { color: var(--opteryx-navy);   font-weight: 600; }
+    .v2-figure-inner .tok-com { color: var(--muted-2);        font-style: italic; }
+    .v2-figure figcaption {
+      font-family: var(--font-display); font-size: 12.5px;
+      color: var(--muted); padding: 12px 28px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    /* Prose */
+    .v2-prose { font-family: var(--font-body); font-size: 17px; line-height: 1.7; color: var(--text); }
+    .v2-prose > * { margin-left: auto; margin-right: auto; }
+    .v2-prose p { margin: 0 0 22px; text-wrap: pretty; }
+    .v2-prose strong { color: var(--text-deep); font-weight: 500; }
+    .v2-prose a {
+      color: var(--opteryx-teal);
+      text-decoration: underline;
+      text-decoration-color: rgba(7,121,124,0.35);
+      text-decoration-thickness: 1px; text-underline-offset: 3px;
+    }
+    .v2-prose a:hover { text-decoration-color: var(--opteryx-teal); }
+
+    /* Numbered section dividers — replaces sidebar TOC */
+    .v2-section-mark {
+      display: flex; align-items: baseline; gap: 14px;
+      margin: 56px 0 16px;
+      padding-top: 4px;
+      scroll-margin-top: 80px;
+    }
+    .v2-section-mark .num {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--opteryx-teal);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      width: 28px;
+    }
+    .v2-section-mark h2 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 26px; line-height: 1.25; letter-spacing: -0.012em;
+      color: var(--text-deep);
+      margin: 0;
+      text-wrap: balance;
+    }
+
+    .v2-prose h3 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 18px; line-height: 1.35; color: var(--text-deep);
+      margin: 32px 0 10px;
+    }
+
+    .v2-prose ul, .v2-prose ol { margin: 0 0 24px; padding-left: 26px; }
+    .v2-prose ul li, .v2-prose ol li { padding: 4px 0; }
+    .v2-prose ul li::marker { color: var(--muted-2); }
+    .v2-prose ol li::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .v2-prose :not(pre) > code {
+      font-family: var(--font-mono); font-size: 14.5px;
+      background: var(--muted-surface);
+      border: 1px solid var(--border);
+      color: var(--text-deep);
+      padding: 1px 6px; border-radius: var(--r-xs);
+    }
+
+    /* Code block — wider than prose, centered */
+    .v2-code {
+      margin: 28px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r-m);
+      overflow: hidden;
+      background: var(--muted-surface);
+    }
+    .v2-code .v2-code-head {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      font-family: var(--font-mono); font-size: 11.5px;
+      color: var(--muted);
+    }
+    .v2-code .v2-code-head .copy {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--opteryx-teal);
+      background: transparent; border: none; cursor: pointer;
+      padding: 2px 6px; border-radius: var(--r-xs);
+    }
+    .v2-code .v2-code-head .copy:hover { background: var(--accent-soft); }
+    .v2-code pre {
+      margin: 0; padding: 16px 18px;
+      overflow-x: auto;
+      font-family: var(--font-mono); font-size: 13.5px;
+      color: var(--text-deep); line-height: 1.7;
+    }
+    .v2-code .tok-kw  { color: var(--opteryx-teal);   font-weight: 600; }
+    .v2-code .tok-fn  { color: var(--opteryx-navy);   font-weight: 600; }
+    .v2-code .tok-str { color: var(--opteryx-orange); }
+    .v2-code .tok-num { color: var(--opteryx-navy); }
+    .v2-code .tok-com { color: var(--muted-2);        font-style: italic; }
+
+    /* Note — a thin label-led aside, full column */
+    .v2-note {
+      margin: 28px 0;
+      padding: 16px 0 16px 18px;
+      border-left: 2px solid var(--opteryx-teal);
+    }
+    .v2-note .lbl {
+      display: block;
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--opteryx-teal);
+      margin-bottom: 6px;
+    }
+    .v2-note p { margin: 0 0 8px; font-size: 16px; line-height: 1.6; }
+    .v2-note p:last-child { margin: 0; }
+
+    /* Pull quote — large, no quotation marks, hairline above & below */
+    .v2-pull {
+      margin: 48px -20px;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 26px; line-height: 1.3; letter-spacing: -0.012em;
+      color: var(--text-deep);
+      text-align: center;
+      text-wrap: balance;
+    }
+    .v2-pull cite {
+      display: block;
+      margin-top: 14px;
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-style: normal; font-weight: 400;
+    }
+
+    /* End-mark + tags */
+    .v2-end {
+      margin: 56px 0 0;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      flex-wrap: wrap;
+      font-family: var(--font-display); font-size: 13px;
+      color: var(--muted);
+    }
+    .v2-end .endmark {
+      display: inline-block; width: 8px; height: 8px;
+      background: var(--opteryx-teal);
+      border-radius: 1px;
+    }
+    .v2-end .lbl {
+      font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .v2-end .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .v2-end .pills a {
+      font-family: var(--font-display); font-weight: 500;
+      font-size: 12px; color: var(--opteryx-teal);
+      padding: 3px 10px;
+      border: 1px solid rgba(7,121,124,0.25);
+      border-radius: var(--r-pill);
+      background: var(--accent-soft);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .v2-end .pills a:hover { background: var(--opteryx-teal); color: #fff; border-color: var(--opteryx-teal); }
+    .v2-end .spacer { flex: 1; }
+    .v2-end .share {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--muted);
+    }
+    .v2-end .share a { color: var(--opteryx-teal); text-decoration: none; margin-left: 14px; }
+    .v2-end .share a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Bio strip */
+    .v2-bio {
+      margin: 40px 0 64px;
+      padding: 24px 0;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 18px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .v2-bio .author-avatar { width: 48px; height: 48px; font-size: 16px; }
+    .v2-bio .name {
+      font-family: var(--font-display); font-weight: 600; font-size: 15px;
+      color: var(--text-deep);
+    }
+    .v2-bio .role {
+      font-family: var(--font-display); font-size: 12.5px; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .v2-bio p {
+      font-size: 14.5px; line-height: 1.55; color: var(--text); margin: 0;
+    }
+
+    /* Next-up — full bleed beyond the reading column */
+    .v2-next {
+      background: var(--muted-surface);
+      border-top: 1px solid var(--border);
+      padding: 56px 28px 72px;
+    }
+    .v2-next-inner { max-width: 960px; margin: 0 auto; }
+    .v2-next h4 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 24px;
+    }
+    .v2-next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-l);
+      overflow: hidden;
+    }
+    @media (max-width: 720px) { .v2-next-grid { grid-template-columns: 1fr; } }
+    .v2-next-card {
+      display: block;
+      padding: 22px 24px;
+      background: #fff;
+      text-decoration: none;
+      transition: background var(--t-fast);
+    }
+    .v2-next-card:hover { background: var(--opteryx-pale-teal); text-decoration: none; }
+    .v2-next-card .stamp {
+      font-family: var(--font-mono); font-size: 11.5px;
+      color: var(--muted); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .v2-next-card .stamp .cat {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--opteryx-teal);
+      white-space: nowrap;
+    }
+    .v2-next-card h5 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 17px; line-height: 1.35; color: var(--text-deep);
+      margin: 0;
+      text-wrap: balance;
+    }
+    .v2-next-card:hover h5 { color: var(--opteryx-teal); }
+
+    /* Floating progress chip — appears after scroll */
+    .v2-chip {
+      position: fixed; right: 24px; bottom: 24px; z-index: 30;
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: 8px 8px 8px 16px;
+      box-shadow: var(--shadow-m);
+      backdrop-filter: blur(6px);
+      font-family: var(--font-mono); font-size: 11.5px;
+      color: var(--muted);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity var(--t-base), transform var(--t-base);
+    }
+    .v2-chip.show {
+      opacity: 1; pointer-events: auto; transform: none;
+    }
+    .v2-chip .pct { color: var(--text-deep); font-weight: 700; min-width: 32px; }
+    .v2-chip .ring {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: conic-gradient(var(--opteryx-teal) calc(var(--p, 0) * 1%), var(--border) 0);
+      position: relative;
+    }
+    .v2-chip .ring::after {
+      content: ""; position: absolute; inset: 3px;
+      border-radius: 50%; background: #fff;
+    }
+    .v2-chip button {
+      border: none; background: var(--accent-soft);
+      color: var(--opteryx-teal);
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 12px;
+      padding: 6px 12px; border-radius: var(--r-pill);
+      cursor: pointer;
+    }
+    .v2-chip button:hover { background: var(--opteryx-teal); color: #fff; }
+
+    @media (max-width: 720px) {
+      .v2-shell { padding: 32px 22px 0; }
+      .v2-title { font-size: 32px; }
+      .v2-lede { font-size: 17px; }
+      .v2-byline { flex-wrap: wrap; }
+      .v2-byline .meta { text-align: left; }
+      .v2-pull { margin: 36px 0; font-size: 21px; }
+      .v2-section-mark { gap: 10px; }
+      .v2-section-mark h2 { font-size: 22px; }
+      .v2-chip { right: 12px; bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="blog-header">
+    <div class="blog-header-inner">
+      <a class="blog-logo" href="index.html">
+        <img src="../../assets/opteryx-icon.svg" alt="Opteryx" />
+        <span>Opteryx</span>
+        <span class="sep">/</span>
+        <span class="pill">Blog</span>
+      </a>
+      <nav class="blog-nav">
+        <a href="#">Product</a>
+        <a href="#">Docs</a>
+        <a href="index.html" class="active">Blog</a>
+        <a href="#">Changelog</a>
+      </nav>
+      <span class="header-spacer"></span>
+      <a class="blog-cta" href="#">Start for free</a>
+    </div>
+  </header>
+
+  <article class="v2-shell">
+    <a class="v2-back" href="index.html">←&nbsp;Back&nbsp;to&nbsp;blog</a>
+
+    <div class="v2-cat">Engine internals</div>
+    <h1 class="v2-title">Inside REGEX_REPLACE: how a string-rewriting function compiles down to vectorised SIMD</h1>
+    <p class="v2-lede">A look at the patch that brought a real, vectorised string-rewriting function to the Opteryx execution engine — why the obvious implementation was the wrong one, and what we learned by measuring the version we threw away.</p>
+
+    <div class="v2-byline">
+      <span class="author-avatar">JJ</span>
+      <span>
+        <span class="who">Justin Joyce</span><br>
+        <span class="role">Founder, Opteryx</span>
+      </span>
+      <span class="spacer"></span>
+      <span class="meta">
+        <span class="stamp">Apr 24, 2026</span>
+        8 min read · 1,847 words
+      </span>
+    </div>
+
+    <figure class="v2-figure">
+      <div class="v2-figure-stripes" aria-hidden="true"></div>
+      <div class="v2-figure-inner">
+        <span class="lbl">execution/string_ops.rs</span>
+        <span class="ln"><span class="tok-com">// before — 1.7M rows/s, allocator-bound</span></span>
+        <span class="ln"><span class="tok-kw">fn</span> <span class="tok-fn">regex_replace</span>(col, pat, rep) -&gt; StringArray { ... }</span>
+        <span class="ln"><span class="tok-com">// after — 11.4M rows/s, scan-bound</span></span>
+        <span class="ln"><span class="tok-kw">fn</span> <span class="tok-fn">regex_replace_simd</span>(col, pat, rep) -&gt; StringArray { ... }</span>
+      </div>
+      <figcaption>The patch in two function signatures.</figcaption>
+    </figure>
+
+    <div class="v2-prose">
+      <p>Most string functions in a query engine are boring on purpose. They have to be — they run a billion times, on every workload, and a single allocation in the wrong place will undo a quarter's worth of planner work. <code>REGEX_REPLACE</code> is one of the few that resists this. It is regular-expression-shaped, allocation-shaped, and unicode-shaped, all at once.</p>
+      <p>This post is about how we built ours, the version we threw away first, and the surprisingly small change that took it from <strong>1.7M rows/s</strong> to <strong>11.4M rows/s</strong> on the same hardware. If you have ever benchmarked a vectorised string function and watched the profile flatten out at the wrong call, this is for you.</p>
+
+      <div class="v2-section-mark" id="brief">
+        <span class="num">01</span>
+        <h2>The brief</h2>
+      </div>
+      <p>Opteryx is a read-only analytical engine, which means most of our string work is in the <em>filter</em> path — predicates, projections, the occasional rewrite for compatibility with downstream BI tools. <code>REGEX_REPLACE</code> showed up on the roadmap because three independent customers asked for it in the same week, all to scrub PII from a column before exporting to a notebook. None of them wanted it to be fast. They wanted it to be <em>correct</em>, and to not blow up the cost preview.</p>
+
+      <div class="v2-section-mark" id="obvious">
+        <span class="num">02</span>
+        <h2>The obvious implementation, and why it was wrong</h2>
+      </div>
+      <p>The first cut took an afternoon. Iterate the column, run <code>regex.replace_all</code> on each row, push the result into a fresh <code>StringArray</code>. Done. It passed the test suite, returned the right answers on every fuzz seed we threw at it, and ran at <strong>1.7 million rows per second</strong> on the bench dataset.</p>
+      <p>1.7M is fine in isolation. It is not fine when the rest of the engine ingests Parquet at 90M rows/s and aggregates at 40M. A single <code>REGEX_REPLACE</code> in a long projection list dropped end-to-end throughput by 30×. Worse, the profile showed something we already knew but had hoped to ignore:</p>
+
+      <aside class="v2-note">
+        <span class="lbl">What the profile said</span>
+        <p>78% of CPU was inside the allocator. The actual regex matcher — the bit we cared about — was a rounding error.</p>
+      </aside>
+
+      <p>Every row produced a fresh <code>String</code>. Every <code>String</code> went through <code>malloc</code>. The matcher itself was finishing work in nanoseconds and then waiting for the allocator to catch up. We were not <em>regex-bound</em>; we were <em>memory-bound</em>, and the regex was a passenger.</p>
+
+      <div class="v2-section-mark" id="rebuild">
+        <span class="num">03</span>
+        <h2>Rebuilding around the buffer</h2>
+      </div>
+      <p>The fix is a pattern that shows up often in column engines and rarely in the regex literature: <strong>don't allocate per row, allocate per batch</strong>. Conceptually, it looks like this:</p>
+
+      <div class="v2-code">
+        <div class="v2-code-head"><span>Rust · execution/string_ops.rs</span><button class="copy">Copy</button></div>
+<pre><span class="tok-kw">pub fn</span> <span class="tok-fn">regex_replace_batch</span>(
+    col: &amp;StringArray,
+    pat: &amp;CompiledNFA,
+    rep: &amp;<span class="tok-kw">str</span>,
+) -&gt; StringArray {
+    <span class="tok-kw">let mut</span> values = Vec::&lt;<span class="tok-kw">u8</span>&gt;::with_capacity(col.values_size() * <span class="tok-num">2</span>);
+    <span class="tok-kw">let mut</span> offsets = OffsetsBuilder::with_capacity(col.len());
+
+    <span class="tok-kw">for</span> s <span class="tok-kw">in</span> col.iter() {
+        pat.<span class="tok-fn">replace_into</span>(s, rep, &amp;<span class="tok-kw">mut</span> values);  <span class="tok-com">// no alloc</span>
+        offsets.<span class="tok-fn">push</span>(values.len() <span class="tok-kw">as</span> <span class="tok-kw">i32</span>);
+    }
+    StringArray::<span class="tok-fn">from_parts</span>(offsets.<span class="tok-fn">finish</span>(), values.<span class="tok-fn">into</span>())
+}</pre>
+      </div>
+
+      <p>Two changes, both small:</p>
+      <ol>
+        <li>The output buffer is allocated <em>once</em>, sized to roughly twice the input. Rewrites that grow the column reallocate at most one or two times across the whole batch instead of once per row.</li>
+        <li>The matcher writes directly into our buffer with <code>replace_into</code>. The regex crate doesn't expose this on its public API; we wrote a thin wrapper around its NFA executor that takes a <code>&amp;mut Vec&lt;u8&gt;</code> instead of returning a <code>String</code>.</li>
+      </ol>
+
+      <p>That alone got us to <strong>6.2M rows/s</strong>. The allocator dropped from 78% of CPU to 4%. The matcher started showing up in the profile, which is the polite way of saying we now had a <em>different</em> bottleneck.</p>
+
+      <div class="v2-section-mark" id="simd">
+        <span class="num">04</span>
+        <h2>Where SIMD actually helps</h2>
+      </div>
+      <p>It is fashionable to say "we used SIMD" as if it explains a 10× speedup. It almost never does, on its own. SIMD lanes help when the work fits the lane shape — fixed widths, branch-free, predictable memory access. A regex NFA satisfies none of these.</p>
+      <p>What <em>does</em> fit a lane is the <strong>literal prefix scan</strong>. Almost every real-world regex starts with a literal: <code>^Error:</code>, <code>\bemail=</code>, <code>(\d{3})-</code>. We compile the pattern, lift the literal prefix, and run a <a href="#">memchr-style SIMD scan</a> across the input to find candidate positions. Only the candidates feed into the NFA. For a column where 99% of rows don't match, this is the entire game.</p>
+
+      <blockquote class="v2-pull">
+        The regex doesn't have to be fast. The not-matching has to be fast.
+        <cite>— Eng review notes, week of Apr 14</cite>
+      </blockquote>
+
+      <p>The numbers tell the story:</p>
+
+      <div class="v2-code">
+        <div class="v2-code-head"><span>bench/regex_replace</span><button class="copy">Copy</button></div>
+<pre><span class="tok-com"># 10M rows, mean length 84 bytes, match rate 1.2%</span>
+naive          1,712,304 rows/s   <span class="tok-com">// per-row alloc</span>
+batched        6,218,901 rows/s   <span class="tok-com">// shared buffer</span>
+batched+simd  <span class="tok-fn">11,420,556</span> rows/s   <span class="tok-com">// + literal-prefix SIMD scan</span></pre>
+      </div>
+
+      <div class="v2-section-mark" id="cost">
+        <span class="num">05</span>
+        <h2>Surfacing the cost</h2>
+      </div>
+      <p>The other half of the brief — "don't blow up the cost preview" — turned out to be harder than the performance work. Opteryx's planner shows an estimated scan size before the query runs. <code>REGEX_REPLACE</code> doesn't change scan size, but it does change <em>CPU time</em>, and on a metered cluster the two are not the same thing.</p>
+      <p>We extended the cost model with a per-function CPU coefficient, calibrated from the bench numbers above. When you write a query that calls <code>REGEX_REPLACE</code> over a billion rows, the preview now tells you what it will cost in the same units as the rest of the query. No surprises, no apologies.</p>
+
+      <aside class="v2-note">
+        <span class="lbl">Available in</span>
+        <p>The <code>regex_replace_simd</code> code path ships in <code>opteryx-engine 0.84.0</code> and is the default whenever the regex has a literal prefix of three bytes or more. Patterns without a literal prefix fall back to the batched-buffer path automatically.</p>
+      </aside>
+
+      <div class="v2-section-mark" id="next">
+        <span class="num">06</span>
+        <h2>What's next</h2>
+      </div>
+      <p>Two follow-ups are in the pipeline. The first is extending the same buffer-sharing pattern to <code>REPLACE</code>, <code>SUBSTR</code>, and <code>UPPER</code>/<code>LOWER</code>; the savings are smaller — these functions are simpler — but they show up on every workload. The second is a planner-side rewrite that recognises <code>REGEX_REPLACE</code> with a constant pattern and a one-shot replacement and lowers it to a plain <code>REPLACE</code> when the pattern is, in fact, a literal. About <strong>11% of regex_replace calls in production</strong> turn out to be plain string replacements with the regex syntax wrapped around them. Those should never have hit the NFA in the first place.</p>
+      <p>The patch itself is in <a href="#">PR #4221</a>. Issues, ideas, and reproductions of the bench welcome.</p>
+    </div>
+
+    <div class="v2-end">
+      <span class="endmark" aria-hidden="true"></span>
+      <span class="lbl">Filed under</span>
+      <span class="pills">
+        <a href="#">engine</a>
+        <a href="#">sql</a>
+        <a href="#">performance</a>
+      </span>
+      <span class="spacer"></span>
+      <span class="share">Share<a href="#">copy link</a><a href="#">hn</a><a href="#">linkedin</a></span>
+    </div>
+
+    <div class="v2-bio">
+      <span class="author-avatar">JJ</span>
+      <div>
+        <div class="name">Justin Joyce</div>
+        <div class="role">Founder, Opteryx</div>
+        <p>Spends most of his days arguing with the cost model. Has opinions about Parquet page indexes and <em>strong</em> opinions about per-row allocation.</p>
+      </div>
+    </div>
+  </article>
+
+  <section class="v2-next">
+    <div class="v2-next-inner">
+      <h4>Continue reading</h4>
+      <div class="v2-next-grid">
+        <a class="v2-next-card" href="#">
+          <div class="stamp"><span class="cat">Engine internals</span><span>·</span><span>11 min</span></div>
+          <h5>Predicate pushdown across joins, when the right side is a view</h5>
+        </a>
+        <a class="v2-next-card" href="#">
+          <div class="stamp"><span class="cat">Storage</span><span>·</span><span>14 min</span></div>
+          <h5>Why the Parquet reader skips the page index — most of the time</h5>
+        </a>
+        <a class="v2-next-card" href="#">
+          <div class="stamp"><span class="cat">Engine internals</span><span>·</span><span>15 min</span></div>
+          <h5>Adaptive bloom filters for join pruning, without the pain</h5>
+        </a>
+        <a class="v2-next-card" href="#">
+          <div class="stamp"><span class="cat">Engine internals</span><span>·</span><span>9 min</span></div>
+          <h5>Cost-aware execution: pricing a query before you run it</h5>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="blog-footer-simple">
+    <div class="blog-footer-simple-inner">
+      <span>© 2026 Opteryx · Written by Justin Joyce</span>
+      <span class="links">
+        <a href="#">Product</a>
+        <a href="#">Docs</a>
+        <a href="#">Changelog</a>
+        <a href="#">RSS</a>
+      </span>
+    </div>
+  </footer>
+
+  <!-- Floating chip -->
+  <div class="v2-chip" id="chip" aria-hidden="true">
+    <span class="ring" id="chip-ring"></span>
+    <span class="pct" id="chip-pct">0%</span>
+    <button id="chip-top">Top</button>
+  </div>
+
+  <script>
+    const chip = document.getElementById('chip');
+    const ring = document.getElementById('chip-ring');
+    const pct = document.getElementById('chip-pct');
+    const top = document.getElementById('chip-top');
+    function update() {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop;
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? Math.min(100, Math.round((scrolled / max) * 100)) : 0;
+      ring.style.setProperty('--p', p);
+      pct.textContent = p + '%';
+      chip.classList.toggle('show', scrolled > 600 && p < 99);
+    }
+    document.addEventListener('scroll', update, { passive: true });
+    top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    update();
+  </script>
+</body>
+</html>

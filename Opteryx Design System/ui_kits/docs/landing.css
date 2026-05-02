@@ -1,0 +1,185 @@
+/* ui_kits/docs/landing.css — Docs landing page styles.
+   Loaded alongside docs.css (which provides header/footer chrome). */
+
+.landing-shell { background: var(--bg); }
+.landing-page {
+  max-width: 1100px; margin: 0 auto; padding: 64px 28px 80px;
+}
+
+/* ============== Hero =============================================== */
+.lp-ed-hero {
+  display: grid; grid-template-columns: 1.3fr 1fr;
+  gap: 80px;
+  padding: 80px 0 40px;
+  align-items: end;
+}
+@media (max-width: 880px) {
+  .lp-ed-hero { grid-template-columns: 1fr; gap: 28px; padding: 56px 0 28px; }
+}
+.lp-ed-hero .eyebrow {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--opteryx-teal);
+  margin-bottom: 14px;
+}
+.lp-ed-hero h1 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 64px; line-height: 1; letter-spacing: -0.025em;
+  color: var(--text-deep);
+  margin: 0;
+  text-wrap: balance;
+}
+.lp-ed-hero h1 em { font-style: normal; color: var(--opteryx-teal); }
+.lp-ed-hero .meta {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  line-height: 1.7;
+  border-left: 2px solid var(--opteryx-teal);
+  padding-left: 16px;
+}
+.lp-ed-hero .meta strong { color: var(--text-deep); font-weight: 500; }
+
+/* ============== Featured quickstart ================================ */
+.lp-ed-feature {
+  margin-top: 64px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--text-deep);
+  border-radius: var(--r-s);
+  overflow: hidden;
+  color: #e7eaf2;
+}
+@media (max-width: 880px) { .lp-ed-feature { grid-template-columns: 1fr; } }
+.lp-ed-feature .text { padding: 48px 44px; }
+.lp-ed-feature .lbl {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(94,234,212,1);
+  margin-bottom: 18px;
+}
+.lp-ed-feature h2 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 32px; line-height: 1.1; letter-spacing: -0.015em;
+  color: #fff;
+  margin: 0 0 14px;
+  text-wrap: balance;
+}
+.lp-ed-feature p {
+  font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 420px;
+}
+.lp-ed-feature .ed-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: var(--text-deep);
+  font-family: var(--font-display); font-weight: 600; font-size: 13.5px;
+  padding: 11px 18px; border-radius: var(--r-xs);
+  text-decoration: none;
+}
+.lp-ed-feature .ed-cta:hover { background: #5eead4; text-decoration: none; }
+.lp-ed-feature .demo {
+  padding: 28px 32px;
+  background:
+    linear-gradient(180deg, rgba(7,121,124,0.18) 0, rgba(7,121,124,0) 100%),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 18px);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.85;
+  border-left: 1px solid rgba(255,255,255,0.06);
+}
+.lp-ed-feature .demo .ln { display: block; }
+.lp-ed-feature .demo .kw { color: #5eead4; font-weight: 600; }
+.lp-ed-feature .demo .str { color: #fcad7a; }
+.lp-ed-feature .demo .num { color: #c4b5fd; }
+.lp-ed-feature .demo .com { color: rgba(255,255,255,0.35); font-style: italic; }
+.lp-ed-feature .demo .res {
+  margin-top: 14px;
+  border-top: 1px dashed rgba(255,255,255,0.12);
+  padding-top: 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* ============== Secondary tiles ==================================== */
+.lp-ed-secondary {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  margin-top: 24px;
+}
+@media (max-width: 880px) { .lp-ed-secondary { grid-template-columns: 1fr; } }
+.lp-ed-tile {
+  padding: 32px 28px 28px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: var(--r-s);
+  transition: border-color var(--t-fast), box-shadow var(--t-base);
+}
+.lp-ed-tile:hover {
+  border-color: rgba(7,121,124,0.30);
+  box-shadow: var(--shadow-m);
+}
+.lp-ed-tile h3 a.tile-title {
+  color: inherit;
+  text-decoration: none;
+}
+.lp-ed-tile h3 a.tile-title:hover {
+  color: var(--opteryx-teal);
+}
+.lp-ed-tile .lbl {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--muted); margin-bottom: 8px;
+}
+.lp-ed-tile h3 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 22px; color: var(--text-deep);
+  margin: 0 0 12px; letter-spacing: -0.01em;
+}
+.lp-ed-tile p {
+  font-size: 14px; color: var(--muted); line-height: 1.55;
+  margin: 0 0 18px;
+}
+.lp-ed-tile .links {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  font-family: var(--font-display); font-size: 13px;
+}
+.lp-ed-tile .links a {
+  color: var(--opteryx-teal);
+  white-space: nowrap;
+}
+.lp-ed-tile .links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============== Community strip ==================================== */
+.lp-ed-community {
+  margin-top: 56px;
+  padding: 36px 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-s);
+  background: var(--muted-surface);
+  display: flex; align-items: center; gap: 24px; justify-content: space-between;
+}
+@media (max-width: 640px) {
+  .lp-ed-community { flex-direction: column; align-items: flex-start; }
+}
+.lp-ed-community .text h4 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 17px; color: var(--text-deep); margin: 0 0 4px;
+}
+.lp-ed-community .text p {
+  font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0;
+}
+.lp-ed-community a.discord {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff;
+  color: var(--text-deep);
+  border: 1px solid var(--border);
+  padding: 10px 16px; border-radius: var(--r-xs);
+  font-family: var(--font-display); font-weight: 600; font-size: 13.5px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.lp-ed-community a.discord:hover {
+  border-color: var(--opteryx-teal);
+  color: var(--opteryx-teal);
+  text-decoration: none;
+}
+.lp-ed-community a.discord .dot {
+  width: 8px; height: 8px;
+  background: #22c55e; border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
+}

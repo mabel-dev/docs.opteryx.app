@@ -1,0 +1,128 @@
+/* ===========================================================================
+   Opteryx SQL IDE — Design tokens
+   ---------------------------------------------------------------------------
+   Single source of truth for brand colors, typography, spacing, radii,
+   shadows, and motion.
+
+   This file is a mirror of `colors_and_type.css` in the Opteryx Design
+   System project. **Do not hand-edit values here.** When the design
+   system updates, regenerate this file (see DESIGN.md).
+
+   Web-fonts are declared in tailwind.css (which loads /fonts/*.woff2 from
+   `public/`). Only token *values* live here.
+   =========================================================================== */
+
+:root {
+  /* --- Brand palette ---------------------------------------------------- */
+  --opteryx-teal:        #07797C; /* primary accent. logo mark background. */
+  --opteryx-orange:      #FE7701; /* secondary accent. CTA hover, links. */
+  --opteryx-orange-light:#FFA503; /* warning hue / secondary CTA highlight. */
+  --opteryx-navy:        #1F2E61; /* deep navy. IDE body text. */
+  --opteryx-indigo-line: #666699; /* header/footer rule. */
+  --opteryx-pale-teal:   #F3FBFA; /* surface tint. table header bg, badges. */
+  --opteryx-red:         #CB0101; /* destructive. */
+  --opteryx-gold:        #C89427;
+  --opteryx-slate:       #3D4A4E;
+
+  /* --- Neutrals --------------------------------------------------------- */
+  --bg:               #FFFFFF;
+  --panel:            #F6F8FB;  /* IDE side panels. */
+  --panel-2:          #EEF3F5;
+  --header-surface:   #EAF1F3;
+  --muted-surface:    #F8FAFC;
+  --text:             #1F2E61;  /* IDE primary text */
+  --text-deep:        #1F2E61;
+  --text-soft:        #3D4A4E;  /* marketing body */
+  --muted:            #5F6B78;
+  --muted-2:          #94A3B8;
+  --border:           #D9E2E8;
+  --border-2:         #CBD7DE;
+
+  /* --- Semantic status -------------------------------------------------- */
+  --success:          #188038;
+  --danger:           #D50000;
+  --warning:          #FFA503;
+  --error:            #CB0101;
+  --info:             #FE7701;
+
+  /* Alpha variants used throughout the IDE */
+  --accent-soft:      rgba(7, 121, 124, 0.08);
+  --accent-soft-2:    rgba(7, 121, 124, 0.12);
+  --accent-soft-3:    rgba(7, 121, 124, 0.28); /* gutter / focus ring */
+  --accent-ring:      rgba(7, 121, 124, 0.18);
+  --orange-soft:      rgba(254, 119, 1, 0.08);
+  --navy-soft:        rgba(31, 46, 97, 0.04);
+  --success-soft:     rgba(24, 128, 56, 0.10);
+  --danger-soft:      rgba(213, 0, 0, 0.08);
+  --warning-soft:     rgba(255, 165, 3, 0.08);
+
+  /* --- Aliases (legacy names already in use across components) --------- */
+  --accent:    var(--opteryx-teal);
+  --accent-2:  var(--opteryx-orange);
+  --accent-3:  var(--opteryx-navy);
+  --pale-accent: var(--opteryx-pale-teal);
+  --header:    var(--header-surface); /* used by .panel-title gradient */
+
+  /* --- Type stacks ------------------------------------------------------ */
+  --font-display:
+    'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body:
+    'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* Type scale ----------------------------------------------------------- */
+  --fs-display-xl: 60px;
+  --fs-display-l:  48px;
+  --fs-display-m:  32px;
+  --fs-h1:         28px;
+  --fs-h2:         22px;
+  --fs-h3:         18px;
+  --fs-body-l:     16px;
+  --fs-body:       14px;
+  --fs-body-s:     13px; /* IDE base */
+  --fs-caption:    12px;
+  --fs-micro:      11px;
+
+  --lh-tight:   1.1;
+  --lh-heading: 1.2;
+  --lh-body:    1.6;
+
+  /* Spacing (4px base) -------------------------------------------------- */
+  --sp-0:  0px;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Radii — IDE keeps small radii, marketing uses larger ---------------- */
+  --r-xs: 2px;
+  --r-s:  5px;  /* .btn */
+  --r-m:  6px;  /* input, icon-btn */
+  --r-l:  8px;
+  --r-xl: 12px;
+  --r-2xl:14px;
+  --r-pill: 999px;
+
+  /* Shadows — soft, used sparingly. IDE chrome is mostly hairline ------- */
+  --shadow-xs: 0 6px 18px rgba(15, 23, 42, 0.02);
+  --shadow-s:  0 6px 18px rgba(7, 121, 124, 0.08);
+  --shadow-m:  0 8px 24px rgba(15, 23, 42, 0.035);
+  --shadow-l:  0 8px 30px rgba(15, 23, 42, 0.04);
+  --shadow-menu: 0 16px 36px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.10);
+
+  /* Motion --------------------------------------------------------------- */
+  --t-fast: 120ms ease;
+  --t-base: 150ms ease;
+  --t-slow: 200ms ease-in-out;
+}

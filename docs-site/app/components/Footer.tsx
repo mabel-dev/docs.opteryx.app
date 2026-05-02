@@ -1,12 +1,23 @@
-export default function Footer(){
+import Image from "next/image";
+import Link from "next/link";
+
+export default function Footer() {
   return (
-    <footer className="w-full border-t bg-white mt-12">
-      <div className="max-w-7xl mx-auto px-4 py-10 text-sm text-gray-600">
-        <div className="flex flex-col md:flex-row md:justify-between">
-          <div>© {new Date().getFullYear()} Opteryx</div>
-          <div className="mt-3 md:mt-0">Built with ❤️ — Opteryx Docs</div>
-        </div>
+    <footer className="docs-footer">
+      <div className="docs-footer-inner">
+        <Link
+          href="https://opteryx.app"
+          className="docs-footer-cta"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image src="/opteryx-icon.svg" alt="" width={18} height={18} />
+          <span>Try Opteryx Now</span>
+        </Link>
+        <span className="docs-footer-legal">
+          © {new Date().getFullYear()} Opteryx, All Rights Reserved
+        </span>
       </div>
     </footer>
-  )
+  );
 }
