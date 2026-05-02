@@ -1,205 +1,286 @@
-import fs from 'fs'
-import path from 'path'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import DocRenderer from '@/app/components/DocRenderer'
-import { getContentDocsDir } from '@/app/lib/getContentDocsDir'
-import { listMarkdownSlugs } from '@/app/lib/listMarkdownSlugs'
-import { readMarkdownFile } from '@/app/lib/readMarkdownFile'
+import fs from "fs";
+import path from "path";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import DocRenderer from "@/app/components/DocRenderer";
+import { getContentDocsDir } from "@/app/lib/getContentDocsDir";
+import { listMarkdownSlugs } from "@/app/lib/listMarkdownSlugs";
+import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 
 type Props = {
   params: {
-    slug: string
-  }
-}
+    slug: string;
+  };
+};
 
 // no revalidation; static
-export const revalidate = false
+export const revalidate = false;
 
 function normalizeSlug(slug: string | undefined): string {
-  if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
-    return ''
+  if (!slug || typeof slug !== "string" || slug.trim().length === 0) {
+    return "";
   }
-  return slug.replace(/\.md$/i, '')
+  return slug.replace(/\.md$/i, "");
 }
 
 function getContentBlogDir(): string {
-  const cwd = process.cwd()
+  const cwd = process.cwd();
   const possiblePaths = [
-    path.join(cwd, 'content', 'blog'),
-    path.join(cwd, '../content', 'blog'),
-    path.join(cwd, '../docs-site/content/blog'),
-  ]
+    path.join(cwd, "content", "blog"),
+    path.join(cwd, "../content", "blog"),
+    path.join(cwd, "../docs-site/content/blog"),
+  ];
 
   for (const contentDir of possiblePaths) {
     try {
-      const stat = fs.statSync(contentDir)
+      const stat = fs.statSync(contentDir);
       if (stat && stat.isDirectory()) {
-        return contentDir
+        return contentDir;
       }
     } catch {
       // Try next candidate
     }
   }
 
-  return path.join(cwd, 'content', 'blog')
+  return path.join(cwd, "content", "blog");
 }
 
 function parseFrontmatter(source: string) {
-  const match = source.match(/^---\n([\s\S]*?)\n---\n/)
-  if (!match) return { frontmatter: {}, body: source }
-  const yaml = match[1]
-  const body = source.slice(match[0].length)
+  const match = source.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!match) return { frontmatter: {}, body: source };
+  const yaml = match[1];
+  const body = source.slice(match[0].length);
 
-  const fm: Record<string, any> = {}
-  for (const line of yaml.split('\n')) {
-    const idx = line.indexOf(':')
-    if (idx === -1) continue
-    const key = line.slice(0, idx).trim()
-    let val = line.slice(idx + 1).trim()
+  const fm: Record<string, any> = {};
+  for (const line of yaml.split("\n")) {
+    const idx = line.indexOf(":");
+    if (idx === -1) continue;
+    const key = line.slice(0, idx).trim();
+    let val = line.slice(idx + 1).trim();
     if (val.startsWith('"') && val.endsWith('"')) {
-      val = val.slice(1, -1)
+      val = val.slice(1, -1);
     }
-    fm[key] = val
+    fm[key] = val;
   }
 
-  return { frontmatter: fm, body }
+  return { frontmatter: fm, body };
 }
 
 function readBlogPosts(blogDir: string): PostMeta[] {
-  if (!fs.existsSync(blogDir)) return []
+  if (!fs.existsSync(blogDir)) return [];
 
-  const posts: PostMeta[] = []
-  const files = fs
-    .readdirSync(blogDir)
-    .filter((f) => {
-      const lower = f.toLowerCase()
-      return (
-        (lower.endsWith('.md') || lower.endsWith('.mdx')) &&
-        lower !== 'index.md' &&
-        lower !== 'index.mdx'
-      )
-    })
+  const posts: PostMeta[] = [];
+  const files = fs.readdirSync(blogDir).filter((f) => {
+    const lower = f.toLowerCase();
+    return (
+      (lower.endsWith(".md") || lower.endsWith(".mdx")) &&
+      lower !== "index.md" &&
+      lower !== "index.mdx"
+    );
+  });
 
   for (const file of files) {
-    const slug = file.replace(/\.(md|mdx)$/i, '')
-    const fullPath = path.join(blogDir, file)
-    const raw = fs.readFileSync(fullPath, 'utf8')
-    const { frontmatter } = parseFrontmatter(raw)
+    const slug = file.replace(/\.(md|mdx)$/i, "");
+    const fullPath = path.join(blogDir, file);
+    const raw = fs.readFileSync(fullPath, "utf8");
+    const { frontmatter } = parseFrontmatter(raw);
     const title =
       (frontmatter.title as string) ||
-      slug.replace(/\d{4}-\d{2}-\d{2}-/, '').replace(/-/g, ' ')
-    const description = frontmatter.description as string | undefined
-    const date = frontmatter.date as string | undefined
-    const image = frontmatter.image as string | undefined
+      slug.replace(/\d{4}-\d{2}-\d{2}-/, "").replace(/-/g, " ");
+    const description = frontmatter.description as string | undefined;
+    const date = frontmatter.date as string | undefined;
+    const image = frontmatter.image as string | undefined;
 
-    posts.push({ slug, title, description, date, image })
+    posts.push({ slug, title, description, date, image });
   }
 
   posts.sort((a, b) => {
-    if (a.date && b.date) return b.date.localeCompare(a.date)
-    if (a.date) return -1
-    if (b.date) return 1
-    return a.title.localeCompare(b.title)
-  })
+    if (a.date && b.date) return b.date.localeCompare(a.date);
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return a.title.localeCompare(b.title);
+  });
 
-  return posts
+  return posts;
 }
 
 type PostMeta = {
-  slug: string
-  title: string
-  description?: string
-  date?: string
-  image?: string
-}
+  slug: string;
+  title: string;
+  description?: string;
+  date?: string;
+  image?: string;
+};
 
 export function generateStaticParams() {
   // only include files under content/blog
-  const blogDir = getContentBlogDir()
+  const blogDir = getContentBlogDir();
   return listMarkdownSlugs(blogDir)
     .filter((slug) => Array.isArray(slug) && slug.length > 0)
-    .filter((slug) => !(slug.length === 1 && slug[0] === 'index'))
-    .map((slug) => ({ slug: slug.join('/') }))
+    .filter((slug) => !(slug.length === 1 && slug[0] === "index"))
+    .map((slug) => ({ slug: slug.join("/") }));
 }
 
 export default async function Page({ params }: Props) {
-  const resolvedParams = await Promise.resolve(params)
-  if (!resolvedParams || !resolvedParams.slug || typeof resolvedParams.slug !== 'string') {
-    return notFound()
+  const resolvedParams = await Promise.resolve(params);
+  if (
+    !resolvedParams ||
+    !resolvedParams.slug ||
+    typeof resolvedParams.slug !== "string"
+  ) {
+    return notFound();
   }
-  const normalizedSlug = normalizeSlug(resolvedParams.slug)
+  const normalizedSlug = normalizeSlug(resolvedParams.slug);
   if (!normalizedSlug) {
-    return notFound()
+    return notFound();
   }
 
-  const blogDir = getContentBlogDir()
-  const mdPath = path.join(blogDir, normalizedSlug + '.md')
-  const source = readMarkdownFile(mdPath)
+  const blogDir = getContentBlogDir();
+  const mdPath = path.join(blogDir, normalizedSlug + ".md");
+  const source = readMarkdownFile(mdPath);
   if (!source) {
-    return notFound()
+    return notFound();
   }
 
-  const posts = readBlogPosts(blogDir)
-  const latest = posts[0]
-  const showLatest = latest && latest.slug !== normalizedSlug
+  const posts = readBlogPosts(blogDir);
+  const latest = posts[0];
+  const showLatest = latest && latest.slug !== normalizedSlug;
 
   return (
     <>
       <DocRenderer source={source} />
 
-      <div className="mt-12 rounded-lg border border-gray-200 bg-[#f3fbfa] p-6 shadow-sm">
-        <h2 className="text-lg font-semibold">Recent Posts</h2>
+      <div
+        style={{
+          marginTop: "48px",
+          borderRadius: "var(--r-s)",
+          border: "1px solid var(--border)",
+          background: "var(--opteryx-pale-teal)",
+          padding: "28px 32px",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: 600,
+            fontSize: "16px",
+            color: "var(--text-deep)",
+            margin: "0 0 16px",
+          }}
+        >
+          Recent posts
+        </h2>
 
         {showLatest ? (
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <div>
-              <Link
-                href={`/blog/${latest.slug}`}
-                className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:border-opteryx-teal hover:shadow-md transition"
-              >
-                {latest.image ? (
-                  <div className="mb-4 h-40 overflow-hidden rounded-md bg-gray-100">
-                    <img
-                      src={latest.image}
-                      alt={latest.title}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ) : null}
-
-                <h3 className="text-lg font-semibold">{latest.title}</h3>
-                {latest.date ? (
-                  <p className="text-sm text-gray-500">{latest.date}</p>
-                ) : null}
-                {latest.description ? (
-                  <p className="mt-2 text-gray-700">{latest.description}</p>
-                ) : null}
-              </Link>
-
-              <div className="mt-4">
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center justify-center rounded border border-opteryx-teal bg-white px-4 py-2 text-sm font-medium text-opteryx-teal hover:bg-opteryx-teal/10"
-                >
-                  All Blog Posts
-                </Link>
-              </div>
-            </div>
-
-            <div />
-          </div>
-        ) : (
-          <div className="mt-4 flex justify-center">
+          <>
             <Link
-              href="/blog"
-              className="inline-flex items-center justify-center rounded border border-opteryx-teal bg-white px-4 py-2 text-sm font-medium text-opteryx-teal hover:bg-opteryx-teal/10"
+              href={`/blog/${latest.slug}`}
+              className="lp-ed-tile"
+              style={{
+                display: "block",
+                textDecoration: "none",
+                maxWidth: "360px",
+              }}
             >
-              All Blog Posts
+              {latest.image ? (
+                <div
+                  style={{
+                    marginBottom: "12px",
+                    height: "140px",
+                    overflow: "hidden",
+                    borderRadius: "var(--r-m)",
+                    background: "var(--panel)",
+                  }}
+                >
+                  <img
+                    src={latest.image}
+                    alt={latest.title}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              ) : null}
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 600,
+                  fontSize: "16px",
+                  color: "var(--text-deep)",
+                  margin: "0 0 6px",
+                }}
+              >
+                {latest.title}
+              </h3>
+              {latest.date ? (
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "12px",
+                    color: "var(--muted)",
+                    margin: "0 0 6px",
+                  }}
+                >
+                  {latest.date}
+                </p>
+              ) : null}
+              {latest.description ? (
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--muted)",
+                    lineHeight: 1.55,
+                    margin: 0,
+                  }}
+                >
+                  {latest.description}
+                </p>
+              ) : null}
             </Link>
-          </div>
+            <div style={{ marginTop: "16px" }}>
+              <Link
+                href="/blog"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 600,
+                  fontSize: "13px",
+                  color: "var(--opteryx-teal)",
+                  border: "1px solid var(--opteryx-teal)",
+                  borderRadius: "var(--r-m)",
+                  padding: "7px 14px",
+                  background: "#fff",
+                  textDecoration: "none",
+                }}
+              >
+                All blog posts
+              </Link>
+            </div>
+          </>
+        ) : (
+          <Link
+            href="/blog"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              fontFamily: "var(--font-display)",
+              fontWeight: 600,
+              fontSize: "13px",
+              color: "var(--opteryx-teal)",
+              border: "1px solid var(--opteryx-teal)",
+              borderRadius: "var(--r-m)",
+              padding: "7px 14px",
+              background: "#fff",
+              textDecoration: "none",
+            }}
+          >
+            All blog posts
+          </Link>
         )}
       </div>
     </>
-  )
+  );
 }
