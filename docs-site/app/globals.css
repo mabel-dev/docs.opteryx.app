@@ -2658,10 +2658,81 @@ kbd {
     white-space: nowrap;
 }
 
+/* h1 inside prose — when markdown body opens with a # heading */
+.prose h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--text-deep);
+    margin: 0 0 24px;
+    scroll-margin-top: 80px;
+}
+
+/* hr — visible only when not immediately before an h2.
+   Posts use --- as a section divider before h2 headings,
+   but .prose h2::before already draws the teal rule,
+   so suppress both the hr line and the pseudo-element when paired. */
 .prose hr {
     border: none;
     border-top: 1px solid var(--border);
     margin: 32px 0;
+}
+.prose hr + h2 {
+    margin-top: 0;
+}
+.prose hr + h2::before {
+    display: none;
+}
+
+/* Tables */
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 0 0 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    overflow: hidden;
+    display: block;
+    overflow-x: auto;
+}
+.prose thead th {
+    background: var(--opteryx-pale-teal);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-2);
+    white-space: nowrap;
+}
+.prose tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+    font-size: 14px;
+}
+.prose tbody tr:last-child td {
+    border-bottom: none;
+}
+.prose tbody tr:hover td {
+    background: var(--muted-surface);
+}
+.prose td code,
+.prose th code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--opteryx-teal);
+    background: var(--accent-soft);
+    border: 1px solid rgba(7, 121, 124, 0.15);
+    padding: 1px 5px;
+    border-radius: var(--r-xs);
 }
 
 /* Pull quote */
