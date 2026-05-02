@@ -1,38 +1,43 @@
-'use client'
+"use client";
 
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { docsBreadcrumbsByPath, inferBreadcrumbsFromPath } from '@/app/lib/docsNav'
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import {
+  docsBreadcrumbsByPath,
+  inferBreadcrumbsFromPath,
+} from "@/app/lib/docsNav";
 
 export default function Breadcrumbs() {
-  const pathname = usePathname()
-  const breadcrumbs = docsBreadcrumbsByPath[pathname] || inferBreadcrumbsFromPath(pathname)
+  const pathname = usePathname();
+  const breadcrumbs =
+    docsBreadcrumbsByPath[pathname] || inferBreadcrumbsFromPath(pathname);
 
-  if (breadcrumbs.length === 0) {
-    return null
-  }
+  if (breadcrumbs.length === 0) return null;
 
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6 pb-3 border-b border-gray-200">
-      <Link href="/docs" className="hover:text-opteryx-teal hover:underline transition-colors">
-        Docs
-      </Link>
+    <nav className="breadcrumbs">
+      <span className="crumb">
+        <Link href="/docs">Docs</Link>
+      </span>
       {breadcrumbs.map((crumb, index) => {
-        const isLast = index === breadcrumbs.length - 1
-
+        const isLast = index === breadcrumbs.length - 1;
         return (
-          <div key={`${crumb}-${index}`} className="flex items-center space-x-2">
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+          <span key={`${crumb}-${index}`} className="crumb">
+            <span className="crumb-sep">/</span>
             {isLast ? (
-              <span className="text-gray-900 font-medium">{crumb}</span>
+              <a
+                href="#"
+                className="current"
+                onClick={(e) => e.preventDefault()}
+              >
+                {crumb}
+              </a>
             ) : (
-              <span className="text-gray-600">{crumb}</span>
+              <span>{crumb}</span>
             )}
-          </div>
-        )
+          </span>
+        );
       })}
     </nav>
-  )
+  );
 }

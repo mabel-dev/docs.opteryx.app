@@ -1,216 +1,200 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { sidebarNav, type DocsNavItem, type DocsNavSection } from '@/app/lib/docsNav'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  sidebarNav,
+  type DocsNavItem,
+  type DocsNavSection,
+} from "@/app/lib/docsNav";
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{
+        transform: open ? "rotate(180deg)" : "rotate(0deg)",
+        transition: "transform 150ms",
+      }}
+    >
+      <path d="M4 6 L8 10 L12 6" />
+    </svg>
+  );
+}
 
 export default function DocsSidebar() {
-  const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
+  const pathname = usePathname();
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
+    {},
+  );
 
   const itemContainsPath = (item: DocsNavItem, path: string): boolean => {
-    if (item.href === path) {
-      return true
-    }
-
-    if (!item.items) {
-      return false
-    }
-
-    return item.items.some((child) => itemContainsPath(child, path))
-  }
+    if (item.href === path) return true;
+    if (!item.items) return false;
+    return item.items.some((child) => itemContainsPath(child, path));
+  };
 
   useEffect(() => {
-    const initialExpanded: Record<string, boolean> = {}
-
+    const initialExpanded: Record<string, boolean> = {};
     sidebarNav.forEach((section) => {
       section.items.forEach((item) => {
-        if (!item.items) {
-          return
-        }
-
-        const level2Key = `${section.title}::${item.title}`
-        if (itemContainsPath(item, pathname)) {
-          initialExpanded[level2Key] = true
-        }
-
+        if (!item.items) return;
+        const level2Key = `${section.title}::${item.title}`;
+        if (itemContainsPath(item, pathname)) initialExpanded[level2Key] = true;
         item.items.forEach((child) => {
-          if (!child.items) {
-            return
-          }
-
-          const level3Key = `${section.title}::${item.title}::${child.title}`
-          if (itemContainsPath(child, pathname)) {
-            initialExpanded[level3Key] = true
-          }
-        })
-      })
-    })
-
-    setExpandedItems((prev) => ({ ...initialExpanded, ...prev }))
-  }, [pathname])
+          if (!child.items) return;
+          const level3Key = `${section.title}::${item.title}::${child.title}`;
+          if (itemContainsPath(child, pathname))
+            initialExpanded[level3Key] = true;
+        });
+      });
+    });
+    setExpandedItems((prev) => ({ ...initialExpanded, ...prev }));
+  }, [pathname]);
 
   const toggleItem = (key: string) => {
-    setExpandedItems((prev) => ({ ...prev, [key]: !prev[key] }))
-  }
+    setExpandedItems((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   const renderNestedItem = (parentKey: string, item: DocsNavItem) => {
     if (!item.items) {
       if (!item.href) {
         return (
-          <span className="block px-2 py-1 text-sm text-gray-600">
-            {item.title}
+          <span className="nav-item d3">
+            <span className="nav-label">{item.title}</span>
           </span>
-        )
+        );
       }
-
-      const isActive = item.href === pathname
+      const isActive = item.href === pathname;
       return (
         <Link
           href={item.href}
-          className={`block rounded px-2 py-1 text-sm transition-colors ${
-            isActive
-              ? 'bg-opteryx-teal/10 text-opteryx-teal'
-              : 'text-gray-700 hover:text-opteryx-navy hover:bg-gray-100'
-          }`}
+          className={`nav-item d3${isActive ? " active" : ""}`}
         >
-          {item.title}
+          <span className="nav-label">{item.title}</span>
         </Link>
-      )
+      );
     }
 
-    const key = `${parentKey}::${item.title}`
-    const isExpanded = !!expandedItems[key]
-    const isActive = item.href === pathname
+    const key = `${parentKey}::${item.title}`;
+    const isExpanded = !!expandedItems[key];
+    const isActive = item.href === pathname;
 
     return (
       <div>
-        <div className={`flex items-center rounded ${isActive ? 'bg-opteryx-teal/10' : ''}`}>
+        <div
+          className={`nav-item d2${isActive ? " active" : ""}`}
+          style={{ cursor: "pointer" }}
+          onClick={() => toggleItem(key)}
+        >
           {item.href ? (
             <Link
               href={item.href}
-              className={`flex-1 block px-2 py-1 text-sm transition-colors ${
-                isActive
-                  ? 'text-opteryx-teal'
-                  : 'text-gray-700 hover:text-opteryx-navy hover:bg-gray-100'
-              }`}
+              className="nav-label"
+              onClick={(e) => e.stopPropagation()}
             >
               {item.title}
             </Link>
           ) : (
-            <span className="flex-1 block px-2 py-1 text-sm text-gray-700">{item.title}</span>
+            <span className="nav-label">{item.title}</span>
           )}
-          <button
-            onClick={() => toggleItem(key)}
-            className={`px-2 py-1 transition-colors ${isActive ? 'text-opteryx-teal' : 'hover:text-opteryx-teal'}`}
-          >
-            <svg
-              className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          <ChevronIcon open={isExpanded} />
         </div>
         {isExpanded && (
-          <ul className="space-y-0.5 mt-1 ml-3 border-l border-gray-200 pl-3">
+          <div className="nav-children">
             {item.items.map((child) => (
-              <li key={child.href || child.title}>{renderNestedItem(key, child)}</li>
+              <div key={child.href || child.title}>
+                {renderNestedItem(key, child)}
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   const renderLevel2Item = (sectionTitle: string, item: DocsNavItem) => {
-    const isActive = item.href === pathname
+    const isActive = item.href === pathname;
 
     if (item.items) {
-      const key = `${sectionTitle}::${item.title}`
-      const isExpanded = !!expandedItems[key]
-
+      const key = `${sectionTitle}::${item.title}`;
+      const isExpanded = !!expandedItems[key];
       return (
-        <div key={item.title} className="mb-1">
-          <button
+        <div key={item.title}>
+          <div
+            className={`nav-item d1${isActive ? " active" : ""}`}
+            style={{ cursor: "pointer" }}
             onClick={() => toggleItem(key)}
-            className="w-full flex items-center justify-between text-sm text-gray-800 px-2 py-1 hover:text-opteryx-teal transition-colors rounded"
           >
-            {item.title}
-            <svg
-              className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+            <span className="nav-label">{item.title}</span>
+            <ChevronIcon open={isExpanded} />
+          </div>
           {isExpanded && (
-            <ul className="space-y-0.5 mt-1 ml-3 border-l border-gray-200 pl-3">
+            <div className="nav-children">
               {item.items.map((subItem) => (
-                <li key={subItem.href || subItem.title}>{renderNestedItem(key, subItem)}</li>
+                <div key={subItem.href || subItem.title}>
+                  {renderNestedItem(key, subItem)}
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
-      )
+      );
     }
 
     if (!item.href) {
       return (
-        <div key={item.title} className="px-2 py-1 text-sm text-gray-600">
-          {item.title}
+        <div key={item.title} className="nav-item d1">
+          <span className="nav-label">{item.title}</span>
         </div>
-      )
+      );
     }
 
     return (
       <Link
         key={item.title}
         href={item.href}
-        className={`block rounded px-2 py-1 text-sm transition-colors ${
-          isActive
-            ? 'bg-opteryx-teal/10 text-opteryx-teal'
-            : 'text-gray-800 hover:text-opteryx-navy hover:bg-gray-100'
-        }`}
+        className={`nav-item d1${isActive ? " active" : ""}`}
       >
-        {item.title}
+        <span className="nav-label">{item.title}</span>
       </Link>
-    )
-  }
+    );
+  };
 
-  const isReleasesPage = pathname.startsWith('/releases')
+  const isReleasesPage = pathname.startsWith("/releases");
 
   const releasesNav: DocsNavSection[] = [
     {
-      title: 'Releases',
+      title: "Releases",
       items: [
-        { title: 'Overview', href: '/releases' },
-        { title: 'Web site', href: '/releases/web' },
-        { title: 'API', href: '/releases/api' },
-        { title: 'SQL', href: '/releases/sql' },
+        { title: "Overview", href: "/releases" },
+        { title: "Web site", href: "/releases/web" },
+        { title: "API", href: "/releases/api" },
+        { title: "SQL", href: "/releases/sql" },
       ],
     },
-  ]
+  ];
 
-  const navToRender = isReleasesPage ? releasesNav : sidebarNav
+  const navToRender = isReleasesPage ? releasesNav : sidebarNav;
 
   return (
-    <aside className="docs-sidebar hidden md:block md:w-64 lg:w-72 border-r border-gray-200 overflow-y-auto sticky top-0 h-screen pt-4">
-      <nav className="px-4 pb-8">
+    <aside className="docs-sidebar">
+      <nav>
         {navToRender.map((section) => (
-          <div key={section.title} className="mb-4">
-            <div className="font-bold text-gray-900 mb-2 px-2">{section.title}</div>
-            <div className="space-y-0.5">
-              {section.items.map((item) => renderLevel2Item(section.title, item))}
-            </div>
+          <div key={section.title} className="nav-group">
+            <div className="nav-group-title">{section.title}</div>
+            {section.items.map((item) => renderLevel2Item(section.title, item))}
           </div>
         ))}
       </nav>
     </aside>
-  )
+  );
 }
