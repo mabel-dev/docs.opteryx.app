@@ -22,8 +22,6 @@ The same cold query now completes in **~10 seconds**.
 
 The key lesson: **when reading from object storage, throughput alone isn’t enough — the granularity of work matters.**
 
----
-
 ## The Problem
 
 While profiling Opteryx we noticed queries stalling even though the execution engine itself appeared efficient.
@@ -54,9 +52,7 @@ The first assumption was insufficient read parallelism.
 
 The number of IO workers was increased:
 
-~~~
-8 → 16 → 32
-~~~
+> 8 → 16 → 32
 
 This produced almost no change in query time.
 
@@ -72,20 +68,16 @@ The issue was how data was being delivered to the engine.
 
 The Parquet files in the dataset were roughly:
 
-~~~
-128MB uncompressed
-~30MB compressed in object storage
-~~~
+> 128MB uncompressed
+> ~30MB compressed in object storage
 
 The IO subsystem was issuing large contiguous reads. Even with many workers the pattern looked roughly like this:
 
-~~~
-issue read
-wait for blob
-large chunk arrives
-engine consumes
-wait for next read
-~~~
+1. issue read
+2. wait for blob
+3. large chunk arrives
+4. engine consumes
+5. wait for next read
 
 The network was busy, but usable data arrived in bursts.
 
@@ -109,13 +101,9 @@ Reads, decompression, and decoding are pipelined so the execution engine begins 
 
 The unit of work changed from:
 
-~~~
-file
-~~~
-to:
-~~~
-column chunk within a row group
-~~~
+> file
+> to:
+> column chunk within a row group
 
 This allows the system to deliver smaller fragments of data continuously rather than waiting for large reads to complete.
 
@@ -123,15 +111,11 @@ This allows the system to deliver smaller fragments of data continuously rather 
 
 The initial redesign reduced query time significantly:
 
-~~~
-~5 minutes → ~1 minute
-~~~
+> ~5 minutes → ~1 minute
 
 After further improvements to buffering, file sizes and execution scheduling, the same cold query now completes in approximately:
 
-~~~
-~10 seconds
-~~~
+> ~10 seconds
 
 The improvement did not come from increasing available bandwidth. In fact, single-threaded decode performance is slightly slower with the new reader.
 
