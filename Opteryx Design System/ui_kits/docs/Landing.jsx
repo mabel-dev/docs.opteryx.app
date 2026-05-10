@@ -87,11 +87,13 @@ function DocsLanding() {
             </div>
             <div className="res">
               <div className="ln">┌─────────┬────────┐</div>
-              <div className="ln">│ name │ mass │</div>
+              <div className="ln">
+                │ &nbsp;&nbsp;&nbsp;name │ &nbsp;&nbsp;mass │
+              </div>
               <div className="ln">├─────────┼────────┤</div>
               <div className="ln">│ Jupiter │ 1898.0 │</div>
-              <div className="ln">│ Saturn │ 568.0 │</div>
-              <div className="ln">│ Neptune │ 102.0 │</div>
+              <div className="ln">│ &nbsp;Saturn │ &nbsp;568.0 │</div>
+              <div className="ln">│ Neptune │ &nbsp;102.0 │</div>
               <div className="ln">└─────────┴────────┘</div>
             </div>
           </div>
