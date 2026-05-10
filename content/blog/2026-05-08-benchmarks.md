@@ -19,8 +19,6 @@ tags:
 * We spent the last few months rewriting the execution layer; as it stabilises we've found blind spots in our internal tests.
 * Running community benchmarks exposed missing features, optimiser blind spots, and performance cliffs.
 
-⸻
-
 ## The problem: invisible gaps
 
 Internal tests don’t lie - they just measure what you thought to test.
@@ -37,8 +35,6 @@ GROUP BY category
 
 We had no tests which operated on aggregation results. That sounds obvious in hindsight, but it simply wasn’t a shape our previous suite exercised.
 
-⸻
-
 ## The approach: benchmarks are opinions
 
 Benchmarks aren’t a single truth. They’re a collection of opinions about what matters.
@@ -53,8 +49,6 @@ We use [SQLLogicTest](https://sqlite.org/sqllogictest/doc/trunk/about.wiki) for 
 
 What SQLLogicTest bought us reproducible runs, and as most other benchmarks are focused on timings and not the outputs, it brought us output verification.
 
-⸻
-
 ### 2. H2O db-benchmark — community comparison
 
 [H2O](https://h2oai.github.io/db-benchmark/) is useful because other engines publish numbers against it.
@@ -67,8 +61,6 @@ It helped expose feature gaps first:
 
 It also gives us a rough sense of where we sit on common aggregation and join workloads.
 
-⸻
-
 ### 3. ClickBench — analytics workloads
 
 [ClickBench](https://benchmark.clickhouse.com/) is where practical OLAP behaviour starts showing up.
@@ -76,8 +68,6 @@ It also gives us a rough sense of where we sit on common aggregation and join wo
 The dataset is larger, the queries are aggregation and filter heavy, and performance cliffs become obvious quickly.
 
 This exposed aggregation paths that were technically correct but slower than they should have been. We have been using ClickBench to guide our rewrite of the aggregation layer as we rewrote it from scratch having removed Arrow from the system..
-
-⸻
 
 ### 4. TPC-H — optimiser completeness
 
@@ -92,8 +82,6 @@ It stresses:
 
 This exposed places where our heuristics and cost model weren’t robust enough yet.
 
-⸻
-
 ### 5. JOB — join ordering precision
 
 [JOB](https://github.com/gregrahn/join-order-benchmark) is brutal in a very specific way.
@@ -105,8 +93,6 @@ It exposed weaknesses in:
 * join‑order selection
 
 You can have a correct optimiser and still produce catastrophically bad plans if the estimates are wrong. JOB makes those mistakes very obvious.
-
-⸻
 
 ## What we found
 
@@ -121,8 +107,6 @@ You can have a correct optimiser and still produce catastrophically bad plans if
 **JOB** — Statistics gaps hurting join ordering. Very similar to to TPC-H, but with improvements on how the optimizer uses the statistics to make decisions..
 
 These findings form a priority queue: correctness → feature parity → optimiser robustness → targeted performance work.
-
-⸻
 
 ## Why this matters
 
@@ -139,8 +123,6 @@ For us, benchmarks serve two purposes:
 
 * verification — closing behavioural blind spots
 * comparison — understanding where we lag and why
-
-⸻
 
 ## Engineering takeaways
 

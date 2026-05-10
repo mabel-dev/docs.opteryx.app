@@ -23,8 +23,6 @@ On [ClickBench](https://benchmark.clickhouse.com/#system=-ndd&type=-&machine=+ca
 
 So we stopped trying to optimise around it and started replacing Arrow with something designed for how [Opteryx](https://opteryx.app/) actually runs queries.
 
-⸻
-
 ## The starting point
 
 Arrow solved real problems for us early on.
@@ -40,8 +38,6 @@ And to be clear, Arrow is a good fit for a lot of systems. If your problem is in
 This isn’t a post about Arrow being bad.
 
 It’s about hitting a limit.
-
-⸻
 
 ## The problem we kept seeing
 
@@ -65,8 +61,6 @@ A typical path looked like:
 
 Every step between those had a cost.
 
-⸻
-
 ## A concrete example
 
 This showed up clearly when we reworked our [LIKE](https://docs.opteryx.app/blog/2026-04-10-like-performance) operator.
@@ -76,8 +70,6 @@ The original path moved data from Arrow → NumPy → Python.
 When we processed the Arrow buffers directly, we cut about 7 seconds off a run over 100 million strings.
 
 That wasn’t a clever optimisation. It was just removing transitions.
-
-⸻
 
 ## The conversion tax
 
@@ -110,8 +102,6 @@ In theory Arrow supports zero-copy. In practice, null handling and layout differ
 
 So we ended up duplicating and adapting data instead.
 
-⸻
-
 ## We tried to push Arrow further
 
 Before replacing it, we tried to make it work.
@@ -126,8 +116,6 @@ At the same time, the engine was getting more complicated. Each workaround made 
 
 At some point it became clear we were optimising around the mismatch instead of removing it.
 
-⸻
-
 ## The decision
 
 Once we framed it properly, the direction was obvious.
@@ -135,8 +123,6 @@ Once we framed it properly, the direction was obvious.
 If we wanted to move the performance ceiling, we needed to own the memory model used in execution.
 
 That’s where Draken came from.
-
-⸻
 
 ## What Draken is designed to do
 
@@ -162,8 +148,6 @@ We want the memory layout to match how the engine actually executes, not how a g
 
 We still align with Parquet where it makes sense — things like dictionary encoding still matter — but we’re not bound to Arrow’s internal structure.
 
-⸻
-
 ## Why this changes the ceiling
 
 The gains here don’t come from a single optimisation.
@@ -176,8 +160,6 @@ They come from removing whole categories of work:
 
 That makes things faster, but more importantly it makes further improvements easier.
 
-⸻
-
 ## The engineering lesson
 
 Arrow was a good starting point, but it wasn’t the right execution format for Opteryx long term.
@@ -187,8 +169,6 @@ The mismatch between memory model and execution model kept showing up as overhea
 Owning the format let us remove that friction.
 
 That’s where the gain comes from — not a faster component, but a simpler path.
-
-⸻
 
 ## One unexpected win
 

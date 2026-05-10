@@ -18,15 +18,11 @@ tags:
 
 A small, surgical change to the memory pool produced a 10x improvement in allocation/commit throughput. We moved metadata tracking out of Python and into a compact C++ structure, preserved the public API, and avoided a large rewrite. The result: much higher throughput, lower variance, and no behavioural changes for users.
 
----
-
 ## The problem
 
 The `MemoryPool` is central to query execution: it allocates buffers, manages lifetime, supports zero‑copy reads, and compacts segments. For years the pool tracked segment metadata using Python `dict`s. That was simple and readable — but slow.
 
 In a tight allocate→read→release loop (the exact pattern used across query plans and streaming workloads) Python hash-table lookups and object overhead dominated the hot path. The metadata lookups were the bottleneck.
-
----
 
 ## The change
 
@@ -38,8 +34,6 @@ We did three things, incrementally and carefully:
 
 The key principle was minimalism: replace just the slow part and keep everything else stable.
 
----
-
 ## Why this works
 
 - Metadata access is performance‑critical but implementation‑local. Users call the same APIs; they do not rely on Python `dict` semantics for internal bookkeeping.
@@ -47,8 +41,6 @@ The key principle was minimalism: replace just the slow part and keep everything
 - Keeping the public API stable means tests, consumers, and integrations continue to work without change.
 
 We also retained Python `RLock` for synchronization because C++ template types cannot be embedded in Cython classes in our current layout — a pragmatic compromise that keeps thread-safety intact.
-
----
 
 ## Results
 
@@ -61,16 +53,12 @@ Improvement: 10.4x faster
 
 This is a meaningful change, not a micro‑tweak — it shifts the envelope for memory‑bound workloads and reduces variance introduced by the Python runtime.
 
----
-
 ## Where it matters
 
 - Read cache: we're planning to use the MemoryPool as a read-caching layer as part of continual IO-stack improvements — enabling hot-block reuse, reducing physical IO, and improving tail latency for common queries.
 - Morsel exchange: during the execution-engine rewrite the pool will act as the morsel exchange between operators, enabling efficient, zero-copy morsel handoffs and clearer ownership boundaries for execution stages.
 - Zero‑copy flows: lower latency between producers and consumers when memory handoffs are fast and predictable.
 - Classic Opteryx: historically the MemoryPool served as the buffer pool; these planned uses extend that role into caching and operator exchange while preserving the same minimal, native hot path and public API.
-
----
 
 ## How we approached it
 
@@ -83,8 +71,6 @@ This was not a rewrite. The steps were:
 5. Run the full test-suite and benchmark under representative loads.
 
 The result was surgical: small, reviewable changes with a large impact.
-
----
 
 ## The broader lesson
 

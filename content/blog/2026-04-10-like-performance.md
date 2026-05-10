@@ -18,8 +18,6 @@ tags:
 
 The LIKE operator, particularly the `'%needle%'` pattern (substring search), went from 93 seconds in [Opteryx](https://opteryx.app/) 0.19.0 to 7.46 seconds in 0.26.2. The improvement came in stages: fixing the IO stack, recognising that `'%needle%'` is really a CONTAINS check (not a regex), direct buffer access, and adopting the Volnitsky algorithm with a sieve prefilter. We're now at ~2x overhead compared to single-threaded C++ engines, and we're pushing further by removing Arrow and eliminating GIL overhead in the search path.
 
----
-
 ## The Problem
 
 Substring search in SQL is ubiquitous: filtering user IDs, matching partial text, finding patterns in logs. The LIKE operator handles this, but implementation details matter enormously.
@@ -28,15 +26,11 @@ Our reference point is **[ClickBench](https://benchmark.clickhouse.com/) query 2
 
 January 2025, Opteryx 0.19.0:
 
-~~~
-93.27 seconds
-~~~
+> 93.27 seconds
 
 That's unacceptable. For comparison, C++/Rust engines like DuckDB and Clickhouse doing the same work were completing in under 4 seconds.
 
 Profiling showed a large part of the problem wasn't algorithmic — it was fundamental. The IO stack was stalling execution. Improving string search was pointless if the data wasn't arriving.
-
----
 
 ## Stage 1: IO Stack Fix (0.19.0 → 0.20.0)
 
@@ -44,13 +38,9 @@ The first 30 seconds of that 93-second runtime was the IO bottleneck. Rewriting 
 
 By 0.20.0, roughly one month later:
 
-~~~
-56.82 seconds
-~~~
+> 56.82 seconds
 
 Better, but still nowhere near 4 seconds. The string search itself was still slow.
-
----
 
 ## Stage 2: Recognising LIKE '%needle%' is CONTAINS (0.20.0 → 0.22.0)
 
@@ -68,7 +58,7 @@ The key observation: **most LIKE queries in practice use the `'%needle%'` form**
 
 We added a new operator, INSTR, and new strategy in the optimizer:
 
-~~~
+~~~python
 if pattern matches '%NEEDLE%':
   return INSTR(column, needle) != -1
 ~~~
@@ -77,13 +67,9 @@ Instead of a full regex evaluation, we now do a direct substring check. This was
 
 0.22.0:
 
-~~~
-17.57 seconds
-~~~
+> 17.57 seconds
 
 A 3.2x improvement over the previous version. Still not 4 seconds, but progress.
-
----
 
 ## Stage 3: Direct Buffer Access & Boyer-Moore-Horspool (0.22.0 → 0.26.2)
 
@@ -101,13 +87,9 @@ We also added a **sieve prefilter**: before running the full search, we check if
 
 Results, 0.26.2:
 
-~~~
-7.46 seconds
-~~~
+> 7.46 seconds
 
 Now we're only 1.8x slower than the C++ engines. We were pleased with this given at it's heart, Opteryx is mostly written in Python.
-
----
 
 ## Stage 4: Volnitsky & Removing Arrow (Current Work)
 
@@ -124,8 +106,6 @@ We've adopted the **[Volnitsky algorithm](https://github.com/ox/Volnitsky-ruby)*
 - Clearer separation between "find first candidate" and "verify match"
 
 Early results suggest we can hit the 4 second bar set by other engines, and as all things go in circles, 2.8s of our current 3.8s lab benchmark is IO again.
-
----
 
 ## The Lesson
 

@@ -19,8 +19,6 @@ tags:
 
 Our REGEXP_REPLACE performance on [ClickBench](https://benchmark.clickhouse.com/) was 10x slower than peers. Swapping regex engines barely moved the needle. The fix wasn't finding a faster regex engine, it was avoiding regex entirely. We built a specialised DFA and reduced query times to near parity.
 
----
-
 ## The Problem
 
 REGEXP_REPLACE was eating our lunch.
@@ -30,8 +28,6 @@ I'll be honest, when we first started publishing to [ClickBench](https://benchma
 After many iterations of the engine, performance of queries like Query 28 being ~10x slower than engines like [DuckDB](https://duckdb.org/) stands out like a sore thumb.
 
 When a single operator dominates runtime, that naively feels like an easy win.
-
----
 
 ## We Tried the Obvious Thing First
 
@@ -45,8 +41,6 @@ Maybe 5% in some cases. Hard to separate from noise. That's not a breakthrough â
 
 Conclusion: the regex engine wasn't the bottleneck.
 
----
-
 ## The Pivot
 
 If a faster regex engine wasn't the answer, what was?
@@ -56,8 +50,6 @@ Most REGEXP_REPLACE calls we see don't need full regex - they're mostly extract 
 We had brought a regex to a slice fight.
 
 Turns out, you don't need backtracking to do patterned string slicing. You could use a [deterministic finite automaton](https://en.wikipedia.org/wiki/Deterministic_finite_automaton) (DFA).
-
----
 
 ## What We Built
 
@@ -74,8 +66,6 @@ Design:
 
 The key idea is embarrassingly simple: compile a rule you can progress through the string monotonically to execute.
 
----
-
 ## Results
 
 From our lab ClickBench runs (non-published):
@@ -84,13 +74,9 @@ We went from 60 seconds down to 10. Same workload, same query shape, just a diff
 
 This isn't a small optimisation. It changes the cost profile of the query.
 
----
-
 ## Engineering Lessons
 
 One of the strengths of SQL is the engine is free to choose how it processes the user's request. Here, we were given a regex so we naively processed it as a regex, rather than using regex as the language to describe the intent and choosing the fastest way for us to meet that ask.
-
----
 
 ## Final Thought
 
