@@ -37,10 +37,10 @@ The workload was straightforward:
 
 A simple query was sufficient to surface the issue:
 
-~~~sql
+```sql
 SELECT DISTINCT column
 FROM dataset;
-~~~
+```
 
 Runtime was approximately five minutes.
 
