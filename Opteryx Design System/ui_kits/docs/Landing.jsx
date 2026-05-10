@@ -3,7 +3,16 @@
 
 function IconArrow() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M5 12h14M13 5l7 7-7 7" />
     </svg>
   );
@@ -25,10 +34,16 @@ function DocsLanding() {
         <section className="lp-ed-hero">
           <div>
             <div className="eyebrow">Documentation</div>
-            <h1>Query <em>anything,</em><br />in plain SQL.</h1>
+            <h1>
+              Query <em>anything,</em>
+              <br />
+              in plain SQL.
+            </h1>
           </div>
           <div className="meta">
-            <strong>Opteryx</strong> is a small, fast SQL engine that runs where your data already is — local files, object storage, dataframes, or a remote service.
+            <strong>Opteryx</strong> is a small, fast SQL engine that runs where
+            your data already is — local files, object storage, dataframes, or a
+            remote service.
           </div>
         </section>
 
@@ -36,24 +51,48 @@ function DocsLanding() {
           <div className="text">
             <div className="lbl">Start here · 5 min</div>
             <h2>Your first query, in less time than this paragraph.</h2>
-            <p>Install with pip, point at a Parquet file, and pull rows back. No cluster, no schema upfront — just SQL.</p>
-            <a href="#" className="ed-cta">Open quickstart <IconArrow /></a>
+            <p>
+              Install with pip, point at a Parquet file, and pull rows back. No
+              cluster, no schema upfront — just SQL.
+            </p>
+            <a href="#" className="ed-cta">
+              Open quickstart <IconArrow />
+            </a>
           </div>
           <div className="demo">
-            <span className="ln"><span className="com"># pip install opteryx</span></span>
-            <span className="ln"><span className="kw">SELECT</span> name, mass</span>
-            <span className="ln">  <span className="kw">FROM</span> <span className="str">'orders.parquet'</span></span>
-            <span className="ln"> <span className="kw">WHERE</span> mass &gt; <span className="num">1.0</span></span>
-            <span className="ln"> <span className="kw">ORDER BY</span> mass <span className="kw">DESC</span></span>
-            <span className="ln"> <span className="kw">LIMIT</span> <span className="num">3</span>;</span>
+            <div className="ln">
+              <span className="com"># pip install opteryx</span>
+            </div>
+            <div className="ln">
+              <span className="kw">SELECT</span> name, mass
+            </div>
+            <div className="ln">
+              {" "}
+              <span className="kw">FROM</span>{" "}
+              <span className="str">'orders.parquet'</span>
+            </div>
+            <div className="ln">
+              {" "}
+              <span className="kw">WHERE</span> mass &gt;{" "}
+              <span className="num">1.0</span>
+            </div>
+            <div className="ln">
+              {" "}
+              <span className="kw">ORDER BY</span> mass{" "}
+              <span className="kw">DESC</span>
+            </div>
+            <div className="ln">
+              {" "}
+              <span className="kw">LIMIT</span> <span className="num">3</span>;
+            </div>
             <div className="res">
-              <span className="ln">┌─────────┬────────┐</span>
-              <span className="ln">│ name    │  mass  │</span>
-              <span className="ln">├─────────┼────────┤</span>
-              <span className="ln">│ Jupiter │ 1898.0 │</span>
-              <span className="ln">│ Saturn  │  568.0 │</span>
-              <span className="ln">│ Neptune │  102.0 │</span>
-              <span className="ln">└─────────┴────────┘</span>
+              <div className="ln">┌─────────┬────────┐</div>
+              <div className="ln">│ name │ mass │</div>
+              <div className="ln">├─────────┼────────┤</div>
+              <div className="ln">│ Jupiter │ 1898.0 │</div>
+              <div className="ln">│ Saturn │ 568.0 │</div>
+              <div className="ln">│ Neptune │ 102.0 │</div>
+              <div className="ln">└─────────┴────────┘</div>
             </div>
           </div>
         </section>
@@ -61,8 +100,15 @@ function DocsLanding() {
         <section className="lp-ed-secondary">
           <div className="lp-ed-tile">
             <div className="lbl">// reference</div>
-            <h3><a href="#" className="tile-title">SQL Reference</a></h3>
-            <p>Statements, expressions, functions, operators, and data types — the full Opteryx grammar.</p>
+            <h3>
+              <a href="#" className="tile-title">
+                SQL Reference
+              </a>
+            </h3>
+            <p>
+              Statements, expressions, functions, operators, and data types —
+              the full Opteryx grammar.
+            </p>
             <div className="links">
               <a href="#">SELECT</a>
               <a href="#">JOINs</a>
@@ -74,8 +120,15 @@ function DocsLanding() {
           </div>
           <div className="lp-ed-tile">
             <div className="lbl">// reference</div>
-            <h3><a href="#" className="tile-title">API Reference</a></h3>
-            <p>Embed Opteryx in Python, or call it over HTTP. Connection objects, cursors, and results.</p>
+            <h3>
+              <a href="#" className="tile-title">
+                API Reference
+              </a>
+            </h3>
+            <p>
+              Embed Opteryx in Python, or call it over HTTP. Connection objects,
+              cursors, and results.
+            </p>
             <div className="links">
               <a href="#">opteryx.query</a>
               <a href="#">Connections</a>
@@ -89,7 +142,10 @@ function DocsLanding() {
         <section className="lp-ed-community">
           <div className="text">
             <h4>Stuck? Talk to a human.</h4>
-            <p>The Opteryx community hangs out on Discord — maintainers included. Most questions get answered within the hour.</p>
+            <p>
+              The Opteryx community hangs out on Discord — maintainers included.
+              Most questions get answered within the hour.
+            </p>
           </div>
           <a href="#" className="discord">
             <span className="dot"></span>
