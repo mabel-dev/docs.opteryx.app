@@ -1007,6 +1007,7 @@ kbd {
     text-decoration: none;
 }
 .lp-ed-feature .demo {
+    margin: 0;
     padding: 28px 32px;
     background:
         linear-gradient(
@@ -1023,9 +1024,8 @@ kbd {
     font-size: 13px;
     line-height: 1.85;
     border-left: 1px solid rgba(255, 255, 255, 0.06);
-}
-.lp-ed-feature .demo .ln {
-    display: block;
+    white-space: pre;
+    overflow-x: auto;
 }
 .lp-ed-feature .demo .kw {
     color: #5eead4;
