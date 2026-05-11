@@ -86,15 +86,27 @@ function DocsLanding() {
               <span className="kw">LIMIT</span> <span className="num">3</span>;
             </div>
             <div className="res">
-              <div className="ln">┌─────────┬────────┐</div>
               <div className="ln">
-                │ &nbsp;&nbsp;&nbsp;name │ &nbsp;&nbsp;mass │
+                <pre>┌─────────┬────────┐</pre>
               </div>
-              <div className="ln">├─────────┼────────┤</div>
-              <div className="ln">│ Jupiter │ 1898.0 │</div>
-              <div className="ln">│ &nbsp;Saturn │ &nbsp;568.0 │</div>
-              <div className="ln">│ Neptune │ &nbsp;102.0 │</div>
-              <div className="ln">└─────────┴────────┘</div>
+              <div className="ln">
+                <pre>│ name │ mass │</pre>
+              </div>
+              <div className="ln">
+                <pre>├─────────┼────────┤</pre>
+              </div>
+              <div className="ln">
+                <pre>│ Jupiter │ 1898.0 │</pre>
+              </div>
+              <div className="ln">
+                <pre>│ Saturn │ 568.0 │</pre>
+              </div>
+              <div className="ln">
+                <pre>│ Neptune │ 102.0 │</pre>
+              </div>
+              <div className="ln">
+                <pre>└─────────┴────────┘</pre>
+              </div>
             </div>
           </div>
         </section>
