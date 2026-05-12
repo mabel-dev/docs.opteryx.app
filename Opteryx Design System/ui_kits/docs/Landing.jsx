@@ -86,12 +86,8 @@ function DocsLanding() {
               <span className="kw">LIMIT</span> <span className="num">3</span>;
             </div>
             <div className="res">
-              <div className="ln">
-                <pre>┌─────────┬────────┐</pre>
-              </div>
-              <div className="ln">
-                <pre>│ name │ mass │</pre>
-              </div>
+              <div className="ln">┌─────────┬────────┐</div>
+              <div className="ln">│ name │ mass │</div>
               <div className="ln">
                 <pre>├─────────┼────────┤</pre>
               </div>
