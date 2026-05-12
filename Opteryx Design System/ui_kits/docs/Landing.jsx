@@ -87,28 +87,12 @@ function DocsLanding() {
             </div>
             <div className="res">
               <div className="ln">┌─────────┬────────┐</div>
-              <div className="ln">
-                │ <span> </span>
-                <span> </span>
-                <span> </span>name │ <span> </span>mass │
-              </div>
-              <div className="ln">
-                <pre>├─────────┼────────┤</pre>
-              </div>
-              <div className="ln">
-                <pre>│ Jupiter │ 1898.0 │</pre>
-              </div>
-              <div className="ln">
-                <pre>
-                  │ <span> </span>Saturn │ 568.0 │
-                </pre>
-              </div>
-              <div className="ln">
-                <pre>│ Neptune │ 102.0 │</pre>
-              </div>
-              <div className="ln">
-                <pre>└─────────┴────────┘</pre>
-              </div>
+              <div className="ln">│ ...name │ ..mass │</div>
+              <div className="ln">├─────────┼────────┤</div>
+              <div className="ln">│ Jupiter │ 1898.0 │</div>
+              <div className="ln">│ .Saturn │ .568.0 │</div>
+              <div className="ln">│ Neptune │ .102.0 │</div>
+              <div className="ln">└─────────┴────────┘</div>
             </div>
           </div>
         </section>
