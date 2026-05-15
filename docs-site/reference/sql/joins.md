@@ -11,14 +11,10 @@ Joins allow you to combine data from multiple relations (tables or datasets) int
 
 ~~~
 FROM left_relation CROSS JOIN right_relation
-~~~
-~~~
 FROM left_relation, right_relation
 ~~~
 
 A `CROSS JOIN` returns the Cartesian product (all possible combinations) of two relations. Each row from the left relation is paired with every row from the right relation.
-
-**Syntax**
 
 Cross joins can be specified using either the explicit `CROSS JOIN` syntax or by listing multiple relations in the `FROM` clause separated by commas.
 
@@ -44,7 +40,7 @@ An `INNER JOIN` returns only the rows from both relations where the values in th
 
 **Syntax**
 
-You can specify an `INNER JOIN` using the full `INNER JOIN` keyword or the shorter `JOIN` keyword. You can define the joining condition using either the `ON` clause or the `USING(column)` syntax.
+You can specify an `INNER JOIN` using the full `INNER JOIN` keyword or the shorter `JOIN` keyword. You can define the joining condition using either the `ON` clause or the `USING (column)` syntax.
 
 ~~~sql
 SELECT *
@@ -68,9 +64,17 @@ In this example, the blue column is used as the joining column in both relations
 FROM left_relation NATURAL JOIN right_relation
 ~~~
 
-A `NATURAL JOIN` performs a join similar to an `INNER JOIN` where the join conditions are automatically determined. It creates equality conditions between all columns with matching names in both relations. This approach is generally not recommended for production systems, as queries using `NATURAL JOIN` are fragile and can break when schemas change (e.g., when new columns with matching names are added).
+A `NATURAL JOIN` performs a join similar to an `INNER JOIN` where the join conditions are automatically determined. It creates equality conditions between all columns with matching names in both relations.
 
-**Special behavior:** Performing a self `NATURAL JOIN` (using the same relation for both left and right sides) effectively filters out rows containing `null` values in any column.
+**Gotchas**
+
+- **Schema changes silently break queries.** If a new column is added to either relation with the same name as a column in the other, it will be picked up as a join condition without any warning. Queries that previously returned correct results may return wrong results or no results at all.
+- **Join columns are implicit.** There is no way to tell from the query itself which columns are being used to join — you must inspect the schemas of both relations. This makes queries harder to read, review, and debug.
+- **Accidental matches are easy.** Common column names like `id`, `name`, or `created_at` will be joined on automatically, even if they refer to unrelated concepts in each relation.
+
+For these reasons, `NATURAL JOIN` is not recommended in production systems. An explicit `INNER JOIN ... ON` or `INNER JOIN ... USING` makes the join conditions visible and safe.
+
+**Special behavior:** Performing a self `NATURAL JOIN` (using the same relation for both left and right sides) effectively filters out rows containing `null` values in any column. This can be used as a concise way to remove incomplete rows from a dataset, though an explicit `WHERE` clause is usually clearer.
 
 ## LEFT JOIN
 
@@ -78,20 +82,24 @@ A `NATURAL JOIN` performs a join similar to an `INNER JOIN` where the join condi
 FROM left_relation LEFT [ OUTER ] JOIN right_relation ON condition
 ~~~
 
-A `LEFT JOIN` returns all rows from the left relation. For rows with matching values in the right relation, the corresponding right relation columns are included. For rows without a match, the right relation columns are filled with `null` values.
+A `LEFT JOIN` returns all rows from the left relation. For rows with matching values in the right relation, the corresponding right relation columns are included. For rows without a match, the right relation columns are filled with `null` values. The `OUTER` keyword is optional and does not change behaviour.
 
 **Syntax**
 
 ~~~sql
 SELECT *
   FROM left_relation
-  LEFT OUTER JOIN right_relation
+  LEFT JOIN right_relation
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
 ![LEFT JOIN](/images/left-join.svg)
 
 ## RIGHT JOIN
+
+~~~
+FROM left_relation RIGHT [ OUTER ] JOIN right_relation ON condition
+~~~
 
 A `RIGHT JOIN` is functionally equivalent to a `LEFT JOIN` with the left and right relations swapped. It returns all rows from the right relation, with matching left relation data where available, and `null` values for non-matching rows.
 
@@ -120,7 +128,7 @@ SELECT *
 FROM left_relation LEFT SEMI JOIN right_relation ON condition
 ~~~
 
-The `LEFT SEMI JOIN` performs an intersection between the left and right relations, but returns only columns from the left relation. This is useful when you want to filter the left relation to only include rows that have matching rows in the right relation, without actually including any columns from the right relation.
+A `LEFT SEMI JOIN` returns rows from the left relation that have at least one matching row in the right relation, but includes only columns from the left relation. This is useful when you want to filter the left relation based on the existence of a match in the right relation, without including any columns from the right relation in the result.
 
 **Syntax**
 
@@ -135,7 +143,7 @@ SELECT *
 
 ## RIGHT SEMI JOIN
 
-A `RIGHT SEMI JOIN` is functionally equivalent to a `LEFT SEMI JOIN` with the left and right relations swapped.
+Opteryx does not support `RIGHT SEMI JOIN`. Use a `LEFT SEMI JOIN` with the relations swapped to achieve the same result.
 
 ## LEFT ANTI JOIN
 
@@ -158,4 +166,6 @@ SELECT *
 
 ## RIGHT ANTI JOIN
 
-A `RIGHT ANTI JOIN` is functionally equivalent to a `LEFT ANTI JOIN` with the left and right relations swapped.
+Opteryx does not support `RIGHT ANTI JOIN`. Use a `LEFT ANTI JOIN` with the relations swapped to achieve the same result.
+
+
