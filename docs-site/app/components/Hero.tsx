@@ -95,10 +95,10 @@ export default function Hero() {
               </span>
               <span className="ln">&#9474; Jupiter &#9474; 1898.0 &#9474;</span>
               <span className="ln">
-                &#9474; Saturn &nbsp; &#9474; &nbsp; 568.0 &#9474;
+                &#9474; Saturn&nbsp; &#9474; &nbsp;568.0 &#9474;
               </span>
               <span className="ln">
-                &#9474; Neptune &#9474; &nbsp; 102.0 &#9474;
+                &#9474; Neptune &#9474; &nbsp;102.0 &#9474;
               </span>
               <span className="ln">
                 &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
