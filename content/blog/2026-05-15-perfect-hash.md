@@ -91,11 +91,11 @@ In all three cases, `CarcharSet` remains the fallback for anything outside the e
 
 The eligibility check is deliberate and conservative.
 
-| Path | Criterion | Bounds source |
-|---|---|---|
-| `IN`-list | All literals are non-null integers; `max − min < 262,144` | Exact: computed from literals at plan time |
-| `DISTINCT` | Column type is `INT8` or `INT16` | Type-bound: guaranteed by the type system |
-| Semi/anti-join | First right morsel is `INT8` or `INT16` | Same type-bound |
+Path | Criterion | Bounds source
+-- | -- | --
+`IN`-list | All literals are non-null integers; `max − min < 262,144` | Exact: computed from literals at plan time
+`DISTINCT` | Column type is `INT8` or `INT16` | Type-bound: guaranteed by the type system
+Semi/anti-join | First right morsel is `INT8` or `INT16` | Same type-bound
 
 The 262,144-slot cap isn't arbitrary — it's where 32 KB of bit-array fits in a typical L1 cache. Beyond that, the access pattern on a larger array degrades toward the random-access cost of the hash table it would replace, and you've gained nothing.
 
@@ -117,10 +117,10 @@ I feel like this is one of those bugs that's obvious in retrospect and completel
 
 Measured on 1M-row synthetic arrays, ARM (Apple Silicon), dev build:
 
-| Path | CarcharSet | PerfectHashSet | Speedup |
-|---|---|---|---|
-| `IN`-list, `int64`, range 1–100 | 6.1 ms | 2.9 ms | **2.1×** |
-| `IN`-list, `int8` column | 6.3 ms | 3.6 ms | **1.7×** |
+Path | CarcharSet | PerfectHashSet | Speedup
+-- | -- | -- | --
+`IN`-list, `int64`, range 1–100 | 6.1 ms | 2.9 ms | **2.1×**
+`IN`-list, `int8` column | 6.3 ms | 3.6 ms | **1.7×**
 
 The `int64` path gains more because the hash computation dominates for 64-bit keys. The `int8` path is already cheaper to hash (Draken uses compact fixed-width hashing for narrow types), so the relative gain is smaller — but still meaningful.
 
