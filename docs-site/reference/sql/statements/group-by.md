@@ -9,19 +9,19 @@ The `GROUP BY` clause groups rows by one or more columns and applies aggregate f
 
 ## Basic Syntax
 
-```sql
+~~~sql
 SELECT column1, column2, aggregate_function(column3)
   FROM relation_name
  WHERE conditions
  GROUP BY column1, column2
  ORDER BY ...;
-```
+~~~
 
 ## Grouping by Columns
 
 Group results by one or more columns:
 
-```sql
+~~~sql
 SELECT category, COUNT(*) AS item_count
   FROM products
  GROUP BY category;
@@ -29,18 +29,18 @@ SELECT category, COUNT(*) AS item_count
 SELECT country, city, COUNT(*) AS user_count
   FROM users
  GROUP BY country, city;
-```
+~~~
 
 ## GROUP BY ALL
 
 Include all non-aggregated columns from the `SELECT` list automatically:
 
-```sql
+~~~sql
 SELECT category, brand, COUNT(*) AS count
   FROM products
  GROUP BY ALL;
 -- Equivalent to: GROUP BY category, brand
-```
+~~~
 
 ## Common Aggregate Functions
 
@@ -53,43 +53,43 @@ SELECT category, brand, COUNT(*) AS count
 ## Examples
 
 ### Single Column Grouping
-```sql
+~~~sql
 SELECT status, COUNT(*) AS total
   FROM orders
  GROUP BY status
  ORDER BY total DESC;
-```
+~~~
 
 ### Multiple Column Grouping
-```sql
+~~~sql
 SELECT 
-  date_trunc('month', created_at) AS month,
+  EXTRACT(YEAR FROM created_at) AS year,
   category,
   COUNT(*) AS orders,
   SUM(amount) AS revenue,
   AVG(amount) AS avg_order_value
 FROM orders
-GROUP BY month, category
-ORDER BY month DESC, revenue DESC;
-```
+GROUP BY year, category
+ORDER BY year DESC, revenue DESC;
+~~~
 
 ### Conditional Aggregation
-```sql
+~~~sql
 SELECT 
   customer_id,
   COUNT(*) AS total_orders,
   SUM(CASE WHEN status = 'completed' THEN amount ELSE 0 END) AS completed_revenue
 FROM orders
 GROUP BY customer_id;
-```
+~~~
 
 ### With HAVING Filter
-```sql
+~~~sql
 SELECT category, COUNT(*) AS count
   FROM products
  GROUP BY category
  HAVING COUNT(*) > 10;
-```
+~~~
 
 ## Notes
 

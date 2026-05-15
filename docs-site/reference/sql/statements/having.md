@@ -9,12 +9,12 @@ The `HAVING` clause filters grouped results after aggregation. It is always used
 
 ## Basic Syntax
 
-```sql
+~~~sql
 SELECT column1, aggregate_function(column2)
   FROM relation_name
  GROUP BY column1
  HAVING condition;
-```
+~~~
 
 ## Key Differences from WHERE
 
@@ -24,15 +24,15 @@ SELECT column1, aggregate_function(column2)
 ## Examples
 
 ### Simple HAVING Filter
-```sql
+~~~sql
 SELECT category, COUNT(*) AS count
   FROM products
  GROUP BY category
  HAVING COUNT(*) > 5;
-```
+~~~
 
 ### Multiple Conditions
-```sql
+~~~sql
 SELECT 
   customer_id,
   COUNT(*) AS orders,
@@ -41,20 +41,23 @@ FROM orders
 GROUP BY customer_id
 HAVING COUNT(*) > 2 
    AND SUM(amount) > 1000;
-```
+~~~
 
 ### Using Aliases
-```sql
+
+Oteryx supports filtering by `SELECT` aliases in `HAVING`:
+
+~~~sql
 SELECT 
   department,
   AVG(salary) AS avg_salary
 FROM employees
 GROUP BY department
-HAVING AVG(salary) > 50000;
-```
+HAVING avg_salary > 50000;
+~~~
 
 ### Complex Aggregation
-```sql
+~~~sql
 SELECT 
   year,
   COUNT(DISTINCT customer_id) AS unique_customers,
@@ -63,7 +66,7 @@ FROM orders
 GROUP BY year
 HAVING COUNT(DISTINCT customer_id) > 100
    AND SUM(amount) > 100000;
-```
+~~~
 
 ## Notes
 
@@ -72,10 +75,10 @@ HAVING COUNT(DISTINCT customer_id) > 100
 - Combining `WHERE` and `HAVING` filters before and after grouping respectively.
 
 Example with both WHERE and HAVING:
-```sql
+~~~sql
 SELECT category, COUNT(*) AS count
   FROM products
  WHERE price > 10
  GROUP BY category
  HAVING COUNT(*) > 5;
-```
+~~~

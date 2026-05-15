@@ -9,31 +9,31 @@ The `WITH` clause defines Common Table Expressions (CTEs), which are named subqu
 
 ## Basic Syntax
 
-```sql
+~~~sql
 WITH cte_name AS (
   SELECT ... -- CTE query
 )
 SELECT ... -- Main query referencing the CTE
-```
+~~~
 
 ## Single CTE
 
 Define and use a single named subquery:
 
-```sql
+~~~sql
 WITH recent_orders AS (
   SELECT * FROM orders WHERE created_at > '2024-01-01'
 )
 SELECT customer_id, COUNT(*) AS order_count
   FROM recent_orders
  GROUP BY customer_id;
-```
+~~~
 
 ## Multiple CTEs
 
 Chain multiple CTEs together:
 
-```sql
+~~~sql
 WITH active_customers AS (
   SELECT * FROM customers WHERE status = 'active'
 ),
@@ -47,31 +47,12 @@ SELECT
 FROM active_customers c
 JOIN high_value_orders o ON c.id = o.customer_id
 GROUP BY c.customer_id, c.name;
-```
-
-## Recursive CTEs
-
-For hierarchical data (if supported):
-
-```sql
-WITH RECURSIVE org_hierarchy AS (
-  SELECT id, name, parent_id, 1 AS level
-  FROM departments
-  WHERE parent_id IS NULL
-  
-  UNION ALL
-  
-  SELECT d.id, d.name, d.parent_id, h.level + 1
-  FROM departments d
-  JOIN org_hierarchy h ON d.parent_id = h.id
-)
-SELECT * FROM org_hierarchy;
-```
+~~~
 
 ## Examples
 
 ### Simplifying Complex Queries
-```sql
+~~~sql
 WITH order_stats AS (
   SELECT 
     customer_id,
@@ -89,10 +70,10 @@ SELECT
 FROM order_stats
 WHERE total_amount > 5000
 ORDER BY total_amount DESC;
-```
+~~~
 
 ### Chaining Transformations
-```sql
+~~~sql
 WITH cleaned_data AS (
   SELECT 
     id,
@@ -105,12 +86,11 @@ deduped AS (
   SELECT DISTINCT * FROM cleaned_data
 )
 SELECT * FROM deduped;
-```
+~~~
 
 ## Notes
 
 - CTEs are scoped to the query; they don't persist after execution.
 - Multiple CTEs are separated by commas.
 - A CTE can reference previously defined CTEs but not later ones.
-- Recursive CTEs require `UNION` or `UNION ALL` to combine base and recursive cases.
 - CTEs are useful for improving query readability and reducing repetition.

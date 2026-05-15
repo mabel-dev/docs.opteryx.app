@@ -9,23 +9,23 @@ The `CREATE VIEW` statement creates a new view that exposes the result of a quer
 
 ## Basic Syntax
 
-```sql
+~~~sql
 CREATE VIEW [workspace].[collection].[view_name] AS
 SELECT ...;
-```
+~~~
 
 ## Examples
 
 ### Basic View
-```sql
+~~~sql
 CREATE VIEW my_workspace.my_collection.active_users AS
 SELECT id, name, email, created_at
   FROM users
  WHERE active = TRUE;
-```
+~~~
 
 ### Complex View with Joins
-```sql
+~~~sql
 CREATE VIEW sales.analytics.order_summary AS
 SELECT 
   o.order_id,
@@ -36,16 +36,16 @@ SELECT
 FROM orders o
 JOIN customers c ON o.customer_id = c.id
 WHERE o.status = 'completed';
-```
+~~~
 
 ### View Based on Another View
-```sql
+~~~sql
 CREATE VIEW my_workspace.my_collection.high_value_customers AS
 SELECT customer_id, SUM(amount) AS total_spent
 FROM order_summary
 GROUP BY customer_id
 HAVING SUM(amount) > 10000;
-```
+~~~
 
 ## Notes
 

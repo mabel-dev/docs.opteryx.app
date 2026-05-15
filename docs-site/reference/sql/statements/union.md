@@ -12,93 +12,93 @@ Set operations combine the results of multiple queries into a single result set.
 Combines results from two or more queries, removing duplicate rows.
 
 ### Basic Syntax
-```sql
+~~~sql
 SELECT columns FROM table1
 UNION
 SELECT columns FROM table2;
-```
+~~~
 
 ### Example
-```sql
+~~~sql
 SELECT customer_id, 'order' AS source
   FROM orders
 UNION
 SELECT customer_id, 'return' AS source
   FROM returns;
-```
+~~~
 
 ### UNION ALL
 
 Combines results without removing duplicates (faster):
 
-```sql
+~~~sql
 SELECT id FROM customers
 UNION ALL
 SELECT id FROM legacy_customers;
-```
+~~~
 
 ## INTERSECT
 
 Returns rows that appear in both query results.
 
 ### Syntax
-```sql
+~~~sql
 SELECT columns FROM table1
 INTERSECT
 SELECT columns FROM table2;
-```
+~~~
 
 ### Example
-```sql
+~~~sql
 SELECT customer_id FROM orders WHERE amount > 1000
 INTERSECT
 SELECT customer_id FROM customers WHERE status = 'premium';
 -- Returns customers who placed orders > $1000 AND have premium status
-```
+~~~
 
 ## EXCEPT
 
 Returns rows from the first query that don't appear in the second query.
 
 ### Syntax
-```sql
+~~~sql
 SELECT columns FROM table1
 EXCEPT
 SELECT columns FROM table2;
-```
+~~~
 
 ### Example
-```sql
+~~~sql
 SELECT customer_id FROM all_customers
 EXCEPT
 SELECT customer_id FROM suspended_customers;
 -- Returns customers who are not suspended
-```
+~~~
 
 ## Full Examples
 
 ### Finding Unique Customers Across Multiple Sources
-```sql
+~~~sql
 SELECT customer_id FROM current_customers
 UNION
 SELECT customer_id FROM archived_customers;
-```
+~~~
 
 ### Finding Active Customers in Multiple Categories
-```sql
+~~~sql
 SELECT customer_id FROM electronics_buyers
 INTERSECT
 SELECT customer_id FROM software_buyers;
 -- Returns customers who bought from both categories
-```
+~~~
 
 ### Finding Customers with Missing Data
-```sql
+~~~sql
 SELECT customer_id FROM orders
 EXCEPT
 SELECT customer_id FROM customer_profiles;
 -- Returns customer IDs in orders but not in profiles
-```
+~~~
 
 ## Notes
 

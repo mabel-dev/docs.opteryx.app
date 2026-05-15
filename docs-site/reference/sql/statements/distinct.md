@@ -9,71 +9,71 @@ The `DISTINCT` keyword removes duplicate rows from query results, returning only
 
 ## Basic Syntax
 
-```sql
+~~~sql
 SELECT DISTINCT column1, column2, ...
   FROM relation_name;
-```
+~~~
 
 ## DISTINCT (All Columns)
 
 Remove duplicate rows across all columns:
 
-```sql
+~~~sql
 SELECT DISTINCT * FROM users;
-```
+~~~
 
 ## DISTINCT (Specific Columns)
 
 Return unique combinations of specified columns:
 
-```sql
+~~~sql
 SELECT DISTINCT customer_id, country
   FROM orders;
 
 SELECT DISTINCT category, brand
   FROM products;
-```
+~~~
 
 ## DISTINCT ON
 
 Return distinct rows based on specified columns while keeping the first occurrence of each group:
 
-```sql
+~~~sql
 SELECT DISTINCT ON (customer_id) 
        customer_id, order_date, amount
   FROM orders
  ORDER BY customer_id, order_date DESC;
-```
+~~~
 
 This returns the most recent order for each customer.
 
 ## Examples
 
 ### Finding Unique Values
-```sql
+~~~sql
 SELECT DISTINCT category
   FROM products
  ORDER BY category;
 -- Returns each product category once
-```
+~~~
 
 ### Unique Combinations
-```sql
+~~~sql
 SELECT DISTINCT country, state
   FROM users
  WHERE country = 'USA'
  ORDER BY state;
-```
+~~~
 
 ### Count of Unique Values
-```sql
+~~~sql
 SELECT COUNT(DISTINCT customer_id) AS unique_customers
   FROM orders;
 -- Returns the number of distinct customers
-```
+~~~
 
 ### DISTINCT ON with ORDER BY
-```sql
+~~~sql
 SELECT DISTINCT ON (customer_id)
        customer_id,
        order_date,
@@ -81,7 +81,7 @@ SELECT DISTINCT ON (customer_id)
   FROM orders
  ORDER BY customer_id, order_date DESC;
 -- Returns the most recent order per customer
-```
+~~~
 
 ## Notes
 

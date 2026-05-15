@@ -411,12 +411,12 @@
             },
             {
               "AT (Time Travel)": "reference/sql/statements/at.md"
+            },
+            {
+              "Joins": "reference/sql/statements/joins.md"
             }
           ]
         }
-      },
-      {
-        "Joins": "reference/sql/joins.md"
       },
       {
         "SQL Supported": "reference/sql/supported-sql.md"

@@ -9,26 +9,26 @@ The `ANALYZE TABLE` statement collects statistics for a named relation. These st
 
 ## Basic Syntax
 
-```sql
+~~~sql
 ANALYZE TABLE [workspace].[collection].[table_name];
-```
+~~~
 
 ## Examples
 
 ### Analyze a Table
-```sql
+~~~sql
 ANALYZE TABLE workspace.collection.large_dataset;
-```
+~~~
 
 ### Analyze Before Running Complex Queries
-```sql
+~~~sql
 ANALYZE TABLE workspace.collection.orders;
 ANALYZE TABLE workspace.collection.customers;
 
 SELECT o.*, c.name
   FROM orders o
   JOIN customers c ON o.customer_id = c.id;
-```
+~~~
 
 ## Notes
 

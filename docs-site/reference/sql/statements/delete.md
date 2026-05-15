@@ -9,51 +9,54 @@ The `DELETE` statement removes rows from a table.
 
 ## Basic Syntax
 
-```sql
+!!! warning
+    DELETE is experimental and only works against the local backend. It is not suitable for production use.
+
+~~~sql
 DELETE FROM table_name
  WHERE condition;
-```
+~~~
 
 ## Delete Specific Rows
 
-```sql
+~~~sql
 DELETE FROM sessions
  WHERE expires_at < CURRENT_TIMESTAMP;
 
 DELETE FROM orders
  WHERE status = 'cancelled';
-```
+~~~
 
 ## Delete All Rows
 
 Remove all rows from a table:
 
-```sql
+~~~sql
 DELETE FROM temporary_data;
-```
+~~~
 
 !!! warning
     Deleting all rows without a `WHERE` clause will remove all data from the table. Use with caution.
 
 ## Delete with Subquery
 
-```sql
+~~~sql
 DELETE FROM orders
  WHERE customer_id IN (
    SELECT id FROM customers WHERE status = 'inactive'
  );
-```
+~~~
 
 ## Examples
 
 ### Remove Expired Data
-```sql
+~~~sql
 DELETE FROM sessions
  WHERE created_at < CURRENT_TIMESTAMP - INTERVAL 30 DAY;
-```
+~~~
 
 ### Cascade Delete Pattern
-```sql
+~~~sql
 DELETE FROM order_items
  WHERE order_id IN (
    SELECT id FROM orders WHERE status = 'cancelled'
@@ -61,11 +64,10 @@ DELETE FROM order_items
 
 DELETE FROM orders
  WHERE status = 'cancelled';
-```
+~~~
 
 ## Notes
 
+- DELETE is experimental and only works against the local backend.
 - Always include a `WHERE` clause to target specific rows.
-- Not all data stores support DELETE operations; availability depends on the backend.
-- Deleted rows cannot be recovered unless the change is rolled back in a transaction.
 - Consider archiving data instead of deleting for compliance and audit purposes.

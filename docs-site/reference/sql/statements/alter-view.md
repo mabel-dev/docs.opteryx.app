@@ -9,28 +9,28 @@ The `ALTER VIEW` statement modifies the definition of an existing view.
 
 ## Basic Syntax
 
-```sql
+~~~sql
 ALTER VIEW [workspace].[collection].[view_name] AS
 SELECT ...;
-```
+~~~
 
 ## Examples
 
 ### Update View Definition
-```sql
+~~~sql
 ALTER VIEW workspace.collection.my_view AS
 SELECT id, name, email
   FROM users
  WHERE active = TRUE;
-```
+~~~
 
 ### Fully Qualified Names
-```sql
+~~~sql
 ALTER VIEW workspace.collection.active_orders AS
 SELECT order_id, customer_id, amount, created_at
   FROM orders
  WHERE status = 'completed';
-```
+~~~
 
 ## Notes
 
