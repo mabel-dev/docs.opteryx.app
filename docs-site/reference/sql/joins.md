@@ -95,6 +95,8 @@ SELECT *
 
 ![LEFT JOIN](/images/left-join.svg)
 
+In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Only value `1` appears in both, so that row is returned with columns from both relations. The row with value `2` has no match in _right_relation_, so it is still included but the right relation columns are filled with `null`.
+
 ## RIGHT JOIN
 
 ~~~
@@ -122,6 +124,8 @@ SELECT *
 
 ![FULL JOIN](/images/full-join.svg)
 
+In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Value `1` appears in both and the rows are aligned. Value `2` exists only in _left_relation_ and value `3` exists only in _right_relation_ — both are included in the result, with `null` filling the columns from the absent side.
+
 ## LEFT SEMI JOIN
 
 ~~~
@@ -140,6 +144,8 @@ SELECT *
 ~~~
 
 ![LEFT SEMI JOIN](/images/left-semi-join.svg)
+
+In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Only value `1` has a match in _right_relation_, so only that row from _left_relation_ is returned. Value `2` has no match and is excluded. No columns from _right_relation_ appear in the result.
 
 ## RIGHT SEMI JOIN
 
@@ -163,6 +169,8 @@ SELECT *
 ~~~
 
 ![LEFT ANTI JOIN](/images/left-anti-join.svg)
+
+In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Value `1` has a match in _right_relation_ and is therefore excluded. Value `2` has no match, so it is the only row returned. No columns from _right_relation_ appear in the result.
 
 ## RIGHT ANTI JOIN
 
