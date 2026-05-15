@@ -2638,6 +2638,12 @@ kbd {
     margin: 0 0 20px;
     padding-left: 22px;
 }
+.prose ul {
+    list-style-type: disc;
+}
+.prose ol {
+    list-style-type: decimal;
+}
 .prose ul li,
 .prose ol li {
     padding: 3px 0;
