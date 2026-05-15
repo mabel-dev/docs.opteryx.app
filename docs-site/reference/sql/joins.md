@@ -29,22 +29,10 @@ SELECT *
 
 ![CROSS JOIN](/images/cross-join.svg)
 
-!!! warning "Use sparingly"
-    The output cardinality is the product of the inputs.
-    `CROSS JOIN` is rarely the right approach on large datasets.
-
-:::{warning} Use sparingly
-The output cardinality is the product of the inputs.
-:::
-
-> [!WARNING]
-> **Use sparingly.** The output cardinality is the product of the inputs.
-> `CROSS JOIN` is rarely the right approach on large datasets.
-
-> USE SPARINGLY:   
+> **USE SPARINGLY**   
 > The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
 
-> SPECIAL CASE:  
+> **SPECIAL CASE**  
 > `CROSS JOIN UNNEST` is a specific variation where values in an ARRAY column are treated as if they were rows in a single-column relation.
 
 ## INNER JOIN
