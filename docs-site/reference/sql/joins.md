@@ -9,14 +9,17 @@ Joins allow you to combine data from multiple relations (tables or datasets) int
 
 ## CROSS JOIN
 
-~~~
-FROM left_relation CROSS JOIN right_relation
-FROM left_relation, right_relation
-~~~
-
 A `CROSS JOIN` returns the Cartesian product (all possible combinations) of two relations. Each row from the left relation is paired with every row from the right relation.
 
-Cross joins can be specified using either the explicit `CROSS JOIN` syntax or by listing multiple relations in the `FROM` clause separated by commas.
+~~~
+FROM left_relation CROSS JOIN right_relation
+~~~
+
+A alternate form omits the keyword and uses comma-separated relations in the `FROM` clause - however, it is recommended to use the explicit `CROSS JOIN` syntax for clarity and to avoid confusion:
+
+~~~
+FROM left_relation, right_relation
+~~~
 
 ~~~sql
 SELECT *
@@ -26,9 +29,11 @@ SELECT *
 
 ![CROSS JOIN](/images/cross-join.svg)
 
-The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
+> USE SPARINGLY:   
+> The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
 
-**Special case:** `CROSS JOIN UNNEST` is a specific variation where values in an ARRAY column are treated as if they were rows in a single-column relation.
+> SPECIAL CASE:  
+> `CROSS JOIN UNNEST` is a specific variation where values in an ARRAY column are treated as if they were rows in a single-column relation.
 
 ## INNER JOIN
 
@@ -175,5 +180,3 @@ In this example, the blue column is used as the joining column in both relations
 ## RIGHT ANTI JOIN
 
 Opteryx does not support `RIGHT ANTI JOIN`. Use a `LEFT ANTI JOIN` with the relations swapped to achieve the same result.
-
-
