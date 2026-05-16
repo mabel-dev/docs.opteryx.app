@@ -413,7 +413,7 @@
               "COMMENT": "reference/sql/statements/comment.md"
             },
             {
-              "AT (Time Travel)": "reference/sql/statements/at.md"
+              "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
             },
             {
               "Joins": "reference/sql/statements/joins.md"
