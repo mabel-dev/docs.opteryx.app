@@ -416,7 +416,7 @@
               "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
             },
             {
-              "Joins": "reference/sql/statements/joins.md"
+              "JOIN": "reference/sql/statements/joins.md"
             }
           ]
         }
