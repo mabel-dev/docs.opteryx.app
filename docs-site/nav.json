@@ -356,55 +356,7 @@
           "href": "reference/sql/statements.md",
           "items": [
             {
-              "SELECT": "reference/sql/statements/select.md"
-            },
-            {
-              "Window Functions": "reference/sql/statements/window-functions.md"
-            },
-            {
-              "WHERE": "reference/sql/statements/where.md"
-            },
-            {
-              "GROUP BY": "reference/sql/statements/group-by.md"
-            },
-            {
-              "HAVING": "reference/sql/statements/having.md"
-            },
-            {
-              "ORDER BY": "reference/sql/statements/order-by.md"
-            },
-            {
-              "LIMIT / OFFSET": "reference/sql/statements/limit.md"
-            },
-            {
-              "WITH (CTE)": "reference/sql/statements/with.md"
-            },
-            {
-              "DISTINCT": "reference/sql/statements/distinct.md"
-            },
-            {
-              "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"
-            },
-            {
-              "INSERT": "reference/sql/statements/insert.md"
-            },
-            {
-              "UPDATE": "reference/sql/statements/update.md"
-            },
-            {
-              "DELETE": "reference/sql/statements/delete.md"
-            },
-            {
-              "EXPLAIN": "reference/sql/statements/explain.md"
-            },
-            {
-              "CREATE VIEW": "reference/sql/statements/create-view.md"
-            },
-            {
               "ALTER VIEW": "reference/sql/statements/alter-view.md"
-            },
-            {
-              "DROP VIEW": "reference/sql/statements/drop-view.md"
             },
             {
               "ANALYZE TABLE": "reference/sql/statements/analyze-table.md"
@@ -413,10 +365,58 @@
               "COMMENT": "reference/sql/statements/comment.md"
             },
             {
-              "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
+              "CREATE VIEW": "reference/sql/statements/create-view.md"
+            },
+            {
+              "DELETE": "reference/sql/statements/delete.md"
+            },
+            {
+              "DISTINCT": "reference/sql/statements/distinct.md"
+            },
+            {
+              "DROP VIEW": "reference/sql/statements/drop-view.md"
+            },
+            {
+              "EXPLAIN": "reference/sql/statements/explain.md"
+            },
+            {
+              "GROUP BY": "reference/sql/statements/group-by.md"
+            },
+            {
+              "HAVING": "reference/sql/statements/having.md"
+            },
+            {
+              "INSERT": "reference/sql/statements/insert.md"
             },
             {
               "JOIN": "reference/sql/statements/joins.md"
+            },
+            {
+              "LIMIT / OFFSET": "reference/sql/statements/limit.md"
+            },
+            {
+              "ORDER BY": "reference/sql/statements/order-by.md"
+            },
+            {
+              "SELECT": "reference/sql/statements/select.md"
+            },
+            {
+              "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
+            },
+            {
+              "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"
+            },
+            {
+              "UPDATE": "reference/sql/statements/update.md"
+            },
+            {
+              "WHERE": "reference/sql/statements/where.md"
+            },
+            {
+              "WINDOW": "reference/sql/statements/window-functions.md"
+            },
+            {
+              "WITH (CTE)": "reference/sql/statements/with.md"
             }
           ]
         }
