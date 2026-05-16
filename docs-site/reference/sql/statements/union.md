@@ -75,7 +75,43 @@ SELECT customer_id FROM suspended_customers;
 -- Returns customers who are not suspended
 ~~~
 
-## Full Examples
+## Literal Values
+
+Set operations can be used directly on literal values without a `FROM` clause:
+
+~~~sql
+SELECT 1 UNION ALL SELECT 2;
+
+SELECT 1, 'a' UNION ALL SELECT 2, 'b';
+~~~
+
+## As a Subquery
+
+Set operations can be used as a subquery in a `FROM` clause. The result must be aliased:
+
+~~~sql
+SELECT *
+  FROM (
+    SELECT name, id FROM $planets
+    UNION ALL
+    SELECT name, id FROM $planets
+  ) AS combined;
+
+SELECT *
+  FROM (
+    SELECT name, id FROM $planets WHERE id <= 5
+    INTERSECT
+    SELECT name, id FROM $planets WHERE id > 2
+  ) AS overlap;
+
+SELECT *
+  FROM (
+    SELECT name, id FROM $planets WHERE id <= 5
+    EXCEPT
+    SELECT name, id FROM $planets WHERE id < 3
+  ) AS difference;
+~~~
+
 
 ### Finding Unique Customers Across Multiple Sources
 ~~~sql

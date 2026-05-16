@@ -116,3 +116,49 @@ SELECT name,
        END as how_many_moons
   FROM $planets;
 ~~~
+
+## Type Casting
+
+Opteryx supports two equivalent syntaxes for casting values between types.
+
+### CAST function
+
+~~~sql
+CAST(value AS type)
+~~~
+
+### Double-colon shorthand
+
+~~~sql
+value::type
+~~~
+
+Both forms are interchangeable. The `::` shorthand is more concise and common in practice.
+
+### Temporal types
+
+When casting to temporal types, a precision unit is required for `TIMESTAMP`:
+
+| Cast target | Example |
+| :---------- | :------ |
+| `DATE` | `'2024-01-01'::DATE` |
+| `TIMESTAMP[s]` | `'2024-01-01'::TIMESTAMP[s]` |
+| `TIMESTAMP[ms]` | `'2024-01-01'::TIMESTAMP[ms]` |
+| `TIMESTAMP[us]` | `'2024-01-01'::TIMESTAMP[us]` |
+| `TIMESTAMP[ns]` | `'2024-01-01'::TIMESTAMP[ns]` |
+| `TIMESTAMP[d]` | `'2024-01-01'::TIMESTAMP[d]` |
+
+`TIMESTAMP` without a unit is not supported.
+
+### String literals are not implicitly cast to temporal types
+
+Comparing a temporal column against an uncast string literal will raise an `IncompatibleTypesError`. An explicit cast is always required:
+
+~~~sql
+-- Correct
+SELECT * FROM missions WHERE launched_at >= '1957-10-04'::DATE;
+SELECT * FROM missions WHERE launched_at >= '1957-10-04'::TIMESTAMP[ms];
+
+-- Error: IncompatibleTypesError
+SELECT * FROM missions WHERE launched_at >= '1957-10-04';
+~~~

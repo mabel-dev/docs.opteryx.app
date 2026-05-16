@@ -16,18 +16,34 @@ INTERVALs may not always act as expected, especially when working with months an
 
 ### Casting
 
-Cast values to timestamp types:
+Cast values to temporal types using `CAST()` or the `::` shorthand. When casting to `TIMESTAMP`, a precision unit is required:
 
 ~~~sql
-CAST(value AS TIMESTAMP)
 CAST(value AS DATE)
-CAST(value AS TIME)
+CAST(value AS TIMESTAMP[s])
+CAST(value AS TIMESTAMP[ms])
+CAST(value AS TIMESTAMP[us])
+CAST(value AS TIMESTAMP[ns])
+CAST(value AS TIMESTAMP[d])
 ~~~
 
-Example:
+The `::` shorthand is equivalent:
 
 ~~~sql
-SELECT CAST('2024-02-14' AS TIMESTAMP);
+'2024-02-14'::DATE
+'2024-02-14'::TIMESTAMP[ms]
+~~~
+
+`TIMESTAMP` without a precision unit is not supported.
+
+String literals are not implicitly cast to temporal types. An explicit cast is required when comparing a string against a temporal column:
+
+~~~sql
+-- Correct
+SELECT * FROM missions WHERE launched_at >= '1957-10-04'::DATE;
+
+-- Error: IncompatibleTypesError
+SELECT * FROM missions WHERE launched_at >= '1957-10-04';
 ~~~
 
 ### Create

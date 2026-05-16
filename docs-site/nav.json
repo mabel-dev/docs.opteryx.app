@@ -359,6 +359,9 @@
               "SELECT": "reference/sql/statements/select.md"
             },
             {
+              "Window Functions": "reference/sql/statements/window-functions.md"
+            },
+            {
               "WHERE": "reference/sql/statements/where.md"
             },
             {

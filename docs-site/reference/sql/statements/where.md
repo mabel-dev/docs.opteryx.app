@@ -43,7 +43,7 @@ SELECT * FROM users WHERE NOT archived;
 
 ### IN Operator
 
-Check if a value exists in a list:
+Check if a value exists in a list or subquery:
 
 ~~~sql
 SELECT * FROM orders
@@ -51,6 +51,32 @@ SELECT * FROM orders
 
 SELECT * FROM users
  WHERE user_id NOT IN (1, 2, 3, 4, 5);
+~~~
+
+`IN` and `NOT IN` also accept subqueries:
+
+~~~sql
+SELECT * FROM users
+ WHERE user_id IN (SELECT user_id FROM orders WHERE amount > 1000);
+
+SELECT * FROM users
+ WHERE user_id NOT IN (SELECT user_id FROM suspended_accounts);
+~~~
+
+### EXISTS
+
+Test whether a subquery returns any rows:
+
+~~~sql
+SELECT * FROM users u
+ WHERE EXISTS (
+   SELECT 1 FROM orders o WHERE o.user_id = u.id
+ );
+
+SELECT * FROM users u
+ WHERE NOT EXISTS (
+   SELECT 1 FROM orders o WHERE o.user_id = u.id
+ );
 ~~~
 
 ### BETWEEN Operator

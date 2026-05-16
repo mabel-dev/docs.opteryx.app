@@ -23,14 +23,15 @@ Opteryx supports a compact set of data types optimized for analytical workflows 
 ---
 
 ## Casting & coercion
-- Use `CAST(value AS TYPE)` to convert types. `TRY_CAST` / `SAFE_CAST` return `NULL` on failure instead of raising an error.
-- Literal type hints: `TIMESTAMP '2024-01-01'`, `INTERVAL '1' DAY` are supported.
+- Use `CAST(value AS TYPE)` or the `value::TYPE` shorthand to convert types.
+- String literals are **not** implicitly cast to temporal types — an explicit cast is always required when comparing against `DATE` or `TIMESTAMP` columns.
 - Numeric underscores (`1_000_000`) and hex (`0xc0ffee`) are parsed as numeric literals.
 
 Example:
-```sql
-SELECT CAST('2024-01-01' AS TIMESTAMP), TRY_CAST('abc' AS INTEGER);
-```
+~~~sql
+SELECT CAST('2024-01-01' AS TIMESTAMP[ms]);
+SELECT '2024-01-01'::DATE;
+~~~
 
 ---
 
