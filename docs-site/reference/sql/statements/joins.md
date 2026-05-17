@@ -180,3 +180,34 @@ In this example, the blue column is used as the joining column in both relations
 ## RIGHT ANTI JOIN
 
 Opteryx does not support `RIGHT ANTI JOIN`. Use a `LEFT ANTI JOIN` with the relations swapped to achieve the same result.
+
+## ASOF JOIN
+
+~~~
+FROM left_relation ASOF JOIN right_relation MATCH_CONDITION(left_relation.column >= right_relation.column)
+FROM left_relation ASOF JOIN right_relation MATCH_CONDITION(left_relation.column <= right_relation.column)
+~~~
+
+An `ASOF JOIN` matches each row from the left relation to the closest row in the right relation based on an inequality condition. It is useful for aligning time-series or ordered data where exact matches are rarely available — for example, joining events to the most recent price or state that was valid at the time of the event.
+
+The join condition is specified using `MATCH_CONDITION(...)` rather than `ON`. The condition must be a single inequality comparing one column from each relation. Only `>=` and `<=` are supported; equality (`=`) and not-equal (`!=`) are not.
+
+**Syntax**
+
+~~~sql
+SELECT p.name, p2.name AS match_name
+  FROM $planets AS p
+  ASOF JOIN $planets AS p2
+    MATCH_CONDITION(p.gravity >= p2.gravity);
+~~~
+
+The right relation can be a subquery:
+
+~~~sql
+SELECT p.name, p2.name AS match_name
+  FROM $planets AS p
+  ASOF JOIN (
+    SELECT id, name FROM $planets WHERE id >= 5
+  ) AS p2
+    MATCH_CONDITION(p.id >= p2.id);
+~~~
