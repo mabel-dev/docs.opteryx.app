@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { marked } from "marked";
 import { getContentDocsDir } from "@/app/lib/getContentDocsDir";
+import { renderMarkdownToHtml } from "@/app/lib/renderMarkdown";
 import { listMarkdownSlugs } from "@/app/lib/listMarkdownSlugs";
 import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 import BlogPostTOC from "@/app/blog/BlogPostTOC";
@@ -145,7 +145,7 @@ export default async function Page({ params }: Props) {
 
   const { frontmatter, body } = parseFrontmatter(source);
   const postDate = frontmatter.date as string | undefined;
-  const html = String(marked.parse(body));
+  const html = await renderMarkdownToHtml(body);
 
   const posts = readBlogPosts(blogDir);
   const latest = posts[0];

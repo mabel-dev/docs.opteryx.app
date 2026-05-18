@@ -576,9 +576,16 @@
     ]
   },
   {
-    "Python Integration": [
+    "Clients": [
       {
         "SQLAlchemy": "reference/python/sqlalchemy.md"
+      }
+    ]
+  },
+  {
+    "Internals": [
+      {
+        "Draken vector encoding": "reference/internals/draken-vector-encoding.md"
       }
     ]
   }

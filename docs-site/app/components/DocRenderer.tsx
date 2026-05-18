@@ -1,62 +1,9 @@
 import React from "react";
-import { marked } from "marked";
+import { renderMarkdownToHtml } from "@/app/lib/renderMarkdown";
 
 type DocRendererProps = { source: string };
 
-// Configure marked to add IDs to headings and enable GFM tables
-marked.use({
-  gfm: true,
-  breaks: false,
-  mangle: false,
-  headerIds: false,
-  async: false,
-  hooks: {
-    postprocess(html: any) {
-      if (!html || typeof html !== "string") return html;
-
-      // Add IDs to h2 and h3 tags for TOC linking
-      let processed = html.replace(
-        /<(h[23])>(.*?)<\/\1>/gi,
-        (match, tag, content) => {
-          if (!content || typeof content !== "string") return match;
-          const id = content
-            .toLowerCase()
-            .replace(/[^\w\s-]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
-            .trim();
-          return `<${tag} id="${id}">${content}</${tag}>`;
-        },
-      );
-
-      // Detect and tag callout blockquotes (Tip:, Be Aware:, etc.)
-      processed = processed.replace(
-        /<blockquote>\s*<p>\s*(Tip|TIP|Be Aware|Warning|Caution):\s*(.*?)<\/p>\s*<\/blockquote>/gi,
-        (match, type, content) => {
-          if (!type || !content) return match;
-          const normalizedType = type.toLowerCase().replace(/\s+/g, "");
-          const displayTitle = type.charAt(0).toUpperCase() + type.slice(1);
-          const iconPath =
-            normalizedType === "tip"
-              ? "/images/bulb-outline.svg"
-              : "/images/warning-outline.svg";
-
-          return `<blockquote data-callout="${normalizedType}">
-            <div class="callout-header">
-              <img src="${iconPath}" alt="" class="callout-icon" />
-              <div class="callout-title">${displayTitle}</div>
-            </div>
-            <p class="callout-content">${content}</p>
-          </blockquote>`;
-        },
-      );
-
-      return processed;
-    },
-  },
-});
-
-export default function DocRenderer({ source }: DocRendererProps) {
+export default async function DocRenderer({ source }: DocRendererProps) {
   if (!source || typeof source !== "string" || source.trim().length === 0) {
     return (
       <div className="docs-main">
@@ -67,7 +14,10 @@ export default function DocRenderer({ source }: DocRendererProps) {
     );
   }
 
-  const html = String(marked.parse(source));
+  const html = await renderMarkdownToHtml(source, {
+    addHeadingIds: true,
+    transformCallouts: true,
+  });
 
   return (
     <div className="docs-main">
