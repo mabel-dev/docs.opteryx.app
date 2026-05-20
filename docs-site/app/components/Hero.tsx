@@ -66,8 +66,7 @@ export default function Hero() {
             </span>
             <span className="ln">
               {"  "}
-              <span className="kw">FROM</span>{" "}
-              <span className="str">&apos;orders.parquet&apos;</span>
+              <span className="kw">FROM</span> public.astronomy.planets
             </span>
             <span className="ln">
               {" "}
@@ -111,7 +110,10 @@ export default function Hero() {
           <div className="lp-ed-tile">
             <div className="lbl">// reference</div>
             <h3>
-              <Link href="/reference/sql" className="tile-title">
+              <Link
+                href="/docs/reference/sql/statements"
+                className="tile-title"
+              >
                 SQL Reference
               </Link>
             </h3>
@@ -120,20 +122,20 @@ export default function Hero() {
               the full Opteryx grammar.
             </p>
             <div className="links">
-              <Link href="/reference/sql/select">SELECT</Link>
-              <Link href="/reference/sql/joins">JOINs</Link>
-              <Link href="/reference/sql/window-functions">
+              <Link href="/docs/reference/sql/statements/select">SELECT</Link>
+              <Link href="/docs/reference/sql/statements/joins">JOINs</Link>
+              <Link href="/docs/reference/sql/statements/window-functions">
                 Window functions
               </Link>
-              <Link href="/reference/sql/aggregates">Aggregates</Link>
-              <Link href="/reference/sql/string-functions">String fns</Link>
-              <Link href="/reference/sql/data-types">Types →</Link>
+              <Link href="/docs/reference/sql/aggregates">Aggregates</Link>
+              <Link href="/docs/reference/sql/functions">String fns</Link>
+              <Link href="/docs/reference/sql/data-types">Types →</Link>
             </div>
           </div>
           <div className="lp-ed-tile">
             <div className="lbl">// reference</div>
             <h3>
-              <Link href="/reference/api" className="tile-title">
+              <Link href="/docs/reference/api" className="tile-title">
                 API Reference
               </Link>
             </h3>
@@ -142,11 +144,11 @@ export default function Hero() {
               cursors, and results.
             </p>
             <div className="links">
-              <Link href="/reference/api/query">opteryx.query</Link>
-              <Link href="/reference/api/connections">Connections</Link>
-              <Link href="/reference/api/cursors">Cursors</Link>
-              <Link href="/reference/api/http">POST /v1/query</Link>
-              <Link href="/reference/api/errors">Errors →</Link>
+              <Link href="/docs/reference/python">opteryx.query</Link>
+              <Link href="/docs/reference/python/sqlalchemy">Connections</Link>
+              <Link href="/docs/reference/python/sqlalchemy">Cursors</Link>
+              <Link href="/docs/reference/api/jobs-api">POST /v1/query</Link>
+              <Link href="/docs/reference/api">Errors →</Link>
             </div>
           </div>
         </section>
@@ -159,7 +161,7 @@ export default function Hero() {
               Most questions get answered within the hour.
             </p>
           </div>
-          <a href="https://discord.gg/opteryx" className="discord">
+          <a href="https://discord.gg/JJvcRrAYhn" className="discord">
             <span className="dot"></span>
             <IconDiscord />
             Join the Discord

@@ -934,7 +934,7 @@ kbd {
 }
 .lp-ed-hero .meta {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 14px;
     color: var(--muted);
     line-height: 1.7;
     border-left: 2px solid var(--opteryx-teal);
