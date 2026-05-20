@@ -73,11 +73,11 @@ Special clauses and time-based queries:
 
 | Feature | Purpose |
 |---------|---------|
-| [AT (Time Travel)](statements/at.md) | Query data as it existed at a specific point in time |
+| [AT (Time Travel)](statements/timestamp-as-of.md) | Query data as it existed at a specific point in time |
 
 ## JOIN Operations
 
-For detailed information on joining tables, see the [Joins](joins.md) reference page.
+For detailed information on joining tables, see the [Joins](statements/joins.md) reference page.
 
 
 

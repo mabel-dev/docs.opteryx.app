@@ -85,7 +85,7 @@ SELECT o.id AS order_id, c.name AS customer
 - Statements & clauses: [Statements](/docs/reference/sql/statements)
 - Functions & aggregates: [Functions](/docs/reference/sql/functions)
 - Data types & casting: [Data Types](/docs/reference/sql/data-types)
-- Joins & examples: [Joins](/docs/reference/sql/joins)
+- Joins & examples: [Joins](/docs/reference/sql/statements/joins)
 - Advanced topics: see the `adv-*` pages for time travel, arrays, structs, temp tables, and query optimization
 
 ---
