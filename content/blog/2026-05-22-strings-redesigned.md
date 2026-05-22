@@ -24,9 +24,9 @@ tags:
 
 ## The context
 
-Draken stores every string in a fixed 16-byte slot.
+[Opteryx](https://opteryx.app/) stores every string in a fixed 16-byte slot.
 
-This is the format often called [German strings](https://cedardb.com/blog/german_strings/): short values inline, longer values out-of-line.
+This is the format often called Umbra, or [German](https://cedardb.com/blog/german_strings/) Strings: short values inline, longer values out-of-line.
 
 That fixed-width slot is non-negotiable. It keeps vector operations predictable and cache behaviour sane.
 
