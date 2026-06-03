@@ -427,6 +427,9 @@
       {
         "Advanced topics": [
           {
+            "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"
+          },
+          {
             "Engine configuration": "reference/sql/advanced/adv-engine-configuration.md"
           },
           {
