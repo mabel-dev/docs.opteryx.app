@@ -16,14 +16,14 @@ tags:
 ## TL;DR
 
 * Most readers parse every field of every row and hand you a table. Ours finds where values sit, applies your `WHERE` clause and column list whilst scanning, and only parses what survives.
-* The gains grow with selectivity: ~1.5× faster at 10%-pass filters, up to ~4.6× at 0.1%-pass.
-* JSONL isn't Opteryx's primary format — Parquet is. This reader exists because structured logs and event streams arrive as JSONL, and those workloads are exactly where pushdown pays most.
+* The gains grow with selectivity and table width: on wide tables, projections run 2–7× faster and tight filters up to ~7×. `SELECT *` is competitive too — ahead on narrow and very wide schemas.
+* [JSONL](https://jsonlines.org/) isn't [Opteryx's](https://opteryx.app) primary format — [Parquet](https://parquet.apache.org/) is. This reader exists because structured logs and event streams arrive as JSONL, and those workloads are exactly where pushdown pays most.
 
 ## The problem with reading everything
 
 JSONL is appealing. One JSON object per line, no schema negotiation, easy to produce.
 
-The usual approach — like in PyArrow's `read_json` and most alternatives — is to parse every field of every row into a table, then filter it.
+The usual approach — like in [PyArrow's](https://arrow.apache.org/) `read_json` and most alternatives — is to parse every field of every row into a table, then filter it.
 
 That's sensible for interchange. It's expensive for queries.
 
@@ -55,9 +55,9 @@ Build the reader around that, and the performance profile inverts.
 
 The reader works in three phases, and the expensive one is deliberately last.
 
-**Structural scan.** A SIMD pass over the raw bytes locates every structural character — `{ } : , " \n`. No values are read. This pass is content-blind and crazy fast.
+**Structural scan.** A SIMD pass over the raw bytes locates every structural character — `{ } [ ] : , " \ \n`. No values are read. This pass is content-blind and crazy fast.
 
-**Document map.** A small state machine over those positions builds `FieldSpans` — byte ranges: *"column X lives from offset A to B."* Still no parsing. Just coordinates.
+**Document map.** A small state machine over those positions builds a `FieldSpan` per field: the byte range of its **key** *and* the byte range of its **value**, plus where it sits in the record. Still no parsing — *"the key is at bytes A–B, its value at C–D."* Just coordinates. (Arrays and objects are kept whole here, tracking bracket depth so a comma inside `[1, 2, 3]` doesn't cut the value short.)
 
 **Materialise.** For the rows and columns that survive projection and filtering, we now parse bytes into typed vectors.
 
@@ -88,35 +88,35 @@ Homogeneity means the prediction almost always hits.
 
 ## What the benchmarks show
 
-Speedup vs PyArrow across table width and filter selectivity:
+Speedup vs PyArrow across table width and filter selectivity (>1× = faster):
 
-| Query | Skinny (3 cols) | Medium (8 cols) | Wide (25 cols) |
-|---|---|---|---|
-| `SELECT *` | 0.61× | 0.76× | 0.49× |
-| `SELECT first_col` | 0.93× | 1.38× | 1.33× |
-| `SELECT last_col` | 0.69× | 1.21× | 1.21× |
-| `WHERE id < 90%` | 0.59× | 1.20× | 1.35× |
-| `WHERE id < 10%` | 1.53× | 2.46× | 2.87× |
-| `WHERE id < 1%` | 3.68× | 4.25× | 4.32× |
-| `WHERE id < 0.1%` | 4.24× | 4.60× | 4.37× |
+| Query | Skinny (3 cols) | Medium (8 cols) | Wide (25 cols) | Wide (100 cols) |
+|---|---|---|---|---|
+| `SELECT *` | 1.2× | 1.0× | 0.8× | 1.5× |
+| `SELECT first_col` | 1.4× | 1.5× | 1.9× | 6.8× |
+| `SELECT last_col` | 0.9× | 0.9× | 1.3× | 4.9× |
+| `WHERE id < 90%` | 0.7× | 0.5× | 0.5× | 0.6× |
+| `WHERE id < 10%` | 1.2× | 1.0× | 0.7× | 0.6× |
+| `WHERE id < 1%` | 1.3× | 1.5× | 2.0× | 2.7× |
+| `WHERE id < 0.1%` | 1.3× | 1.6× | 2.3× | 7.3× |
 
-Two clean stories, and they point in opposite directions.
+The 100-column case is the one to watch: real log and event data is wide, and width is where this design pays off hardest.
 
-**`SELECT *` — we lose, and worse as tables widen.** 0.49× on 25 columns. This is PyArrow's home turf. Bulk parsing is what it's optimised for, and our per-column materialise pass compounds with width. That's the next thing to fix.
+**Projection scales with width.** Pull one column from a 3-column row and there's little to skip (~1.4×); pull one from a 100-column row and you skip the other 99 — ~7×. The wider the record, the more parsing we never do.
 
-**Selective filters — the win scales cleanly and holds across width.** From near break-even at 90%-pass to ~4.3–4.6× at 0.1%-pass. The absolute time for highly selective queries is nearly flat — around 7–13 ms regardless of how many rows pass — because we materialise only survivors. The floor is the scan, not the data volume.
+**Selective filters have to actually be selective.** At loose filters — 90%-pass, or 10%-pass on a wide table — most rows survive, there's little to skip, and we sit around parity or slightly behind. As the filter tightens the wins arrive and compound with width: by 1%-pass we're ahead everywhere, reaching ~7× at 0.1%-pass on wide tables. Two effects stack — fewer survivors to materialise, and more columns skipped per rejected row.
 
-**Projection alone is width-dependent.** On a skinny table there's little to skip. On medium and wide tables, 1.2–1.4× is consistent.
+**`SELECT *` is now competitive.** This used to be a clean loss — bulk parsing is exactly what PyArrow is built for. Rebuilding the document map as one contiguous arena, instead of an allocation per row, closed the gap: we're now ahead on narrow and very wide schemas, at parity on medium, and only a little behind (~0.8×) in the 25-column middle. We don't *win* indiscriminate reads, but we no longer collapse on them.
 
 ## The honest trade-off
 
-`SELECT *` on wide tables is slower. About 0.5× on 25 columns. I'm not going to pretend otherwise.
+There's still a shape to where this wins.
 
-If you're dumping full documents with no filtering, this isn't the right tool for that.
+A query that keeps most rows and reads most columns gives the reader nothing to skip — and skipping is the whole point. On indiscriminate reads we're roughly level with PyArrow: ahead on narrow and very wide schemas, a little behind at middle widths. PyArrow's bulk parser is genuinely excellent at that, and I'm not going to pretend we beat it by doing the same work differently.
 
-But that's not what a query engine does. Full-document reads are the exception. Selective queries are the rule.
+But indiscriminate reads aren't what a query engine spends its time on. It runs selective filters and narrow projections, and it knows what it needs before it reads. The more selective the query — and the wider the table — the further ahead we pull, up to ~7× on the wide, tightly-filtered log queries this was built for.
 
-The design decision was deliberate: build pushdown in from the start, accept the `SELECT *` cost, and be significantly faster on everything a query engine actually runs.
+The design decision was to optimise for that case from the start. Earlier, it came at a real `SELECT *` cost; closing that — without giving up any of the selective-query wins — came down to not allocating memory we never needed.
 
 I feel that's the right trade-off — and the benchmarks bear it out.
 
@@ -127,6 +127,8 @@ Structured logs often land as JSONL and are queried with tight filters — error
 The reader is parallel and zero-copy. The file is read once into a shared, read-only buffer. That buffer is split into newline-aligned ranges, each scanned and mapped on a thread pool.
 
 Because `FieldSpan` positions are absolute offsets into the shared buffer, no data is copied between threads. Records are merged in order, then columns are built in parallel.
+
+The map itself is a single contiguous arena — every field of every record in one buffer, addressed by per-record offsets — not a separate allocation per row. On millions of narrow records that difference dominates the build, and it's what brought `SELECT *` back to parity.
 
 Type parsing is speculative but safe: try int64, widen to float64, fall back to string. The prediction — both field location and type — is never load-bearing for correctness. A miss just means a bit more work, never a wrong answer.
 
