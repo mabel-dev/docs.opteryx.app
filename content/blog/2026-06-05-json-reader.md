@@ -19,8 +19,6 @@ tags:
 * The gains grow with selectivity: ~1.5× faster at 10%-pass filters, up to ~4.6× at 0.1%-pass.
 * JSONL isn't Opteryx's primary format — Parquet is. This reader exists because structured logs and event streams arrive as JSONL, and those workloads are exactly where pushdown pays most.
 
----
-
 ## The problem with reading everything
 
 JSONL is appealing. One JSON object per line, no schema negotiation, easy to produce.
@@ -41,21 +39,17 @@ Here, parsing `user_agent`, `response_time`, `referrer`, and twenty other fields
 
 The more selective the filter, the worse that compounds.
 
----
-
 ## Why we built it
 
 We've removed PyArrow from Opteryx entirely. I've written about this before — PyArrow was the right starting point, but it became a ceiling.
 
-When it came time to replace the JSONL reader, we had a choice. We could build something that just worked performance, or we could build something that aligned to our specific situation where it counts.
+When it came time to replace the JSONL reader, we had a choice. We could build something that just worked, or we could build something that aligned to our specific situation where it counts.
 
 I feel the right question wasn't "how do we replace PyArrow" — it was "what can we do that PyArrow structurally can't?"
 
 The answer is pushdown. PyArrow's `read_json` always parses all columns of all rows. That's not a bug — it's a design choice optimised for general interchange, and to be fair - it's very good at that. But a query engine isn't doing general interchange. It's running selective queries, and it knows exactly which columns and rows it needs before it starts reading.
 
 Build the reader around that, and the performance profile inverts.
-
----
 
 ## The design: positions first, values later
 
@@ -71,8 +65,6 @@ Finding *where* a value sits is cheap. *Parsing* it is not.
 
 So we defer parsing as long as possible.
 
----
-
 ## Pushdown into the scan
 
 The structural edge over a conventional parser is that the query's projection and predicate go into the document-map phase — not after it.
@@ -86,8 +78,6 @@ For `SELECT a, b WHERE c > k`:
 
 PyArrow doesn't do any of this. We skip. That's why our advantage grows with selectivity — the more rows the filter rejects, the more work we never do.
 
----
-
 ## One trick
 
 **Location prediction.** JSONL files are usually homogeneous — same keys, same order, same types across rows. The reader learns a file's structure and predicts each column's position in subsequent rows.
@@ -95,8 +85,6 @@ PyArrow doesn't do any of this. We skip. That's why our advantage grows with sel
 It jumps straight to the predicted offset, verifies with a `memcmp`, and falls back to a scan only on a miss.
 
 Homogeneity means the prediction almost always hits.
-
----
 
 ## What the benchmarks show
 
@@ -120,8 +108,6 @@ Two clean stories, and they point in opposite directions.
 
 **Projection alone is width-dependent.** On a skinny table there's little to skip. On medium and wide tables, 1.2–1.4× is consistent.
 
----
-
 ## The honest trade-off
 
 `SELECT *` on wide tables is slower. About 0.5× on 25 columns. I'm not going to pretend otherwise.
@@ -136,8 +122,6 @@ I feel that's the right trade-off — and the benchmarks bear it out.
 
 Structured logs often land as JSONL and are queried with tight filters — error codes, time ranges, specific request IDs. That's exactly the workload this reader was built for.
 
----
-
 ## How it works under the hood
 
 The reader is parallel and zero-copy. The file is read once into a shared, read-only buffer. That buffer is split into newline-aligned ranges, each scanned and mapped on a thread pool.
@@ -147,8 +131,6 @@ Because `FieldSpan` positions are absolute offsets into the shared buffer, no da
 Type parsing is speculative but safe: try int64, widen to float64, fall back to string. The prediction — both field location and type — is never load-bearing for correctness. A miss just means a bit more work, never a wrong answer.
 
 The Python layer is orchestration only. The data path is C++/Cython end to end.
-
----
 
 ## The broader lesson
 
