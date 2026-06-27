@@ -588,6 +588,18 @@
   {
     "Internals": [
       {
+        "Engine overview": "reference/internals/engine-overview.md"
+      },
+      {
+        "Rugo file engine": "reference/internals/rugo.md"
+      },
+      {
+        "Draken vector library": "reference/internals/draken.md"
+      },
+      {
+        "Bytecode expression engine": "reference/internals/bytecode-engine.md"
+      },
+      {
         "Draken vector encoding": "reference/internals/draken-vector-encoding.md"
       },
       {

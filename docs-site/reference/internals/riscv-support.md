@@ -23,12 +23,8 @@ performance numbers.
 |----------|--------|
 | Regression suite (`make q`) | 190 / 190 pass |
 | TPC-H SF1 (`make tpch`) | 22 / 22 pass |
-| TPC-H SF0.1 / SF0.01 | 22 / 22 · 21 / 22[^q16] |
+| TPC-H SF0.1 / SF0.01 | 22 / 22 · 22 / 22 |
 | ClickBench (one `hits` partition) | 43 / 43 pass |
-
-[^q16]: The single SF0.01 miss is a scale-edge case in Q16 (an empty
-intermediate at tiny scale) that also reproduces off RISC-V — it is not an
-architecture issue. It passes at SF0.1 and SF1.
 
 Correctness is identical to other platforms: results are validated against the
 same DuckDB baselines used on x86 and ARM.
