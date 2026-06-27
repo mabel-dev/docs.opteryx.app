@@ -1,27 +1,14 @@
 ---
-title: InList — Opteryx Operator
-description: 
+title: In list — Opteryx Operator
+description: Returns true when the left operand matches any element in the right-hand list or array. Symbol: IN
 ---
 
-# InList
+# In list
+
+Membership comparison.
+
+Returns true when the left operand matches any element in the right-hand list or array.
 
 **Category:** comparison
 
-**Signatures:** 8
-
-## Signatures
-
-- {'left_type': 'blob', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'boolean', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'date', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'decimal', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'double', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'integer', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'timestamp', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'array', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-
-## Types
-
-- **Left:** blob, boolean, date, decimal, double, integer, timestamp, varchar
-- **Right:** array
-- **Result:** boolean
+**SQL symbol:** `IN`

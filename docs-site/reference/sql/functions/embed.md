@@ -22,8 +22,8 @@ EMBED(text)
 
 ## Returns
 
-**array<double>** — Returns an embedding vector represented as an array of doubles.
+**vector** — Returns an embedding vector.
 
 ## Usage Notes
 
-This function depends on the configured embedding provider and returns a numeric vector as `array<double>`.
+This function depends on the configured embedding provider and returns a numeric `vector`.

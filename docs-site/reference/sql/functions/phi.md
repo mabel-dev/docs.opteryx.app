@@ -17,4 +17,4 @@ PHI()
 
 ## Returns
 
-**double** — Returns the computed result as `double`.
+**float64** — Returns the computed result as `float64`.

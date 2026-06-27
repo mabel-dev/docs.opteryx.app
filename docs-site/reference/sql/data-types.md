@@ -1,59 +1,50 @@
 ---
 title: SQL Data Types — Opteryx Reference
-description: Overview of SQL data types supported by Opteryx, casting rules, coercion, and examples.
+description: Reference for SQL data types supported by Opteryx.
 ---
 
 # Data Types
 
-Opteryx supports a compact set of data types optimized for analytical workflows on file-backed datasets. This page summarizes the most commonly used types, casting/coercion rules, and practical examples.
+The following data types are supported by Opteryx.  Click a name for details.
 
-## Common types
-- `INTEGER` — 64-bit signed integers
-- `DOUBLE` / `FLOAT` — floating-point numbers
-- `DECIMAL(precision, scale)` — fixed-point decimals (partial support)
-- `VARCHAR` — variable-length strings
-- `BOOLEAN` — true/false
-- `DATE`, `TIME`, `TIMESTAMP` — date/time types (ISO-8601 parsing supported)
-- `VARBINARY` / `BLOB` — binary data
-- `ARRAY<type>` — fixed-type arrays
-- `STRUCT` / JSON-like objects — nested data structures
+## Numeric types
 
-> Tip: `BLOB` is being transitioned to `VARBINARY` in some places; prefer `VARBINARY` in new content.
+- [DECIMAL](types/decimal) — DECIMAL
+- [FLOAT](types/float) — FLOAT
+- [INTEGER](types/integer) — INTEGER
 
----
+## Temporal types
 
-## Casting & coercion
-- Use `CAST(value AS TYPE)` or the `value::TYPE` shorthand to convert types.
-- String literals are **not** implicitly cast to temporal types — an explicit cast is always required when comparing against `DATE` or `TIMESTAMP` columns.
-- Numeric underscores (`1_000_000`) and hex (`0xc0ffee`) are parsed as numeric literals.
+- [DATE](types/date) — DATE
+- [TIME](types/time) — TIME
+- [TIMESTAMP](types/timestamp) — TIMESTAMP
 
-Example:
-~~~sql
-SELECT CAST('2024-01-01' AS TIMESTAMP[ms]);
-SELECT '2024-01-01'::DATE;
-~~~
+## Interval types
 
----
+- [INTERVAL](types/interval) — INTERVAL
 
-## Arrays, Structs, and JSON
-- `ARRAY` supports homogeneous elements: `ARRAY[1,2,3]`.
-- `ARRAY_AGG()` collects values into arrays during aggregation.
-- JSON/struct accessors vary by source type — use `JSON_EXTRACT()` / `->` operator where available.
+## Text types
 
-Example:
-```sql
-SELECT ARRAY_AGG(item_id) AS items FROM order_items WHERE order_id = 10;
-```
+- [NVARCHAR](types/nvarchar) — NVARCHAR
+- [VARCHAR](types/varchar) — VARCHAR
 
----
+## Binary types
 
-## Nulls & precision
-- `NULL` follows SQL semantics; most functions propagate `NULL` unless explicitly noted.
-- `TIMESTAMP` precision may be normalized internally; prefer ISO-8601 literals for determinism.
+- [VARBINARY](types/varbinary) — VARBINARY
 
----
+## Boolean types
 
-## Where to go next
-- See [Functions](/docs/reference/sql/functions) for casting helpers.
-- See [Statements](/docs/reference/sql/statements) for example queries that demonstrate type usage.
-- Advanced topics: time travel, decimals and interval limitations are documented in the `adv-*` pages.
+- [BOOLEAN](types/boolean) — BOOLEAN
+
+## Collection types
+
+- [ARRAY](types/array) — ARRAY
+- [VARIANT](types/variant) — VARIANT
+
+## Vector types
+
+- [VECTOR](types/vector) — VECTOR
+
+## Null type
+
+- [NULL](types/null) — NULL

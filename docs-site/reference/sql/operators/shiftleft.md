@@ -1,22 +1,14 @@
 ---
-title: << — Opteryx Operator
-description: 
+title: Left shift — Opteryx Operator
+description: Shifts the bits of the left integer operand left by the number of positions in the right operand. Symbol: <<
 ---
 
-# <<
+# Left shift
 
-**Category:** binary
+Left shift operator.
 
-**Token:** `<<`
+Shifts the bits of the left integer operand left by the number of positions in the right operand.
 
-**Signatures:** 1
+**Category:** bitwise
 
-## Signatures
-
-- `integer << integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer
+**SQL symbol:** `<<`

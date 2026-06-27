@@ -22,7 +22,7 @@ RANDOM_STRING(n)
 
 ## Returns
 
-**blob** — Returns the computed result as `blob`.
+**varbinary** — Returns the computed result as `varbinary`.
 
 ## Usage Notes
 

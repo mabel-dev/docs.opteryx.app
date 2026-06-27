@@ -1,23 +1,14 @@
 ---
-title: NotRLike — Opteryx Operator
-description: 
+title: Not regex like — Opteryx Operator
+description: Returns true when the left string does not match the regular expression on the right. Symbol: NOT RLIKE
 ---
 
-# NotRLike
+# Not regex like
+
+Negated regular expression match comparison.
+
+Returns true when the left string does not match the regular expression on the right.
 
 **Category:** comparison
 
-**Signatures:** 4
-
-## Signatures
-
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-
-## Types
-
-- **Left:** blob, varchar
-- **Right:** blob, varchar
-- **Result:** boolean
+**SQL symbol:** `NOT RLIKE`

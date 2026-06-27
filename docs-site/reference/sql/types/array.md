@@ -1,13 +1,17 @@
 ---
-title: array — Opteryx Type
+title: ARRAY — Opteryx Type
 description: ARRAY
 ---
 
-# array
+# ARRAY
 
-**Canonical name:** ARRAY
+Ordered sequence of elements of a single type.
 
-**Accepted spellings:** array
+## Example
+
+```
+ARRAY[1, 2, 3]
+```
 
 **Family:** nested
 
@@ -20,9 +24,4 @@ description: ARRAY
 
 ## Parameterized Forms
 
-- `ARRAY<INTEGER>`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: array<...>
-- **jsonl_patterns**: array<...>
+- `ARRAY<type>`

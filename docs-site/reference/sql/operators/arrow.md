@@ -1,28 +1,18 @@
 ---
-title: -> — Opteryx Operator
-description: 
+title: JSON extract — Opteryx Operator
+description: Returns the selected JSON value from a document or JSON-like value. Symbol: ->
 ---
 
-# ->
+# JSON extract
+
+JSON extraction operator.
+
+Returns the selected JSON value from a document or JSON-like value.
 
 **Category:** extraction
 
-**Token:** `->`
+**SQL symbol:** `->`
 
-**Signatures:** 8
+## Notes
 
-## Signatures
-
-- `blob -> blob` → <dynamic>
-- `blob -> varchar` → <dynamic>
-- `jsonb -> blob` → <dynamic>
-- `jsonb -> varchar` → <dynamic>
-- `struct -> blob` → <dynamic>
-- `struct -> varchar` → <dynamic>
-- `varchar -> blob` → <dynamic>
-- `varchar -> varchar` → <dynamic>
-
-## Types
-
-- **Left:** blob, jsonb, struct, varchar
-- **Right:** blob, varchar
+The result type is dynamic because the selected JSON value may be scalar, object, array, or null.

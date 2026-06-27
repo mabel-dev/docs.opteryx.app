@@ -1,13 +1,17 @@
 ---
-title: time — Opteryx Type
+title: TIME — Opteryx Type
 description: TIME
 ---
 
-# time
+# TIME
 
-**Canonical name:** TIME
+Time of day without a date component.
 
-**Accepted spellings:** time
+## Example
+
+```
+TIME '12:30:00'
+```
 
 **Family:** temporal
 
@@ -17,7 +21,3 @@ description: TIME
 - **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: time...

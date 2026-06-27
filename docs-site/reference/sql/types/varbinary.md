@@ -1,23 +1,23 @@
 ---
-title: VARCHAR — Opteryx Type
-description: VARCHAR
+title: VARBINARY — Opteryx Type
+description: VARBINARY
 ---
 
-# VARCHAR
+# VARBINARY
 
-ASCII text string.
+Raw binary data.
 
 ## Example
 
 ```
-'hello'
+b'0102'
 ```
 
 ## Notes
 
-Use NVARCHAR for UTF-8 content.
+Also used for BLOB storage.
 
-**Family:** text
+**Family:** binary
 
 ## Flags
 

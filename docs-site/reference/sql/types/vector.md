@@ -1,13 +1,15 @@
 ---
-title: vector — Opteryx Type
+title: VECTOR — Opteryx Type
 description: VECTOR
 ---
 
-# vector
+# VECTOR
 
-**Canonical name:** VECTOR
+Fixed-length numeric vector for similarity search and ML workloads.
 
-**Accepted spellings:** vector
+## Notes
+
+Stored as FP16 by default.
 
 **Family:** vector
 
@@ -17,9 +19,3 @@ description: VECTOR
 - **temporal**: `False`
 - **collection**: `True`
 - **parameterized**: `False`
-
-## Notes
-
-Fixed-length numeric vector. Length can be specified as `VECTOR[<size>]`.
-
-Used as input and output for vector similarity functions such as `COSINE_SIMILARITY` and `COSINE_DISTANCE`, and for the `EMBED` function which produces vector embeddings from text.

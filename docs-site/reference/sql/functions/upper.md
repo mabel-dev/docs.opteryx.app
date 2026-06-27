@@ -1,11 +1,11 @@
 ---
 title: UPPER — Opteryx Function
-description: Transforms the input string to uppercase.
+description: Convert string to uppercase.
 ---
 
 # UPPER
 
-Transforms the input string to uppercase.
+Convert string to uppercase.
 
 **Category:** String Functions
 

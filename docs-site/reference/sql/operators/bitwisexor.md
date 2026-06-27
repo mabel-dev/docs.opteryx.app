@@ -1,22 +1,14 @@
 ---
-title: ^ — Opteryx Operator
-description: 
+title: Bitwise XOR — Opteryx Operator
+description: Combines integer operands using a bitwise exclusive OR operation. Symbol: ^
 ---
 
-# ^
+# Bitwise XOR
 
-**Category:** binary
+Bitwise XOR operator.
 
-**Token:** `^`
+Combines integer operands using a bitwise exclusive OR operation.
 
-**Signatures:** 1
+**Category:** bitwise
 
-## Signatures
-
-- `integer ^ integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer
+**SQL symbol:** `^`

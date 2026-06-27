@@ -1,11 +1,11 @@
 ---
 title: CURRENT_DATE — Opteryx Function
-description: Current date (SQL-92).
+description: Current date.
 ---
 
 # CURRENT_DATE
 
-Current date (SQL-92).
+Current date.
 
 **Category:** Date & Time Functions
 

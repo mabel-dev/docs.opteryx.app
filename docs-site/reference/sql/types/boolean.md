@@ -1,15 +1,17 @@
 ---
-title: boolean — Opteryx Type
+title: BOOLEAN — Opteryx Type
 description: BOOLEAN
 ---
 
-# boolean
+# BOOLEAN
 
-**Canonical name:** BOOLEAN
+Boolean TRUE or FALSE value.
 
-**Aliases:** bool
+## Example
 
-**Accepted spellings:** bool, boolean
+```
+TRUE
+```
 
 **Family:** boolean
 
@@ -19,9 +21,3 @@ description: BOOLEAN
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_physical**: boolean
-- **parquet_logical**: boolean
-- **jsonl**: boolean

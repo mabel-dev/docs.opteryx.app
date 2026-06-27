@@ -1,13 +1,17 @@
 ---
-title: date — Opteryx Type
+title: DATE — Opteryx Type
 description: DATE
 ---
 
-# date
+# DATE
 
-**Canonical name:** DATE
+Calendar date without time component.
 
-**Accepted spellings:** date
+## Example
+
+```
+DATE '2024-01-01'
+```
 
 **Family:** temporal
 
@@ -17,7 +21,3 @@ description: DATE
 - **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_logical**: date, date32[day]

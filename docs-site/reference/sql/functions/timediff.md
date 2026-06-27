@@ -24,4 +24,4 @@ TIMEDIFF(time1, time2)
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.

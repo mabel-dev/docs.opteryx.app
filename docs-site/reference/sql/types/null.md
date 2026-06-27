@@ -1,13 +1,15 @@
 ---
-title: null — Opteryx Type
+title: NULL — Opteryx Type
 description: NULL
 ---
 
-# null
+# NULL
 
-**Canonical name:** NULL
+The absence of a value.
 
-**Accepted spellings:** null
+## Notes
+
+NULL is not equal to NULL; use IS NULL to test for nulls.
 
 **Family:** null
 
@@ -17,6 +19,3 @@ description: NULL
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-

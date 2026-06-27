@@ -1,40 +1,72 @@
 ---
 title: Aggregates — Opteryx Reference
-description: SQL aggregate functions supported by Opteryx, organized by category.
+description: Quick reference for SQL aggregate functions supported by Opteryx.
 ---
 
 # Aggregates
 
-Aggregate functions combine multiple rows into a single summary value. They are used with `GROUP BY` or as window functions via `OVER(...)`. Aggregates ignore `NULL` inputs unless otherwise noted.
+Aggregates combine multiple rows into single summary values and are typically used with `GROUP BY`. Aggregates generally ignore `NULL` inputs.
 
-## Approximate
+## Supported aggregates
 
-- **APPROX_COUNT_DISTINCT(expr)** — Estimates the number of distinct non-null values using a sketch-based estimator. Faster than exact `COUNT(DISTINCT ...)` on large sets.
-- **APPROX_PERCENTILE(expr, percentile)** — Estimates the value at the given percentile (0.0–1.0) using sketch-based aggregation.
+### Approximate
 
-## Collection
+- **APPROX_COUNT_DISTINCT** — Estimates the number of distinct input values.
+  - SQL forms: `APPROX_COUNT_DISTINCT(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Uses a sketch-based estimator instead of exact deduplication.
+- **APPROX_PERCENTILE** — Estimates a percentile using sketch-based aggregation.
+  - SQL forms: `APPROX_PERCENTILE(expr, percentile)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Accepts an input expression and a percentile literal between 0.0 and 1.0.
 
-- **ARRAY_AGG(expr)** — Collects values into an array.
-  - `ARRAY_AGG(DISTINCT expr)` — Collect distinct values only.
-  - `ARRAY_AGG(expr LIMIT n)` — Limit collected values to n.
-  - `ARRAY_AGG(expr ORDER BY expr [ASC|DESC] LIMIT n)` — Collect in order, with limit.
+### Collection
 
-## Counting
+- **ARRAY_AGG** — Collects input values into an array.
+  - SQL forms: `ARRAY_AGG(expr)`, `ARRAY_AGG(DISTINCT expr)`, `ARRAY_AGG(expr LIMIT n)`, `ARRAY_AGG(expr ORDER BY expr [ASC|DESC] LIMIT n)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Supports DISTINCT, ORDER BY, and LIMIT forms in the aggregate surface.
 
-- **COUNT(\*)** — Counts all rows including those with nulls.
-- **COUNT(expr)** — Counts non-null values.
-- **COUNT(DISTINCT expr)** / **COUNT_DISTINCT(expr)** — Exact count of distinct non-null values.
+### Counting
 
-## Extrema
+- **COUNT** — Counts rows or non-null input values.
+  - SQL forms: `COUNT(*)`, `COUNT(expr)`, `COUNT(DISTINCT expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: COUNT(*) counts rows, while COUNT(expr) counts non-null values.
+- **COUNT_DISTINCT** — Counts distinct non-null input values.
+  - SQL forms: `COUNT_DISTINCT(expr)`, `COUNT(DISTINCT expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Exact distinct count over the non-null input values.
 
-- **MAX(expr)** — Returns the largest non-null value.
-- **MIN(expr)** — Returns the smallest non-null value.
+### Extrema
 
-## Numeric
+- **MAX** — Returns the largest non-null input value.
+  - SQL forms: `MAX(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Returns the greatest comparable non-null value encountered.
+- **MIN** — Returns the smallest non-null input value.
+  - SQL forms: `MIN(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Returns the smallest comparable non-null value encountered.
 
-- **AVG(expr)** — Arithmetic mean of non-null values.
-- **SUM(expr)** — Sum of non-null values.
+### Numeric
 
-## Selection
+- **AVG** — Computes the arithmetic mean of the input values.
+  - SQL forms: `AVG(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Ignores nulls and divides the running sum by the number of non-null values.
+- **MEDIAN** — Computes the exact median (middle value) of the input values.
+  - SQL forms: `MEDIAN(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Buffers all non-null values per group and selects the middle. Even-count inputs interpolate; result type is FLOAT. Per-group buffer is capped (default 1000) — exceeding it raises an error. Decimal inputs must be CAST to FLOAT.
+- **SUM** — Sums the input values.
+  - SQL forms: `SUM(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Nulls are ignored; non-null values are accumulated.
 
-- **ANY_VALUE(expr)** — Returns one non-null value from the group. Useful when a grouped query only needs a representative value and any will do.
+### Selection
+
+- **ANY_VALUE** — Returns one non-null value from the input set.
+  - SQL forms: `ANY_VALUE(expr)`
+  - Support: grouped, strict_grouped
+  - Notes: Useful when a grouped query only needs one representative value from each group.

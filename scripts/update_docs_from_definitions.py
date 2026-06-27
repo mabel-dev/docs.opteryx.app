@@ -10,9 +10,9 @@ DOCS = ROOT / 'docs-site'
 
 NAV_PATH = DOCS / 'nav.json'
 CONTENT_DIR = DOCS / 'content' / 'docs'
-REF_SQL_DIR = CONTENT_DIR / 'reference' / 'sql'
+REF_SQL_DIR = DOCS / 'reference' / 'sql'
 REF_API_DIR = DOCS / 'reference' / 'api'
-API_INDEX_PATH = CONTENT_DIR / 'reference' / 'api.md'
+API_INDEX_PATH = DOCS / 'reference' / 'sql' / 'api.md'
 
 API_DOC_SPECS = {
     'api-opteryx-authenticate.json': {
@@ -1048,11 +1048,26 @@ def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], typ
     NAV_PATH.write_text(json.dumps(nav, indent=2))
 
 
+def _prune_stale(directory: pathlib.Path, keep_slugs: set[str]) -> None:
+    """Delete .md files in directory whose stem is not in keep_slugs."""
+    if not directory.exists():
+        return
+    for path in directory.glob('*.md'):
+        if path.stem not in keep_slugs:
+            path.unlink()
+            print(f'  removed stale: {path.name}')
+
+
 def main():
     functions_def = load_json(DEFS / 'functions.json')
     operators_def = load_json(DEFS / 'operators.json')
     types_def = load_json(DEFS / 'types.json')
     aggregates_def = load_json(DEFS / 'aggregates.json')
+
+    # Prune stale entries before regenerating so removed items disappear.
+    _prune_stale(REF_SQL_DIR / 'functions', {slugify(n) for n in functions_def})
+    _prune_stale(REF_SQL_DIR / 'operators', {slugify(n) for n in operators_def})
+    _prune_stale(REF_SQL_DIR / 'types', {slugify(n) for n in types_def})
 
     build_functions_docs(functions_def)
     build_operators_docs(operators_def)

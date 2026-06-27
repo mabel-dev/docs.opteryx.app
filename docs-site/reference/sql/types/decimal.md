@@ -1,13 +1,21 @@
 ---
-title: decimal — Opteryx Type
+title: DECIMAL — Opteryx Type
 description: DECIMAL
 ---
 
-# decimal
+# DECIMAL
 
-**Canonical name:** DECIMAL
+Exact fixed-point decimal number with configurable precision and scale.
 
-**Accepted spellings:** decimal
+## Example
+
+```
+DECIMAL(10,2)
+```
+
+## Notes
+
+Suitable for monetary values. Use CAST to FLOAT for aggregate operations.
 
 **Family:** numeric
 
@@ -20,8 +28,4 @@ description: DECIMAL
 
 ## Parameterized Forms
 
-- `DECIMAL(10,2)`
-
-## Ingestion Mappings
-
-- **parquet_logical_patterns**: decimal(...)
+- `DECIMAL(precision,scale)`

@@ -1,26 +1,14 @@
 ---
-title: XOR — Opteryx Operator
-description: Logical exclusive OR
+title: Logical XOR — Opteryx Operator
+description: Returns true when exactly one boolean operand evaluates to true. Symbol: XOR
 ---
 
-# XOR
+# Logical XOR
+
+Logical exclusive OR.
+
+Returns true when exactly one boolean operand evaluates to true.
 
 **Category:** logical
 
-**Token:** `XOR`
-
-**Signatures:** 1
-
-## Signatures
-
-- `boolean XOR boolean` → boolean
-
-## Types
-
-- **Left:** boolean
-- **Right:** boolean
-- **Result:** boolean
-
-## Notes
-
-Returns `TRUE` when exactly one operand is `TRUE`. Returns `FALSE` when both operands are the same value. Returns `NULL` when either operand is `NULL`.
+**SQL symbol:** `XOR`

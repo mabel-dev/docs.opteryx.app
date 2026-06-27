@@ -1,29 +1,29 @@
 ---
 title: REGEXP_REPLACE — Opteryx Function
-description: Replace regex matches.
+description: Replaces all matches of a regular expression pattern with a replacement string.
 ---
 
 # REGEXP_REPLACE
 
-Replace regex matches.
+Replaces all matches of a regular expression pattern with a replacement string.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-REGEXP_REPLACE(str, pattern, replacement)
+REGEXP_REPLACE(string, pattern, replacement)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **pattern** `varchar`
-    Regular expression pattern to match in the input string.
-- **replacement** `varchar`
-    Replacement text used for matched content.
+- **string** `varchar`
+    String input value.
+- **pattern** `varchar` [constant]
+    Regular expression pattern to match in the input string. Must be a constant expression.
+- **replacement** `varchar` [constant]
+    Replacement text used for matched content. Must be a constant expression.
 
 ## Returns
 
-**blob** — Returns the computed result as `blob`.
+**varchar** — Returns the computed result as `varchar`.

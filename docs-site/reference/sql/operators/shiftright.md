@@ -1,22 +1,14 @@
 ---
-title: >> — Opteryx Operator
-description: 
+title: Right shift — Opteryx Operator
+description: Shifts the bits of the left integer operand right by the number of positions in the right operand. Symbol: >>
 ---
 
-# >>
+# Right shift
 
-**Category:** binary
+Right shift operator.
 
-**Token:** `>>`
+Shifts the bits of the left integer operand right by the number of positions in the right operand.
 
-**Signatures:** 1
+**Category:** bitwise
 
-## Signatures
-
-- `integer >> integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer
+**SQL symbol:** `>>`

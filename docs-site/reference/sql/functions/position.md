@@ -1,11 +1,11 @@
 ---
 title: POSITION — Opteryx Function
-description: Find position of substring.
+description: Computes the starting position (1-based) of substring in string, or 0 if not found.
 ---
 
 # POSITION
 
-Find position of substring.
+Computes the starting position (1-based) of substring in string, or 0 if not found.
 
 **Category:** String Functions
 
@@ -17,14 +17,14 @@ POSITION(needle IN haystack)
 
 ## Arguments
 
-- **needle** `varchar`
-    Substring to search for.
-- **haystack** `varchar`
-    String to search within.
+- **sub** `varchar`
+    String input value.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.
 
 ## Usage Notes
 

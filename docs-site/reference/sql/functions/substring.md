@@ -1,11 +1,11 @@
 ---
 title: SUBSTRING — Opteryx Function
-description: Extracts a substring starting at the given position, with an optional length.
+description: Extracts a substring starting at the specified position with optional length.
 ---
 
 # SUBSTRING
 
-Extracts a substring starting at the given position, with an optional length.
+Extracts a substring starting at the specified position with optional length.
 
 **Category:** String Functions
 
@@ -21,11 +21,11 @@ SUBSTRING(str FROM start FOR length)
 
 ## Arguments
 
-- **str** `varchar`
-    Input string to extract a substring from.
-- **start** `integer`
-    One-based starting position of the substring.
-- **length** `integer`
+- **string** `varchar`
+    String input value.
+- **from_pos** `integer`
+    Integer input value.
+- **count** `integer`
     Integer input value.
 
 ## Returns

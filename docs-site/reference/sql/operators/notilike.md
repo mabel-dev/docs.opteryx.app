@@ -1,23 +1,14 @@
 ---
-title: NotILike — Opteryx Operator
-description: 
+title: Not case-insensitive like — Opteryx Operator
+description: Returns true when the left string does not match the SQL ILIKE pattern on the right. Symbol: NOT ILIKE
 ---
 
-# NotILike
+# Not case-insensitive like
+
+Negated case-insensitive pattern match comparison.
+
+Returns true when the left string does not match the SQL ILIKE pattern on the right.
 
 **Category:** comparison
 
-**Signatures:** 4
-
-## Signatures
-
-- {'left_type': 'blob', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'blob', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'blob', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-- {'left_type': 'varchar', 'right_type': 'varchar', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-
-## Types
-
-- **Left:** blob, varchar
-- **Right:** blob, varchar
-- **Result:** boolean
+**SQL symbol:** `NOT ILIKE`

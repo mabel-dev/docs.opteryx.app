@@ -1,23 +1,14 @@
 ---
-title: % — Opteryx Operator
-description: 
+title: Modulo — Opteryx Operator
+description: Returns the remainder after division of the left numeric operand by the right numeric operand. Symbol: %
 ---
 
-# %
+# Modulo
+
+Modulo operator.
+
+Returns the remainder after division of the left numeric operand by the right numeric operand.
 
 **Category:** binary
 
-**Token:** `%`
-
-**Signatures:** 2
-
-## Signatures
-
-- `double % integer` → double
-- `integer % integer` → integer
-
-## Types
-
-- **Left:** double, integer
-- **Right:** integer
-- **Result:** double, integer
+**SQL symbol:** `%`

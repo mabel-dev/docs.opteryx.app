@@ -22,9 +22,9 @@ The following functions are supported by Opteryx.  Click a name for details.
 
 ## Date & Time Functions
 
-- [CURRENT_DATE](functions/current_date) — Current date (SQL-92).
-- [CURRENT_TIME](functions/current_time) — Current time (SQL-92).
-- [CURRENT_TIMESTAMP](functions/current_timestamp) — Current timestamp (SQL-92).
+- [CURRENT_DATE](functions/current_date) — Current date.
+- [CURRENT_TIME](functions/current_time) — Current time.
+- [CURRENT_TIMESTAMP](functions/current_timestamp) — Current timestamp.
 - [DATEDIFF](functions/datediff) — Difference between two dates in the specified unit.
 - [DATE_FORMAT](functions/date_format) — Format date/timestamp as string.
 - [EXTRACT](functions/extract) — Extract a part from a date/timestamp.
@@ -49,6 +49,10 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [SHA384](functions/sha384) — SHA-384 hash.
 - [SHA512](functions/sha512) — SHA-512 hash.
 
+## Misc
+
+- [UTC_TIMESTAMP](functions/utc_timestamp) — Current UTC timestamp.
+
 ## Numeric Functions
 
 - [ABS](functions/abs) — Absolute value.
@@ -66,29 +70,30 @@ The following functions are supported by Opteryx.  Click a name for details.
 
 ## String Functions
 
-- [ASCII](functions/ascii) — Return ASCII codepoint of first character.
-- [CHAR](functions/char) — Convert codepoint to character.
 - [CONCAT](functions/concat) — Concatenate strings.
-- [CONCAT_WS](functions/concat_ws) — Concatenate with separator.
-- [INITCAP](functions/initcap) — Capitalise first letter of each word.
-- [LEFT](functions/left) — Return leftmost N characters.
-- [LENGTH](functions/length) — Return length of string.
-- [LEVENSHTEIN](functions/levenshtein) — Levenshtein edit distance between two strings.
+- [CONCAT_WS](functions/concat_ws) — Concatenate strings with separator.
+- [INITCAP](functions/initcap) — Capitalize first letter of each word.
+- [LEFT](functions/left) — Extract leftmost characters.
+- [LENGTH](functions/length) — Return length of string or number of elements in an array.
+- [LEVENSHTEIN](functions/levenshtein) — Compute Levenshtein distance.
 - [LOWER](functions/lower) — Convert string to lowercase.
 - [LPAD](functions/lpad) — Left-pad string to width.
-- [LTRIM](functions/ltrim) — Trim leading characters.
-- [MATCH](functions/match) — Full-text match.
+- [LTRIM](functions/ltrim) — Remove leading whitespace.
+- [MATCH](functions/match) — Semantic text matching via embeddings.
+- [OCTET_LENGTH](functions/octet_length) — Return the number of bytes in a string, regardless of string type.
 - [POSITION](functions/position) — Find position of substring.
-- [REGEXP_REPLACE](functions/regexp_replace) — Replace regex matches.
-- [REPLACE](functions/replace) — Replace occurrences of substring.
+- [REGEXP_REPLACE](functions/regexp_replace) — Replace using regex pattern.
+- [REPLACE](functions/replace) — Replace all occurrences.
 - [REVERSE](functions/reverse) — Reverse a string.
-- [RIGHT](functions/right) — Return rightmost N characters.
+- [RIGHT](functions/right) — Extract rightmost characters.
 - [RPAD](functions/rpad) — Right-pad string to width.
-- [RTRIM](functions/rtrim) — Trim trailing characters.
-- [SOUNDEX](functions/soundex) — Return Soundex phonetic code.
+- [RTRIM](functions/rtrim) — Remove trailing whitespace.
+- [SOUNDEX](functions/soundex) — Return Soundex code of string.
 - [SPLIT](functions/split) — Split string into array.
 - [SUBSTRING](functions/substring) — Extract substring.
-- [TRIM](functions/trim) — Trim leading and trailing characters.
+- [TO_ASCII](functions/to_ascii) — Convert character to codepoint.
+- [TO_CHAR](functions/to_char) — Convert codepoint to character.
+- [TRIM](functions/trim) — Remove leading and trailing whitespace.
 - [UPPER](functions/upper) — Convert string to uppercase.
 
 ## Struct/JSON Functions
@@ -108,7 +113,6 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [RANDOM](functions/random) — Generate random numbers.
 - [RANDOM_STRING](functions/random_string) — Generate random strings.
 - [USER](functions/user) — Current user name.
-- [UTC_TIMESTAMP](functions/utc_timestamp) — Current UTC timestamp.
 - [VERSION](functions/version) — Database version string.
 
 ## Vector / Embedding Functions

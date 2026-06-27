@@ -1,15 +1,26 @@
 ---
-title: integer — Opteryx Type
+title: INTEGER — Opteryx Type
 description: INTEGER
 ---
 
-# integer
+# INTEGER
 
-**Canonical name:** INTEGER
+Signed 64-bit integer.
 
-**Aliases:** int16, int32, int64, int8
+## Example
 
-**Accepted spellings:** int16, int32, int64, int8, integer
+```
+42
+```
+
+## Range
+
+- **Min:** `-9223372036854775808`
+- **Max:** `9223372036854775807`
+
+## Notes
+
+Parsed from strings, floats, and booleans.
 
 **Family:** numeric
 
@@ -19,8 +30,3 @@ description: INTEGER
 - **temporal**: `False`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-
-- **parquet_physical**: int16, int32, int64, int8
-- **jsonl**: int64

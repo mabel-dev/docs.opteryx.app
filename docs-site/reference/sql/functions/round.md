@@ -12,19 +12,23 @@ Rounds input number to nearest integer or specified decimal places.
 ## Syntax
 
 ```
-ROUND(num, [precision...])
+ROUND(num)
+```
+
+```
+ROUND(num, precision)
 ```
 
 ## Arguments
 
 - **num** `number`
     Numeric value to round.
-- **precision** `integer` [optional | variadic]
-    Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions. Optional. Can be repeated.
+- **precision** `integer`
+    Number of decimal places to keep. Negative values round to tens, hundreds, and larger positions.
 
 ## Returns
 
-**double** — Returns the computed result as `double`.
+**float64** — Returns the computed result as `float64`.
 
 ## Usage Notes
 

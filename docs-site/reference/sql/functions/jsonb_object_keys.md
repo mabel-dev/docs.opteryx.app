@@ -22,4 +22,4 @@ JSONB_OBJECT_KEYS(json)
 
 ## Returns
 
-**array** — Returns the computed result as `array`.
+**array<variant>** — Returns the computed result as `array<variant>`.

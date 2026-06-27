@@ -1,22 +1,14 @@
 ---
-title: & — Opteryx Operator
-description: 
+title: Bitwise AND — Opteryx Operator
+description: Combines integer operands using a bitwise AND operation. Symbol: &
 ---
 
-# &
+# Bitwise AND
 
-**Category:** binary
+Bitwise AND operator.
 
-**Token:** `&`
+Combines integer operands using a bitwise AND operation.
 
-**Signatures:** 1
+**Category:** bitwise
 
-## Signatures
-
-- `integer & integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer
+**SQL symbol:** `&`

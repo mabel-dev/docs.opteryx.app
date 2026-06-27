@@ -1,20 +1,14 @@
 ---
-title: And — Opteryx Operator
-description: 
+title: Logical AND — Opteryx Operator
+description: Returns true only when both boolean operands evaluate to true. Symbol: AND
 ---
 
-# And
+# Logical AND
+
+Logical conjunction.
+
+Returns true only when both boolean operands evaluate to true.
 
 **Category:** logical
 
-**Signatures:** 1
-
-## Signatures
-
-- {'left_type': 'boolean', 'right_type': 'boolean', 'result_type': 'boolean', 'result_type_is_dynamic': False, 'cost_estimate': 100.0}
-
-## Types
-
-- **Left:** boolean
-- **Right:** boolean
-- **Result:** boolean
+**SQL symbol:** `AND`

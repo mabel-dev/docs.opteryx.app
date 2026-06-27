@@ -1,28 +1,28 @@
 ---
 title: REPLACE — Opteryx Function
-description: Replace occurrences of substring.
+description: Replace all occurrences.
 ---
 
 # REPLACE
 
-Replace occurrences of substring.
+Replace all occurrences.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-REPLACE(str, search, replacement)
+REPLACE(string, search, replace_val)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
+- **string** `varchar`
+    String input value.
 - **search** `varchar`
     Text or pattern to replace in the input.
-- **replacement** `varchar`
-    Replacement text used for matched content.
+- **replace_val** `varchar`
+    String input value.
 
 ## Returns
 

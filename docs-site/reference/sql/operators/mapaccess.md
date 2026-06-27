@@ -1,24 +1,18 @@
 ---
-title: [] — Opteryx Operator
-description: 
+title: Subscript access — Opteryx Operator
+description: Returns the element at the requested index from an array, string, or blob-like value. Symbol: []
 ---
 
-# []
+# Subscript access
+
+Subscript access operator.
+
+Returns the element at the requested index from an array, string, or blob-like value.
 
 **Category:** extraction
 
-**Token:** `[]`
+**SQL symbol:** `[]`
 
-**Signatures:** 3
+## Notes
 
-## Signatures
-
-- `array [] integer` → <dynamic>
-- `blob [] integer` → blob
-- `varchar [] integer` → varchar
-
-## Types
-
-- **Left:** array, blob, varchar
-- **Right:** integer
-- **Result:** blob, varchar
+Subcript access is zero-based, the first element is at index 0. For arrays the result type depends on the array element type, so the exported result type may be dynamic.

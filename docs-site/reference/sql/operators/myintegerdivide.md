@@ -1,22 +1,14 @@
 ---
-title: div — Opteryx Operator
-description: 
+title: Integer division — Opteryx Operator
+description: Divides two integers and truncates the result toward zero. Symbol: DIV
 ---
 
-# div
+# Integer division
+
+Integer division operator.
+
+Divides two integers and truncates the result toward zero.
 
 **Category:** binary
 
-**Token:** `div`
-
-**Signatures:** 1
-
-## Signatures
-
-- `integer div integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer
+**SQL symbol:** `DIV`

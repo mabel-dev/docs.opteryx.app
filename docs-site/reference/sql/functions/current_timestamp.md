@@ -1,11 +1,11 @@
 ---
 title: CURRENT_TIMESTAMP — Opteryx Function
-description: Current timestamp (SQL-92).
+description: Current timestamp.
 ---
 
 # CURRENT_TIMESTAMP
 
-Current timestamp (SQL-92).
+Current timestamp.
 
 **Category:** Date & Time Functions
 

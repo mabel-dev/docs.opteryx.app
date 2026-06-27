@@ -9,46 +9,50 @@ The following operators are supported by Opteryx.  Click a name for details.
 
 ## binary
 
-- [BitwiseAnd](operators/bitwiseand) — &
-- [BitwiseOr](operators/bitwiseor) — |
-- [BitwiseXor](operators/bitwisexor) — ^
-- [Divide](operators/divide) — /
-- [Minus](operators/minus) — -
-- [Modulo](operators/modulo) — %
-- [Multiply](operators/multiply) — *
-- [MyIntegerDivide](operators/myintegerdivide) — div
-- [Plus](operators/plus) — +
-- [ShiftLeft](operators/shiftleft) — <<
-- [ShiftRight](operators/shiftright) — >>
-- [StringConcat](operators/stringconcat) — ||
+- [Division `/`](operators/divide)
+- [Subtraction `-`](operators/minus)
+- [Modulo `%`](operators/modulo)
+- [Multiplication `*`](operators/multiply)
+- [Integer division `DIV`](operators/myintegerdivide)
+- [Addition `+`](operators/plus)
+- [Concatenation `||`](operators/stringconcat)
+
+## bitwise
+
+- [Bitwise AND `&`](operators/bitwiseand)
+- [Bitwise OR `|`](operators/bitwiseor)
+- [Bitwise XOR `^`](operators/bitwisexor)
+- [Left shift `<<`](operators/shiftleft)
+- [Right shift `>>`](operators/shiftright)
 
 ## comparison
 
-- [ArrayContainsAll](operators/arraycontainsall) — @>>
-- [AtArrow](operators/atarrow) — @>
-- [AtQuestion](operators/atquestion) — @?
-- [Eq](operators/eq) — =
-- [Gt](operators/gt) — >
-- [GtEq](operators/gteq) — >=
-- [ILike](operators/ilike) — ILike
-- [InList](operators/inlist) — InList
-- [Like](operators/like) — Like
-- [Lt](operators/lt) — <
-- [LtEq](operators/lteq) — <=
-- [NotEq](operators/noteq) — !=
-- [NotILike](operators/notilike) — NotILike
-- [NotInList](operators/notinlist) — NotInList
-- [NotLike](operators/notlike) — NotLike
-- [NotRLike](operators/notrlike) — NotRLike
-- [RLike](operators/rlike) — RLike
+- [Array contains all `@>>`](operators/arraycontainsall)
+- [Array contains any `@>`](operators/atarrow)
+- [JSON path exists `@?`](operators/atquestion)
+- [Equals `=`](operators/eq)
+- [Greater than `>`](operators/gt)
+- [Greater than or equal `>=`](operators/gteq)
+- [Case-insensitive like `ILIKE`](operators/ilike)
+- [In list `IN`](operators/inlist)
+- [Like `LIKE`](operators/like)
+- [Less than `<`](operators/lt)
+- [Less than or equal `<=`](operators/lteq)
+- [Not equals `!=`](operators/noteq)
+- [Not case-insensitive like `NOT ILIKE`](operators/notilike)
+- [Not in list `NOT IN`](operators/notinlist)
+- [Not like `NOT LIKE`](operators/notlike)
+- [Not regex like `NOT RLIKE`](operators/notrlike)
+- [Regex like `RLIKE`](operators/rlike)
 
 ## extraction
 
-- [Arrow](operators/arrow) — ->
-- [LongArrow](operators/longarrow) — ->>
-- [MapAccess](operators/mapaccess) — []
+- [JSON extract `->`](operators/arrow)
+- [JSON extract text `->>`](operators/longarrow)
+- [Subscript access `[]`](operators/mapaccess)
 
 ## logical
 
-- [And](operators/and) — And
-- [Or](operators/or) — Or
+- [Logical AND `AND`](operators/and)
+- [Logical OR `OR`](operators/or)
+- [Logical XOR `XOR`](operators/xor)

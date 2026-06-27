@@ -22,4 +22,4 @@ UNIXTIME(date)
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.

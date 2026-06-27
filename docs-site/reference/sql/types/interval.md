@@ -1,22 +1,27 @@
 ---
-title: interval — Opteryx Type
+title: INTERVAL — Opteryx Type
 description: INTERVAL
 ---
 
-# interval
+# INTERVAL
 
-**Canonical name:** INTERVAL
+Duration or period of time.
 
-**Accepted spellings:** interval
+## Example
+
+```
+INTERVAL '1' DAY
+```
+
+## Notes
+
+Sub-month components are stored as microseconds.
 
 **Family:** interval
 
 ## Flags
 
 - **numeric**: `False`
-- **temporal**: `False`
+- **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`
-
-## Ingestion Mappings
-

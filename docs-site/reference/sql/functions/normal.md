@@ -1,11 +1,11 @@
 ---
 title: NORMAL — Opteryx Function
-description: Generate normally-distributed random numbers.
+description: Computes normally-distributed random float(s).
 ---
 
 # NORMAL
 
-Generate normally-distributed random numbers.
+Computes normally-distributed random float(s).
 
 **Category:** Utility Functions
 
@@ -15,6 +15,10 @@ Generate normally-distributed random numbers.
 NORMAL(n)
 ```
 
+```
+NORMAL()
+```
+
 ## Arguments
 
 - **n** `integer`
@@ -22,7 +26,7 @@ NORMAL(n)
 
 ## Returns
 
-**double** — Returns the computed result as `double`.
+**float64** — Returns the computed result as `float64`.
 
 ## Usage Notes
 
