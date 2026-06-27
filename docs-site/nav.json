@@ -591,6 +591,9 @@
         "Draken vector encoding": "reference/internals/draken-vector-encoding.md"
       },
       {
+        "Draken string storage": "reference/internals/draken-german-strings.md"
+      },
+      {
         "RISC-V support": "reference/internals/riscv-support.md"
       }
     ]

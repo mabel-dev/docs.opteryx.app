@@ -30,6 +30,8 @@ Predicate evaluation becomes even cheaper than the memory saving suggests. To te
 
 Parquet's RLE_DICTIONARY encoding on disk maps directly to this shape in memory. There is no expansion step at read time.
 
+The values inside a string dictionary — and inside any string column — have their own fixed-width layout; see [How Draken Stores Strings](draken-german-strings.md).
+
 ### Constant
 
 When every row in a chunk has the same value — a literal in a SQL expression, a column with a single run of identical values, a scalar broadcast — Draken stores exactly one value and a row count. Reading "all N rows" costs the same as reading one.
@@ -54,7 +56,7 @@ Constants arise more often than expected. The right-hand side of `WHERE region =
 
 Shape is decided at the scan boundary — the point where raw file bytes become Draken vectors — and stays fixed for the lifetime of that data in the engine.
 
-Rugo (Opteryx's Parquet and JSONL reader) inspects each column chunk as it decodes:
+Rugo (Opteryx's Parquet, CSV, and JSONL reader) inspects each column chunk as it decodes:
 
 - A chunk that is already dictionary-encoded on disk becomes a dictionary vector directly.
 - A chunk where every row has the same value becomes a constant vector.
@@ -68,6 +70,6 @@ Operators and expressions can also produce new vectors in any shape. A scalar su
 
 ## What the engine actually sees
 
-From the execution engine's perspective, all three shapes look identical. A single struct describes the data, and reading the value at row `i` is the same operation regardless of shape: follow an optional indirection, read from the data buffer. Constant and dense are both "no indirection" — the difference is just how many entries the data buffer holds.
+From the execution engine's perspective, all three shapes look identical. A single struct describes the data, and reading the value at row `i` is always the same operation regardless of shape: read `data[selection[i]]`. The indirection is always present — dense vectors use an identity mapping (`selection[i] == i`), constants use an all-zero mapping (every row reads the single stored value), and dictionaries use the per-row codes. The difference between shapes is just what `selection` points at and how many entries the data buffer holds.
 
-This means kernels are written once and handle all three shapes correctly. There is no combinatorial explosion of "dense × dense", "dict × constant", and so on for every operation. The shape-awareness happens at the struct level, not in operator code.
+This means a kernel can be written once against the uniform `data[selection[i]]` access and handle all three shapes correctly. There is no combinatorial explosion of "dense × dense", "dict × constant", and so on for every operation. By default, operators are shape-agnostic and the shape-awareness lives in the struct, not in operator code. A small number of hot kernels (comparisons, predicates, arithmetic) carry architect-approved fast paths that exploit a known shape — for example, evaluating a predicate over a dictionary's unique values once instead of per row — but these are deliberate, audited exceptions, and each one must produce exactly the same answer as the uniform path.
