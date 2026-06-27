@@ -13,12 +13,11 @@
             "parameterized": true
         },
         "metadata": {
-            "description": "Array of values of a single type.",
-            "example": "[1, 2, 3]",
-            "notes": "Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc."
+            "description": "Ordered sequence of elements of a single type.",
+            "example": "ARRAY[1, 2, 3]"
         },
         "parameterized_forms": [
-            "ARRAY<INTEGER>"
+            "ARRAY<type>"
         ],
         "ingestion_mappings": {
             "parquet_physical": [],
@@ -35,51 +34,12 @@
             "blob",
             "boolean",
             "double",
+            "float",
             "integer",
-            "jsonb"
+            "jsonb",
+            "nvarchar",
+            "varbinary"
         ]
-    },
-    "blob": {
-        "canonical_name": "BLOB",
-        "aliases": [
-            "byte_array",
-            "fixed_len_byte_array"
-        ],
-        "accepted_spellings": [
-            "blob",
-            "byte_array",
-            "fixed_len_byte_array"
-        ],
-        "family": "binary",
-        "flags": {
-            "numeric": false,
-            "temporal": false,
-            "collection": false,
-            "parameterized": false
-        },
-        "metadata": {
-            "description": "Binary large object (bytes).",
-            "min": 0,
-            "max": null,
-            "example": "b'\\x01\\x02'",
-            "notes": "By default, length is unbounded unless specified (e.g. BLOB[1024])."
-        },
-        "parameterized_forms": [],
-        "ingestion_mappings": {
-            "parquet_physical": [
-                "byte_array",
-                "fixed_len_byte_array"
-            ],
-            "parquet_logical": [
-                "binary",
-                "byte_array",
-                "fixed_len_byte_array"
-            ],
-            "jsonl": [
-                "bytes",
-                "null"
-            ]
-        }
     },
     "boolean": {
         "canonical_name": "BOOLEAN",
@@ -98,11 +58,8 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Boolean value representing true or false.",
-            "min": false,
-            "max": true,
-            "example": "TRUE",
-            "notes": "Accepted values include TRUE/FALSE, 1/0, YES/NO, ON/OFF (case-insensitive)."
+            "description": "Boolean TRUE or FALSE value.",
+            "example": "TRUE"
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -131,11 +88,8 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Calendar date (YYYY-MM-DD).",
-            "min": "0001-01-01",
-            "max": "9999-12-31",
-            "example": "2023-04-18",
-            "notes": "Parsed from ISO date strings and timestamps."
+            "description": "Calendar date without time component.",
+            "example": "DATE '2024-01-01'"
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -161,14 +115,12 @@
             "parameterized": true
         },
         "metadata": {
-            "description": "Fixed-point decimal number with configurable precision and scale.",
-            "example": "123.45",
-            "notes": "If precision/scale are not defined, defaults to precision=38 and scale=21.",
-            "min": "-99999999999999999.999999999999999999999",
-            "max": "99999999999999999.999999999999999999999"
+            "description": "Exact fixed-point decimal number with configurable precision and scale.",
+            "example": "DECIMAL(10,2)",
+            "notes": "Suitable for monetary values. Use CAST to FLOAT for aggregate operations."
         },
         "parameterized_forms": [
-            "DECIMAL(10,2)"
+            "DECIMAL(precision,scale)"
         ],
         "ingestion_mappings": {
             "parquet_physical": [],
@@ -179,18 +131,20 @@
             ]
         }
     },
-    "double": {
-        "canonical_name": "DOUBLE",
+    "float": {
+        "canonical_name": "FLOAT",
         "aliases": [
-            "float",
             "float32",
-            "float64"
+            "float64",
+            "double",
+            "real"
         ],
         "accepted_spellings": [
             "double",
             "float",
             "float32",
-            "float64"
+            "float64",
+            "real"
         ],
         "family": "numeric",
         "flags": {
@@ -200,11 +154,11 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Double-precision floating point number.",
+            "description": "64-bit IEEE 754 double-precision floating-point number.",
             "min": -1.7976931348623157e+308,
             "max": 1.7976931348623157e+308,
-            "example": "123.45",
-            "notes": "Supports scientific notation (e.g. 1.23e5)."
+            "example": "3.14",
+            "notes": "NaN sorts highest; -0.0 and 0.0 are treated as equal."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -223,10 +177,10 @@
     "integer": {
         "canonical_name": "INTEGER",
         "aliases": [
+            "int8",
             "int16",
             "int32",
-            "int64",
-            "int8"
+            "int64"
         ],
         "accepted_spellings": [
             "int16",
@@ -257,7 +211,12 @@
                 "int64",
                 "int8"
             ],
-            "parquet_logical": [],
+            "parquet_logical": [
+                "uint_16",
+                "uint_32",
+                "uint_64",
+                "uint_8"
+            ],
             "jsonl": [
                 "int64"
             ]
@@ -272,51 +231,20 @@
         "family": "interval",
         "flags": {
             "numeric": false,
-            "temporal": false,
+            "temporal": true,
             "collection": false,
             "parameterized": false
         },
         "metadata": {
-            "description": "Time interval/duration.",
-            "example": "1 day 02:03:04",
-            "notes": "Represented as a Python timedelta."
+            "description": "Duration or period of time.",
+            "example": "INTERVAL '1' DAY",
+            "notes": "Sub-month components are stored as microseconds."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
             "parquet_physical": [],
             "parquet_logical": [],
             "jsonl": []
-        }
-    },
-    "jsonb": {
-        "canonical_name": "JSONB",
-        "aliases": [],
-        "accepted_spellings": [
-            "jsonb"
-        ],
-        "family": "nested",
-        "flags": {
-            "numeric": false,
-            "temporal": false,
-            "collection": true,
-            "parameterized": false
-        },
-        "metadata": {
-            "description": "JSON binary data.",
-            "example": "{'key': 'value'}",
-            "notes": "Stored as a binary JSON blob."
-        },
-        "parameterized_forms": [],
-        "ingestion_mappings": {
-            "parquet_physical": [],
-            "parquet_logical": [
-                "json",
-                "jsonb",
-                "struct"
-            ],
-            "jsonl": [
-                "object"
-            ]
         }
     },
     "null": {
@@ -333,15 +261,48 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Null value.",
-            "example": "NULL",
-            "notes": "Represents absence of a value."
+            "description": "The absence of a value.",
+            "notes": "NULL is not equal to NULL; use IS NULL to test for nulls."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
             "parquet_physical": [],
             "parquet_logical": [],
             "jsonl": []
+        }
+    },
+    "nvarchar": {
+        "canonical_name": "NVARCHAR",
+        "aliases": [
+            "utf8"
+        ],
+        "accepted_spellings": [
+            "nvarchar",
+            "utf8"
+        ],
+        "family": "text",
+        "flags": {
+            "numeric": false,
+            "temporal": false,
+            "collection": true,
+            "parameterized": false
+        },
+        "metadata": {
+            "description": "UTF-8 encoded text string.",
+            "example": "'h\u00e9llo'",
+            "notes": "Stores arbitrary Unicode content. JSON/JSONB data is stored as NVARCHAR."
+        },
+        "parameterized_forms": [],
+        "ingestion_mappings": {
+            "parquet_physical": [],
+            "parquet_logical": [
+                "json",
+                "jsonb",
+                "struct"
+            ],
+            "jsonl": [
+                "object"
+            ]
         }
     },
     "time": {
@@ -358,11 +319,8 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Time of day (HH:MM:SS).",
-            "min": "00:00:00",
-            "max": "23:59:59.999999",
-            "example": "12:34:56",
-            "notes": "Parsed from ISO time strings."
+            "description": "Time of day without a date component.",
+            "example": "TIME '12:30:00'"
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -388,11 +346,9 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Timestamp including date and time.",
-            "min": "0001-01-01 00:00:00",
-            "max": "9999-12-31 23:59:59.999999",
-            "example": "2023-04-18T12:34:56",
-            "notes": "Parsed from ISO 8601 strings and unix timestamps."
+            "description": "Date and time with microsecond precision.",
+            "example": "TIMESTAMP '2024-01-01 12:00:00'",
+            "notes": "Stored as microseconds since the Unix epoch."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -404,15 +360,61 @@
             ]
         }
     },
+    "varbinary": {
+        "canonical_name": "VARBINARY",
+        "aliases": [
+            "blob",
+            "binary",
+            "bytes",
+            "byte_array"
+        ],
+        "accepted_spellings": [
+            "binary",
+            "blob",
+            "byte_array",
+            "bytes",
+            "varbinary"
+        ],
+        "family": "binary",
+        "flags": {
+            "numeric": false,
+            "temporal": false,
+            "collection": false,
+            "parameterized": false
+        },
+        "metadata": {
+            "description": "Raw binary data.",
+            "example": "b'0102'",
+            "notes": "Also used for BLOB storage."
+        },
+        "parameterized_forms": [],
+        "ingestion_mappings": {
+            "parquet_physical": [
+                "byte_array",
+                "fixed_len_byte_array"
+            ],
+            "parquet_logical": [
+                "binary",
+                "byte_array",
+                "fixed_len_byte_array"
+            ],
+            "jsonl": [
+                "bytes",
+                "null"
+            ]
+        }
+    },
     "varchar": {
         "canonical_name": "VARCHAR",
         "aliases": [
             "string",
-            "utf8"
+            "text",
+            "char"
         ],
         "accepted_spellings": [
+            "char",
             "string",
-            "utf8",
+            "text",
             "varchar"
         ],
         "family": "text",
@@ -423,11 +425,9 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Variable-length string.",
-            "min": 0,
-            "max": null,
-            "example": "hello",
-            "notes": "By default, length is unbounded unless specified (e.g. VARCHAR[255])."
+            "description": "ASCII text string.",
+            "example": "'hello'",
+            "notes": "Use NVARCHAR for UTF-8 content."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
@@ -437,6 +437,30 @@
                 "utf8",
                 "varchar"
             ],
+            "jsonl": []
+        }
+    },
+    "variant": {
+        "canonical_name": "VARIANT",
+        "aliases": [],
+        "accepted_spellings": [
+            "variant"
+        ],
+        "family": "nested",
+        "flags": {
+            "numeric": false,
+            "temporal": false,
+            "collection": true,
+            "parameterized": false
+        },
+        "metadata": {
+            "description": "Flexible semi-structured type for heterogeneous data.",
+            "notes": "Used for schema-on-read scenarios."
+        },
+        "parameterized_forms": [],
+        "ingestion_mappings": {
+            "parquet_physical": [],
+            "parquet_logical": [],
             "jsonl": []
         }
     },
@@ -454,9 +478,8 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Fixed-length numeric vector.",
-            "example": "[0.1, 0.2, 0.3]",
-            "notes": "Length can be specified as VECTOR[<size>]."
+            "description": "Fixed-length numeric vector for similarity search and ML workloads.",
+            "notes": "Stored as FP16 by default."
         },
         "parameterized_forms": [],
         "ingestion_mappings": {

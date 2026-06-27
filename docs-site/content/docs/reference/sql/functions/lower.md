@@ -1,11 +1,11 @@
 ---
 title: LOWER — Opteryx Function
-description: Transforms the input string to lowercase.
+description: Convert string to lowercase.
 ---
 
 # LOWER
 
-Transforms the input string to lowercase.
+Convert string to lowercase.
 
 **Category:** String Functions
 

@@ -1,28 +1,28 @@
 ---
 title: CONCAT_WS — Opteryx Function
-description: Concatenate with separator.
+description: Concatenates strings with specified separator, skipping nulls.
 ---
 
 # CONCAT_WS
 
-Concatenate with separator.
+Concatenates strings with specified separator, skipping nulls.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-CONCAT_WS(sep, str1, [more...])
+CONCAT_WS(separator, str1, [strs...])
 ```
 
 ## Arguments
 
-- **sep** `varchar`
-    Separator inserted between each concatenated string.
-- **str1** `varchar`
+- **separator** `varchar`
+    String input value.
+- **str1** `any`
     First string value to concatenate.
-- **more** `varchar` [optional | variadic]
-    Additional string values to concatenate after `str1`. Optional. Can be repeated.
+- **strs** `any` [optional | variadic]
+    Input value of type `any`. Optional. Can be repeated.
 
 ## Returns
 

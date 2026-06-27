@@ -26,4 +26,4 @@ IIF(condition, true_value, false_value)
 
 ## Returns
 
-**same as `true_value`** — Returns a value with the same type as `true_value`.
+**dynamic** — Returns a value whose type depends on the supplied arguments.

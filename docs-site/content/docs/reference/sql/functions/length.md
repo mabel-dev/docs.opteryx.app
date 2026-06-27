@@ -1,25 +1,31 @@
 ---
 title: LENGTH — Opteryx Function
-description: Calculates the number of characters in the input string.
+description: Computes length of string or number of elements in an array.
 ---
 
 # LENGTH
 
-Calculates the number of characters in the input string.
+Computes length of string or number of elements in an array.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-LENGTH(str)
+LENGTH(string)
+```
+
+```
+LENGTH(arr)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
+- **string** `varchar`
+    String input value.
+- **arr** `array`
+    Input array or vector value.
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.

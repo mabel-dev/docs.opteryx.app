@@ -7,7 +7,7 @@ description: Current UTC timestamp.
 
 Current UTC timestamp.
 
-**Category:** Utility Functions
+**Category:** Misc
 
 ## Syntax
 

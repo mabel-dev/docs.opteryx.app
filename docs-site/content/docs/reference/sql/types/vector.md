@@ -5,17 +5,11 @@ description: VECTOR
 
 # VECTOR
 
-Fixed-length numeric vector.
-
-## Example
-
-```
-[0.1, 0.2, 0.3]
-```
+Fixed-length numeric vector for similarity search and ML workloads.
 
 ## Notes
 
-Length can be specified as VECTOR[<size>].
+Stored as FP16 by default.
 
 **Family:** vector
 

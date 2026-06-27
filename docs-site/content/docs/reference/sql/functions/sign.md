@@ -1,11 +1,11 @@
 ---
 title: SIGN — Opteryx Function
-description: Sign of number (-1, 0, 1).
+description: Computes -1 for negative, 0 for zero, 1 for positive.
 ---
 
 # SIGN
 
-Sign of number (-1, 0, 1).
+Computes -1 for negative, 0 for zero, 1 for positive.
 
 **Category:** Numeric Functions
 
@@ -22,4 +22,4 @@ SIGN(num)
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.

@@ -5,22 +5,13 @@ description: TIME
 
 # TIME
 
-Time of day (HH:MM:SS).
+Time of day without a date component.
 
 ## Example
 
 ```
-12:34:56
+TIME '12:30:00'
 ```
-
-## Range
-
-- **Min:** `00:00:00`
-- **Max:** `23:59:59.999999`
-
-## Notes
-
-Parsed from ISO time strings.
 
 **Family:** temporal
 

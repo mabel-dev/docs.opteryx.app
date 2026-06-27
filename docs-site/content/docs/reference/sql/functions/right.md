@@ -1,26 +1,26 @@
 ---
 title: RIGHT — Opteryx Function
-description: Computes rightmost n characters.
+description: Extract rightmost characters.
 ---
 
 # RIGHT
 
-Computes rightmost n characters.
+Extract rightmost characters.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-RIGHT(str, n)
+RIGHT(string, length)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **n** `integer`
-    Integer control value used by the function.
+- **string** `varchar`
+    String input value.
+- **length** `integer`
+    Integer input value.
 
 ## Returns
 

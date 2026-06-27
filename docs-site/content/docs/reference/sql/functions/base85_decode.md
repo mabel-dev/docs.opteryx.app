@@ -22,4 +22,4 @@ BASE85_DECODE(blob)
 
 ## Returns
 
-**blob** — Returns the computed result as `blob`.
+**varbinary** — Returns the computed result as `varbinary`.

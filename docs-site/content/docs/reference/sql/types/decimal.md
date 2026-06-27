@@ -5,22 +5,17 @@ description: DECIMAL
 
 # DECIMAL
 
-Fixed-point decimal number with configurable precision and scale.
+Exact fixed-point decimal number with configurable precision and scale.
 
 ## Example
 
 ```
-123.45
+DECIMAL(10,2)
 ```
-
-## Range
-
-- **Min:** `-99999999999999999.999999999999999999999`
-- **Max:** `99999999999999999.999999999999999999999`
 
 ## Notes
 
-If precision/scale are not defined, defaults to precision=38 and scale=21.
+Suitable for monetary values. Use CAST to FLOAT for aggregate operations.
 
 **Family:** numeric
 
@@ -33,4 +28,4 @@ If precision/scale are not defined, defaults to precision=38 and scale=21.
 
 ## Parameterized Forms
 
-- `DECIMAL(10,2)`
+- `DECIMAL(precision,scale)`

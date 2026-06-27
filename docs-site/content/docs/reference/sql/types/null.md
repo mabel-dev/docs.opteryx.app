@@ -5,17 +5,11 @@ description: NULL
 
 # NULL
 
-Null value.
-
-## Example
-
-```
-NULL
-```
+The absence of a value.
 
 ## Notes
 
-Represents absence of a value.
+NULL is not equal to NULL; use IS NULL to test for nulls.
 
 **Family:** null
 

@@ -1,26 +1,28 @@
 ---
 title: CONCAT — Opteryx Function
-description: Concatenates all input strings.
+description: Concatenates multiple string arguments into a single string.
 ---
 
 # CONCAT
 
-Concatenates all input strings.
+Concatenates multiple string arguments into a single string.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-CONCAT(str1, [more...])
+CONCAT(str1, str2, [strs...])
 ```
 
 ## Arguments
 
-- **str1** `varchar`
+- **str1** `any`
     First input string value.
-- **more** `varchar` [optional | variadic]
-    Additional input values. Optional. Can be repeated.
+- **str2** `any`
+    Input value of type `any`.
+- **strs** `any` [optional | variadic]
+    Input value of type `any`. Optional. Can be repeated.
 
 ## Returns
 

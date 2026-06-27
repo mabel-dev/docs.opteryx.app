@@ -1,24 +1,24 @@
 ---
 title: INITCAP — Opteryx Function
-description: Capitalise first letter of each word.
+description: Capitalize first letter of each word.
 ---
 
 # INITCAP
 
-Capitalise first letter of each word.
+Capitalize first letter of each word.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-INITCAP(str)
+INITCAP(string)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 

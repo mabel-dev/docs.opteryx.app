@@ -12,22 +12,3 @@ Returns true when the left string does not match the regular expression on the r
 **Category:** comparison
 
 **SQL symbol:** `NOT RLIKE`
-
-## Example
-
-```sql
-SELECT 'a' NOT RLIKE 'a';
-```
-
-## Signatures
-
-- `blob NOT RLIKE blob` → boolean
-- `blob NOT RLIKE varchar` → boolean
-- `varchar NOT RLIKE blob` → boolean
-- `varchar NOT RLIKE varchar` → boolean
-
-## Types
-
-- **Left:** blob, varchar
-- **Right:** blob, varchar
-- **Result:** boolean

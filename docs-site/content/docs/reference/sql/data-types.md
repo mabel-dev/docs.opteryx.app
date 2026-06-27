@@ -10,7 +10,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 ## Numeric types
 
 - [DECIMAL](types/decimal) — DECIMAL
-- [DOUBLE](types/double) — DOUBLE
+- [FLOAT](types/float) — FLOAT
 - [INTEGER](types/integer) — INTEGER
 
 ## Temporal types
@@ -25,11 +25,12 @@ The following data types are supported by Opteryx.  Click a name for details.
 
 ## Text types
 
+- [NVARCHAR](types/nvarchar) — NVARCHAR
 - [VARCHAR](types/varchar) — VARCHAR
 
 ## Binary types
 
-- [BLOB](types/blob) — BLOB
+- [VARBINARY](types/varbinary) — VARBINARY
 
 ## Boolean types
 
@@ -38,7 +39,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 ## Collection types
 
 - [ARRAY](types/array) — ARRAY
-- [JSONB](types/jsonb) — JSONB
+- [VARIANT](types/variant) — VARIANT
 
 ## Vector types
 

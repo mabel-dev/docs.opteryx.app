@@ -1,11 +1,11 @@
 ---
 title: MATCH — Opteryx Function
-description: Full-text match.
+description: Performs semantic text matching using embeddings and cosine similarity.
 ---
 
 # MATCH
 
-Full-text match.
+Performs semantic text matching using embeddings and cosine similarity.
 
 **Category:** String Functions
 
@@ -17,10 +17,10 @@ MATCH(str) AGAINST(pattern)
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **pattern** `varchar`
-    Pattern string used to format, search, or match values.
+- **string** `varchar`
+    String input value.
+- **query** `varchar`
+    String input value.
 
 ## Returns
 

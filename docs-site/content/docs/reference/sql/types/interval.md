@@ -5,23 +5,23 @@ description: INTERVAL
 
 # INTERVAL
 
-Time interval/duration.
+Duration or period of time.
 
 ## Example
 
 ```
-1 day 02:03:04
+INTERVAL '1' DAY
 ```
 
 ## Notes
 
-Represented as a Python timedelta.
+Sub-month components are stored as microseconds.
 
 **Family:** interval
 
 ## Flags
 
 - **numeric**: `False`
-- **temporal**: `False`
+- **temporal**: `True`
 - **collection**: `False`
 - **parameterized**: `False`

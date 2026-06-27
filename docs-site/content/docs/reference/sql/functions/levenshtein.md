@@ -1,27 +1,27 @@
 ---
 title: LEVENSHTEIN — Opteryx Function
-description: Levenshtein edit distance between two strings.
+description: Compute Levenshtein distance.
 ---
 
 # LEVENSHTEIN
 
-Levenshtein edit distance between two strings.
+Compute Levenshtein distance.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-LEVENSHTEIN(a, b)
+LEVENSHTEIN(string, str2)
 ```
 
 ## Arguments
 
-- **a** `varchar`
-    First input value.
-- **b** `varchar`
-    Second input value.
+- **string** `varchar`
+    String input value.
+- **str2** `varchar`
+    String input value.
 
 ## Returns
 
-**integer** — Returns the computed result as `integer`.
+**int64** — Returns the computed result as `int64`.

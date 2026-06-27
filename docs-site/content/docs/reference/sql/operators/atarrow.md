@@ -12,19 +12,3 @@ Returns true when the left array contains any of the values provided by the righ
 **Category:** comparison
 
 **SQL symbol:** `@>`
-
-## Example
-
-```sql
-SELECT ARRAY[1,2] @> ARRAY[1,2]; -- expected: TRUE
-```
-
-## Signatures
-
-- `array @> array` → boolean
-
-## Types
-
-- **Left:** array
-- **Right:** array
-- **Result:** boolean

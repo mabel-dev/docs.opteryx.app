@@ -13,27 +13,6 @@ Returns the element at the requested index from an array, string, or blob-like v
 
 **SQL symbol:** `[]`
 
-## Example
-
-```sql
-SELECT 'a'[1];
-```
-
-**Dynamic result:** yes
-
-## Signatures
-
-- `array[integer]` → dynamic
-- `blob[integer]` → blob
-- `varchar[integer]` → varchar
-- `vector[integer]` → double
-
-## Types
-
-- **Left:** array, blob, varchar, vector
-- **Right:** integer
-- **Result:** blob, double, varchar
-
 ## Notes
 
 Subcript access is zero-based, the first element is at index 0. For arrays the result type depends on the array element type, so the exported result type may be dynamic.

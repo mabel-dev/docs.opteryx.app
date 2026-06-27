@@ -12,13 +12,13 @@ Reverse a string.
 ## Syntax
 
 ```
-REVERSE(str)
+REVERSE(string)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 

@@ -1,11 +1,11 @@
 ---
 title: TRIM — Opteryx Function
-description: Trim leading and trailing characters.
+description: Removes leading and trailing whitespace from string.
 ---
 
 # TRIM
 
-Trim leading and trailing characters.
+Removes leading and trailing whitespace from string.
 
 **Category:** String Functions
 
@@ -17,14 +17,12 @@ TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **chars** `varchar` [optional]
-    Characters to remove from the input string. Optional.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**dynamic** — Returns a value whose type depends on the supplied arguments.
 
 ## Usage Notes
 

@@ -12,19 +12,3 @@ Shifts the bits of the left integer operand left by the number of positions in t
 **Category:** bitwise
 
 **SQL symbol:** `<<`
-
-## Example
-
-```sql
-SELECT 1 << 1;
-```
-
-## Signatures
-
-- `integer << integer` → integer
-
-## Types
-
-- **Left:** integer
-- **Right:** integer
-- **Result:** integer

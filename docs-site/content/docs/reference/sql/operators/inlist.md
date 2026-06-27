@@ -12,26 +12,3 @@ Returns true when the left operand matches any element in the right-hand list or
 **Category:** comparison
 
 **SQL symbol:** `IN`
-
-## Example
-
-```sql
-SELECT b'0102' IN ARRAY[1,2];
-```
-
-## Signatures
-
-- `blob IN array` → boolean
-- `boolean IN array` → boolean
-- `date IN array` → boolean
-- `decimal IN array` → boolean
-- `double IN array` → boolean
-- `integer IN array` → boolean
-- `timestamp IN array` → boolean
-- `varchar IN array` → boolean
-
-## Types
-
-- **Left:** blob, boolean, date, decimal, double, integer, timestamp, varchar
-- **Right:** array
-- **Result:** boolean

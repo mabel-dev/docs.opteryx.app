@@ -5,17 +5,13 @@ description: ARRAY
 
 # ARRAY
 
-Array of values of a single type.
+Ordered sequence of elements of a single type.
 
 ## Example
 
 ```
-[1, 2, 3]
+ARRAY[1, 2, 3]
 ```
-
-## Notes
-
-Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc.
 
 **Family:** nested
 
@@ -28,4 +24,4 @@ Element type is specified as ARRAY<INTEGER>, ARRAY<VARCHAR>, etc.
 
 ## Parameterized Forms
 
-- `ARRAY<INTEGER>`
+- `ARRAY<type>`

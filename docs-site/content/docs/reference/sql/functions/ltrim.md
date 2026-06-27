@@ -1,27 +1,25 @@
 ---
 title: LTRIM — Opteryx Function
-description: Trim leading characters.
+description: Removes leading whitespace from string.
 ---
 
 # LTRIM
 
-Trim leading characters.
+Removes leading whitespace from string.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-LTRIM(str, [chars])
+LTRIM(string)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **chars** `varchar` [optional]
-    Characters to remove from the input string. Optional.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**dynamic** — Returns a value whose type depends on the supplied arguments.

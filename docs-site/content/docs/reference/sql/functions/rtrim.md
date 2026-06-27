@@ -1,27 +1,25 @@
 ---
 title: RTRIM — Opteryx Function
-description: Trim trailing characters.
+description: Removes trailing whitespace from string.
 ---
 
 # RTRIM
 
-Trim trailing characters.
+Removes trailing whitespace from string.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-RTRIM(str, [chars])
+RTRIM(string)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **chars** `varchar` [optional]
-    Characters to remove from the input string. Optional.
+- **string** `varchar`
+    String input value.
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**dynamic** — Returns a value whose type depends on the supplied arguments.

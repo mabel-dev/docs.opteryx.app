@@ -1,28 +1,28 @@
 ---
 title: LPAD — Opteryx Function
-description: Left-pad string to width.
+description: Pads string on the left with fill character to reach specified width.
 ---
 
 # LPAD
 
-Left-pad string to width.
+Pads string on the left with fill character to reach specified width.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-LPAD(str, width, [fill])
+LPAD(string, width, fill)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
+- **string** `varchar`
+    String input value.
 - **width** `integer`
     Target width for the output.
-- **fill** `varchar` [optional]
-    Padding text used when the input is shorter than the target width. Optional.
+- **fill** `varchar`
+    Padding text used when the input is shorter than the target width.
 
 ## Returns
 

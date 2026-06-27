@@ -1,29 +1,33 @@
 ---
 title: SPLIT — Opteryx Function
-description: Split string into array.
+description: Splits a string into an array using the specified delimiter.
 ---
 
 # SPLIT
 
-Split string into array.
+Splits a string into an array using the specified delimiter.
 
 **Category:** String Functions
 
 ## Syntax
 
 ```
-SPLIT(str, [delimiter], [limit])
+SPLIT(string, delimiter)
+```
+
+```
+SPLIT(string, delimiter, limit)
 ```
 
 ## Arguments
 
-- **str** `varchar`
-    Input string value.
-- **delimiter** `varchar` [optional]
-    Separator used to split the input string. Optional.
-- **limit** `integer` [optional]
-    Maximum number of items or splits to return. Optional.
+- **string** `varchar`
+    String input value.
+- **delimiter** `varchar`
+    Separator used to split the input string.
+- **limit** `integer`
+    Maximum number of items or splits to return.
 
 ## Returns
 
-**array** — Returns the computed result as `array`.
+**array<variant>** — Returns the computed result as `array<variant>`.

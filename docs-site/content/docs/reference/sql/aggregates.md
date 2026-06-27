@@ -55,6 +55,10 @@ Aggregates combine multiple rows into single summary values and are typically us
   - SQL forms: `AVG(expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Ignores nulls and divides the running sum by the number of non-null values.
+- **MEDIAN** — Computes the exact median (middle value) of the input values.
+  - SQL forms: `MEDIAN(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Buffers all non-null values per group and selects the middle. Even-count inputs interpolate; result type is FLOAT. Per-group buffer is capped (default 1000) — exceeding it raises an error. Decimal inputs must be CAST to FLOAT.
 - **SUM** — Sums the input values.
   - SQL forms: `SUM(expr)`
   - Support: global, grouped, strict_grouped
