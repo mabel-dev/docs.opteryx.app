@@ -589,6 +589,9 @@
     "Internals": [
       {
         "Draken vector encoding": "reference/internals/draken-vector-encoding.md"
+      },
+      {
+        "RISC-V support": "reference/internals/riscv-support.md"
       }
     ]
   }
