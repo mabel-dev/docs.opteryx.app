@@ -100,256 +100,256 @@
           "href": "reference/sql/functions.md",
           "items": [
             {
-              "ABS": "reference/sql/functionss/abs.md"
+              "ABS": "reference/sql/functions/abs.md"
             },
             {
-              "ARRAY_CONTAINS": "reference/sql/functionss/array_contains.md"
+              "ARRAY_CONTAINS": "reference/sql/functions/array_contains.md"
             },
             {
-              "ARRAY_CONTAINS_ALL": "reference/sql/functionss/array_contains_all.md"
+              "ARRAY_CONTAINS_ALL": "reference/sql/functions/array_contains_all.md"
             },
             {
-              "ARRAY_CONTAINS_ANY": "reference/sql/functionss/array_contains_any.md"
+              "ARRAY_CONTAINS_ANY": "reference/sql/functions/array_contains_any.md"
             },
             {
-              "BASE64_DECODE": "reference/sql/functionss/base64_decode.md"
+              "BASE64_DECODE": "reference/sql/functions/base64_decode.md"
             },
             {
-              "BASE64_ENCODE": "reference/sql/functionss/base64_encode.md"
+              "BASE64_ENCODE": "reference/sql/functions/base64_encode.md"
             },
             {
-              "BASE85_DECODE": "reference/sql/functionss/base85_decode.md"
+              "BASE85_DECODE": "reference/sql/functions/base85_decode.md"
             },
             {
-              "BASE85_ENCODE": "reference/sql/functionss/base85_encode.md"
+              "BASE85_ENCODE": "reference/sql/functions/base85_encode.md"
             },
             {
-              "CEILING": "reference/sql/functionss/ceiling.md"
+              "CEILING": "reference/sql/functions/ceiling.md"
             },
             {
-              "COALESCE": "reference/sql/functionss/coalesce.md"
+              "COALESCE": "reference/sql/functions/coalesce.md"
             },
             {
-              "CONCAT": "reference/sql/functionss/concat.md"
+              "CONCAT": "reference/sql/functions/concat.md"
             },
             {
-              "CONCAT_WS": "reference/sql/functionss/concat_ws.md"
+              "CONCAT_WS": "reference/sql/functions/concat_ws.md"
             },
             {
-              "CONNECTION_ID": "reference/sql/functionss/connection_id.md"
+              "CONNECTION_ID": "reference/sql/functions/connection_id.md"
             },
             {
-              "COSINE_DISTANCE": "reference/sql/functionss/cosine_distance.md"
+              "COSINE_DISTANCE": "reference/sql/functions/cosine_distance.md"
             },
             {
-              "COSINE_SIMILARITY": "reference/sql/functionss/cosine_similarity.md"
+              "COSINE_SIMILARITY": "reference/sql/functions/cosine_similarity.md"
             },
             {
-              "CURRENT_DATE": "reference/sql/functionss/current_date.md"
+              "CURRENT_DATE": "reference/sql/functions/current_date.md"
             },
             {
-              "CURRENT_TIME": "reference/sql/functionss/current_time.md"
+              "CURRENT_TIME": "reference/sql/functions/current_time.md"
             },
             {
-              "CURRENT_TIMESTAMP": "reference/sql/functionss/current_timestamp.md"
+              "CURRENT_TIMESTAMP": "reference/sql/functions/current_timestamp.md"
             },
             {
-              "DATABASE": "reference/sql/functionss/database.md"
+              "DATABASE": "reference/sql/functions/database.md"
             },
             {
-              "DATE_FORMAT": "reference/sql/functionss/date_format.md"
+              "DATE_FORMAT": "reference/sql/functions/date_format.md"
             },
             {
-              "DATEDIFF": "reference/sql/functionss/datediff.md"
+              "DATEDIFF": "reference/sql/functions/datediff.md"
             },
             {
-              "E": "reference/sql/functionss/e.md"
+              "E": "reference/sql/functions/e.md"
             },
             {
-              "EMBED": "reference/sql/functionss/embed.md"
+              "EMBED": "reference/sql/functions/embed.md"
             },
             {
-              "EXTRACT": "reference/sql/functionss/extract.md"
+              "EXTRACT": "reference/sql/functions/extract.md"
             },
             {
-              "FLOOR": "reference/sql/functionss/floor.md"
+              "FLOOR": "reference/sql/functions/floor.md"
             },
             {
-              "FROM_UNIXTIME": "reference/sql/functionss/from_unixtime.md"
+              "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"
             },
             {
-              "GREATEST": "reference/sql/functionss/greatest.md"
+              "GREATEST": "reference/sql/functions/greatest.md"
             },
             {
-              "HASH": "reference/sql/functionss/hash.md"
+              "HASH": "reference/sql/functions/hash.md"
             },
             {
-              "HEX_DECODE": "reference/sql/functionss/hex_decode.md"
+              "HEX_DECODE": "reference/sql/functions/hex_decode.md"
             },
             {
-              "HEX_ENCODE": "reference/sql/functionss/hex_encode.md"
+              "HEX_ENCODE": "reference/sql/functions/hex_encode.md"
             },
             {
-              "HUMANIZE": "reference/sql/functionss/humanize.md"
+              "HUMANIZE": "reference/sql/functions/humanize.md"
             },
             {
-              "IFNOTNULL": "reference/sql/functionss/ifnotnull.md"
+              "IFNOTNULL": "reference/sql/functions/ifnotnull.md"
             },
             {
-              "IFNULL": "reference/sql/functionss/ifnull.md"
+              "IFNULL": "reference/sql/functions/ifnull.md"
             },
             {
-              "IIF": "reference/sql/functionss/iif.md"
+              "IIF": "reference/sql/functions/iif.md"
             },
             {
-              "INITCAP": "reference/sql/functionss/initcap.md"
+              "INITCAP": "reference/sql/functions/initcap.md"
             },
             {
-              "JSONB_OBJECT_KEYS": "reference/sql/functionss/jsonb_object_keys.md"
+              "JSONB_OBJECT_KEYS": "reference/sql/functions/jsonb_object_keys.md"
             },
             {
-              "LEAST": "reference/sql/functionss/least.md"
+              "LEAST": "reference/sql/functions/least.md"
             },
             {
-              "LEFT": "reference/sql/functionss/left.md"
+              "LEFT": "reference/sql/functions/left.md"
             },
             {
-              "LENGTH": "reference/sql/functionss/length.md"
+              "LENGTH": "reference/sql/functions/length.md"
             },
             {
-              "LEVENSHTEIN": "reference/sql/functionss/levenshtein.md"
+              "LEVENSHTEIN": "reference/sql/functions/levenshtein.md"
             },
             {
-              "LOG": "reference/sql/functionss/log.md"
+              "LOG": "reference/sql/functions/log.md"
             },
             {
-              "LOWER": "reference/sql/functionss/lower.md"
+              "LOWER": "reference/sql/functions/lower.md"
             },
             {
-              "LPAD": "reference/sql/functionss/lpad.md"
+              "LPAD": "reference/sql/functions/lpad.md"
             },
             {
-              "LTRIM": "reference/sql/functionss/ltrim.md"
+              "LTRIM": "reference/sql/functions/ltrim.md"
             },
             {
-              "MATCH": "reference/sql/functionss/match.md"
+              "MATCH": "reference/sql/functions/match.md"
             },
             {
-              "MD5": "reference/sql/functionss/md5.md"
+              "MD5": "reference/sql/functions/md5.md"
             },
             {
-              "NORMAL": "reference/sql/functionss/normal.md"
+              "NORMAL": "reference/sql/functions/normal.md"
             },
             {
-              "NULLIF": "reference/sql/functionss/nullif.md"
+              "NULLIF": "reference/sql/functions/nullif.md"
             },
             {
-              "OCTET_LENGTH": "reference/sql/functionss/octet_length.md"
+              "OCTET_LENGTH": "reference/sql/functions/octet_length.md"
             },
             {
-              "PHI": "reference/sql/functionss/phi.md"
+              "PHI": "reference/sql/functions/phi.md"
             },
             {
-              "PI": "reference/sql/functionss/pi.md"
+              "PI": "reference/sql/functions/pi.md"
             },
             {
-              "POSITION": "reference/sql/functionss/position.md"
+              "POSITION": "reference/sql/functions/position.md"
             },
             {
-              "POWER": "reference/sql/functionss/power.md"
+              "POWER": "reference/sql/functions/power.md"
             },
             {
-              "RANDOM": "reference/sql/functionss/random.md"
+              "RANDOM": "reference/sql/functions/random.md"
             },
             {
-              "RANDOM_STRING": "reference/sql/functionss/random_string.md"
+              "RANDOM_STRING": "reference/sql/functions/random_string.md"
             },
             {
-              "REGEXP_REPLACE": "reference/sql/functionss/regexp_replace.md"
+              "REGEXP_REPLACE": "reference/sql/functions/regexp_replace.md"
             },
             {
-              "REPLACE": "reference/sql/functionss/replace.md"
+              "REPLACE": "reference/sql/functions/replace.md"
             },
             {
-              "REVERSE": "reference/sql/functionss/reverse.md"
+              "REVERSE": "reference/sql/functions/reverse.md"
             },
             {
-              "RIGHT": "reference/sql/functionss/right.md"
+              "RIGHT": "reference/sql/functions/right.md"
             },
             {
-              "ROUND": "reference/sql/functionss/round.md"
+              "ROUND": "reference/sql/functions/round.md"
             },
             {
-              "RPAD": "reference/sql/functionss/rpad.md"
+              "RPAD": "reference/sql/functions/rpad.md"
             },
             {
-              "RTRIM": "reference/sql/functionss/rtrim.md"
+              "RTRIM": "reference/sql/functions/rtrim.md"
             },
             {
-              "SHA1": "reference/sql/functionss/sha1.md"
+              "SHA1": "reference/sql/functions/sha1.md"
             },
             {
-              "SHA224": "reference/sql/functionss/sha224.md"
+              "SHA224": "reference/sql/functions/sha224.md"
             },
             {
-              "SHA256": "reference/sql/functionss/sha256.md"
+              "SHA256": "reference/sql/functions/sha256.md"
             },
             {
-              "SHA384": "reference/sql/functionss/sha384.md"
+              "SHA384": "reference/sql/functions/sha384.md"
             },
             {
-              "SHA512": "reference/sql/functionss/sha512.md"
+              "SHA512": "reference/sql/functions/sha512.md"
             },
             {
-              "SIGN": "reference/sql/functionss/sign.md"
+              "SIGN": "reference/sql/functions/sign.md"
             },
             {
-              "SORT": "reference/sql/functionss/sort.md"
+              "SORT": "reference/sql/functions/sort.md"
             },
             {
-              "SOUNDEX": "reference/sql/functionss/soundex.md"
+              "SOUNDEX": "reference/sql/functions/soundex.md"
             },
             {
-              "SPLIT": "reference/sql/functionss/split.md"
+              "SPLIT": "reference/sql/functions/split.md"
             },
             {
-              "SQRT": "reference/sql/functionss/sqrt.md"
+              "SQRT": "reference/sql/functions/sqrt.md"
             },
             {
-              "SUBSTRING": "reference/sql/functionss/substring.md"
+              "SUBSTRING": "reference/sql/functions/substring.md"
             },
             {
-              "TIME_BUCKET": "reference/sql/functionss/time_bucket.md"
+              "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
             },
             {
-              "TIMEDIFF": "reference/sql/functionss/timediff.md"
+              "TIMEDIFF": "reference/sql/functions/timediff.md"
             },
             {
-              "TO_ASCII": "reference/sql/functionss/to_ascii.md"
+              "TO_ASCII": "reference/sql/functions/to_ascii.md"
             },
             {
-              "TO_CHAR": "reference/sql/functionss/to_char.md"
+              "TO_CHAR": "reference/sql/functions/to_char.md"
             },
             {
-              "TRIM": "reference/sql/functionss/trim.md"
+              "TRIM": "reference/sql/functions/trim.md"
             },
             {
-              "TRUNC": "reference/sql/functionss/trunc.md"
+              "TRUNC": "reference/sql/functions/trunc.md"
             },
             {
-              "UNIXTIME": "reference/sql/functionss/unixtime.md"
+              "UNIXTIME": "reference/sql/functions/unixtime.md"
             },
             {
-              "UPPER": "reference/sql/functionss/upper.md"
+              "UPPER": "reference/sql/functions/upper.md"
             },
             {
-              "USER": "reference/sql/functionss/user.md"
+              "USER": "reference/sql/functions/user.md"
             },
             {
-              "UTC_TIMESTAMP": "reference/sql/functionss/utc_timestamp.md"
+              "UTC_TIMESTAMP": "reference/sql/functions/utc_timestamp.md"
             },
             {
-              "VERSION": "reference/sql/functionss/version.md"
+              "VERSION": "reference/sql/functions/version.md"
             }
           ]
         }
@@ -475,109 +475,109 @@
           "href": "reference/sql/operators.md",
           "items": [
             {
-              "Addition": "reference/sql/operatorss/plus.md"
+              "Addition": "reference/sql/operators/plus.md"
             },
             {
-              "Array contains all": "reference/sql/operatorss/arraycontainsall.md"
+              "Array contains all": "reference/sql/operators/arraycontainsall.md"
             },
             {
-              "Array contains any": "reference/sql/operatorss/atarrow.md"
+              "Array contains any": "reference/sql/operators/atarrow.md"
             },
             {
-              "Bitwise AND": "reference/sql/operatorss/bitwiseand.md"
+              "Bitwise AND": "reference/sql/operators/bitwiseand.md"
             },
             {
-              "Bitwise OR": "reference/sql/operatorss/bitwiseor.md"
+              "Bitwise OR": "reference/sql/operators/bitwiseor.md"
             },
             {
-              "Bitwise XOR": "reference/sql/operatorss/bitwisexor.md"
+              "Bitwise XOR": "reference/sql/operators/bitwisexor.md"
             },
             {
-              "Case-insensitive like": "reference/sql/operatorss/ilike.md"
+              "Case-insensitive like": "reference/sql/operators/ilike.md"
             },
             {
-              "Concatenation": "reference/sql/operatorss/stringconcat.md"
+              "Concatenation": "reference/sql/operators/stringconcat.md"
             },
             {
-              "Division": "reference/sql/operatorss/divide.md"
+              "Division": "reference/sql/operators/divide.md"
             },
             {
-              "Equals": "reference/sql/operatorss/eq.md"
+              "Equals": "reference/sql/operators/eq.md"
             },
             {
-              "Greater than": "reference/sql/operatorss/gt.md"
+              "Greater than": "reference/sql/operators/gt.md"
             },
             {
-              "Greater than or equal": "reference/sql/operatorss/gteq.md"
+              "Greater than or equal": "reference/sql/operators/gteq.md"
             },
             {
-              "In list": "reference/sql/operatorss/inlist.md"
+              "In list": "reference/sql/operators/inlist.md"
             },
             {
-              "Integer division": "reference/sql/operatorss/myintegerdivide.md"
+              "Integer division": "reference/sql/operators/myintegerdivide.md"
             },
             {
-              "JSON extract": "reference/sql/operatorss/arrow.md"
+              "JSON extract": "reference/sql/operators/arrow.md"
             },
             {
-              "JSON extract text": "reference/sql/operatorss/longarrow.md"
+              "JSON extract text": "reference/sql/operators/longarrow.md"
             },
             {
-              "JSON path exists": "reference/sql/operatorss/atquestion.md"
+              "JSON path exists": "reference/sql/operators/atquestion.md"
             },
             {
-              "Left shift": "reference/sql/operatorss/shiftleft.md"
+              "Left shift": "reference/sql/operators/shiftleft.md"
             },
             {
-              "Less than": "reference/sql/operatorss/lt.md"
+              "Less than": "reference/sql/operators/lt.md"
             },
             {
-              "Less than or equal": "reference/sql/operatorss/lteq.md"
+              "Less than or equal": "reference/sql/operators/lteq.md"
             },
             {
-              "Like": "reference/sql/operatorss/like.md"
+              "Like": "reference/sql/operators/like.md"
             },
             {
-              "Logical AND": "reference/sql/operatorss/and.md"
+              "Logical AND": "reference/sql/operators/and.md"
             },
             {
-              "Logical OR": "reference/sql/operatorss/or.md"
+              "Logical OR": "reference/sql/operators/or.md"
             },
             {
-              "Logical XOR": "reference/sql/operatorss/xor.md"
+              "Logical XOR": "reference/sql/operators/xor.md"
             },
             {
-              "Modulo": "reference/sql/operatorss/modulo.md"
+              "Modulo": "reference/sql/operators/modulo.md"
             },
             {
-              "Multiplication": "reference/sql/operatorss/multiply.md"
+              "Multiplication": "reference/sql/operators/multiply.md"
             },
             {
-              "Not case-insensitive like": "reference/sql/operatorss/notilike.md"
+              "Not case-insensitive like": "reference/sql/operators/notilike.md"
             },
             {
-              "Not equals": "reference/sql/operatorss/noteq.md"
+              "Not equals": "reference/sql/operators/noteq.md"
             },
             {
-              "Not in list": "reference/sql/operatorss/notinlist.md"
+              "Not in list": "reference/sql/operators/notinlist.md"
             },
             {
-              "Not like": "reference/sql/operatorss/notlike.md"
+              "Not like": "reference/sql/operators/notlike.md"
             },
             {
-              "Not regex like": "reference/sql/operatorss/notrlike.md"
+              "Not regex like": "reference/sql/operators/notrlike.md"
             },
             {
-              "Regex like": "reference/sql/operatorss/rlike.md"
+              "Regex like": "reference/sql/operators/rlike.md"
             },
             {
-              "Right shift": "reference/sql/operatorss/shiftright.md"
+              "Right shift": "reference/sql/operators/shiftright.md"
             },
             {
-              "Subscript access": "reference/sql/operatorss/mapaccess.md"
+              "Subscript access": "reference/sql/operators/mapaccess.md"
             },
             {
-              "Subtraction": "reference/sql/operatorss/minus.md"
+              "Subtraction": "reference/sql/operators/minus.md"
             }
           ]
         }

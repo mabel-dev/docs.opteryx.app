@@ -1066,7 +1066,12 @@ def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], typ
             sql_block.append(item)
         elif isinstance(item[name], str):
             item[name] = href
-        _populate_nav_items(item, f'reference/sql/{name.lower().replace(" ", "-")}s' if name != 'Data Types' else 'reference/sql/types', entries, title_fn)
+        nav_prefix = {
+            'Functions':  'reference/sql/functions',
+            'Operators':  'reference/sql/operators',
+            'Data Types': 'reference/sql/types',
+        }[name]
+        _populate_nav_items(item, nav_prefix, entries, title_fn)
 
     NAV_PATH.write_text(json.dumps(nav, indent=2))
 
