@@ -11,7 +11,7 @@ Difference between two times.
 
 ## Syntax
 
-```
+```sql
 TIMEDIFF(time1, time2)
 ```
 
@@ -24,4 +24,4 @@ TIMEDIFF(time1, time2)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

@@ -11,7 +11,7 @@ Computes the starting position (1-based) of substring in string, or 0 if not fou
 
 ## Syntax
 
-```
+```sql
 POSITION(needle IN haystack)
 ```
 
@@ -24,7 +24,7 @@ POSITION(needle IN haystack)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.
 
 ## Usage Notes
 

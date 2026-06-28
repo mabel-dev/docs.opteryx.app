@@ -11,7 +11,7 @@ Determines the minimum element in an array column.
 
 ## Syntax
 
-```
+```sql
 LEAST(arr)
 ```
 

@@ -11,11 +11,11 @@ Computes length of string or number of elements in an array.
 
 ## Syntax
 
-```
+```sql
 LENGTH(string)
 ```
 
-```
+```sql
 LENGTH(arr)
 ```
 
@@ -28,4 +28,4 @@ LENGTH(arr)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

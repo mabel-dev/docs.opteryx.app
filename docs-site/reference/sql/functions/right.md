@@ -11,7 +11,7 @@ Extract rightmost characters.
 
 ## Syntax
 
-```
+```sql
 RIGHT(string, length)
 ```
 
@@ -24,4 +24,4 @@ RIGHT(string, length)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

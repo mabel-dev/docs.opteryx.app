@@ -11,7 +11,7 @@ Hex decode.
 
 ## Syntax
 
-```
+```sql
 HEX_DECODE(blob)
 ```
 
@@ -22,4 +22,4 @@ HEX_DECODE(blob)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

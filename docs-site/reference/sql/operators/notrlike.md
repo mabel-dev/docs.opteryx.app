@@ -5,8 +5,6 @@ description: Returns true when the left string does not match the regular expres
 
 # Not regex like
 
-Negated regular expression match comparison.
-
 Returns true when the left string does not match the regular expression on the right.
 
 **Category:** comparison

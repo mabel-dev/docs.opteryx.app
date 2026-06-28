@@ -11,11 +11,11 @@ Rounds input number to nearest integer or specified decimal places.
 
 ## Syntax
 
-```
+```sql
 ROUND(num)
 ```
 
-```
+```sql
 ROUND(num, precision)
 ```
 
@@ -28,7 +28,7 @@ ROUND(num, precision)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.
 
 ## Usage Notes
 

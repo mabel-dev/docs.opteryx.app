@@ -11,7 +11,7 @@ Calculates the smallest integer greater than or equal to the input.
 
 ## Syntax
 
-```
+```sql
 CEILING(num, [scale...])
 ```
 
@@ -24,7 +24,7 @@ CEILING(num, [scale...])
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.
 
 ## Usage Notes
 

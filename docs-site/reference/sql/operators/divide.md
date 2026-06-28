@@ -5,8 +5,6 @@ description: Returns the quotient of two numeric operands. Symbol: /
 
 # Division
 
-Division operator.
-
 Returns the quotient of two numeric operands.
 
 **Category:** binary

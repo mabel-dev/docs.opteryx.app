@@ -5,8 +5,6 @@ description: Returns true when the left array contains any of the values provide
 
 # Array contains any
 
-Array containment operator.
-
 Returns true when the left array contains any of the values provided by the right array.
 
 **Category:** comparison

@@ -5,8 +5,6 @@ description: Returns true when exactly one boolean operand evaluates to true. Sy
 
 # Logical XOR
 
-Logical exclusive OR.
-
 Returns true when exactly one boolean operand evaluates to true.
 
 **Category:** logical

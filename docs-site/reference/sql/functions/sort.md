@@ -11,7 +11,7 @@ Sorts an array column.
 
 ## Syntax
 
-```
+```sql
 SORT(arr)
 ```
 

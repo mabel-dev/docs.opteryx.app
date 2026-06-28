@@ -11,7 +11,7 @@ Extract leftmost characters.
 
 ## Syntax
 
-```
+```sql
 LEFT(string, length)
 ```
 
@@ -24,4 +24,4 @@ LEFT(string, length)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

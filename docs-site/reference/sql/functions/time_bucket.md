@@ -11,7 +11,7 @@ Bucket date into fixed-width intervals.
 
 ## Syntax
 
-```
+```sql
 TIME_BUCKET(magnitude, units, date)
 ```
 
@@ -26,4 +26,4 @@ TIME_BUCKET(magnitude, units, date)
 
 ## Returns
 
-**timestamp** — Returns the computed result as `timestamp`.
+**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.

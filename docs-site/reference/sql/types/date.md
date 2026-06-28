@@ -42,5 +42,5 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `DATE`, `TIMESTAMP`.
 
 ## Limitations
 
-- You cannot cast an integer to DATE directly. Use a function like `DATE_FROM_UNIX_EPOCH(n)` instead.
+- You cannot cast an integer to DATE directly. To convert a Unix epoch value, cast to TIMESTAMP first then to DATE: `FROM_UNIXTIME(n)::DATE`.
 - Only YYYY-MM-DD string format is accepted. Formats like MM/DD/YYYY or DD-MM-YYYY will fail.

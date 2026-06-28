@@ -11,7 +11,7 @@ Replaces all matches of a regular expression pattern with a replacement string.
 
 ## Syntax
 
-```
+```sql
 REGEXP_REPLACE(string, pattern, replacement)
 ```
 
@@ -26,4 +26,4 @@ REGEXP_REPLACE(string, pattern, replacement)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

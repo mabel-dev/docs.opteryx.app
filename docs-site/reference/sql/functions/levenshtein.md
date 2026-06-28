@@ -11,7 +11,7 @@ Compute Levenshtein distance.
 
 ## Syntax
 
-```
+```sql
 LEVENSHTEIN(string, str2)
 ```
 
@@ -24,4 +24,4 @@ LEVENSHTEIN(string, str2)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

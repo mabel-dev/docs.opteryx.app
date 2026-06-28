@@ -11,7 +11,7 @@ MD5 hash.
 
 ## Syntax
 
-```
+```sql
 MD5(val)
 ```
 
@@ -22,4 +22,4 @@ MD5(val)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

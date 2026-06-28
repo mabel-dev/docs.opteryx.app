@@ -11,7 +11,7 @@ Embeds text using the configured engine embedding provider.
 
 ## Syntax
 
-```
+```sql
 EMBED(text)
 ```
 

@@ -19,7 +19,7 @@ This type does not support direct comparisons with `=`, `<`, or `>`. Extract or 
 
 ## Notes
 
-Similarity search uses dedicated functions such as `APPROX_COSINE_DISTANCE(a, b)`. Standard comparison operators are not supported on VECTOR.
+Similarity search uses dedicated functions such as `COSINE_DISTANCE(a, b)` and `COSINE_SIMILARITY(a, b)`. Standard comparison operators are not supported on VECTOR.
 
 ## Limitations
 

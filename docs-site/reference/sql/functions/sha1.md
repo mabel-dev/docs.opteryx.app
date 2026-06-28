@@ -11,7 +11,7 @@ SHA-1 hash.
 
 ## Syntax
 
-```
+```sql
 SHA1(val)
 ```
 
@@ -22,4 +22,4 @@ SHA1(val)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

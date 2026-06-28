@@ -11,11 +11,7 @@ Cosine distance over numeric vectors or semantic text inputs.
 
 ## Syntax
 
-```
-COSINE_DISTANCE(arr, vec)
-```
-
-```
+```sql
 COSINE_DISTANCE(arr, vec)
 ```
 
@@ -28,4 +24,4 @@ COSINE_DISTANCE(arr, vec)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

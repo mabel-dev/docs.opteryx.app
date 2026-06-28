@@ -11,11 +11,7 @@ Extracts a named part (year, month, day, epoch, etc.) from a date or timestamp.
 
 ## Syntax
 
-```
-EXTRACT(part FROM date)
-```
-
-```
+```sql
 EXTRACT(part FROM date)
 ```
 

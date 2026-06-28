@@ -11,7 +11,7 @@ Generate random strings.
 
 ## Syntax
 
-```
+```sql
 RANDOM_STRING(n)
 ```
 
@@ -22,7 +22,7 @@ RANDOM_STRING(n)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.
 
 ## Usage Notes
 

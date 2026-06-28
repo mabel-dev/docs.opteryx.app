@@ -11,7 +11,7 @@ Convert string to lowercase.
 
 ## Syntax
 
-```
+```sql
 LOWER(str)
 ```
 
@@ -22,4 +22,4 @@ LOWER(str)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

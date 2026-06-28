@@ -5,8 +5,6 @@ description: Returns the remainder after division of the left numeric operand by
 
 # Modulo
 
-Modulo operator.
-
 Returns the remainder after division of the left numeric operand by the right numeric operand.
 
 **Category:** binary

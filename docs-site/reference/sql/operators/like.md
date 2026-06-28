@@ -5,8 +5,6 @@ description: Returns true when the left string matches the SQL LIKE pattern on t
 
 # Like
 
-Pattern match comparison.
-
 Returns true when the left string matches the SQL LIKE pattern on the right.
 
 **Category:** comparison

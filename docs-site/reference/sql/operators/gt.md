@@ -5,8 +5,6 @@ description: Returns true when the left operand is greater than the right operan
 
 # Greater than
 
-Greater-than comparison.
-
 Returns true when the left operand is greater than the right operand.
 
 **Category:** comparison

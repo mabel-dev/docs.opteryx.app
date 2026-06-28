@@ -11,7 +11,7 @@ Difference between two dates in the specified unit.
 
 ## Syntax
 
-```
+```sql
 DATEDIFF(part, date, end)
 ```
 
@@ -26,4 +26,4 @@ DATEDIFF(part, date, end)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

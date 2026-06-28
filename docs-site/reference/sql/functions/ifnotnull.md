@@ -11,7 +11,7 @@ Selects the second argument when the first argument is not null; otherwise yield
 
 ## Syntax
 
-```
+```sql
 IFNOTNULL(value, result)
 ```
 

@@ -5,8 +5,6 @@ description: Divides two integers and truncates the result toward zero. Symbol: 
 
 # Integer division
 
-Integer division operator.
-
 Divides two integers and truncates the result toward zero.
 
 **Category:** binary

@@ -11,10 +11,10 @@ Current database name.
 
 ## Syntax
 
-```
+```sql
 DATABASE()
 ```
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

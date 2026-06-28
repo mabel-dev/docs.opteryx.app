@@ -11,13 +11,13 @@ Current date.
 
 ## Syntax
 
-```
+```sql
 CURRENT_DATE
 ```
 
 ## Returns
 
-**date** — Returns the computed result as `date`.
+**DATE** — Returns the computed result as `DATE`.
 
 ## Usage Notes
 

@@ -11,11 +11,11 @@ Computes uniform random float(s) in [0, 1).
 
 ## Syntax
 
-```
+```sql
 RANDOM(n)
 ```
 
-```
+```sql
 RANDOM()
 ```
 
@@ -26,7 +26,7 @@ RANDOM()
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.
 
 ## Usage Notes
 

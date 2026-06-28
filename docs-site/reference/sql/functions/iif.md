@@ -11,7 +11,7 @@ Selects between the second and third arguments based on the condition.
 
 ## Syntax
 
-```
+```sql
 IIF(condition, true_value, false_value)
 ```
 

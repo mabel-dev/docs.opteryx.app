@@ -11,7 +11,7 @@ Reverse a string.
 
 ## Syntax
 
-```
+```sql
 REVERSE(string)
 ```
 
@@ -22,4 +22,4 @@ REVERSE(string)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

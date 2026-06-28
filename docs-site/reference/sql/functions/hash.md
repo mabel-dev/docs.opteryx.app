@@ -11,7 +11,7 @@ Generic hash.
 
 ## Syntax
 
-```
+```sql
 HASH(val)
 ```
 
@@ -22,4 +22,4 @@ HASH(val)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

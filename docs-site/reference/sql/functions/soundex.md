@@ -11,7 +11,7 @@ Computes soundex code of string.
 
 ## Syntax
 
-```
+```sql
 SOUNDEX(string)
 ```
 
@@ -22,4 +22,4 @@ SOUNDEX(string)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

@@ -11,7 +11,7 @@ Concatenates strings with specified separator, skipping nulls.
 
 ## Syntax
 
-```
+```sql
 CONCAT_WS(separator, str1, [strs...])
 ```
 
@@ -26,4 +26,4 @@ CONCAT_WS(separator, str1, [strs...])
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

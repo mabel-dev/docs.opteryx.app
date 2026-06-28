@@ -11,7 +11,7 @@ Selects the first argument when it is not null; otherwise uses the second argume
 
 ## Syntax
 
-```
+```sql
 IFNULL(value, default)
 ```
 

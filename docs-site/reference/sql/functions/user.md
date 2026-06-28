@@ -11,10 +11,10 @@ Current user name.
 
 ## Syntax
 
-```
+```sql
 USER()
 ```
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

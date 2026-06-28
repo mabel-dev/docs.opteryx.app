@@ -11,7 +11,7 @@ Concatenates multiple string arguments into a single string.
 
 ## Syntax
 
-```
+```sql
 CONCAT(str1, str2, [strs...])
 ```
 
@@ -26,4 +26,4 @@ CONCAT(str1, str2, [strs...])
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

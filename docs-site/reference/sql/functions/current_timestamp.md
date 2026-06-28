@@ -11,13 +11,13 @@ Current timestamp.
 
 ## Syntax
 
-```
+```sql
 CURRENT_TIMESTAMP
 ```
 
 ## Returns
 
-**timestamp** — Returns the computed result as `timestamp`.
+**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.
 
 ## Usage Notes
 

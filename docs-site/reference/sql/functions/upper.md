@@ -11,7 +11,7 @@ Convert string to uppercase.
 
 ## Syntax
 
-```
+```sql
 UPPER(str)
 ```
 
@@ -22,4 +22,4 @@ UPPER(str)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

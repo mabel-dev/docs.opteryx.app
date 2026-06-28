@@ -11,7 +11,7 @@ Base64 encode.
 
 ## Syntax
 
-```
+```sql
 BASE64_ENCODE(blob)
 ```
 
@@ -22,4 +22,4 @@ BASE64_ENCODE(blob)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

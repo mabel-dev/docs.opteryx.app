@@ -11,7 +11,7 @@ Calculates the square root of the input number.
 
 ## Syntax
 
-```
+```sql
 SQRT(num)
 ```
 
@@ -22,4 +22,4 @@ SQRT(num)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

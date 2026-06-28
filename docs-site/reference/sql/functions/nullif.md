@@ -11,7 +11,7 @@ Compares the two arguments and yields null when they are equal; otherwise preser
 
 ## Syntax
 
-```
+```sql
 NULLIF(value, compare)
 ```
 

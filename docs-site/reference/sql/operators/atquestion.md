@@ -5,8 +5,6 @@ description: Returns true when the supplied JSON path expression matches within 
 
 # JSON path exists
 
-JSON path existence operator.
-
 Returns true when the supplied JSON path expression matches within the left document.
 
 **Category:** comparison

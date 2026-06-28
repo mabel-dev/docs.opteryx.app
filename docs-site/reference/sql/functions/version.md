@@ -11,10 +11,10 @@ Database version string.
 
 ## Syntax
 
-```
+```sql
 VERSION()
 ```
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

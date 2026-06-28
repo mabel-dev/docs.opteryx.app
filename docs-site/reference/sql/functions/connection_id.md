@@ -11,10 +11,10 @@ Current connection identifier.
 
 ## Syntax
 
-```
+```sql
 CONNECTION_ID()
 ```
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

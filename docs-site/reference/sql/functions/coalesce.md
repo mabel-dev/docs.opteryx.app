@@ -11,7 +11,7 @@ Selects the first non-null value from the list of arguments.
 
 ## Syntax
 
-```
+```sql
 COALESCE(arg0, [args...])
 ```
 

@@ -5,8 +5,6 @@ description: Returns true when the left string matches the SQL ILIKE pattern on 
 
 # Case-insensitive like
 
-Case-insensitive pattern match comparison.
-
 Returns true when the left string matches the SQL ILIKE pattern on the right without case sensitivity.
 
 **Category:** comparison

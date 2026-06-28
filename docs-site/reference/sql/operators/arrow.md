@@ -5,8 +5,6 @@ description: Returns the selected JSON value from a document or JSON-like value.
 
 # JSON extract
 
-JSON extraction operator.
-
 Returns the selected JSON value from a document or JSON-like value.
 
 **Category:** extraction

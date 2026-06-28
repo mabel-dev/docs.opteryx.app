@@ -11,7 +11,7 @@ Capitalize first letter of each word.
 
 ## Syntax
 
-```
+```sql
 INITCAP(string)
 ```
 
@@ -22,4 +22,4 @@ INITCAP(string)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

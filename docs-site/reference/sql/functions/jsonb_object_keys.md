@@ -11,7 +11,7 @@ Extract keys from JSON object.
 
 ## Syntax
 
-```
+```sql
 JSONB_OBJECT_KEYS(json)
 ```
 
@@ -22,4 +22,4 @@ JSONB_OBJECT_KEYS(json)
 
 ## Returns
 
-**array<variant>** — Returns the computed result as `array<variant>`.
+**ARRAY<VARIANT>** — Returns the computed result as `ARRAY<VARIANT>`.

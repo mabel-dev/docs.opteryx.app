@@ -11,11 +11,11 @@ Extracts a substring starting at the specified position with optional length.
 
 ## Syntax
 
-```
+```sql
 SUBSTRING(str FROM start)
 ```
 
-```
+```sql
 SUBSTRING(str FROM start FOR length)
 ```
 
@@ -30,7 +30,7 @@ SUBSTRING(str FROM start FOR length)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.
 
 ## Usage Notes
 

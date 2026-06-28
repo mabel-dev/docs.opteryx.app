@@ -11,7 +11,7 @@ Pads string on the left with fill character to reach specified width.
 
 ## Syntax
 
-```
+```sql
 LPAD(string, width, fill)
 ```
 
@@ -26,4 +26,4 @@ LPAD(string, width, fill)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

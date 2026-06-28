@@ -5,8 +5,6 @@ description: Returns the sum of two numeric or interval-compatible operands. Sym
 
 # Addition
 
-Addition operator.
-
 Returns the sum of two numeric or interval-compatible operands.
 
 **Category:** binary

@@ -5,8 +5,6 @@ description: Shifts the bits of the left integer operand right by the number of 
 
 # Right shift
 
-Right shift operator.
-
 Shifts the bits of the left integer operand right by the number of positions in the right operand.
 
 **Category:** bitwise

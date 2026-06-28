@@ -11,7 +11,7 @@ Converts an integer codepoint to its corresponding character.
 
 ## Syntax
 
-```
+```sql
 TO_CHAR(num)
 ```
 
@@ -22,4 +22,4 @@ TO_CHAR(num)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

@@ -11,11 +11,11 @@ Splits a string into an array using the specified delimiter.
 
 ## Syntax
 
-```
+```sql
 SPLIT(string, delimiter)
 ```
 
-```
+```sql
 SPLIT(string, delimiter, limit)
 ```
 
@@ -30,4 +30,4 @@ SPLIT(string, delimiter, limit)
 
 ## Returns
 
-**array<variant>** — Returns the computed result as `array<variant>`.
+**ARRAY<VARIANT>** — Returns the computed result as `ARRAY<VARIANT>`.

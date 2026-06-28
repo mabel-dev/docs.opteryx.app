@@ -5,8 +5,6 @@ description: Returns true when the left operand is less than or equal to the rig
 
 # Less than or equal
 
-Less-than-or-equal comparison.
-
 Returns true when the left operand is less than or equal to the right operand.
 
 **Category:** comparison

@@ -31,5 +31,5 @@ Precision 1–18 uses 64-bit integer storage. Precision 19–38 uses 128-bit int
 
 ## Limitations
 
-- SUM and AVG do not support DECIMAL columns — cast to FLOAT first: `SUM(col::FLOAT)`.
+- SUM, AVG, and MEDIAN do not support DECIMAL columns — cast to FLOAT first: `SUM(col::FLOAT)`.
 - DECIMAL columns from Parquet files are read correctly but aggregate functions reject them.

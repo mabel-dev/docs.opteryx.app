@@ -7,7 +7,7 @@ description: Reference for SQL operators.
 
 The following operators are supported by Opteryx.  Click a name for details.
 
-## binary
+## Binary
 
 - [Division `/`](operators/divide)
 - [Subtraction `-`](operators/minus)
@@ -17,7 +17,7 @@ The following operators are supported by Opteryx.  Click a name for details.
 - [Addition `+`](operators/plus)
 - [Concatenation `||`](operators/stringconcat)
 
-## bitwise
+## Bitwise
 
 - [Bitwise AND `&`](operators/bitwiseand)
 - [Bitwise OR `|`](operators/bitwiseor)
@@ -25,7 +25,7 @@ The following operators are supported by Opteryx.  Click a name for details.
 - [Left shift `<<`](operators/shiftleft)
 - [Right shift `>>`](operators/shiftright)
 
-## comparison
+## Comparison
 
 - [Array contains all `@>>`](operators/arraycontainsall)
 - [Array contains any `@>`](operators/atarrow)
@@ -45,13 +45,13 @@ The following operators are supported by Opteryx.  Click a name for details.
 - [Not regex like `NOT RLIKE`](operators/notrlike)
 - [Regex like `RLIKE`](operators/rlike)
 
-## extraction
+## Extraction
 
 - [JSON extract `->`](operators/arrow)
 - [JSON extract text `->>`](operators/longarrow)
 - [Subscript access `[]`](operators/mapaccess)
 
-## logical
+## Logical
 
 - [Logical AND `AND`](operators/and)
 - [Logical OR `OR`](operators/or)

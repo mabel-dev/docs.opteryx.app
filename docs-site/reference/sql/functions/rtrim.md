@@ -11,7 +11,7 @@ Removes trailing whitespace from string.
 
 ## Syntax
 
-```
+```sql
 RTRIM(string)
 ```
 

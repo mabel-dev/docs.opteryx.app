@@ -5,8 +5,6 @@ description: Returns true when the left operand does not match any element in th
 
 # Not in list
 
-Negated membership comparison.
-
 Returns true when the left operand does not match any element in the right-hand list or array.
 
 **Category:** comparison

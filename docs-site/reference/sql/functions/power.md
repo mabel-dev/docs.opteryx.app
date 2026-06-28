@@ -11,7 +11,7 @@ Raise base to exponent (SQL-92).
 
 ## Syntax
 
-```
+```sql
 POWER(num, exp)
 ```
 
@@ -24,4 +24,4 @@ POWER(num, exp)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

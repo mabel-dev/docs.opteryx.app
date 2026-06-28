@@ -11,7 +11,7 @@ Determines the maximum element in an array column.
 
 ## Syntax
 
-```
+```sql
 GREATEST(arr)
 ```
 

@@ -11,7 +11,7 @@ Calculates the largest integer less than or equal to the input.
 
 ## Syntax
 
-```
+```sql
 FLOOR(num, [scale...])
 ```
 
@@ -24,7 +24,7 @@ FLOOR(num, [scale...])
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.
 
 ## Usage Notes
 

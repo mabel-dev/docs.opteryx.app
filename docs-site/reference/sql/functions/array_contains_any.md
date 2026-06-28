@@ -11,7 +11,7 @@ Test if array contains any item from set.
 
 ## Syntax
 
-```
+```sql
 ARRAY_CONTAINS_ANY(arr, items)
 ```
 
@@ -24,4 +24,4 @@ ARRAY_CONTAINS_ANY(arr, items)
 
 ## Returns
 
-**boolean** — Returns `true` or `false` based on whether the function's condition is satisfied.
+**BOOLEAN** — Returns the computed result as `BOOLEAN`.

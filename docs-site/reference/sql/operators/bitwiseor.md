@@ -5,8 +5,6 @@ description: Combines integer operands using a bitwise OR operation. When used w
 
 # Bitwise OR
 
-Bitwise OR and IP containment operator.
-
 Combines integer operands using a bitwise OR operation. When used with address and CIDR-compatible operands, the same `|` token acts as an IP containment predicate and returns a boolean result.
 
 **Category:** bitwise

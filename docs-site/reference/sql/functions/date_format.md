@@ -11,7 +11,7 @@ Format date/timestamp as string.
 
 ## Syntax
 
-```
+```sql
 DATE_FORMAT(date, pattern)
 ```
 
@@ -24,4 +24,4 @@ DATE_FORMAT(date, pattern)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

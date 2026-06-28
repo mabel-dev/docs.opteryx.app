@@ -11,7 +11,7 @@ Removes leading whitespace from string.
 
 ## Syntax
 
-```
+```sql
 LTRIM(string)
 ```
 

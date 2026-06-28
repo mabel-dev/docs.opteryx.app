@@ -5,8 +5,6 @@ description: Returns true only when both boolean operands evaluate to true. Symb
 
 # Logical AND
 
-Logical conjunction.
-
 Returns true only when both boolean operands evaluate to true.
 
 **Category:** logical

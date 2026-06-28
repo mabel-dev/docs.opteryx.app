@@ -5,8 +5,6 @@ description: Returns true when the left string does not match the SQL ILIKE patt
 
 # Not case-insensitive like
 
-Negated case-insensitive pattern match comparison.
-
 Returns true when the left string does not match the SQL ILIKE pattern on the right.
 
 **Category:** comparison

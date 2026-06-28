@@ -5,8 +5,6 @@ description: Shifts the bits of the left integer operand left by the number of p
 
 # Left shift
 
-Left shift operator.
-
 Shifts the bits of the left integer operand left by the number of positions in the right operand.
 
 **Category:** bitwise

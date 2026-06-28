@@ -5,8 +5,6 @@ description: Returns true when the left string does not match the SQL LIKE patte
 
 # Not like
 
-Negated pattern match comparison.
-
 Returns true when the left string does not match the SQL LIKE pattern on the right.
 
 **Category:** comparison

@@ -11,7 +11,7 @@ Computes the number of bytes in a string, regardless of string type.
 
 ## Syntax
 
-```
+```sql
 OCTET_LENGTH(string)
 ```
 
@@ -22,4 +22,4 @@ OCTET_LENGTH(string)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

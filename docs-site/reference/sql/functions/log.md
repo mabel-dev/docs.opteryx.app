@@ -11,7 +11,7 @@ Logarithm with arbitrary base.
 
 ## Syntax
 
-```
+```sql
 LOG(num, base)
 ```
 
@@ -24,4 +24,4 @@ LOG(num, base)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

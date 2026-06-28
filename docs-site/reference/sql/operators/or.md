@@ -5,8 +5,6 @@ description: Returns true when either boolean operand evaluates to true. Symbol:
 
 # Logical OR
 
-Logical disjunction.
-
 Returns true when either boolean operand evaluates to true.
 
 **Category:** logical

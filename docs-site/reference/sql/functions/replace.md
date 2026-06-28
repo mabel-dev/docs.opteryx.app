@@ -11,7 +11,7 @@ Replace all occurrences.
 
 ## Syntax
 
-```
+```sql
 REPLACE(string, search, replace_val)
 ```
 
@@ -26,4 +26,4 @@ REPLACE(string, search, replace_val)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

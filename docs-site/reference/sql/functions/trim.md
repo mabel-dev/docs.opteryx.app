@@ -11,7 +11,7 @@ Removes leading and trailing whitespace from string.
 
 ## Syntax
 
-```
+```sql
 TRIM([BOTH|LEADING|TRAILING] [chars] FROM str)
 ```
 

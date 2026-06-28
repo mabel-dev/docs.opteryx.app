@@ -11,7 +11,7 @@ Performs semantic text matching using embeddings and cosine similarity.
 
 ## Syntax
 
-```
+```sql
 MATCH(str) AGAINST(pattern)
 ```
 
@@ -24,7 +24,7 @@ MATCH(str) AGAINST(pattern)
 
 ## Returns
 
-**boolean** — Returns `true` or `false` based on whether the function's condition is satisfied.
+**BOOLEAN** — Returns the computed result as `BOOLEAN`.
 
 ## Usage Notes
 

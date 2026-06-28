@@ -5,8 +5,6 @@ description: Returns the selected JSON value encoded as a blob or text-like bina
 
 # JSON extract text
 
-JSON text extraction operator.
-
 Returns the selected JSON value encoded as a blob or text-like binary value.
 
 **Category:** extraction

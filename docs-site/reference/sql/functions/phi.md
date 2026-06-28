@@ -11,10 +11,10 @@ Golden ratio φ.
 
 ## Syntax
 
-```
+```sql
 PHI()
 ```
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

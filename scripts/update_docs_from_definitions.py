@@ -426,9 +426,14 @@ def build_functions_docs(functions_def: Dict[str, Any]):
             lines.append(f"**Category:** {overloads[0]['category']}\n")
 
         lines.append('## Syntax\n')
+        seen_labels: set = set()
         for ov in overloads:
-            lines.append('```')
-            lines.append(ov.get('label', ''))
+            label = ov.get('label', '')
+            if label in seen_labels:
+                continue
+            seen_labels.add(label)
+            lines.append('```sql')
+            lines.append(label)
             lines.append('```\n')
 
         # arguments
@@ -653,7 +658,7 @@ def build_operators_docs(ops_def: Dict[str, Any]):
     ]
 
     for category in sorted(categories.keys()):
-        lines.append(f'## {category}\n')
+        lines.append(f'## {category.title()}\n')
         for name, info in sorted(categories[category], key=lambda x: x[0]):
             slug = slugify(name)
             display = info.get('friendly_name') or name
@@ -690,10 +695,10 @@ def build_operators_docs(ops_def: Dict[str, Any]):
         lines.append('---\n')
         lines.append(f'# {display}\n')
 
-        if description:
-            lines.append(description + '\n')
-        if documentation:
-            lines.append(documentation + '\n')
+        # Prefer documentation (longer form); fall back to description. Never show both.
+        page_desc = documentation or description
+        if page_desc:
+            lines.append(page_desc + '\n')
 
         if category:
             lines.append(f'**Category:** {category}\n')
@@ -835,8 +840,9 @@ def build_types_docs(types_def: Dict[str, Any]):
 
         for name, info in sorted(items, key=lambda x: x[0]):
             slug = slugify(name)
-            summary = info.get('canonical_name', '')
-            lines.append(f'- [{summary or name}](types/{slug}) — {summary}')
+            display = info.get('canonical_name') or name.upper()
+            summary = (info.get('metadata') or {}).get('description') or display
+            lines.append(f'- [{display}](types/{slug}) — {summary}')
         lines.append('')
 
     write_md(REF_SQL_DIR / 'data-types.md', lines)

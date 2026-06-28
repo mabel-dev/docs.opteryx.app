@@ -7,8 +7,6 @@ description: NVARCHAR
 
 A variable-length UTF-8 encoded text string. Use NVARCHAR for any text that may contain non-ASCII characters. JSON columns are stored as NVARCHAR.
 
-**Aliases:** `JSONB`, `STRUCT`
-
 ## Example
 
 ```sql
@@ -33,3 +31,4 @@ Supports `LIKE`, `ILIKE`, and `RLIKE` pattern matching. String functions that op
 ## Limitations
 
 - Casting from VARBINARY will fail if the bytes are not valid UTF-8.
+- There is no structured STRUCT or JSONB type. JSON data lands as NVARCHAR — use `->` and `->>` to navigate it.

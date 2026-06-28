@@ -5,8 +5,6 @@ description: Returns the difference between two numeric, date, timestamp, or int
 
 # Subtraction
 
-Subtraction operator.
-
 Returns the difference between two numeric, date, timestamp, or interval-compatible operands.
 
 **Category:** binary

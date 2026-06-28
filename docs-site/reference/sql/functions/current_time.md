@@ -11,13 +11,13 @@ Current time.
 
 ## Syntax
 
-```
+```sql
 CURRENT_TIME
 ```
 
 ## Returns
 
-**time** — Returns the computed result as `time`.
+**TIME** — Returns the computed result as `TIME`.
 
 ## Usage Notes
 

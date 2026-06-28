@@ -11,7 +11,7 @@ Base85 decode.
 
 ## Syntax
 
-```
+```sql
 BASE85_DECODE(blob)
 ```
 
@@ -22,4 +22,4 @@ BASE85_DECODE(blob)
 
 ## Returns
 
-**varbinary** — Returns the computed result as `varbinary`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

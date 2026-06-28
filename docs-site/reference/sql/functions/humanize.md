@@ -11,7 +11,7 @@ Format number in human-readable form.
 
 ## Syntax
 
-```
+```sql
 HUMANIZE(val)
 ```
 
@@ -22,4 +22,4 @@ HUMANIZE(val)
 
 ## Returns
 
-**varchar** — Returns the computed result as `varchar`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

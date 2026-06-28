@@ -11,7 +11,7 @@ Converts the first character of a string to its integer codepoint.
 
 ## Syntax
 
-```
+```sql
 TO_ASCII(string)
 ```
 
@@ -22,4 +22,4 @@ TO_ASCII(string)
 
 ## Returns
 
-**int64** — Returns the computed result as `int64`.
+**INTEGER** — Returns the computed result as `INTEGER`.

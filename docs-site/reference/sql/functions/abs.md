@@ -11,7 +11,7 @@ Calculates the absolute value of the input number.
 
 ## Syntax
 
-```
+```sql
 ABS(num)
 ```
 

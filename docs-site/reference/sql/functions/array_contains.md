@@ -11,7 +11,7 @@ Test if array contains item.
 
 ## Syntax
 
-```
+```sql
 ARRAY_CONTAINS(arr, item)
 ```
 
@@ -24,4 +24,4 @@ ARRAY_CONTAINS(arr, item)
 
 ## Returns
 
-**boolean** — Returns `true` or `false` based on whether the function's condition is satisfied.
+**BOOLEAN** — Returns the computed result as `BOOLEAN`.

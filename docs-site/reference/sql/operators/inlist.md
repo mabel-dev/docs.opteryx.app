@@ -5,8 +5,6 @@ description: Returns true when the left operand matches any element in the right
 
 # In list
 
-Membership comparison.
-
 Returns true when the left operand matches any element in the right-hand list or array.
 
 **Category:** comparison

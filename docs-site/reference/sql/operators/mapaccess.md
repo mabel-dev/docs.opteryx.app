@@ -5,8 +5,6 @@ description: Returns the element at the requested index from an array, string, o
 
 # Subscript access
 
-Subscript access operator.
-
 Returns the element at the requested index from an array, string, or blob-like value.
 
 **Category:** extraction

@@ -5,8 +5,6 @@ description: Returns true when the left string matches the regular expression on
 
 # Regex like
 
-Regular expression match comparison.
-
 Returns true when the left string matches the regular expression on the right.
 
 **Category:** comparison

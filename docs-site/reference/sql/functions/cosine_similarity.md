@@ -11,11 +11,7 @@ Cosine similarity over numeric vectors or semantic text inputs.
 
 ## Syntax
 
-```
-COSINE_SIMILARITY(arr, vec)
-```
-
-```
+```sql
 COSINE_SIMILARITY(arr, vec)
 ```
 
@@ -28,4 +24,4 @@ COSINE_SIMILARITY(arr, vec)
 
 ## Returns
 
-**float64** — Returns the computed result as `float64`.
+**FLOAT** — Returns the computed result as `FLOAT`.

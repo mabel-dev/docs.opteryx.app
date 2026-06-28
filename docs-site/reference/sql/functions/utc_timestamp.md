@@ -11,10 +11,10 @@ Current UTC timestamp.
 
 ## Syntax
 
-```
+```sql
 UTC_TIMESTAMP()
 ```
 
 ## Returns
 
-**timestamp** — Returns the computed result as `timestamp`.
+**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.
