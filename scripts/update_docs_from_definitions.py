@@ -515,24 +515,23 @@ def _literal_for_type(type_name: str):
         return '1.5', 1.5
     if t == 'decimal':
         return '1.5', 1.5
-    if t in ('varchar', 'string', 'text'):
+    if t in ('varchar', 'string', 'text', 'nvarchar'):
         return "'a'", 'a'
     if t == 'boolean':
         return 'TRUE', True
     if t == 'date':
-        return "DATE '2024-01-01'", None
+        return "'2024-01-01'::DATE", None
     if t == 'timestamp':
-        return "TIMESTAMP '2024-01-01 00:00:00'", None
+        return "'2024-01-01 00:00:00'::TIMESTAMP", None
     if t == 'time':
-        return "TIME '00:00:00'", None
+        return "'00:00:00'::TIME", None
     if t == 'interval':
         return "INTERVAL '1' DAY", None
     if t == 'array':
-        return 'ARRAY[1,2]', [1, 2]
-    if t in ('jsonb', 'struct'):
-        # Use a simple JSON object so examples demonstrate JSON extraction.
+        return None, None
+    if t in ('jsonb', 'nvarchar', 'variant'):
         return "'{\"index\": 1}'", {'index': 1}
-    if t == 'blob':
+    if t in ('blob', 'varbinary'):
         return "b'0102'", None
     if t == 'null':
         return 'NULL', None
@@ -711,29 +710,30 @@ def build_operators_docs(ops_def: Dict[str, Any]):
                     left_sql, left_val = _literal_for_type(lt)
                     right_sql, right_val = _literal_for_type(rt)
 
-                    # For JSON extraction, use a realistic key string rather than a generic varchar.
-                    if sql_symbol in ('->', '->>') and rt == 'varchar':
-                        right_sql, right_val = "'index'", 'index'
+                    if left_sql is not None and right_sql is not None:
+                        # For JSON extraction, use a realistic key string rather than a generic varchar.
+                        if sql_symbol in ('->', '->>') and rt == 'varchar':
+                            right_sql, right_val = "'index'", 'index'
 
-                    # For JSON path existence, use a simple JSONPath expression.
-                    if sql_symbol == '@?' and rt == 'varchar':
-                        right_sql, right_val = "'$.index'", '$.index'
+                        # For JSON path existence, use a simple JSONPath expression.
+                        if sql_symbol == '@?' and rt == 'varchar':
+                            right_sql, right_val = "'$.index'", '$.index'
 
-                    expected = _compute_expected_result(sql_symbol, left_val, right_val)
-                    expected_comment = ''
-                    if expected is not None:
-                        expected_comment = f' -- expected: {_format_expected_result(expected)}'
+                        expected = _compute_expected_result(sql_symbol, left_val, right_val)
+                        expected_comment = ''
+                        if expected is not None:
+                            expected_comment = f' -- expected: {_format_expected_result(expected)}'
 
-                    # Special-case non-infix operators (like map/array indexing)
-                    if sql_symbol == '[]':
-                        example_expr = f'{left_sql}[{right_sql}]'
-                    else:
-                        example_expr = f'{left_sql} {sql_symbol} {right_sql}'
+                        # Special-case non-infix operators (like map/array indexing)
+                        if sql_symbol == '[]':
+                            example_expr = f'{left_sql}[{right_sql}]'
+                        else:
+                            example_expr = f'{left_sql} {sql_symbol} {right_sql}'
 
-                    lines.append('## Example\n')
-                    lines.append('```sql')
-                    lines.append(f'SELECT {example_expr};{expected_comment}')
-                    lines.append('```\n')
+                        lines.append('## Example\n')
+                        lines.append('```sql')
+                        lines.append(f'SELECT {example_expr};{expected_comment}')
+                        lines.append('```\n')
 
         # Dynamic result explanation
         if has_dynamic_result:
@@ -856,17 +856,26 @@ def build_types_docs(types_def: Dict[str, Any]):
         lines.append(f'# {title_text}\n')
 
         metadata = info.get('metadata', {}) or {}
+
         description = metadata.get('description')
         if description:
             lines.append(description + '\n')
 
+        # Aliases / alternate names
+        aliases = info.get('aliases') or []
+        if aliases:
+            alias_list = ', '.join(f'`{a.upper()}`' for a in sorted(aliases))
+            lines.append(f'**Aliases:** {alias_list}\n')
+
+        # Example literal
         example = metadata.get('example')
         if example is not None:
             lines.append('## Example\n')
-            lines.append('```')
-            lines.append(str(example))
+            lines.append('```sql')
+            lines.append(f'SELECT {example};')
             lines.append('```\n')
 
+        # Range (numeric types)
         min_value = metadata.get('min')
         max_value = metadata.get('max')
         if min_value is not None or max_value is not None:
@@ -877,30 +886,66 @@ def build_types_docs(types_def: Dict[str, Any]):
                 lines.append(f'- **Max:** `{max_value}`')
             lines.append('')
 
+        # Accepted string formats (temporal types)
+        string_formats = metadata.get('string_formats') or []
+        if string_formats:
+            lines.append('## Accepted String Formats\n')
+            lines.append('When casting a string to this type, the following formats are accepted:\n')
+            lines.append('| Format | Example | Notes |')
+            lines.append('|--------|---------|-------|')
+            for fmt in string_formats:
+                fmt_str = fmt.get('format', '')
+                ex_str = f'`{fmt["example"]}`' if fmt.get('example') else ''
+                note_str = fmt.get('note', '')
+                lines.append(f'| `{fmt_str}` | {ex_str} | {note_str} |')
+            lines.append('')
+
+        # Casting to this type
+        cast_to = metadata.get('cast_to') or []
+        if cast_to:
+            lines.append('## Casting\n')
+            lines.append('| From | Example | Notes |')
+            lines.append('|------|---------|-------|')
+            for c in cast_to:
+                from_str = c.get('type', '')
+                ex_str = f'`{c["example"]}`' if c.get('example') else ''
+                note_str = c.get('note', '')
+                lines.append(f'| {from_str} | {ex_str} | {note_str} |')
+            lines.append('')
+
+        # Arithmetic
+        arithmetic = metadata.get('arithmetic') or []
+        if arithmetic:
+            lines.append('## Arithmetic\n')
+            lines.append('| Expression | Result Type | Description |')
+            lines.append('|------------|-------------|-------------|')
+            for a in arithmetic:
+                lines.append(f'| `{a["expr"]}` | {a["result"]} | {a["desc"]} |')
+            lines.append('')
+
+        # Cross-type comparisons
+        comparable_with = metadata.get('comparable_with')
+        if comparable_with is not None:
+            lines.append('## Comparisons\n')
+            if comparable_with:
+                types_str = ', '.join(f'`{t}`' for t in comparable_with)
+                lines.append(f'Can be compared (using `=`, `<`, `>`, etc.) with: {types_str}.\n')
+            else:
+                lines.append('This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.\n')
+
+        # Notes
         notes = metadata.get('notes')
         if notes:
             lines.append('## Notes\n')
-            lines.append(notes)
+            lines.append(notes + '\n')
+
+        # Limitations
+        limitations = metadata.get('limitations') or []
+        if limitations:
+            lines.append('## Limitations\n')
+            for lim in limitations:
+                lines.append(f'- {lim}')
             lines.append('')
-
-        family = info.get('family')
-        if family:
-            lines.append(f'**Family:** {family}\n')
-
-        flags = info.get('flags', {})
-        if flags:
-            lines.append('## Flags\n')
-            for k, v in flags.items():
-                lines.append(f'- **{k}**: `{v}`')
-            lines.append('')
-
-        param_forms = info.get('parameterized_forms', [])
-        if param_forms:
-            lines.append('## Parameterized Forms\n')
-            for form in param_forms:
-                lines.append(f'- `{form}`')
-            lines.append('')
-
 
         write_md(path, lines)
 
@@ -958,92 +1003,70 @@ def build_aggregates_docs(aggregates_def: Dict[str, Any]):
     write_md(REF_SQL_DIR / 'aggregates.md', lines)
 
 
+def _find_section(nav: list, key: str) -> Optional[dict]:
+    for section in nav:
+        if key in section:
+            return section
+    return None
+
+
+def _find_item(items: list, key: str) -> Optional[dict]:
+    for item in items:
+        if key in item:
+            return item
+    return None
+
+
+def _populate_nav_items(item: dict, prefix: str, entries: dict, title_fn) -> None:
+    key = list(item.keys())[0]
+    node = item[key]
+    if not isinstance(node, dict):
+        return
+    nav_items = []
+    for name, info in entries.items():
+        slug = slugify(name)
+        title = title_fn(name, info)
+        nav_items.append((title, slug))
+    nav_items.sort(key=lambda x: x[0].lower())
+    node['items'] = [{title: f'{prefix}/{slug}.md'} for title, slug in nav_items]
+
+
 def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], types_def: Dict[str, Any]):
     nav = load_json(NAV_PATH)
 
-    # remove Engineering Blog if present
-    nav = [s for s in nav if 'Engineering Blog' not in s]
+    # Remove any ghost sections introduced by previous script versions.
+    nav = [s for s in nav if list(s.keys())[0] not in ('Engineering Blog', 'Reference')]
 
-    # ensure Reference section exists
-    for section in nav:
-        if 'Reference' in section:
-            ref_section = section['Reference']
-            break
-    else:
-        ref_section = []
-        nav.append({'Reference': ref_section})
-
-    # rebuild API Reference entries from available docs so generated APIs appear
-    # automatically and missing definitions do not leave broken links behind.
+    # --- API Reference (top-level section) ---
     generated_api_docs, manual_api_docs = _get_available_api_docs()
     api_items = [{spec['title']: f"reference/api/{spec['slug']}.md"} for spec in generated_api_docs + manual_api_docs]
 
-    for item in ref_section:
-        if 'API Reference' in item:
-            item['API Reference'] = api_items
-            break
+    api_section = _find_section(nav, 'API Reference')
+    if api_section is not None:
+        api_section['API Reference'] = api_items
     else:
-        ref_section.insert(0, {'API Reference': api_items})
+        nav.append({'API Reference': api_items})
 
-    # find or create SQL Language Reference block
-    sql_block = None
-    for item in ref_section:
-        if 'SQL Language Reference' in item:
-            sql_block = item['SQL Language Reference']
-            break
-    if sql_block is None:
-        sql_block = []
-        ref_section.append({'SQL Language Reference': sql_block})
+    # --- SQL Language Reference (top-level section) ---
+    sql_section = _find_section(nav, 'SQL Language Reference')
+    if sql_section is None:
+        sql_section = {'SQL Language Reference': []}
+        nav.append(sql_section)
+    sql_block = sql_section['SQL Language Reference']
 
-    # ensure Functions/Operators/Types exist
-    def ensure_section(name, href):
-        for item in sql_block:
-            if name in item:
-                if isinstance(item[name], str):
-                    item[name] = href
-                return item
-        new_item = {name: href}
-        sql_block.append(new_item)
-        return new_item
-
-    functions_item = ensure_section('Functions', {'href': 'reference/sql/functions.md'})
-    operators_item = ensure_section('Operators', {'href': 'reference/sql/operators.md'})
-    types_item = ensure_section('Data Types', {'href': 'reference/sql/data-types.md'})
-
-    # populate nav items for functions/operators/types so the sidebar can expand when viewing specific entries
-    def populate_nav_items(item: dict, prefix: str, entries: dict, title_fn):
-        if not isinstance(item.get(list(item.keys())[0]), dict):
-            return
-        key = list(item.keys())[0]
-        node = item[key]
-        if not isinstance(node, dict):
-            return
-
-        # Sort nav entries alphabetically by their visible title, not by the internal key.
-        items = []
-        for name, info in entries.items():
-            slug = slugify(name)
-            title = title_fn(name, info)
-            items.append((title, slug))
-        items.sort(key=lambda x: x[0].lower())
-
-        node['items'] = [{title: f'{prefix}/{slug}.md'} for title, slug in items]
-
-    populate_nav_items(functions_item, 'reference/sql/functions', functions_def, lambda name, _: name)
-    populate_nav_items(operators_item, 'reference/sql/operators', operators_def, lambda name, info: info.get('friendly_name') or info.get('display_name') or name)
-    populate_nav_items(types_item, 'reference/sql/types', types_def, lambda name, info: info.get('canonical_name') or name.upper())
-
-    # remove any stray 'Types' section that might be left over
-    for item in list(sql_block):
-        if 'Types' in item and isinstance(item['Types'], dict):
-            sql_block.remove(item)
-
-    # fix: remove Expressions accidentally nested under Statements
-    for item in sql_block:
-        if 'Statements' in item and isinstance(item['Statements'], dict):
-            items = item['Statements'].get('items')
-            if isinstance(items, list):
-                item['Statements']['items'] = [sub for sub in items if not (isinstance(sub, dict) and 'Expressions' in sub)]
+    # Update or create Functions, Operators, Data Types entries.
+    for name, href, entries, title_fn in [
+        ('Functions',   {'href': 'reference/sql/functions.md'},   functions_def, lambda n, _: n),
+        ('Operators',   {'href': 'reference/sql/operators.md'},   operators_def, lambda n, i: i.get('friendly_name') or i.get('display_name') or n),
+        ('Data Types',  {'href': 'reference/sql/data-types.md'},  types_def,     lambda n, i: i.get('canonical_name') or n.upper()),
+    ]:
+        item = _find_item(sql_block, name)
+        if item is None:
+            item = {name: href}
+            sql_block.append(item)
+        elif isinstance(item[name], str):
+            item[name] = href
+        _populate_nav_items(item, f'reference/sql/{name.lower().replace(" ", "-")}s' if name != 'Data Types' else 'reference/sql/types', entries, title_fn)
 
     NAV_PATH.write_text(json.dumps(nav, indent=2))
 

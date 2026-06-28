@@ -5,23 +5,31 @@ description: NVARCHAR
 
 # NVARCHAR
 
-UTF-8 encoded text string.
+A variable-length UTF-8 encoded text string. Use NVARCHAR for any text that may contain non-ASCII characters. JSON columns are stored as NVARCHAR.
+
+**Aliases:** `JSONB`, `STRUCT`
 
 ## Example
 
+```sql
+SELECT 'héllo wörld';
 ```
-'héllo'
-```
+
+## Casting
+
+| From | Example | Notes |
+|------|---------|-------|
+| from VARCHAR | `ascii_col::NVARCHAR` | Validates UTF-8; fails if the bytes are not valid UTF-8 |
+| from VARBINARY | `bin_col::NVARCHAR` | Interprets raw bytes as UTF-8; fails on invalid sequences |
+
+## Comparisons
+
+Can be compared (using `=`, `<`, `>`, etc.) with: `NVARCHAR`, `VARCHAR`.
 
 ## Notes
 
-Stores arbitrary Unicode content. JSON/JSONB data is stored as NVARCHAR.
+Supports `LIKE`, `ILIKE`, and `RLIKE` pattern matching. String functions that operate on character positions (e.g. SUBSTRING) count Unicode code points, not bytes.
 
-**Family:** text
+## Limitations
 
-## Flags
-
-- **numeric**: `False`
-- **temporal**: `False`
-- **collection**: `True`
-- **parameterized**: `False`
+- Casting from VARBINARY will fail if the bytes are not valid UTF-8.

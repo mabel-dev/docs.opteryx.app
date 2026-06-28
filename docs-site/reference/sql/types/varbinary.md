@@ -5,23 +5,27 @@ description: VARBINARY
 
 # VARBINARY
 
-Raw binary data.
+Raw binary data (arbitrary bytes). Use for hashes, encoded payloads, or any non-text binary content.
+
+**Aliases:** `BLOB`, `BYTES`
 
 ## Example
 
+```sql
+SELECT HEX_DECODE('deadbeef');
 ```
-b'0102'
-```
 
-## Notes
+## Casting
 
-Also used for BLOB storage.
+| From | Example | Notes |
+|------|---------|-------|
+| from VARCHAR | `'hello'::VARBINARY` | Treats the string bytes directly as binary |
+| from NVARCHAR | `utf8_col::VARBINARY` | Returns the raw UTF-8 byte sequence |
 
-**Family:** binary
+## Comparisons
 
-## Flags
+Can be compared (using `=`, `<`, `>`, etc.) with: `VARBINARY`, `VARCHAR`.
 
-- **numeric**: `False`
-- **temporal**: `False`
-- **collection**: `False`
-- **parameterized**: `False`
+## Limitations
+
+- There is no binary literal syntax. Use HEX_DECODE(), BASE64_DECODE(), or cast from a hex string.

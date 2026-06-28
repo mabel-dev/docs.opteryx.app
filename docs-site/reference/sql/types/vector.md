@@ -5,17 +5,23 @@ description: VECTOR
 
 # VECTOR
 
-Fixed-length numeric vector for similarity search and ML workloads.
+A fixed-length vector of FP16 (half-precision) floating-point values. Used for similarity search and ML embedding workloads. Declared as `VECTOR(n)` where n is the number of dimensions.
+
+## Casting
+
+| From | Example | Notes |
+|------|---------|-------|
+| from ARRAY<FLOAT> | `float_array_col::VECTOR(384)` | Quantizes each element to FP16 |
+
+## Comparisons
+
+This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.
 
 ## Notes
 
-Stored as FP16 by default.
+Similarity search uses dedicated functions such as `APPROX_COSINE_DISTANCE(a, b)`. Standard comparison operators are not supported on VECTOR.
 
-**Family:** vector
+## Limitations
 
-## Flags
-
-- **numeric**: `False`
-- **temporal**: `False`
-- **collection**: `True`
-- **parameterized**: `False`
+- Vector columns cannot be used with standard comparison operators (=, <, >, etc.).
+- The dimension count must match between vectors in any operation.

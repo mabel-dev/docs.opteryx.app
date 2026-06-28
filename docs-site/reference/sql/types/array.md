@@ -5,23 +5,18 @@ description: ARRAY
 
 # ARRAY
 
-Ordered sequence of elements of a single type.
+An ordered sequence of elements, all of the same type. Array columns appear when reading Parquet or JSONL files that contain repeated/array fields. The element type is declared as `ARRAY<type>` (e.g. `ARRAY<INTEGER>`, `ARRAY<VARCHAR>`).
 
-## Example
+## Comparisons
 
-```
-ARRAY[1, 2, 3]
-```
+This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.
 
-**Family:** nested
+## Notes
 
-## Flags
+Individual elements are accessed with subscript notation: `arr[0]` returns the first element (zero-indexed).
 
-- **numeric**: `False`
-- **temporal**: `False`
-- **collection**: `True`
-- **parameterized**: `True`
+## Limitations
 
-## Parameterized Forms
-
-- `ARRAY<type>`
+- There is no standalone array literal syntax. `SELECT [1, 2, 3]` is not valid.
+- Arrays cannot be used in WHERE clauses or JOIN conditions directly. Use UNNEST or element access.
+- You cannot CAST a scalar value to ARRAY.

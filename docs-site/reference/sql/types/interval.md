@@ -5,23 +5,31 @@ description: INTERVAL
 
 # INTERVAL
 
-Duration or period of time.
+A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `DAY`, `MONTH`, `YEAR`, `HOUR`, `MINUTE`, `SECOND`, or `MICROSECOND`.
 
 ## Example
 
+```sql
+SELECT INTERVAL '7' DAY;
 ```
-INTERVAL '1' DAY
-```
+
+## Arithmetic
+
+| Expression | Result Type | Description |
+|------------|-------------|-------------|
+| `INTERVAL '1' DAY + INTERVAL '2' HOUR` | INTERVAL | Add two intervals |
+| `date_col + INTERVAL '1' MONTH` | TIMESTAMP | Shift a date forward |
+| `ts_col - INTERVAL '30' MINUTE` | TIMESTAMP | Shift a timestamp back |
+
+## Comparisons
+
+Can be compared (using `=`, `<`, `>`, etc.) with: `INTERVAL`.
 
 ## Notes
 
-Sub-month components are stored as microseconds.
+Sub-month components (days, hours, minutes, seconds, microseconds) are stored as a microsecond count. Month and year components are stored separately and applied calendar-accurately during arithmetic. You cannot mix month-based and sub-month intervals in a single expression.
 
-**Family:** interval
+## Limitations
 
-## Flags
-
-- **numeric**: `False`
-- **temporal**: `True`
-- **collection**: `False`
-- **parameterized**: `False`
+- There is no INTERVAL literal that combines months and days in one expression (e.g. '1 month 3 days' is not supported). Use separate additions.
+- INTERVAL cannot be cast to or from other types.

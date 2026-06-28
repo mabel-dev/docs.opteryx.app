@@ -5,23 +5,34 @@ description: VARCHAR
 
 # VARCHAR
 
-ASCII text string.
+A variable-length ASCII text string. Use VARCHAR for columns that contain only ASCII characters. For text with accented characters, emoji, or any non-ASCII content, use NVARCHAR instead.
+
+**Aliases:** `STRING`, `TEXT`
 
 ## Example
 
+```sql
+SELECT 'hello world';
 ```
-'hello'
-```
+
+## Casting
+
+| From | Example | Notes |
+|------|---------|-------|
+| from INTEGER | `42::VARCHAR` | Decimal string representation |
+| from FLOAT | `3.14::VARCHAR` | Decimal notation |
+| from BOOLEAN | `TRUE::VARCHAR` | 'true' or 'false' |
+| from DATE | `date_col::VARCHAR` | 'YYYY-MM-DD' |
+| from TIMESTAMP | `ts_col::VARCHAR` | ISO 8601 string representation |
+
+## Comparisons
+
+Can be compared (using `=`, `<`, `>`, etc.) with: `VARCHAR`, `NVARCHAR`, `VARBINARY`.
 
 ## Notes
 
-Use NVARCHAR for UTF-8 content.
+Supports `LIKE` (case-sensitive), `ILIKE` (case-insensitive), and `RLIKE` (regular expression) pattern matching.
 
-**Family:** text
+## Limitations
 
-## Flags
-
-- **numeric**: `False`
-- **temporal**: `False`
-- **collection**: `False`
-- **parameterized**: `False`
+- Non-ASCII bytes stored in a VARCHAR column produce undefined behaviour — use NVARCHAR for Unicode.
