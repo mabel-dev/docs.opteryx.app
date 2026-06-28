@@ -5,60 +5,131 @@ description: Learn SQL query optimization techniques for Opteryx. Best practices
 
 # Query Optimization
 
-> Adapted from [15 Best Practices for SQL Optimization](https://betterprogramming.pub/15-best-practices-for-sql-optimization-956759626321).
+Opteryx has a cost-based query optimizer that rewrites and reorders execution automatically. Understanding what it does — and what it cannot do — helps you write queries that perform well.
 
-No optimization technique is universally true, these recommendations should improve performance in most cases. As with all optimization, test in your unique set of circumstances before assuming it to be true.
+## What the Optimizer Does Automatically
 
-## 1. Avoid using `SELECT *`
+**Predicate pushdown** — filter conditions are pushed as early in the plan as possible, including into the scan layer so that row groups failing the filter are skipped without being read.
 
-Selecting only the fields you need to be returned improves query performance by reducing the amount of data that is processed internally.
+**Column projection** — columns not referenced in the query are removed at scan time. `SELECT *` prevents this optimization.
 
-A principle the Query Optimizer uses is to eliminate rows and columns to process as early as possible, `SELECT *` removes the option to remove columns from the data being processed.
+**Join reordering (DPccp)** — for queries with multiple joins, the optimizer uses a dynamic programming algorithm to find a low-cost join ordering based on estimated row counts. You do not need to manually order your tables for most queries.
 
-## 2. Prune Early
+**Partition pruning** — when data is partitioned by date, a `TIMESTAMP AS OF` clause or a date-range filter on the partition key causes the scan to skip entire partitions.
 
-Where available, use temporal filters (`FOR DATE`) to limit the date range which will limit the number of partitions that need to be read.
+---
 
-Not reading the record is faster than reading and working out if it needs to be filtered out of the result set.
+## Things You Can Control
 
-## 3. `GROUP BY` field selection
+### Avoid `SELECT *`
 
-**VARCHAR**
-Grouping by `VARCHAR` columns is usually slower than grouping by `NUMERIC` columns, if you have an option of grouping by a username or a numeric user id, prefer the user id.
+`SELECT *` prevents column projection. Name only the columns you need:
 
-**cardinality**
-Grouping by columns with high cardinality (mostly unique) is generally slower than grouping where there is a lot of duplication in the groups.
+```sql
+-- Better
+SELECT id, name, status FROM events;
 
-## 4. Avoid `CROSS JOIN`
+-- Prevents column pruning
+SELECT * FROM events;
+```
 
-Cross join will very likely create a lot of records that are not required - if you then filter these records from the two source tables using a `WHERE` clause, it's likely you should use an `INNER JOIN` instead.
+### Filter early
 
-## 5. Small table drives big table
+The optimizer pushes `WHERE` conditions down automatically, but the more selective your filters are, the less data flows through expensive operations like `JOIN` and `GROUP BY`.
 
-Most `JOIN`s require iterating over two relations, the _left_ relation, which is the one in the `FROM` clause, and the _right_ relation which is the one in the `JOIN` clause (`SELECT * FROM left JOIN right`). It is generally faster to put the smaller relation to the _left_.
+```sql
+-- Filter before joining — the optimizer handles this, but explicit filters help cardinality estimates
+SELECT e.id, e.name
+  FROM events e
+  JOIN users u ON e.user_id = u.id
+ WHERE e.status = 'active'
+   AND e.created_at >= '2024-01-01'::TIMESTAMP;
+```
 
-## 6. Use `LIKE` when comparing strings
+### Use `WHERE` rather than `HAVING` for pre-aggregation filters
 
-`LIKE` can be used for pattern matching but it can also be used for comparisons without wildcards and generally performs faster than `=` comparisons.
+`HAVING` runs after the aggregation. `WHERE` runs before it. Use `HAVING` only to filter on aggregated values:
 
-## 7. Use the correct `JOIN`
+```sql
+-- Correct: WHERE filters rows before grouping
+SELECT user_id, COUNT(*) AS event_count
+  FROM events
+ WHERE status = 'active'
+ GROUP BY user_id
+HAVING COUNT(*) > 10;
 
-A `CROSS JOIN` can quickly generate millions of records to be filtered, if you can use any join other than the `CROSS JOIN`, do that.
+-- Wrong: this aggregates all rows first, then filters
+SELECT user_id, COUNT(*) AS event_count
+  FROM events
+ GROUP BY user_id
+HAVING status = 'active' AND COUNT(*) > 10;
+```
 
-## 8. Use `LIMIT`
+### Prefer `INNER JOIN` over `CROSS JOIN` with a `WHERE` filter
 
-`LIMIT` stops a query when it has returned the desired number of results; if you do not want the full dataset, using `LIMIT` can reduce the time taken to process a statement.
+A `CROSS JOIN` produces the full Cartesian product before filtering. If you are filtering the result by a join condition, use an explicit `INNER JOIN` instead:
 
-However, some operations are 'greedy', that is, they need all of the data for their operation (for example `ORDER BY`, and `GROUP BY`) - `LIMIT` does not have the same impact on these queries.
+```sql
+-- Better
+SELECT a.id, b.value
+  FROM table_a a
+  JOIN table_b b ON a.key = b.key;
 
-## 9. Use `WHERE` to filter before `GROUP BY`
+-- Avoids the cross product
+SELECT a.id, b.value
+  FROM table_a a, table_b b
+ WHERE a.key = b.key;
+```
 
-Only use `HAVING` to filter the aggregation results of `GROUP BY`. `GROUP BY` is a relatively expensive operation in terms of memory and compute, filter as much before the `GROUP BY` by using the `WHERE` clause and only use `HAVING` to filter by the aggregation function (e.g. `COUNT`, `SUM`).
+### Use `LIMIT` to stop early where possible
 
-## 10. `IS` filters are generally faster than `=`
+For queries without `ORDER BY` or `GROUP BY`, `LIMIT` stops execution once the requested rows are found:
 
-`IS` comparisons are optimized for a specific check and perform up to twice as fast as `=` comparisons. However, they are only available for a limited set of checks:
+```sql
+SELECT * FROM events LIMIT 100;
+```
 
-- `IS (NOT) NONE`
-- `IS (NOT) TRUE`
-- `IS (NOT) FALSE`
+Note: `ORDER BY`, `GROUP BY`, and `DISTINCT` are greedy — they must consume the full input before they can emit results. `LIMIT` after these operations only affects output size, not scan volume.
+
+### Use `TIMESTAMP AS OF` for time-bounded queries on partitioned data
+
+For datasets partitioned by date (Mabel partitioning), a `TIMESTAMP AS OF` clause restricts which partitions are opened:
+
+```sql
+SELECT *
+  FROM my_table
+   TIMESTAMP AS OF '2024-06-01'::TIMESTAMP;
+```
+
+This is faster than a `WHERE` filter on an event timestamp column, which still opens all partitions and then discards rows.
+
+### Group by numeric columns where possible
+
+`VARCHAR` key lookups in the hash table are slower than integer key lookups due to length-variable hashing and comparison. If you have a choice between grouping by a name and grouping by a numeric ID, prefer the ID:
+
+```sql
+-- Faster
+SELECT user_id, COUNT(*) FROM events GROUP BY user_id;
+
+-- Slower for high-cardinality data
+SELECT username, COUNT(*) FROM events GROUP BY username;
+```
+
+### High-cardinality `GROUP BY` is inherently expensive
+
+Grouping by a column with nearly unique values (user IDs in a large dataset, full timestamps) produces many small groups. This is memory-intensive and cannot be significantly optimized. Consider pre-aggregating at ingest time for such cases.
+
+---
+
+## NULL Checks
+
+`IS NULL` and `IS NOT NULL` are optimized filter forms that are faster than `= NULL` (which never matches anything — see [NULL Semantics](adv-null-semantics.md)):
+
+```sql
+-- Correct and efficient
+WHERE column IS NULL
+WHERE column IS NOT NULL
+
+-- Always returns no rows (NULL != NULL)
+WHERE column = NULL
+```

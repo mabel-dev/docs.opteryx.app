@@ -5,320 +5,215 @@ description: Master date, time, and timestamp operations in Opteryx. Learn inter
 
 # Working with Timestamps
 
-Working with DATE and TIMESTAMP often involves working with INTERVALs. 
+Working with DATE and TIMESTAMP often involves working with INTERVALs.
 
-INTERVALs may not always act as expected, especially when working with months and years, primarily due to complexities in quickly and accurately determining if an number of days is a given number of months.
+INTERVALs may not always act as expected, especially when working with months and years, primarily due to the complexity of accurately determining whether a number of days equals a given number of months.
 
 !!! Note  
-    Functions that return the current time or date (including now) will return the time as at the start of the execution of the query.
+    Functions that return the current time or date (including `CURRENT_DATE` and `CURRENT_TIMESTAMP`) return the value as at the start of the query execution.
 
-## Actions
+## Casting
 
-### Casting
+Cast values to temporal types using `CAST()` or the `::` shorthand:
 
-Cast values to temporal types using `CAST()` or the `::` shorthand. When casting to `TIMESTAMP`, a precision unit is required:
-
-~~~sql
+```sql
 CAST(value AS DATE)
+CAST(value AS TIMESTAMP)
 CAST(value AS TIMESTAMP[s])
 CAST(value AS TIMESTAMP[ms])
 CAST(value AS TIMESTAMP[us])
 CAST(value AS TIMESTAMP[ns])
-CAST(value AS TIMESTAMP[d])
-~~~
+```
 
-The `::` shorthand is equivalent:
+`::` shorthand is equivalent:
 
-~~~sql
+```sql
 '2024-02-14'::DATE
+'2024-02-14 10:30:00'::TIMESTAMP
 '2024-02-14'::TIMESTAMP[ms]
-~~~
+```
 
-`TIMESTAMP` without a precision unit is not supported.
+Plain `::TIMESTAMP` (without a precision suffix) defaults to microsecond (`[us]`) precision and is fully supported.
 
 String literals are not implicitly cast to temporal types. An explicit cast is required when comparing a string against a temporal column:
 
-~~~sql
+```sql
 -- Correct
-SELECT * FROM missions WHERE launched_at >= '1957-10-04'::DATE;
+SELECT * FROM events WHERE event_time >= '2024-01-01'::TIMESTAMP;
 
 -- Error: IncompatibleTypesError
-SELECT * FROM missions WHERE launched_at >= '1957-10-04';
-~~~
+SELECT * FROM events WHERE event_time >= '2024-01-01';
+```
 
-### Create
+## Creating Temporal Values
 
-#### Timestamp Literal
+### Date and Timestamp Literals
 
-Create a timestamp using type hint notation:
+```sql
+'2024-02-14'::DATE
+'2024-02-14 10:30:00'::TIMESTAMP
+```
 
-~~~sql
-TIMESTAMP 'value'
-~~~
+### Interval Literals
 
-Example:
-
-~~~sql
-SELECT TIMESTAMP '2024-02-14';
-SELECT TIMESTAMP '2024-02-14 10:30:00';
-~~~
-
-#### Interval Literal
-
-Create an interval using type hint notation:
-
-~~~sql
-INTERVAL 'values' units
-~~~
+```sql
+INTERVAL 'value' unit
+```
 
 Examples:
 
-~~~sql
+```sql
 INTERVAL '1' YEAR
 INTERVAL '1' DAY
 INTERVAL '1 1' DAY TO HOUR
 INTERVAL '30' MINUTE
 INTERVAL '45' SECOND
-~~~
+```
 
 Supported units: `YEAR`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`
 
-#### Generate Timestamps
+### Current Date and Time
 
-Generate current date and time values:
+```sql
+CURRENT_DATE
+CURRENT_TIMESTAMP
+```
 
-~~~sql
-current_date
-current_time
-current_timestamp
-~~~
+These can be used without parentheses.
 
-Note: These functions support being called without parenthesis.
+## Extracting Parts
 
-Additional generators:
+Extract specific parts from a date or timestamp:
 
-~~~sql
-YESTERDAY()
-TIME()
-generate_series(start, stop, step)
-~~~
-
-Example:
-
-~~~sql
-SELECT generate_series(
-    TIMESTAMP '2024-01-01',
-    TIMESTAMP '2024-01-31',
-    INTERVAL '1' DAY
-);
-~~~
-
-### Reading
-
-#### Extract Parts
-
-Extract specific parts from a timestamp:
-
-~~~sql
+```sql
 EXTRACT(part FROM timestamp)
-~~~
+```
 
 Example:
 
-~~~sql
-SELECT EXTRACT(YEAR FROM birth_date),
-       EXTRACT(MONTH FROM birth_date),
-       EXTRACT(DAY FROM birth_date)
-  FROM $astronauts;
-~~~
+```sql
+SELECT EXTRACT(YEAR FROM event_time),
+       EXTRACT(MONTH FROM event_time),
+       EXTRACT(DAY FROM event_time)
+  FROM events;
+```
 
 Supported parts: `NANOSECOND`, `MICROSECOND`, `MILLISECOND`, `SECOND`, `MINUTE`, `HOUR`, `DATE`, `DAY`, `DAYOFWEEK`/`DOW`, `WEEK`, `ISOWEEK`, `MONTH`, `QUARTER`, `DAYOFYEAR`/`DOY`, `YEAR`, `ISOYEAR`, `DECADE`
 
-Shorthand functions for common extractions:
+## Formatting
 
-~~~sql
-DATE(timestamp)    -- Extract date only
-DAY(timestamp)     -- Extract day number
-MONTH(timestamp)   -- Extract month number
-YEAR(timestamp)    -- Extract year number
-~~~
+Format a timestamp as a string:
 
-Example:
-
-~~~sql
-SELECT DATE(birth_date)
-  FROM $astronauts;
-~~~
-
-#### Format
-
-Format timestamps as strings:
-
-~~~sql
+```sql
 DATE_FORMAT(timestamp, format)
-~~~
+```
 
 Example:
 
-~~~sql
-SELECT DATE_FORMAT(birth_date, '%Y-%m-%d')
-  FROM $astronauts;
-~~~
+```sql
+SELECT DATE_FORMAT(event_time, '%Y-%m-%d')
+  FROM events;
+```
 
-### Comparing
+See the [DATE_FORMAT reference](../functions/date_format.md) for the full list of supported format tokens.
 
-#### Arithmetic Operations
+## Arithmetic
 
 Add or subtract intervals from timestamps:
 
-~~~sql
+```sql
 timestamp + interval → timestamp
 timestamp - interval → timestamp
 timestamp - timestamp → interval
 interval + interval → interval
 interval - interval → interval
-~~~
+```
 
 Examples:
 
-~~~sql
-SELECT birth_date + INTERVAL '100' YEAR
-  FROM $astronauts;
+```sql
+SELECT event_time + INTERVAL '1' YEAR FROM events;
+SELECT end_time - start_time AS duration FROM events;
+```
 
-SELECT death_date - birth_date AS lifespan
-  FROM $astronauts;
-~~~
+Timestamps cannot be added together (`timestamp + timestamp` is an error).
 
-Note: Timestamps cannot be added together (`timestamp + timestamp` is not possible).
+## Comparing Timestamps
 
-#### Date Difference
+Timestamps support all standard comparison operators:
+
+```sql
+SELECT *
+  FROM events
+ WHERE event_time > '2020-01-01'::TIMESTAMP
+   AND event_time < '2021-01-01'::TIMESTAMP;
+```
+
+## Date Difference
 
 Calculate the difference between two timestamps:
 
-~~~sql
+```sql
 DATEDIFF(unit, start, end)
-~~~
+```
 
-Example:
+Both `start` and `end` must be `TIMESTAMP` (cast DATE values explicitly):
 
-~~~sql
-SELECT DATEDIFF('day', birth_date, death_date) AS days_lived
-  FROM $astronauts;
-~~~
+```sql
+SELECT DATEDIFF('day', '2024-01-01'::TIMESTAMP, '2024-12-31'::TIMESTAMP);
+```
 
 !!! Note
-    INTERVALs created as the result of timestamp subtraction have no month or year component and are handled internally as seconds. This may result in unexpected outcomes when mixed with month calculations.
+    INTERVALs created as the result of timestamp subtraction have no month or year component and are handled internally as microseconds. This may produce unexpected results when mixed with month calculations.
 
-Supported form:
+    The comparison form `WHERE death - birth > INTERVAL '100' YEAR` is not supported. Use `WHERE birth + INTERVAL '100' YEAR > death` instead.
 
-~~~sql
-WHERE birth + INTERVAL '100' YEAR > death
-~~~
+DATEDIFF with `month` units can be unreliable — use day-level units where precision matters.
 
-Unsupported form:
+## Truncating
 
-~~~sql
-WHERE death - birth > INTERVAL '100' YEAR
-~~~
+Truncate to a given precision:
 
-#### Standard Comparisons
-
-Timestamps support standard comparison operators:
-
-~~~sql
-SELECT *
-  FROM $astronauts
- WHERE birth_date > TIMESTAMP '1950-01-01'
-   AND birth_date < TIMESTAMP '1960-01-01';
-~~~
-
-### Transforms
-
-#### Truncate
-
-Truncate timestamps to a specified precision:
-
-~~~sql
-DATE_TRUNC(part, timestamp)
-~~~
+```sql
+TRUNC(timestamp, unit)
+```
 
 Example:
 
-~~~sql
-SELECT DATE_TRUNC('month', birth_date)
-  FROM $astronauts;
-~~~
+```sql
+SELECT TRUNC(event_time, 'month') FROM events;
+```
 
-#### Time Bucket
+## Supported Date Parts
 
-Group timestamps into buckets:
+Recognized date parts and support across functions:
 
-~~~sql
-TIME_BUCKET(timestamp, multiple, unit)
-~~~
-
-Example:
-
-~~~sql
-SELECT TIME_BUCKET(event_time, 5, 'minute') AS time_bucket,
-       COUNT(*) AS event_count
-  FROM events
- GROUP BY time_bucket;
-~~~
-
-#### Parse
-
-Parse strings as timestamps:
-
-~~~sql
-CAST(string AS TIMESTAMP)
-TIMESTAMP(string)
-~~~
-
-Example:
-
-~~~sql
-SELECT TIMESTAMP('2024-02-14 10:30:00');
-~~~
-
-### Supported Date Parts
-
-Recognized date parts and periods and support across various functions:
-
-Part     | DATE_TRUNC | EXTRACT | DATEDIFF | TIME_BUCKET | Notes
--------- | :--------: | :-----: | :------: | :---------: | ----
-second   | ✓          | ✓       | ✓        | ✓           |
-minute   | ✓          | ✓       | ✓        | ✓           |
-hour     | ✓          | ✓       | ✓        | ✓           |
-day      | ✓          | ✓       | ✓        | ✓           |
-dow      | ✘          | ✓       | ✘        | ✘           | day of week
-week     | ✓          | ✓       | ✓        | ✓           | iso week i.e. to monday
-month    | ✓          | ✓       | ▲        | ✓           | DATEDIFF unreliable calculating months
-quarter  | ✓          | ✓       | ✓        | ✓           |
-doy      | ✘          | ✓       | ✘        | ✘           | day of year
-year     | ✓          | ✓       | ✓        | ✓           |
+Part     | TRUNC | EXTRACT | DATEDIFF | Notes
+-------- | :---: | :-----: | :------: | ----
+second   | ✓     | ✓       | ✓        |
+minute   | ✓     | ✓       | ✓        |
+hour     | ✓     | ✓       | ✓        |
+day      | ✓     | ✓       | ✓        |
+dow      | ✘     | ✓       | ✘        | day of week
+week     | ✓     | ✓       | ✓        | ISO week (starts Monday)
+month    | ✓     | ✓       | ▲        | DATEDIFF unreliable for months
+quarter  | ✓     | ✓       | ✓        |
+doy      | ✘     | ✓       | ✘        | day of year
+year     | ✓     | ✓       | ✓        |
 
 ## Limitations
 
-Timestamps and intervals have the following limitations:
-
-- INTERVALs created from timestamp subtraction have no month or year component and are handled internally as seconds
+- INTERVALs created from timestamp subtraction have no month or year component
 - DATEDIFF with month units can be unreliable
-- All timestamps are stored in UTC timezone
-- `death - birth > INTERVAL '100' YEAR` comparison form is not supported (use `birth + INTERVAL '100' YEAR > death` instead)
-
-## Implicit Casting
-
-In many situation where a timestamp is expected, if an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) formatted string is provided, the engine will default to interpretting as a timestamp. However, for reliability, you should not rely on the engine doing this for you.
+- All timestamps are stored and compared in UTC
+- `death - birth > INTERVAL '100' YEAR` comparison form is not supported
 
 ## Timezones
 
-The engine is opinionated to run in UTC - all instances where the system time is requested, UTC is used.
+The engine runs in UTC. All requests for current time return UTC.
 
 ## Precision
 
-INTERVALs are maintained internally with a millisecond precision.
-
-TIMESTAMPs are maintained internally with a nanosecond precision.
-
-DATEs are maintained internally with a day precision.
+- TIMESTAMP: microsecond precision by default (`[us]`); `[s]`, `[ms]`, `[ns]` also supported
+- DATE: day precision
+- INTERVAL: microsecond precision

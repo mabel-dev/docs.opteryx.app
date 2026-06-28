@@ -1,188 +1,84 @@
 ---
 title: Time Travel Queries in Opteryx - Query Historical Data
-description: Use Opteryx time travel feature to query data as it existed at specific points in time. Access historical snapshots and temporal data for analytics.
+description: Use Opteryx time travel to query data as it existed at a specific point in time using TIMESTAMP AS OF.
 ---
 
 # Time Travel
 
-Opteryx supports temporality, the ability to view things as they were at a different point in time.
+Opteryx can query data as it existed at a specific point in time. For partitioned datasets this retrieves the snapshot for that date; for append-only datasets it filters to records written on or before that point.
 
-For datasets which are snapshots, this allows you to recall the data of that snapshot as at a point in the past. For datasets which are logs, this allows you to prune queries to just the dates which contain relevant data.
-
-!!! Note  
-    - Data must be Mabel partitioned or using a custom partition schema which supports data partitioning.
-    - Data returned for previous days will be the latest data as at today. For example if a backfill updates data from seven days ago, when querying that data today the backfilled data will be returned.
-    - There is no implicit deduplication of records as they are returned.
-
-Partition schemes that supports temporal queries allow you to view data from a different date by using a `FOR` clause after the dateset name in the SQL statement. `FOR` clauses state the date, or date range, a query should retrieve results for.
-  
-If no temporal clause is provided and the schema supports it, `FOR TODAY` is assumed.
-
-!!! Warning     
-    Temporal clauses operate on calendar days in UTC. For example, from midnight `FOR TODAY` will return no data until data is written for that day.
-
-## Single Dates
-
-Data from a specific, single, date can be obtained using the `FOR date` syntax. 
-
-~~~
-FOR date
-~~~
-
-Date values in `FOR` clauses must either be in 'YYYY-MM-DD [HH:MM]' format or a recognised date placeholder, for example.
-
-- `FOR TODAY`
-- `FOR YESTERDAY`
-- `FOR '2022-02-14'`
-- `FOR '2023-09-17 23:00'`
-
-## Date Ranges
-
-Data within a range of dates can be specified using `FOR DATES BETWEEN`, `FOR DATES SINCE` or `FOR DATES IN` syntax. Where data is retrieved for multiple dates, the datasets for each day have an implicit `UNION ALL` applied to them.
-
-~~~
-FOR DATES BETWEEN start AND end
-~~~
-~~~
-FOR DATES SINCE start
-~~~
-~~~
-FOR DATES IN range
-~~~
-~~~
-FOR LAST count DAYS
-~~~
-
-`SINCE` clauses select a temporal range which spans from the provided start time until now.
-
-Date values in `BETWEEN` and `SINCE` clauses must either be in 'YYYY-MM-DD [HH:MM]' format or a recognized date placeholder, for example:
-
-- `FOR DATES BETWEEN '2000-01-01' AND TODAY`
-- `FOR DATES BETWEEN '2020-04-01' AND '2020-04-30'`
-
-Date range values in `IN` clauses must be recognized date range placeholders, for example:
-
-- `FOR DATES IN LAST_MONTH`
-
-## Placeholders
-
-Our system supports a variety of placeholders for date and time conditions in queries. These placeholders allow you to dynamically reference specific time periods without specifying exact dates. Below is a table of available placeholders, their applicability, and descriptions:
-
-Placeholder  | Applicability   | Description
------------- | --------------- | ------------
-`TODAY`      | FOR, BETWEEN    | Refers to the current calendar day.
-`YESTERDAY`  | FOR, BETWEEN    | Refers to the day immediately before the current calendar day.
-DAY OF WEEK  | FOR, BETWEEN    | Represents the most recent past date of the specified day of the week (e.g., `MONDAY` refers to the most recent Monday).
-`THIS_MONTH` | IN              | Covers the period starting from the first day of the current month up to the current date.
-`LAST_MONTH` | IN              | Denotes the entire previous calendar month. PREVIOUS_MONTH can also be used as an alternative.
-
-!!! caution  
-    - `FOR` clauses cannot contain comments or reference column values or aliases  
-    - The default partition scheme does not support Temporal queries  
-    - Temporal clauses must follow the relation name they relate to, and they only apply to that relation.
-
-## Time Travel
-
-You can query dates or date ranges using a `FOR` clause in your query. Alternatively, you can use the `TIMESTAMP AS OF` clause for more flexible timestamp expressions.
-
-### Using FOR Clause
-
-For example to view the contents of partition using a `FOR` clause:
-
-~~~sql
+```sql
 SELECT *
-  FROM $planets
-   FOR YESTERDAY;
-~~~
+  FROM my_table
+   TIMESTAMP AS OF <expression>;
+```
 
-This technique is well suited to viewing snapshotted datasets from a previoud point in time. 
+The expression after `AS OF` is evaluated at query time and must resolve to a timestamp. Any expression that produces a temporal value is accepted.
 
-The '$planets' sample dataset has special handling to respond to temporal queries; Uranus was discovered in 1846 and Pluto was discovered in 1930, we and use the `FOR` clause to query the '$planets' relation from before those planets were discovered like this:
+!!! Note
+    - Data must be partitioned in a way that supports temporal queries (e.g. Mabel partitioning).
+    - If no `TIMESTAMP AS OF` clause is provided, the query reads current data.
+    - There is no implicit deduplication when data from multiple partitions is combined.
 
-~~~sql
-SELECT name
-  FROM $planets
-   FOR '1846-01-01';
-~~~
+## Examples
 
-Returns:
+**Query data as at a specific timestamp:**
 
-~~~
-name
--------
-Mercury
-Venus
-Earth
-Mars
-Jupiter
-Saturn
-Neptune
-~~~
-
-### Using TIMESTAMP AS OF Clause
-
-Alternatively, use `TIMESTAMP AS OF` for flexible timestamp expressions that support intervals, functions, and calculations:
-
-~~~sql
+```sql
 SELECT *
-  FROM $planets
-   TIMESTAMP AS OF INTERVAL '1' DAY;
-~~~
+  FROM my_table
+   TIMESTAMP AS OF '2024-12-15 00:00:00'::TIMESTAMP;
+```
 
-~~~sql
+**Query data from seven days ago:**
+
+```sql
 SELECT *
-  FROM $planets
-   TIMESTAMP AS OF '2024-12-15 00:00:00';
-~~~
-
-~~~sql
-SELECT name
-  FROM $planets
+  FROM my_table
    TIMESTAMP AS OF CURRENT_DATE - INTERVAL '7' DAY;
-~~~
+```
 
-~~~sql
+**Query data from the start of the current month:**
+
+```sql
 SELECT *
-  FROM $planets
-   TIMESTAMP AS OF DATE_TRUNC('month', CURRENT_DATE);
-~~~
+  FROM my_table
+   TIMESTAMP AS OF TRUNC(CURRENT_DATE, 'month');
+```
 
-The `TIMESTAMP AS OF` syntax also works with the `AT` clause notation:
+**Query data from one day ago using an interval (interpreted as current time minus the interval):**
 
-~~~sql
+```sql
 SELECT *
-  FROM $planets
-   AT(TIMESTAMP => '2024-12-15 00:00:00');
-~~~
+  FROM my_table
+   TIMESTAMP AS OF INTERVAL '1' DAY;
+```
 
-## Accumulation
+## Using $planets
 
-For datasets which are continually added to, such as logs, the `FOR` clause can be used to quickly filter ranges of records to search over. The `FOR` clause will most likely record the date the record was written (the 'SYSTEM_TIME' for the record) which may not be the same as the logical or effective date for a record, especially in situations where there is a lag in the records being recorded.
+The built-in `$planets` relation has temporal support — it reflects which planets were known at the queried date. Uranus was discovered in 1781, Neptune in 1846, and Pluto in 1930.
 
-The `BETWEEN` keyword can be used to describe ranges of records, this is useful for querying logged data between two dates.
-
-~~~sql
+```sql
 SELECT name
   FROM $planets
-   FOR DATES BETWEEN '2021-01-01' and '2022-12-31';
-~~~
+   TIMESTAMP AS OF '1800-01-01'::TIMESTAMP;
+```
+
+Returns only the planets known before 1800 (Mercury, Venus, Earth, Mars, Jupiter, Saturn).
 
 ## Temporal Self-Joins
 
-Having multiple snapshots of the same table available in the same query creates oppurtunities for finding deltas. For example, to find which planets were not known about in 1600 which are known about today we can `LEFT ANTI JOIN` on the '$planets' dataset on those two dates like this:
+Two `TIMESTAMP AS OF` clauses on the same table let you compare snapshots. To find planets discovered between 1800 and today:
 
-~~~sql
- SELECT today.name
-  FROM $planets FOR TODAY AS today
-  LEFT ANTI JOIN $planets FOR '1600-01-01' AS sixteen
-    ON sixteen.id = today.id
-~~~
+```sql
+SELECT now.name
+  FROM $planets TIMESTAMP AS OF CURRENT_DATE AS now
+  LEFT ANTI JOIN $planets TIMESTAMP AS OF '1800-01-01'::TIMESTAMP AS then
+    ON then.id = now.id;
+```
 
-Returns:
-~~~
-today.name
------------
-Uranus
-Neptune
-Pluto
-~~~
+## Limitations
+
+- Temporal queries require a partition scheme that supports date-based partitioning. The default scheme does not.
+- Timestamps are evaluated in UTC. A query run at midnight may return no data for the current day until records for that day are written.
+- Backfilled data is visible: querying a past date returns the most recent data for that date, including any corrections applied after the fact.

@@ -5,142 +5,110 @@ description: Query and manipulate struct data types and JSON in Opteryx. Access 
 
 # Working with Structs
 
-A struct is a collection of zero or more key, value pairs. Keys must be `VARCHAR`, values can be different types.
+A struct is a collection of zero or more key-value pairs. Keys must be `VARCHAR`; values can be different types.
 
-`STRUCT` as a datatype is being deprecated in favour of treating `BLOB` and `VARCHAR` columns containing JSON strings as implicit `STRUCT` columns. All features available for explicitly typed `STRUCT` columns are available on JSON-formatted columns.
+Structs are represented as JSON-formatted strings stored in `VARCHAR` or `NVARCHAR` columns. All struct operations work on any column containing valid JSON.
 
-## Actions
+## Creating Structs
 
-### Create
+Structs are created as JSON-formatted string literals:
 
-Structs are created as JSON-formatted strings stored in `VARCHAR` or `BLOB` columns:
-
-~~~sql
--- JSON string in VARCHAR column
+```sql
 SELECT '{"name": "Alice", "age": 30}';
-~~~
+```
 
-~~~sql
--- JSON string in BLOB column (preferred)
-SELECT b'{"name": "Alice", "age": 30}';
-~~~
+## Reading Values
 
-### Reading
+### Arrow Operator (`->`)
 
-#### Subscript Notation
+Returns the JSON-encoded value for a key. String values include their surrounding quotes — `'"Alice"'`, not `'Alice'`. Nested objects are returned as JSON strings.
 
-~~~sql
-struct[key]
-~~~
-
-Values within structs can be accessed by key using subscript notation, putting the key in single quotes in square brackets following the struct.
+```sql
+struct -> 'key'
+```
 
 Example:
 
-~~~sql
-SELECT birth_place['town']
-  FROM $astronauts;
-~~~
+```sql
+SELECT address -> 'city' AS city
+  FROM records;
+-- Returns '"London"' (with quotes), not 'London'
+```
 
-Struct values can be treated the same as other identifiers and, for example, used within `SELECT`, `WHERE` and `GROUP BY` clauses:
+Use `->` when you want to pass the result to another JSON operator, or when the type of the value is unknown.
 
-~~~sql
-SELECT birth_place['town'], COUNT(*)
-  FROM $astronauts
- WHERE birth_place['state'] IS NOT NULL
- GROUP BY birth_place['town'];
-~~~
+### Arrow Text Operator (`->>`)
 
-#### Arrow Operator
+Returns the value for a key as a plain `VARCHAR`, stripping JSON encoding. String values do not include surrounding quotes.
 
-~~~sql
-struct -> key
-~~~
-
-Returns the value for the specified key from the struct.
+```sql
+struct ->> 'key'
+```
 
 Example:
 
-~~~sql
-SELECT birth_place -> 'town'
-  FROM $astronauts;
-~~~
+```sql
+SELECT address ->> 'city' AS city
+  FROM records;
+-- Returns 'London' (no quotes)
+```
 
-#### Arrow Text Operator
+Use `->>` when you need the result as a plain string for comparison, filtering, or concatenation:
 
-~~~sql
-struct ->> key
-~~~
-
-Returns the value for the specified key from the struct, casting non-null values to `VARCHAR`.
-
-Example:
-
-~~~sql
-SELECT birth_place ->> 'town'
-  FROM $astronauts;
-~~~
-
-#### Key Existence
-
-~~~sql
-struct @? key
-~~~
-
-Returns `true` if the struct contains the specified key.
-
-Example:
-
-~~~sql
+```sql
 SELECT *
-  FROM $astronauts
- WHERE birth_place @? 'country';
-~~~
+  FROM records
+ WHERE address ->> 'city' = 'London';
+```
 
-The `@?` operator also supports JSON Path expressions for more complex queries:
+### Key Existence (`@?`)
 
-~~~sql
-struct @? jsonpath
-~~~
+Returns `TRUE` if the struct contains the specified key.
 
-Example:
-
-~~~sql
-SELECT *
-  FROM $astronauts
- WHERE birth_place @? '$.country';
-~~~
-
-#### Get Keys
-
-~~~sql
-JSONB_OBJECT_KEYS(struct)
-~~~
-
-Returns an array of all keys in the struct.
+```sql
+struct @? 'key'
+```
 
 Example:
 
-~~~sql
-SELECT JSONB_OBJECT_KEYS(birth_place)
-  FROM $astronauts;
-~~~
-
-### Comparing
-
-Structs can be compared for equality:
-
-~~~sql
+```sql
 SELECT *
-  FROM table1
- WHERE struct_column = '{"key": "value"}';
-~~~
+  FROM records
+ WHERE address @? 'postcode';
+```
+
+The `@?` operator also supports JSON Path expressions:
+
+```sql
+SELECT *
+  FROM records
+ WHERE address @? '$.contact.email';
+```
+
+### Nested Access
+
+Chain `->` calls to navigate nested structures:
+
+```sql
+SELECT profile -> 'address' -> 'city'
+  FROM records;
+```
+
+## Comparing
+
+Structs can be compared for equality against a JSON literal:
+
+```sql
+SELECT *
+  FROM records
+ WHERE config = '{"mode": "strict"}';
+```
 
 ## Limitations
 
-Structs have the following limitations
-
-- Subscript references (the bit in square brackets) must be in single quotes only
+- Key access requires the `->` or `->>` operators; square-bracket subscript (`struct['key']`) is for integer-indexed arrays, not struct fields
+- Struct values are opaque to the query planner — predicates on struct fields cannot use row-group pruning or bloom filters
+- Projection pushdown may remove struct columns as part of optimization; do not rely on specific optimizer behavior
 
 !!! Note  
-    Some restrictions may be resolved by the query optimizer, for example, Projection Pushdown may remove struct columns as part of optimization. However, you should not rely on the optimizer to take any particular action.
+    Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove struct columns you never read. However, you should not rely on the optimizer to take any particular action.

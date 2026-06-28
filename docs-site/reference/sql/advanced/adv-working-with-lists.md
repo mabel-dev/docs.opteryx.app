@@ -5,300 +5,162 @@ description: Learn how to query and manipulate arrays in Opteryx SQL. Array func
 
 # Working with Arrays
 
-An Array is an ordered collection of zero or more `VARCHAR` values.
+An array is an ordered, 0-indexed collection of values of the same type.
 
-## Actions
+## Creating Arrays
 
-### Casting
+Array literals use square bracket notation:
 
-Cast values to array type:
+```sql
+SELECT ['Mercury', 'Gemini', 'Apollo'];
+```
 
-~~~sql
-CAST(column AS ARRAY<element_type>)
-~~~
+Split a delimited string into an array:
 
-Example:
+```sql
+SELECT SPLIT(string_column, ',') FROM my_table;
+```
 
-~~~sql
-SELECT CAST('[1, 2, 3]' AS ARRAY<INTEGER>);
-~~~
+## Accessing Elements
 
-### Create
+Access an element by its 0-based index:
 
-#### Array Literal
+```sql
+array[0]   -- first element
+array[1]   -- second element
+```
 
-Create an array using literal notation:
-
-~~~sql
-[<value>, <value>, ...]
-~~~
-
-Example:
-
-~~~sql
-SELECT ['Mercury', 'Gemini', 'Apollo'] AS missions;
-~~~
-
-#### Split String
-
-Create an array by splitting a string:
-
-~~~sql
-SPLIT(string)
-~~~
+This form only works on array-typed columns — not on inline literal arrays.
 
 Example:
 
-~~~sql
-SELECT SPLIT('apple,banana,cherry');
-~~~
+```sql
+SELECT tags[0] AS first_tag
+  FROM articles;
+```
 
-### Reading
+## Array Length
 
-#### Subscript Access
-
-Access individual elements by index:
-
-~~~sql
-array[index]
-~~~
-
-Example:
-
-~~~sql
-SELECT missions[0]
-  FROM $astronauts;
-~~~
-
-#### Get Length
-
-Get the number of elements in an array:
-
-~~~sql
+```sql
 LENGTH(array)
-~~~
+```
 
 Example:
 
-~~~sql
-SELECT LENGTH(missions)
-  FROM $astronauts;
-~~~
+```sql
+SELECT name, LENGTH(tags) AS tag_count
+  FROM articles;
+```
 
-#### Get Minimum/Maximum
+## Containment
 
-Get the smallest or largest value in an array:
-
-~~~sql
-LEAST(array)
-GREATEST(array)
-~~~
-
-Example:
-
-~~~sql
-SELECT LEAST([5, 2, 8, 1]) AS min_value,
-       GREATEST([5, 2, 8, 1]) AS max_value;
-~~~
-
-### Comparing
-
-#### Equality
-
-Compare arrays for equality:
-
-~~~sql
-SELECT *
-  FROM table1
- WHERE array_column = ['value1', 'value2'];
-~~~
-
-#### ANY (Comparison)
-
-~~~sql
-value <operator> ANY (array)
-~~~
-
-The `ANY` function is used to apply a filter to each item in an array, and returns `True` if any item in the array matches the condition.
-
-Example:
-
-~~~sql
-SELECT * 
-  FROM $astronauts
- WHERE 'Apollo 11' = ANY (missions);
-~~~
-
-Supported operators: `=`, `!=`, `>`, `<`, `>=`, `<=`
-
-#### ANY (Similarity)
-
-~~~sql
-column <operator> ANY (patterns)
-~~~
-
-The `ANY` modifier is used to perform a similarity search against all of the items in an array, and returns `True` if any item in the array matches the pattern.
-
-Example:
-
-~~~sql
-SELECT *
-  FROM $astronauts
- WHERE missions LIKE ANY ('Mercury%', 'Gemini%', 'Apollo%');
-~~~
-
-Supported operators: `LIKE`, `NOT LIKE`, `ILIKE`, `NOT ILIKE`
-
-#### ALL
-
-~~~sql
-value <operator> ALL(array)
-~~~
-
-The `ALL` function is used to apply a filter to each item in an array, and returns `True` if all items in the array match the condition.
-
-Example:
-
-~~~sql
-SELECT *
-  FROM $astronauts
- WHERE 100 > ALL (mission_durations);
-~~~
-
-!!! Note
-    `ALL` currently supports a subset of operators: `=`, `!=`
-
-#### Containment Testing
-
-##### ARRAY_CONTAINS
+### ARRAY_CONTAINS
 
 Test if an array contains a specific value:
 
-~~~sql
+```sql
 ARRAY_CONTAINS(array, value)
-~~~
+```
 
 Example:
 
-~~~sql
+```sql
 SELECT *
-  FROM $astronauts
- WHERE ARRAY_CONTAINS(missions, 'Apollo 11');
-~~~
+  FROM articles
+ WHERE ARRAY_CONTAINS(tags, 'featured');
+```
 
-##### ARRAY_CONTAINS_ANY
+### ARRAY_CONTAINS_ANY
 
 Test if an array contains any of the specified values:
 
-~~~sql
-ARRAY_CONTAINS_ANY(array, values)
-~~~
+```sql
+ARRAY_CONTAINS_ANY(array, [value1, value2, ...])
+```
 
 Or using the `@>` operator:
 
-~~~sql
-array @> values
-~~~
+```sql
+array @> [value1, value2]
+```
 
-The `@>` operator also supports JSON Path expressions for more complex queries on nested structures.
-
-Example:
-
-~~~sql
-SELECT *
-  FROM $astronauts
- WHERE ARRAY_CONTAINS_ANY(missions, ['Apollo 11', 'Apollo 13']);
-~~~
-
-##### ARRAY_CONTAINS_ALL
+### ARRAY_CONTAINS_ALL
 
 Test if an array contains all of the specified values:
 
-~~~sql
-ARRAY_CONTAINS_ALL(array, values)
-~~~
+```sql
+ARRAY_CONTAINS_ALL(array, [value1, value2, ...])
+```
 
-Or using the `@>>` operator:
+## ANY
 
-~~~sql
-values @>> array
-~~~
+Test if any element in an array column satisfies a condition:
 
-The `@>>` operator also supports JSON Path expressions for more complex queries on nested structures.
+```sql
+value = ANY (array_column)
+value != ANY (array_column)
+value > ANY (array_column)
+value < ANY (array_column)
+```
+
+The array argument must be a column reference, not an inline literal.
 
 Example:
 
-~~~sql
+```sql
 SELECT *
-  FROM $astronauts
- WHERE ARRAY_CONTAINS_ALL(missions, ['Apollo 11', 'Apollo 13']);
-~~~
+  FROM articles
+ WHERE 'featured' = ANY (tags);
+```
 
-##### IN Operator
+## ALL
 
-Test if a value is in a list of values:
+Test if all elements in an array column satisfy a condition. Currently only `=` and `!=` are supported:
 
-~~~sql
+```sql
+value = ALL (array_column)
+value != ALL (array_column)
+```
+
+## IN Operator
+
+Test membership in a static list:
+
+```sql
 value IN (value1, value2, ...)
-~~~
+```
 
 Example:
 
-~~~sql
+```sql
 SELECT *
-  FROM $planets
+  FROM planets
  WHERE name IN ('Earth', 'Mars');
-~~~
+```
 
-##### IN UNNEST
+## Converting Arrays to Rows
 
-Test if a value exists in an array column:
+`UNNEST` expands an array into a set of rows, or creates a relation from a tuple of literals:
 
-~~~sql
-value IN UNNEST(array)
-~~~
-
-Example:
-
-~~~sql
+```sql
 SELECT *
-  FROM $astronauts
- WHERE 'Apollo 11' IN UNNEST(missions);
-~~~
+  FROM UNNEST(('Mercury', 'Gemini', 'Apollo')) AS program;
+```
 
-### Transforms
+## Casting to Array
 
-#### Sort Array
+Cast a value to a typed array:
 
-Sort an array in ascending order:
-
-~~~sql
-SORT(array)
-~~~
-
-Example:
-
-~~~sql
-SELECT SORT([3, 1, 4, 1, 5]) AS sorted_array;
-~~~
-
-## Converting Lists to Relations
-
-### Using `UNNEST`
-
-`UNNEST` allows you to create a single column relation either as a list of literals, or from a column of LIST type in a dataset.
-
-~~~sql
-SELECT * 
-  FROM UNNEST((True, False)) AS Booleans;
-~~~
+```sql
+CAST(column AS ARRAY<element_type>)
+```
 
 ## Limitations
 
-Lists have the following limitations
+- Array literals in a `SELECT` clause require a column alias and cannot be subscripted inline — access elements via a column reference
+- `LIKE ANY`, `SORT`, `GREATEST`, and `LEAST` on array values are not currently stable
+- `ALL` operator only supports `=` and `!=`; comparison operators (`>`, `<`, etc.) are not supported
+- Arrays cannot be used in `ORDER BY`
 
-- Statements cannot `ORDER BY` a list column
-- Lists cannot be used in comparisons
-
-!!! Note
-    Some restrictions may be resolved by the query optimizer, for example, Projection Pushdown may remove list columns as part of optimization. However, you should not rely on the optimizer to take any particular action.
+!!! Note  
+    Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove array columns that are never read. Do not rely on specific optimizer behavior.
