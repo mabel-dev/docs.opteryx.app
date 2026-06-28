@@ -39,7 +39,7 @@ I feel the right question wasn't "how do we replace PyArrow?" It was: what can w
 
 ## What we built
 
-We added a Parquet writer to [Rugo](https://docs.opteryx.app/blog/2026-03-12-rewriting-io-stack) — Opteryx's purpose-built reader/writer for columnar files. It reads our internal column format directly and emits Parquet bytes in a single pass, with no intermediate Arrow table and no extra copy.
+We added a Parquet writer to [Rugo](https://rugo.dev) — Opteryx's purpose-built reader/writer for columnar files. It reads our internal column format directly and emits Parquet bytes in a single pass, with no intermediate Arrow table and no extra copy.
 
 One rule governed the whole effort: every file we write must be readable by PyArrow, [Spark](https://spark.apache.org/), [DuckDB](https://duckdb.org/) — anything that reads Parquet. A file only Opteryx could read would be a defect, not a feature. Interoperability is the entire reason the format exists.
 

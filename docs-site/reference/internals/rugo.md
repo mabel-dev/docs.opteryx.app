@@ -1,6 +1,6 @@
 # Rugo — the file engine
 
-Rugo is the part of Opteryx that turns files on disk (or in object storage) into columns the engine can compute over. It reads and writes **Parquet, CSV, and JSONL**, and it does so without PyArrow, without NumPy, and without any heavy runtime dependency — the compression codecs it needs are vendored into the source tree, so a built Rugo has nothing else to install.
+[Rugo](https://rugo.dev) is the part of Opteryx that turns files on disk (or in object storage) into columns the engine can compute over. It reads and writes **Parquet, CSV, and JSONL**, and it does so without PyArrow, without NumPy, and without any heavy runtime dependency — the compression codecs it needs are vendored into the source tree, so a built Rugo has nothing else to install.
 
 Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL I/O without the SQL engine on top. Both packagings bundle [Draken](draken.md), the columnar vector library Rugo emits into.
 

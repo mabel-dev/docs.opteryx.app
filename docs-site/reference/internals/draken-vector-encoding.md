@@ -56,7 +56,7 @@ Constants arise more often than expected. The right-hand side of `WHERE region =
 
 Shape is decided at the scan boundary — the point where raw file bytes become Draken vectors — and stays fixed for the lifetime of that data in the engine.
 
-Rugo (Opteryx's Parquet, CSV, and JSONL reader) inspects each column chunk as it decodes:
+[Rugo](https://rugo.dev) (Opteryx's Parquet, CSV, and JSONL reader) inspects each column chunk as it decodes:
 
 - A chunk that is already dictionary-encoded on disk becomes a dictionary vector directly.
 - A chunk where every row has the same value becomes a constant vector.
