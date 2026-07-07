@@ -23,13 +23,14 @@ curl -X POST https://authenticate.opteryx.app/token \
 
 ```json
 {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...",
   "token_type": "bearer",
-  "expires_in": 3600
+  "expires_in": 300,
+  "refresh_token": null
 }
 ```
 
-Use `access_token` as a bearer token on every subsequent call. See [Authentication API](/docs/reference/api/authentication-api) for how to create and revoke client credentials.
+`access_token` is a short-lived JWT — `expires_in` is in seconds and varies by account, so re-authenticate rather than assuming a fixed lifetime. Use it as a bearer token on every subsequent call. See [Authentication API](/docs/reference/api/authentication-api) for how to create and revoke client credentials.
 
 ## 2. Submit the Job
 
@@ -37,28 +38,30 @@ Send the SQL as `sql_text` in the body of a `POST` to the Jobs API:
 
 ```bash
 curl -X POST https://jobs.opteryx.app/api/v1/jobs \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...' \
   -H 'Content-Type: application/json' \
   -d '{
-        "sql_text": "SELECT name, mass FROM public.examples.planets ORDER BY mass DESC"
+        "sql_text": "SELECT id, name, mass FROM opteryx.test.planets LIMIT 5"
       }'
 ```
 
 ```json
 {
-  "execution_id": "8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21",
-  "status": "queued",
-  "created_at": "2026-07-07T10:15:00Z",
-  "status_url": "https://jobs.opteryx.app/api/v1/jobs/8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21/status"
+  "execution_id": "20260707191803-cwt7cvre22nqymzd",
+  "status": "SUBMITTED",
+  "created_at": null,
+  "status_url": "https://jobs.opteryx.app/api/v1/jobs/20260707191803-cwt7cvre22nqymzd/status"
 }
 ```
+
+`created_at` is not populated at submission time — read it back from the status or results response once the job has run. `status` values are upper case (`SUBMITTED`, `COMPLETED`, `FAILED`).
 
 To bind parameters instead of interpolating values into `sql_text`, pass them under `parameters`:
 
 ```json
 {
-  "sql_text": "SELECT name FROM public.examples.planets WHERE mass > :min_mass",
-  "parameters": { "min_mass": 1.0 }
+  "sql_text": "SELECT name FROM opteryx.test.planets WHERE mass > :min_mass",
+  "parameters": { "min_mass": 100 }
 }
 ```
 
@@ -66,49 +69,74 @@ To bind parameters instead of interpolating values into `sql_text`, pass them un
 
 ## 3. Poll for Completion
 
-Jobs run asynchronously. Poll `status_url` (or construct it from `execution_id`) until `status` is no longer `queued` or `running`:
+Jobs run asynchronously. Poll `status_url` (or construct it from `execution_id`) until `status` is no longer `SUBMITTED`:
 
 ```bash
-curl https://jobs.opteryx.app/api/v1/jobs/8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21/status \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
+curl https://jobs.opteryx.app/api/v1/jobs/20260707191803-cwt7cvre22nqymzd/status \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...'
 ```
 
 ```json
 {
-  "execution_id": "8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21",
-  "status": "completed",
-  "finished_at": "2026-07-07T10:15:02Z",
-  "results_url": "https://jobs.opteryx.app/api/v1/jobs/8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21/results"
+  "execution_id": "20260707191803-cwt7cvre22nqymzd",
+  "status": "COMPLETED",
+  "finished_at": "2026-07-07T19:18:06.141000Z",
+  "results_url": "https://jobs.opteryx.app/api/v1/jobs/20260707191803-cwt7cvre22nqymzd/results",
+  "error_message": null
 }
 ```
 
-If `status` is `failed`, `error_message` on this response describes what went wrong.
+If `status` is `FAILED`, `error_message` describes what went wrong.
 
 ## 4. Get the Results
 
+`num_rows` is required to be between 100 and 10000 inclusive — there's no way to ask for a smaller page:
+
 ```bash
-curl 'https://jobs.opteryx.app/api/v1/jobs/8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21/results?num_rows=100' \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
+curl 'https://jobs.opteryx.app/api/v1/jobs/20260707191803-cwt7cvre22nqymzd/results?num_rows=100' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...'
 ```
 
-The response carries the rows plus execution metadata — how much data was scanned, how long planning and execution took, and a `next_page` token if the result is larger than one page:
+The response carries execution metadata — how many rows and bytes were processed, planning and execution time — plus the data itself. `data` is **columnar**, not a list of row objects: it's one entry per column, each with a `name`, a `type`, and a `values` array holding every row's value for that column:
 
 ```json
 {
-  "execution_id": "8f14e45f-ceea-4b0f-8e1a-4c6d0f6d3d21",
-  "sql_text": "SELECT name, mass FROM public.examples.planets ORDER BY mass DESC",
-  "total_rows": 9,
-  "bytes_processed": 4096,
-  "time_taken_s": 0.031,
+  "execution_id": "20260707191803-cwt7cvre22nqymzd",
+  "sql_text": "SELECT id, name, mass FROM opteryx.test.planets LIMIT 5",
+  "submitted_by": "bastian",
+  "total_rows": 5,
+  "bytes_processed": 0,
+  "time_taken_s": 0.0,
   "data": [
-    { "name": "Jupiter", "mass": 1898.19 },
-    { "name": "Saturn",  "mass": 568.34 }
+    {
+      "name": "id",
+      "type": "INT64",
+      "values": [1, 2, 3, 4, 5]
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR",
+      "values": ["Mercury", "Venus", "Earth", "Mars", "Jupiter"]
+    },
+    {
+      "name": "mass",
+      "type": "FLOAT64",
+      "values": [0.33, 4.87, 5.97, 0.642, 1898.0]
+    }
   ],
   "next_page": null
 }
 ```
 
-Page through a larger result with `num_rows` and `offset`, or use the download endpoint to get the full result as a single CSV or JSON-lines file — see [Jobs API](/docs/reference/api/jobs-api) for both.
+To turn this into rows, zip the `values` arrays together by position — `data[i].values[n]` for every column `i` is the n-th row. Most client code reaches for a small helper to do this once rather than repeating it inline:
+
+```python
+def to_rows(data):
+    columns = [c["name"] for c in data]
+    return [dict(zip(columns, values)) for values in zip(*(c["values"] for c in data))]
+```
+
+Page through a larger result with `num_rows` and `offset` (watch the 100–10000 bound on `num_rows`), or use the download endpoint to get the full result as a single CSV or JSON-lines file — see [Jobs API](/docs/reference/api/jobs-api) for both.
 
 ## Estimating Cost Before Running
 
@@ -116,9 +144,13 @@ For a query you suspect is expensive, `POST /api/v1/jobs/estimate` returns a coa
 
 ```bash
 curl -X POST https://jobs.opteryx.app/api/v1/jobs/estimate \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...' \
   -H 'Content-Type: application/json' \
-  -d '{ "sql_text": "SELECT * FROM public.nyc_taxi.2023_yellow_taxi_trips" }'
+  -d '{ "sql_text": "SELECT * FROM opteryx.test.planets" }'
+```
+
+```json
+{ "bytes": 0 }
 ```
 
 ## Related
