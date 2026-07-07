@@ -23,6 +23,36 @@
     ]
   },
   {
+    "Guides": [
+      {
+        "Local engine (opteryx-core)": [
+          {
+            "Querying local data": "guides/querying-local-data.md"
+          },
+          {
+            "Exploratory analysis in notebooks": "guides/exploratory-analysis.md"
+          },
+          {
+            "Embedding in a service": "guides/embedding-in-a-service.md"
+          },
+          {
+            "Troubleshooting queries": "guides/troubleshooting.md"
+          },
+          {
+            "Using Rugo standalone": "guides/rugo-standalone.md"
+          }
+        ]
+      },
+      {
+        "Hosted service (opteryx.app)": [
+          {
+            "Running a query via the API": "guides/running-a-query-via-the-api.md"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "API Reference": [
       {
         "Authentication API": "reference/api/authentication-api.md"

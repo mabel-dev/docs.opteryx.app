@@ -1,0 +1,98 @@
+---
+title: Using Rugo Standalone - Dependency-Free Parquet, CSV, JSONL I/O
+description: Rugo is Opteryx's native file engine, available on its own. A fast, dependency-free reader and writer for Parquet, CSV, and JSONL without PyArrow or SQL.
+---
+
+# Using Rugo Standalone
+
+[Rugo](https://rugo.dev) is the file engine inside Opteryx — the part that turns Parquet, CSV, and JSONL files into columns the engine computes over. It is also published on its own, as a plain reader/writer library with no SQL layer on top.
+
+```bash
+pip install rugo
+```
+
+This gets you Rugo and [Draken](/docs/reference/internals/rugo) (the columnar library it emits into) — and nothing else.
+
+## Rugo vs. Opteryx
+
+These are two different things worth keeping straight:
+
+- **Rugo** reads and writes Parquet, CSV, and JSONL directly — you call its functions, get Draken morsels back, and work with them in Python. There is no SQL here.
+- **Opteryx** is the SQL engine built on top of Rugo. Querying a dataset with SQL — `SELECT ... FROM data.table` — currently only works against **Parquet** data.
+
+If you have CSV or JSONL you want to query with SQL, use Rugo to convert it to Parquet first (below), then query the Parquet with Opteryx.
+
+## Reading Parquet Directly
+
+```python
+from rugo import parquet
+
+with parquet.read_parquet(
+    "space_missions.parquet",
+    columns=["Company", "Location", "Price"],
+    predicates=[("Company", "=", "SpaceX")],
+) as reader:
+    for morsel in reader:
+        for row in morsel:
+            print(row.Company, row.Location, row.Price)
+```
+
+`columns` and `predicates` are applied by the reader itself — only the columns and row groups that can match are decoded.
+
+A single column comes back as a Draken vector, which converts to a plain Python list or an Arrow array:
+
+```python
+with parquet.read_parquet("space_missions.parquet") as reader:
+    morsel = next(iter(reader))
+    prices = morsel.column("Price")
+    print(prices.to_pylist()[:10])
+    print(prices.to_arrow()[:10])
+```
+
+## Writing CSV and JSONL
+
+Rugo writes JSONL and CSV directly from a Draken morsel, without going through Python's own `json` or `csv` modules:
+
+```python
+from rugo import parquet
+from rugo.jsonl import write_jsonl
+
+with open("space_missions.jsonl", "wb") as out:
+    with parquet.read_parquet("space_missions.parquet") as reader:
+        for morsel in reader:
+            out.write(write_jsonl(morsel))
+```
+
+`write_csv(morsel)` works the same way for CSV output.
+
+## Converting to Arrow
+
+If your existing toolchain expects Arrow tables, a morsel converts directly:
+
+```python
+with parquet.read_parquet("space_missions.parquet") as reader:
+    for morsel in reader:
+        table = morsel.to_arrow()
+```
+
+## Why It Exists
+
+If you want fast Parquet I/O but do not need SQL, PyArrow is the usual default — and it is large. Rugo is the opposite trade: a thin, native, dependency-free engine for the three formats Opteryx uses, built from the same source Opteryx ships.
+
+| | Rugo | PyArrow |
+|---|---|---|
+| Installed size | ~17 MB | ~124 MB |
+| Cold import | ~5 ms | ~29 ms |
+| Dependencies | none (codecs vendored) | several |
+
+Every Parquet file Rugo writes is readable by PyArrow, Spark, DuckDB, or anything else that reads Parquet — interoperability is the entire reason the format exists.
+
+## The One Difference From Opteryx
+
+The standalone `rugo` wheel is **local-filesystem only**. Opteryx's copy of Rugo can also read `gs://` and `http(s)://` paths because Opteryx needs remote I/O; the standalone wheel deliberately leaves that out to stay thin. A remote path fails immediately and loudly rather than returning nothing.
+
+## Related
+
+- [Rugo — the file engine](/docs/reference/internals/rugo)
+- [Querying Local Data](/docs/guides/querying-local-data)
+- [What is Opteryx](/docs/introduction/what-is-opteryx)
