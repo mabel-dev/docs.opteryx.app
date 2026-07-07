@@ -1,6 +1,6 @@
 # SQLAlchemy
 
-Document how to use Opteryx with SQLAlchemy and provide example code.
+A SQLAlchemy dialect for [opteryx.app](https://opteryx.app), the hosted service. For a full walkthrough — authentication, querying, parameter limitations — see [Using SQLAlchemy from a Notebook or Script](/docs/guides/using-sqlalchemy).
 
 ## Install
 
@@ -8,16 +8,21 @@ Document how to use Opteryx with SQLAlchemy and provide example code.
 pip install opteryx-sqlalchemy
 ~~~
 
-## Authenticate
+## Connection URL
 
+~~~
+opteryx://<client_id>:<client_secret>@opteryx.app:443/default?ssl=true
+~~~
+
+The username and password positions carry a client ID and client secret (from the [Authentication API](/docs/reference/api/authentication-api)), not a literal username and password. The dialect exchanges these for a short-lived access token automatically — there's no separate token step to run yourself.
 
 ~~~python
 from sqlalchemy import create_engine
 import pandas
 
-engine = create_engine("opteryx://username:password@opteryx.app:443/default?ssl=true")
+engine = create_engine("opteryx://YOUR_CLIENT_ID:YOUR_CLIENT_SECRET@opteryx.app:443/default?ssl=true")
 
-sql = "SELECT id, name FROM $planets LIMIT 5"
+sql = "SELECT id, name FROM opteryx.test.planets LIMIT 5"
 df = pandas.read_sql_query(sql=sql, con=engine.connect())
 
 print(df)

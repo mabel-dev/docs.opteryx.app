@@ -56,16 +56,15 @@ curl -X POST https://jobs.opteryx.app/api/v1/jobs \
 
 `created_at` is not populated at submission time — read it back from the status or results response once the job has run. `status` values are upper case (`SUBMITTED`, `COMPLETED`, `FAILED`).
 
-To bind parameters instead of interpolating values into `sql_text`, pass them under `parameters`:
+The request body accepts a `parameters` field, but at present it is not wired up to `:name` (or `@name`) placeholders in `sql_text` — a query with an unresolved placeholder fails with `ParameterError: Unresolved parameter in query`, regardless of what's in `parameters`. Until that's fixed, the working pattern is a `SET` statement ahead of the query, in the same `sql_text` batch:
 
 ```json
 {
-  "sql_text": "SELECT name FROM opteryx.test.planets WHERE mass > :min_mass",
-  "parameters": { "min_mass": 100 }
+  "sql_text": "SET @min_mass = 100; SELECT name FROM opteryx.test.planets WHERE mass > @min_mass;"
 }
 ```
 
-> Warning: Never build `sql_text` by concatenating user input. Bind it through `parameters` — the same rule that applies to any parameterised SQL API.
+> Warning: This embeds the value directly into `sql_text`, so it is only safe for values your own code has coerced to a known scalar type (cast to `int`/`float`/a validated date) *before* building the string — never for raw, unescaped user input. A string value assigned this way can still break out of the statement (e.g. via an embedded quote or semicolon), so treat it with the same care as any hand-built SQL string. This is a stopgap for a feature that isn't fully wired up yet, not a substitute for real bound parameters.
 
 ## 3. Poll for Completion
 

@@ -47,6 +47,9 @@
         "Hosted service (opteryx.app)": [
           {
             "Running a query via the API": "guides/running-a-query-via-the-api.md"
+          },
+          {
+            "Using SQLAlchemy from a notebook": "guides/using-sqlalchemy.md"
           }
         ]
       }
