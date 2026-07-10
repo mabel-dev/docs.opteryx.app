@@ -1207,9 +1207,7 @@ kbd {
     position: sticky;
     top: 0;
     z-index: 30;
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: saturate(140%) blur(8px);
-    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    background: #fff;
     border-bottom: 1px solid var(--border);
 }
 .blog-header-inner {
@@ -2724,8 +2722,6 @@ kbd {
     margin: 0 0 24px;
     border: 1px solid var(--border);
     border-radius: var(--r-m);
-    overflow: hidden;
-    display: block;
     overflow-x: auto;
 }
 .prose thead th {
