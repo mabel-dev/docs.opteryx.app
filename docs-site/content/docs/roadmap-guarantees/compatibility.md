@@ -1,256 +1,61 @@
+---
+title: Compatibility - Supported Python Versions, Platforms, and File Formats
+description: What Opteryx Core actually supports today — Python versions, operating systems, file formats, storage backends, and SQL dialect — verified against the current release.
+---
+
 # Compatibility
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This page covers what Opteryx Core supports right now, as of `0.9.14`. It only lists what is verified against the current source and release pipeline — if something isn't here, treat it as unsupported rather than assume it works.
 
-## Version Compatibility
+## Python Versions
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+`pyproject.toml` declares `requires-python = ">=3.13"`. In practice, support is narrower than that floor suggests:
 
-### Python Version Support
+- Release wheels are built for **Python 3.14** and **3.14t** (the free-threaded build), for both manylinux2014 and macOS.
+- The regression suite, SQL logic tests, and fuzzer all run against **3.14t** only.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+If you're on 3.13, the package may install from source but isn't part of the tested or wheel-built matrix. Earlier versions (3.12 and below) are not supported.
 
-#### Currently Supported
+## Operating Systems
 
-- Python 3.8: Lorem ipsum dolor sit amet
-- Python 3.9: Consectetur adipiscing elit
-- Python 3.10: Sed do eiusmod tempor
-- Python 3.11: Incididunt ut labore et dolore
-- Python 3.12: Magna aliqua ut enim
+- **Linux (x86_64)** — built as `manylinux2014` wheels and the platform all test suites run on (`ubuntu-latest` in CI).
+- **macOS (Apple Silicon / arm64)** — wheels are built on `macos-14`. There's no equivalent macOS test run in CI, so this is build-verified rather than test-verified.
+- **Windows** — not supported. No Windows runner appears anywhere in CI, and no Windows wheels are built.
 
-#### Deprecated
+## File Formats
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+Opteryx Core's file I/O goes through [Rugo](/docs/reference/internals/rugo), its native, dependency-free file engine — there is no PyArrow in the engine itself.
 
-- Python 3.7: End of support January 2024
-- Python 3.6: End of support December 2021
+- **Parquet** — the only format you can query with SQL today. `SELECT ... FROM workspace.dataset` resolves to a folder of Parquet files.
+- **CSV and JSONL** — Rugo can read and write both directly, but not as SQL query sources yet. Convert to Parquet first if you need to query them. See [Using Rugo Standalone](/docs/guides/rugo-standalone).
 
-### Operating System Compatibility
+ORC and Avro are not supported — there's no reader for either in the engine or in Rugo.
 
-#### Linux
+## Storage Backends
 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore.
+- **Local disk** — via `DiskConnector`.
+- **Google Cloud Storage** — via `GcpCloudStorageConnector`, authenticating through Google's own OAuth-based service account credentials.
 
-- Ubuntu 20.04+ (Lorem ipsum)
-- CentOS 7+ (Dolor sit amet)
-- Debian 10+ (Consectetur adipiscing)
-- RHEL 8+ (Sed do eiusmod)
+S3, Azure Blob Storage, and MinIO are not implemented as connectors. Test configuration in CI references MinIO and Azure environment variables for mocking purposes, but no corresponding connector code exists in the engine — don't take their presence in CI config as a sign they're supported.
 
-#### macOS
+## SQL Dialect
 
-Magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
+Opteryx parses SQL through its own `OpteryxDialect`, built on a fork of `sqlparser` (via `sqloxide`). It started from the MySQL dialect and has since picked up syntax from others where it made sense. It is not a strict implementation of ANSI SQL, PostgreSQL, or MySQL — if a query relies on dialect-specific syntax from one of those, check it against Opteryx directly rather than assuming compatibility.
 
-- macOS 11 (Big Sur) and later
-- Both Intel and Apple Silicon supported
+## What's Not Here
 
-#### Windows
+These come up often enough to call out explicitly as **not implemented**:
 
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+- No REST, GraphQL, or gRPC server — Opteryx Core is an in-process library, not a service. (The hosted [opteryx.app](https://opteryx.app) exposes a [Jobs API](/docs/reference/api) separately.)
+- No Docker image, Helm chart, or Kubernetes manifests shipped with the project.
+- No OAuth, SAML, or OpenID Connect provider implemented by Opteryx itself. The GCS connector consumes Google's OAuth client library to authenticate outbound requests — that's using an auth protocol, not offering one.
 
-- Windows 10 and later
-- Windows Server 2019 and later
+## Dependencies
 
-## Database Compatibility
+The package ships with **no required runtime dependencies** (`dependencies = []` in `pyproject.toml`). The `performance` extra adds `orjson`. Everything else you'll see referenced in the repository — `pyarrow`, `pandas`, `numpy`, `pydantic`, and the rest — is test-only tooling, not something installed alongside the engine.
 
-### SQL Dialects
+## Related
 
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate.
-
-#### ANSI SQL
-
-Non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-#### PostgreSQL Extensions
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor.
-
-#### MySQL Compatibility
-
-Repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-## File Format Compatibility
-
-### Supported Formats
-
-#### Columnar Formats
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-- **Parquet**: Lorem ipsum dolor sit amet, versions 1.0+
-- **ORC**: Consectetur adipiscing elit, versions 0.12+
-- **Arrow IPC**: Sed do eiusmod tempor, versions 1.0+
-
-#### Row Formats
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.
-
-- **CSV**: All standard variants
-- **JSON**: JSON and NDJSON
-- **Avro**: Versions 1.8+
-
-### Format Features
-
-Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-## Cloud Platform Compatibility
-
-### AWS
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.
-
-#### Services
-
-- **S3**: Lorem ipsum dolor sit amet
-- **EC2**: Consectetur adipiscing elit
-- **Lambda**: Sed do eiusmod tempor
-- **ECS/Fargate**: Incididunt ut labore
-- **Athena**: Et dolore magna aliqua
-
-### Google Cloud Platform
-
-Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-#### Services
-
-- **GCS**: Nemo enim ipsam voluptatem
-- **Compute Engine**: Quia voluptas sit aspernatur
-- **Cloud Functions**: Aut odit aut fugit
-- **Cloud Run**: Sed quia consequuntur
-- **BigQuery**: Magni dolores eos
-
-### Microsoft Azure
-
-Qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam.
-
-#### Services
-
-- **Blob Storage**: Eius modi tempora incidunt
-- **Virtual Machines**: Ut labore et dolore
-- **Azure Functions**: Magnam aliquam quaerat
-- **Container Instances**: Voluptatem ut enim
-- **Synapse**: Ad minima veniam
-
-## Data Source Compatibility
-
-### Object Storage
-
-Quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate.
-
-- Amazon S3 and S3-compatible storage
-- Google Cloud Storage
-- Azure Blob Storage
-- MinIO
-
-### Distributed File Systems
-
-Velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos.
-
-- HDFS (Hadoop Distributed File System)
-- GlusterFS
-- Ceph
-
-## Library Compatibility
-
-### Python Ecosystem
-
-Ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa.
-
-#### Data Processing
-
-Qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis.
-
-- **Pandas**: Lorem ipsum versions 1.0+
-- **NumPy**: Dolor sit amet versions 1.19+
-- **PyArrow**: Consectetur adipiscing versions 5.0+
-- **Polars**: Sed do eiusmod versions 0.14+
-
-#### Machine Learning
-
-Est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-- **Scikit-learn**: Compatible for data preparation
-- **TensorFlow**: Data pipeline integration
-- **PyTorch**: Dataset compatibility
-
-### Notebook Environments
-
-Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-- Jupyter Notebook: Lorem ipsum
-- JupyterLab: Dolor sit amet
-- Google Colab: Consectetur adipiscing
-- VS Code Notebooks: Sed do eiusmod
-
-## API Compatibility
-
-### REST API
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-### GraphQL API
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-
-### gRPC Support
-
-Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-## Container Compatibility
-
-### Docker
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit.
-
-- Docker Engine: Versions 19.03+
-- Docker Compose: Versions 1.27+
-
-### Kubernetes
-
-Voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-- Kubernetes: Versions 1.20+
-- OpenShift: Versions 4.6+
-
-## Protocol Compatibility
-
-### Network Protocols
-
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-
-- HTTP/1.1: Lorem ipsum
-- HTTP/2: Dolor sit amet
-- HTTP/3: Consectetur adipiscing (experimental)
-- WebSocket: Sed do eiusmod
-
-### Authentication Protocols
-
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore.
-
-- OAuth 2.0: Magnam aliquam
-- OpenID Connect: Quaerat voluptatem
-- SAML 2.0: Ut enim ad minima
-- JWT: Veniam quis nostrum
-
-## Testing Compatibility
-
-### Testing Frameworks
-
-Exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.
-
-- pytest: Lorem ipsum
-- unittest: Dolor sit amet
-- nose2: Consectetur adipiscing
-
-## Migration Support
-
-### Version Migration
-
-Quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus.
-
-### Data Migration
-
-Qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa.
-
-### Configuration Migration
-
-Qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+- [Known Limits](known-limits)
+- [Stability Promises](stability-promises)
+- [Using Rugo Standalone](/docs/guides/rugo-standalone)

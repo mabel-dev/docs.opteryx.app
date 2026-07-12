@@ -102,7 +102,7 @@ session.execute(
 
 ## Making Queries Faster
 
-The engine prunes aggressively when you let it — name the columns you need rather than `SELECT *`, and filter on columns that carry good statistics so whole row groups can be skipped. To see the plan the optimiser produced, prefix a query with `EXPLAIN`. See [Query Optimization](/docs/reference/sql/advanced/query-optimization) and [Engine Configuration](/docs/reference/sql/advanced/engine-configuration) for the details.
+The engine prunes aggressively when you let it — name the columns you need rather than `SELECT *`, and filter on columns that carry good statistics so whole row groups can be skipped. To see the plan the optimiser produced, prefix a query with `EXPLAIN`. See [Troubleshooting Queries](/docs/guides/troubleshooting) for reading `EXPLAIN` output.
 
 ## Where This Fits
 

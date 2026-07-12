@@ -71,4 +71,3 @@ See [When to Use Opteryx](/docs/introduction/when-to-use) for where this pattern
 
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [Troubleshooting Queries](/docs/guides/troubleshooting)
-- [Engine Configuration](/docs/reference/sql/advanced/engine-configuration)

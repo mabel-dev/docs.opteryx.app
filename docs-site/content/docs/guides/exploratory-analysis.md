@@ -112,4 +112,3 @@ for morsel in session.execute_to_morsels(
 
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [Troubleshooting Queries](/docs/guides/troubleshooting)
-- [Query Optimization](/docs/reference/sql/advanced/query-optimization)

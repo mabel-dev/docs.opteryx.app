@@ -57,14 +57,6 @@ SELECT ...;
 
 If the query is dramatically slower this way, the optimiser is doing real work — which usually means the query is already benefiting from pushdown. Leave the optimiser on for normal use; this is a diagnostic, not a setting to ship.
 
-You can also isolate the reader's behaviour with `WITH` hints — for example, `WITH(NO_PUSH_SELECTION)` forces the filter to run above the scan so you can measure the difference pushdown makes:
-
-```sql
-SELECT * FROM data.events WITH(NO_PUSH_SELECTION) WHERE level = 'ERROR';
-```
-
-See [Engine Configuration](/docs/reference/sql/advanced/engine-configuration) for the full list of hints and query parameters.
-
 ## Common Errors
 
 **Unexpected `NULL`s in results.** A field missing or genuinely absent in the source data reads as `NULL`, and comparisons with `NULL` are neither true nor false. Use `IFNULL` or the null-aware functions, and see [NULL Semantics](/docs/reference/sql/advanced/null-semantics).
@@ -79,6 +71,5 @@ Opteryx is single-node by design — it scales up on one machine, not out across
 
 ## Related
 
-- [Query Optimization](/docs/reference/sql/advanced/query-optimization)
 - [Querying Local Data](/docs/guides/querying-local-data)
-- [Engine Configuration](/docs/reference/sql/advanced/engine-configuration)
+- [NULL Semantics](/docs/reference/sql/advanced/null-semantics)

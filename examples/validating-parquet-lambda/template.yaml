@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Validates Parquet files against a data contract as they land in S3,
+  using Rugo to read only the footer and the columns the contract needs.
+
+Parameters:
+  ParquetSuffix:
+    Type: String
+    Default: ".parquet"
+    Description: Only objects ending in this suffix trigger validation.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.12
+    Architectures:
+      - x86_64
+
+Resources:
+  IncomingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-incoming"
+
+  QuarantineBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-quarantine"
+
+  ValidationFailedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "${AWS::StackName}-validation-failed"
+
+  ValidatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_function.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          QUARANTINE_BUCKET: !Ref QuarantineBucket
+          SNS_TOPIC_ARN: !Ref ValidationFailedTopic
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref IncomingBucket
+        - S3CrudPolicy:
+            BucketName: !Ref QuarantineBucket
+        - Statement:
+            - Effect: Allow
+              Action: s3:DeleteObject
+              Resource: !Sub "arn:aws:s3:::${IncomingBucket}/*"
+            - Effect: Allow
+              Action: sns:Publish
+              Resource: !Ref ValidationFailedTopic
+      Events:
+        ParquetUploaded:
+          Type: S3
+          Properties:
+            Bucket: !Ref IncomingBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: !Ref ParquetSuffix
+
+Outputs:
+  IncomingBucketName:
+    Description: Upload .parquet files here to trigger validation.
+    Value: !Ref IncomingBucket
+  QuarantineBucketName:
+    Description: Rejected files are moved here.
+    Value: !Ref QuarantineBucket
+  ValidationFailedTopicArn:
+    Description: Subscribe an email/Slack integration to this topic for rejection alerts.
+    Value: !Ref ValidationFailedTopic
+  ValidatorFunctionName:
+    Value: !Ref ValidatorFunction
