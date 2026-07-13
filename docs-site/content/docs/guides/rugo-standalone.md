@@ -65,6 +65,41 @@ with open("space_missions.jsonl", "wb") as out:
 
 `write_csv(morsel)` works the same way for CSV output.
 
+## From the Command Line
+
+Installing Rugo also puts a `rugo` command on your `PATH` — the same reader and writer, driven from the shell. It is the fastest way to look at a file, convert between formats, or drop Parquet/CSV/JSONL into a pipeline without writing any Python.
+
+```bash
+rugo info space_missions.parquet          # rows, columns, size, format
+rugo schema space_missions.parquet        # column names, types, nullability
+rugo preview -n 5 space_missions.parquet  # first rows as a table
+rugo convert space_missions.parquet space_missions.jsonl   # format inferred from extensions
+```
+
+The most useful verbs:
+
+| Verb | What it does |
+|---|---|
+| `info` | High-level metadata — rows, columns, size, format |
+| `schema` / `columns` | Column names and types |
+| `count` | Row count |
+| `preview` / `head` | First N rows (`-n`, and `-c` to project columns) |
+| `describe` / `stats` | Per-column null counts, min/max, distinct *(Parquet only)* |
+| `inspect` | Low-level footer / row-group / encoding dump *(Parquet only)* |
+| `diff` | Compare two files' schemas — columns added, removed, retyped |
+| `convert` | Convert between Parquet, CSV, and JSONL |
+| `merge` | Concatenate schema-identical files into one |
+| `split` | Split a file into row-count-bounded chunks (`--rows`) |
+
+Every verb takes `--json` for machine-readable output, so the CLI composes with tools like `jq`:
+
+```bash
+rugo count --json events.parquet | jq .num_rows
+rugo describe --json events.parquet | jq '.columns[] | select(.null_count > 0)'
+```
+
+`describe`, `stats`, and `inspect` read statistics from the Parquet footer that CSV and JSONL don't carry, so they apply to Parquet only; `merge` requires identical schemas across its inputs and fails loud on a mismatch rather than coercing.
+
 ## Converting to Arrow
 
 If your existing toolchain expects Arrow tables, a morsel converts directly:
