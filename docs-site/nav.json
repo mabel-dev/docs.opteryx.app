@@ -621,6 +621,9 @@
     "Clients": [
       {
         "SQLAlchemy": "reference/python/sqlalchemy.md"
+      },
+      {
+        "Upload": "reference/python/upload.md"
       }
     ]
   },
