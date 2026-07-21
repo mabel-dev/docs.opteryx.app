@@ -49,6 +49,29 @@ with parquet.read_parquet("space_missions.parquet") as reader:
     print(prices.to_arrow()[:10])
 ```
 
+## Writing Parquet
+
+Rugo also writes Parquet — pass it a Draken morsel and get bytes back:
+
+```python
+from rugo import parquet
+
+data = parquet.write_parquet(morsel, compression="zstd")
+with open("out.parquet", "wb") as f:
+    f.write(data)
+```
+
+For large datasets, `write_parquet` holds the whole file in memory before returning it. `open_parquet_writer` writes one row group per `write_row_group()` call instead, pushing each chunk of bytes to a sink as it's produced — memory stays roughly constant (~one row group) no matter how many batches you write:
+
+```python
+with open("out.parquet", "wb") as f:
+    with parquet.open_parquet_writer(f.write) as writer:
+        for batch in batches:
+            writer.write_row_group(batch)
+```
+
+`sink` is any callable that takes bytes — a file's `.write`, or an adapter around a cloud upload API. Every batch passed to the same writer must share the same column schema.
+
 ## Writing CSV and JSONL
 
 Rugo writes JSONL and CSV directly from a Draken morsel, without going through Python's own `json` or `csv` modules:
