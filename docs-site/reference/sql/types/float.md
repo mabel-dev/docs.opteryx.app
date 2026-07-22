@@ -41,3 +41,4 @@ NaN sorts highest (appears after all real numbers). -0.0 and 0.0 compare as equa
 
 - Floating-point arithmetic is inexact. Use DECIMAL for financial calculations.
 - NaN comparisons: NaN = NaN is FALSE in SQL; NaN appears at the top when sorting.
+- GROUP BY SUM/AVG over FLOAT is computed by parallel workers whose summation order is not fixed, so re-running the identical query against unchanged data can return different low-order digits between runs. INTEGER SUM/COUNT are exact and unaffected.

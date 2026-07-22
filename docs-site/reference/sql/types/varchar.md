@@ -36,3 +36,4 @@ Supports `LIKE` (case-sensitive), `ILIKE` (case-insensitive), and `RLIKE` (regul
 ## Limitations
 
 - Non-ASCII bytes stored in a VARCHAR column produce undefined behaviour — use NVARCHAR for Unicode.
+- String values (VARCHAR/NVARCHAR/VARBINARY alike) are length-capped at just under 4 GiB per value (length is stored as uint32).

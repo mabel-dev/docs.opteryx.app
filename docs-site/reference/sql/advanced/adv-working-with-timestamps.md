@@ -105,17 +105,17 @@ Supported parts: `NANOSECOND`, `MICROSECOND`, `MILLISECOND`, `SECOND`, `MINUTE`,
 Format a timestamp as a string:
 
 ```sql
-DATE_FORMAT(timestamp, format)
+FORMAT_TIMESTAMP(format, timestamp)
 ```
 
 Example:
 
 ```sql
-SELECT DATE_FORMAT(event_time, '%Y-%m-%d')
+SELECT FORMAT_TIMESTAMP('%Y-%m-%d', event_time)
   FROM events;
 ```
 
-See the [DATE_FORMAT reference](../functions/date_format.md) for the full list of supported format tokens.
+See the [FORMAT_TIMESTAMP reference](../functions/format_timestamp.md) for the full list of supported format tokens.
 
 ## Arithmetic
 

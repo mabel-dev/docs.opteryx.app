@@ -24,7 +24,11 @@ SELECT HEX_DECODE('deadbeef');
 
 ## Comparisons
 
-Can be compared (using `=`, `<`, `>`, etc.) with: `VARBINARY`, `VARCHAR`.
+Can be compared (using `=`, `<`, `>`, etc.) with: `VARBINARY`, `VARCHAR`, `NVARCHAR`.
+
+## Notes
+
+LIKE and RLIKE work on VARBINARY. ILIKE does not — `col ILIKE pattern` on a VARBINARY column is rejected at bind time, since case-insensitive matching is not defined for raw bytes.
 
 ## Limitations
 

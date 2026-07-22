@@ -30,4 +30,4 @@ SPLIT(string, delimiter, limit)
 
 ## Returns
 
-**ARRAY<VARIANT>** — Returns the computed result as `ARRAY<VARIANT>`.
+**array<element type of `string`>** — Returns an array whose element type is the string type of `string` — the parts are substrings of the input, so the element type is fixed and known.

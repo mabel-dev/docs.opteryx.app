@@ -190,9 +190,6 @@
               "DATABASE": "reference/sql/functions/database.md"
             },
             {
-              "DATE_FORMAT": "reference/sql/functions/date_format.md"
-            },
-            {
               "DATEDIFF": "reference/sql/functions/datediff.md"
             },
             {
@@ -206,6 +203,9 @@
             },
             {
               "FLOOR": "reference/sql/functions/floor.md"
+            },
+            {
+              "FORMAT_TIMESTAMP": "reference/sql/functions/format_timestamp.md"
             },
             {
               "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"

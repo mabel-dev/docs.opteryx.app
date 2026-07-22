@@ -19,14 +19,17 @@ When casting a string to this type, the following formats are accepted:
 
 | Format | Example | Notes |
 |--------|---------|-------|
-| `YYYY-MM-DD` | `'2024-01-15'::DATE` | Only this format is accepted — ISO 8601 date |
+| `YYYY-MM-DD` | `'2024-01-15'::DATE` | ISO 8601 date; components are not required to be zero-padded (e.g. '2024-1-5' is also accepted) |
 
 ## Casting
 
 | From | Example | Notes |
 |------|---------|-------|
-| from VARCHAR | `'2024-01-15'::DATE` | String must be in YYYY-MM-DD format |
+| from VARCHAR | `'2024-01-15'::DATE` | String must be in YYYY-MM-DD (or unpadded YYYY-M-D) format by default |
+| from VARCHAR (FORMAT) | `CAST('15-01-2024' AS DATE FORMAT 'DD-MM-YYYY')` | Parses against an explicit SQL-style pattern (tokens: YYYY, YY, MM, DD, HH24, HH12/HH, MI, SS, FF) instead of the YYYY-MM-DD default |
 | from TIMESTAMP | `ts_col::DATE` | Truncates the time component; returns the date portion only |
+| from INTEGER (literal only) | `1::DATE` | An integer *literal* is interpreted as days since the Unix epoch. This does NOT work for an integer column — casting a column raises NotImplementedError; convert via `FROM_UNIXTIME(n)::DATE` instead |
+| to VARCHAR | `date_col::VARCHAR` | Renders as 'YYYY-MM-DD' (ISO 8601). `CAST(date_col AS VARCHAR FORMAT '...')` renders against an explicit pattern instead |
 
 ## Arithmetic
 
@@ -42,5 +45,6 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `DATE`, `TIMESTAMP`.
 
 ## Limitations
 
-- You cannot cast an integer to DATE directly. To convert a Unix epoch value, cast to TIMESTAMP first then to DATE: `FROM_UNIXTIME(n)::DATE`.
-- Only YYYY-MM-DD string format is accepted. Formats like MM/DD/YYYY or DD-MM-YYYY will fail.
+- You cannot cast an integer COLUMN to DATE directly (only integer literals are accepted). To convert an epoch column, cast to TIMESTAMP first then to DATE: `FROM_UNIXTIME(n)::DATE`.
+- MM/DD/YYYY or DD-MM-YYYY string formats fail against the default parser — use `CAST(... AS DATE FORMAT 'MM/DD/YYYY')` (or the matching pattern) instead.
+- CAST ... FORMAT is not yet supported combined with TRY_CAST/SAFE_CAST.

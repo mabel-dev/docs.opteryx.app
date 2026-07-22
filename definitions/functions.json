@@ -40,7 +40,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 262.52
                 },
                 "parameters": [
@@ -98,7 +97,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 1.19
                 },
                 "parameters": [
@@ -165,7 +163,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 1.21
                 },
                 "parameters": [
@@ -232,7 +229,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 1.02
                 },
                 "parameters": [
@@ -299,7 +295,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 2.6
                 },
                 "parameters": [
@@ -344,10 +339,10 @@
                     "HASH",
                     "MD5"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -357,7 +352,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 6998.99
                 },
                 "parameters": [
@@ -415,7 +409,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 9180.68
                 },
                 "parameters": [
@@ -460,10 +453,10 @@
                     "HASH",
                     "MD5"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -473,7 +466,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 8774.93
                 },
                 "parameters": [
@@ -533,7 +525,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 329.97
                 },
                 "parameters": [
@@ -601,7 +592,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 3386.42
                 },
                 "parameters": [
@@ -668,7 +658,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 523.0
                 },
                 "parameters": [
@@ -744,7 +733,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 587.0
                 },
                 "parameters": [
@@ -820,7 +808,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -865,7 +852,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.17
                 },
                 "parameters": [
@@ -911,7 +897,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.17
                 },
                 "parameters": [
@@ -975,7 +960,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.33
                 },
                 "parameters": [
@@ -1021,7 +1005,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.33
                 },
                 "parameters": [
@@ -1088,7 +1071,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": [],
@@ -1137,7 +1119,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": [],
@@ -1188,7 +1169,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": [],
@@ -1237,7 +1217,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -1287,7 +1266,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 2705.21
                 },
                 "parameters": [
@@ -1316,73 +1294,6 @@
                         "optional": false,
                         "variadic": false,
                         "constant_only": false,
-                        "null_handling": "strict"
-                    }
-                ]
-            }
-        ]
-    },
-    "DATE_FORMAT": {
-        "catalog_name": "DATE_FORMAT",
-        "aliases": [],
-        "summary": "Format date/timestamp as string.",
-        "volatility": "immutable",
-        "deterministic": true,
-        "foldable": false,
-        "pushdown_safe": false,
-        "lifecycle": {
-            "status": "active",
-            "introduced": null,
-            "deprecated_in": null,
-            "remove_after": null,
-            "replacement": null
-        },
-        "overloads": [
-            {
-                "id": "DATE_FORMAT_default",
-                "label": "DATE_FORMAT(date, pattern)",
-                "category": "Date & Time Functions",
-                "documentation": "Format date/timestamp as string.",
-                "related_functions": [
-                    "CURRENT_DATE",
-                    "CURRENT_TIME",
-                    "CURRENT_TIMESTAMP",
-                    "TODAY",
-                    "DATE"
-                ],
-                "return_type": "VARCHAR",
-                "returns": {
-                    "type": "VARCHAR",
-                    "documentation": "Returns the computed result as `VARCHAR`."
-                },
-                "arity": {
-                    "minimum": 2,
-                    "maximum": 2,
-                    "variadic": false
-                },
-                "execution": {
-                    "kernel_id": "default",
-                    "engine": "draken",
-                    "null_policy": "compress",
-                    "cost_us_per_million": 31651.72
-                },
-                "parameters": [
-                    {
-                        "label": "date",
-                        "type": "temporal",
-                        "documentation": "Date, time, or timestamp value to evaluate.",
-                        "optional": false,
-                        "variadic": false,
-                        "constant_only": false,
-                        "null_handling": "strict"
-                    },
-                    {
-                        "label": "pattern",
-                        "type": "varchar",
-                        "documentation": "Format string used to render the temporal value as text. Must be a constant expression.",
-                        "optional": false,
-                        "variadic": false,
-                        "constant_only": true,
                         "null_handling": "strict"
                     }
                 ]
@@ -1430,7 +1341,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -1475,7 +1385,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1000000.0
                 },
                 "parameters": [
@@ -1534,7 +1443,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 5950.78
                 },
                 "parameters": [
@@ -1584,7 +1492,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 0.97
                 },
                 "parameters": [
@@ -1652,7 +1559,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 333.31
                 },
                 "parameters": [
@@ -1676,6 +1582,74 @@
                     }
                 ],
                 "notes": "When `scale` is provided, positive values affect digits to the right of the decimal point and negative values affect tens, hundreds, and larger positions."
+            }
+        ]
+    },
+    "FORMAT_TIMESTAMP": {
+        "catalog_name": "FORMAT_TIMESTAMP",
+        "aliases": [
+            "FORMAT_DATE"
+        ],
+        "summary": "Format date/timestamp as string (BigQuery FORMAT_TIMESTAMP/FORMAT_DATE convention: pattern first).",
+        "volatility": "immutable",
+        "deterministic": true,
+        "foldable": false,
+        "pushdown_safe": false,
+        "lifecycle": {
+            "status": "active",
+            "introduced": null,
+            "deprecated_in": null,
+            "remove_after": null,
+            "replacement": null
+        },
+        "overloads": [
+            {
+                "id": "FORMAT_TIMESTAMP_default",
+                "label": "FORMAT_TIMESTAMP(pattern, date)",
+                "category": "Date & Time Functions",
+                "documentation": "Format date/timestamp as string (BigQuery FORMAT_TIMESTAMP/FORMAT_DATE convention: pattern first).",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "TODAY",
+                    "DATE"
+                ],
+                "return_type": "VARCHAR",
+                "returns": {
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
+                },
+                "arity": {
+                    "minimum": 2,
+                    "maximum": 2,
+                    "variadic": false
+                },
+                "execution": {
+                    "kernel_id": "default",
+                    "engine": "draken",
+                    "cost_us_per_million": 31651.72
+                },
+                "parameters": [
+                    {
+                        "label": "pattern",
+                        "type": "varchar",
+                        "documentation": "Format string used to render the temporal value as text. Must be a constant expression.",
+                        "optional": false,
+                        "variadic": false,
+                        "constant_only": true,
+                        "null_handling": "strict"
+                    },
+                    {
+                        "label": "date",
+                        "type": "temporal",
+                        "documentation": "Date, time, or timestamp value to evaluate.",
+                        "optional": false,
+                        "variadic": false,
+                        "constant_only": false,
+                        "null_handling": "strict"
+                    }
+                ]
             }
         ]
     },
@@ -1720,7 +1694,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3.17
                 },
                 "parameters": [
@@ -1778,7 +1751,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 4482220.29
                 },
                 "parameters": [
@@ -1836,7 +1808,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 437424.69
                 },
                 "parameters": [
@@ -1894,7 +1865,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3.87
                 },
                 "parameters": [
@@ -1939,10 +1909,10 @@
                     "SHA224",
                     "SHA256"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -1952,7 +1922,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 9353.05
                 },
                 "parameters": [
@@ -2010,13 +1979,12 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 775947.17
                 },
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "number",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -2068,7 +2036,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 3782.8
                 },
                 "parameters": [
@@ -2135,7 +2102,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 3737.57
                 },
                 "parameters": [
@@ -2202,7 +2168,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "bypass",
                     "cost_us_per_million": 3689.18
                 },
                 "parameters": [
@@ -2280,7 +2245,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 13437.32
                 },
                 "parameters": [
@@ -2332,7 +2296,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 590.21
                 },
                 "parameters": [
@@ -2390,7 +2353,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 4419443.37
                 },
                 "parameters": [
@@ -2448,7 +2410,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 9174.75
                 },
                 "parameters": [
@@ -2518,7 +2479,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 264.95
                 },
                 "parameters": [
@@ -2558,7 +2518,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 296.23
                 },
                 "parameters": [
@@ -2616,7 +2575,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 2363.32
                 },
                 "parameters": [
@@ -2683,7 +2641,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 4865.81
                 },
                 "parameters": [
@@ -2752,7 +2709,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 6473.41
                 },
                 "parameters": [
@@ -2810,7 +2766,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 318.0
                 },
                 "parameters": [
@@ -2886,7 +2841,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3361.79
                 },
                 "parameters": [
@@ -2906,7 +2860,7 @@
     "MATCH": {
         "catalog_name": "_MATCH_AGAINST",
         "aliases": [],
-        "summary": "Semantic text matching via embeddings.",
+        "summary": "Text matching by embedding cosine similarity.",
         "volatility": "stable",
         "deterministic": false,
         "foldable": false,
@@ -2923,7 +2877,7 @@
                 "id": "_MATCH_AGAINST_2",
                 "label": "MATCH(str) AGAINST(pattern)",
                 "category": "String Functions",
-                "documentation": "Performs semantic text matching using embeddings and cosine similarity.",
+                "documentation": "True when COSINE_SIMILARITY(column, query) >= the `match_threshold` session variable (default 0.5). Matching is only as semantic as the active EMBED capability: the built-in embedder is a lexical hashed projection, so by default MATCH behaves as a case-insensitive exact match rather than a meaning-based one. Install a semantic embedding capability, and/or tune `match_threshold`, to change that. Empty or stopword-only text embeds to a zero vector, giving an undefined (NaN) similarity, which never matches.",
                 "related_functions": [
                     "LENGTH",
                     "UPPER",
@@ -2944,7 +2898,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1500000.0
                 },
                 "parameters": [
@@ -2999,10 +2952,10 @@
                     "SHA256",
                     "SHA384"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -3012,7 +2965,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 70856.38
                 },
                 "parameters": [
@@ -3070,7 +3022,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 86571.94
                 },
                 "parameters": [
@@ -3111,7 +3062,6 @@
                 "execution": {
                     "kernel_id": "zero_arg",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 7397.25
                 },
                 "parameters": [],
@@ -3160,7 +3110,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 0.72
                 },
                 "parameters": [
@@ -3229,7 +3178,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 266.96
                 },
                 "parameters": [
@@ -3287,7 +3235,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -3335,7 +3282,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -3383,7 +3329,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3317.72
                 },
                 "parameters": [
@@ -3451,7 +3396,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 0.86
                 },
                 "parameters": [
@@ -3520,7 +3464,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 85541.62
                 },
                 "parameters": [
@@ -3561,7 +3504,6 @@
                 "execution": {
                     "kernel_id": "zero_arg",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 2824.05
                 },
                 "parameters": [],
@@ -3572,7 +3514,7 @@
     "RANDOM_STRING": {
         "catalog_name": "RANDOM_STRING",
         "aliases": [],
-        "summary": "Generate random strings.",
+        "summary": "Generate random bytes.",
         "volatility": "volatile",
         "deterministic": false,
         "foldable": false,
@@ -3589,7 +3531,7 @@
                 "id": "RANDOM_STRING_default",
                 "label": "RANDOM_STRING(n)",
                 "category": "Utility Functions",
-                "documentation": "Generate random strings.",
+                "documentation": "Computes n random bytes as varbinary, one value per row.",
                 "related_functions": [
                     "COALESCE",
                     "IFNULL",
@@ -3610,21 +3552,20 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 372872.83
                 },
                 "parameters": [
                     {
                         "label": "n",
                         "type": "integer",
-                        "documentation": "Length hint or row count used to generate random strings.",
+                        "documentation": "Number of random bytes to generate for each row.",
                         "optional": false,
                         "variadic": false,
                         "constant_only": false,
                         "null_handling": "strict"
                     }
                 ],
-                "notes": "This function is volatile. The integer argument controls the generated output rather than supplying a seed."
+                "notes": "This function is volatile. It returns `n` random bytes as `VARBINARY` for each row; the integer argument is the byte length, not a seed."
             }
         ]
     },
@@ -3671,7 +3612,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "passthru",
                     "cost_us_per_million": 26767.88
                 },
                 "parameters": [
@@ -3747,7 +3687,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 9169.95
                 },
                 "parameters": [
@@ -3823,7 +3762,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 5284.14
                 },
                 "parameters": [
@@ -3881,7 +3819,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 8650.9
                 },
                 "parameters": [
@@ -3948,7 +3885,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 357.87
                 },
                 "parameters": [
@@ -3989,7 +3925,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 557.87
                 },
                 "parameters": [
@@ -4057,7 +3992,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 321.0
                 },
                 "parameters": [
@@ -4133,7 +4067,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3178.18
                 },
                 "parameters": [
@@ -4178,10 +4111,10 @@
                     "SHA256",
                     "SHA384"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -4191,7 +4124,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 31113.37
                 },
                 "parameters": [
@@ -4236,10 +4168,10 @@
                     "SHA256",
                     "SHA384"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -4249,7 +4181,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 38132.87
                 },
                 "parameters": [
@@ -4294,10 +4225,10 @@
                     "SHA224",
                     "SHA384"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -4307,7 +4238,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 32147.72
                 },
                 "parameters": [
@@ -4352,10 +4282,10 @@
                     "SHA224",
                     "SHA256"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -4365,7 +4295,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 89807.05
                 },
                 "parameters": [
@@ -4410,10 +4339,10 @@
                     "SHA224",
                     "SHA256"
                 ],
-                "return_type": "VARBINARY",
+                "return_type": "VARCHAR",
                 "returns": {
-                    "type": "VARBINARY",
-                    "documentation": "Returns the computed result as `VARBINARY`."
+                    "type": "VARCHAR",
+                    "documentation": "Returns the computed result as `VARCHAR`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -4423,7 +4352,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 91033.24
                 },
                 "parameters": [
@@ -4481,7 +4409,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 444.89
                 },
                 "parameters": [
@@ -4539,7 +4466,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 4.92
                 },
                 "parameters": [
@@ -4597,7 +4523,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 21737.77
                 },
                 "parameters": [
@@ -4642,10 +4567,10 @@
                     "TITLECASE",
                     "INITCAP"
                 ],
-                "return_type": "ARRAY<VARIANT>",
+                "return_type": "array<element type of `string`>",
                 "returns": {
-                    "type": "ARRAY<VARIANT>",
-                    "documentation": "Returns the computed result as `ARRAY<VARIANT>`."
+                    "type": "array<element type of `string`>",
+                    "documentation": "Returns an array whose element type is the string type of `string` \u2014 the parts are substrings of the input, so the element type is fixed and known."
                 },
                 "arity": {
                     "minimum": 2,
@@ -4655,7 +4580,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 531.0
                 },
                 "parameters": [
@@ -4691,10 +4615,10 @@
                     "TITLECASE",
                     "INITCAP"
                 ],
-                "return_type": "ARRAY<VARIANT>",
+                "return_type": "array<element type of `string`>",
                 "returns": {
-                    "type": "ARRAY<VARIANT>",
-                    "documentation": "Returns the computed result as `ARRAY<VARIANT>`."
+                    "type": "array<element type of `string`>",
+                    "documentation": "Returns an array whose element type is the string type of `string` \u2014 the parts are substrings of the input, so the element type is fixed and known."
                 },
                 "arity": {
                     "minimum": 3,
@@ -4704,7 +4628,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 589.0
                 },
                 "parameters": [
@@ -4780,7 +4703,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 449.03
                 },
                 "parameters": [
@@ -4840,7 +4762,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 378.0
                 },
                 "parameters": [
@@ -4890,7 +4811,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 9921.62
                 },
                 "parameters": [
@@ -4969,7 +4889,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 2831.1
                 },
                 "parameters": [
@@ -5036,7 +4955,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.08
                 },
                 "parameters": [
@@ -5115,7 +5033,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 6.8
                 },
                 "parameters": [
@@ -5175,7 +5092,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 8.2
                 },
                 "parameters": [
@@ -5233,7 +5149,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 3529.82
                 },
                 "parameters": [
@@ -5294,7 +5209,6 @@
                 "execution": {
                     "kernel_id": "numeric",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 333.89
                 },
                 "parameters": [
@@ -5344,7 +5258,6 @@
                 "execution": {
                     "kernel_id": "date",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1133.17
                 },
                 "parameters": [
@@ -5394,7 +5307,6 @@
                 "execution": {
                     "kernel_id": "timestamp",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1150.45
                 },
                 "parameters": [
@@ -5464,7 +5376,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 521.87
                 },
                 "parameters": [
@@ -5524,7 +5435,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 6236.7
                 },
                 "parameters": [
@@ -5582,7 +5492,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -5624,7 +5533,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []
@@ -5672,7 +5580,6 @@
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "null_policy": "compress",
                     "cost_us_per_million": 1.0
                 },
                 "parameters": []

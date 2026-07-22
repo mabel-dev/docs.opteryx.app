@@ -26,8 +26,8 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [CURRENT_TIME](functions/current_time) — Current time.
 - [CURRENT_TIMESTAMP](functions/current_timestamp) — Current timestamp.
 - [DATEDIFF](functions/datediff) — Difference between two dates in the specified unit.
-- [DATE_FORMAT](functions/date_format) — Format date/timestamp as string.
 - [EXTRACT](functions/extract) — Extract a part from a date/timestamp.
+- [FORMAT_TIMESTAMP](functions/format_timestamp) — Format date/timestamp as string (BigQuery FORMAT_TIMESTAMP/FORMAT_DATE convention: pattern first).
 - [FROM_UNIXTIME](functions/from_unixtime) — Convert Unix timestamp to TIMESTAMP.
 - [TIMEDIFF](functions/timediff) — Difference between two times.
 - [TIME_BUCKET](functions/time_bucket) — Bucket date into fixed-width intervals.
@@ -79,7 +79,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [LOWER](functions/lower) — Convert string to lowercase.
 - [LPAD](functions/lpad) — Left-pad string to width.
 - [LTRIM](functions/ltrim) — Remove leading whitespace.
-- [MATCH](functions/match) — Semantic text matching via embeddings.
+- [MATCH](functions/match) — Text matching by embedding cosine similarity.
 - [OCTET_LENGTH](functions/octet_length) — Return the number of bytes in a string, regardless of string type.
 - [POSITION](functions/position) — Find position of substring.
 - [REGEXP_REPLACE](functions/regexp_replace) — Replace using regex pattern.
@@ -111,7 +111,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [NORMAL](functions/normal) — Generate normally-distributed random numbers.
 - [NULLIF](functions/nullif) — Return null if equal, else first value.
 - [RANDOM](functions/random) — Generate random numbers.
-- [RANDOM_STRING](functions/random_string) — Generate random strings.
+- [RANDOM_STRING](functions/random_string) — Generate random bytes.
 - [USER](functions/user) — Current user name.
 - [VERSION](functions/version) — Database version string.
 

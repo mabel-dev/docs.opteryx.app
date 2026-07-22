@@ -22,4 +22,4 @@ MD5(val)
 
 ## Returns
 
-**VARBINARY** — Returns the computed result as `VARBINARY`.
+**VARCHAR** — Returns the computed result as `VARCHAR`.

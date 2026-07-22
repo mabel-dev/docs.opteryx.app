@@ -18,4 +18,4 @@ NULL is never equal to anything, including itself. Use `IS NULL` or `IS NOT NULL
 ## Limitations
 
 - You cannot CAST to NULL.
-- NULL = NULL is always false; use IS NULL instead.
+- `NULL = NULL` evaluates to NULL (unknown, per SQL three-valued logic) — not TRUE and not FALSE. It never matches in a WHERE clause, which looks like FALSE from the outside, but the value itself is NULL; use IS NULL instead.

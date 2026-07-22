@@ -11,7 +11,7 @@ A fixed-length vector of FP16 (half-precision) floating-point values. Used for s
 
 | From | Example | Notes |
 |------|---------|-------|
-| from ARRAY<FLOAT> | `float_array_col::VECTOR(384)` | Quantizes each element to FP16 |
+| from ARRAY<FLOAT> literal | `[1.0, 0.5, 0.25]::VECTOR(3)` | Quantizes each element to FP16. Only a literal array of non-null numeric values is currently supported by CAST — casting an arbitrary ARRAY<FLOAT> column is not covered by this path. |
 
 ## Comparisons
 

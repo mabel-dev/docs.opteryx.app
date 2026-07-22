@@ -30,4 +30,4 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `BOOLEAN`.
 ## Limitations
 
 - BOOLEAN cannot be compared to numeric types directly. Cast first: `col::INTEGER = 1`.
-- Casting an unrecognised string to BOOLEAN raises an error, not NULL. There is no silent fallback.
+- Plain `CAST(... AS BOOLEAN)` / `::BOOLEAN` raises on an unrecognised string — there is no silent fallback. However `TRY_CAST(... AS BOOLEAN)` and element parsing inside `CAST(... AS ARRAY<BOOLEAN>)` do NOT raise and do NOT return NULL for garbage input — they silently coerce any unrecognised string to FALSE.

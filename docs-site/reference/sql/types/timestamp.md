@@ -29,11 +29,13 @@ When casting a string to this type, the following formats are accepted:
 | From | Example | Notes |
 |------|---------|-------|
 | from VARCHAR | `'2024-01-15 09:30:00'::TIMESTAMP` | Accepts the string formats listed above |
+| from VARCHAR (FORMAT) | `CAST('15-01-2024 09:30' AS TIMESTAMP FORMAT 'DD-MM-YYYY HH24:MI')` | Parses against an explicit SQL-style pattern (tokens: YYYY, YY, MM, DD, HH24, HH12/HH, MI, SS, FF) instead of the ISO-8601 default |
 | from DATE | `date_col::TIMESTAMP` | Fills time as midnight (00:00:00) |
 | from INTEGER (seconds) | `epoch_col::TIMESTAMP[s]` | Seconds since Unix epoch |
 | from INTEGER (milliseconds) | `epoch_col::TIMESTAMP[ms]` | Milliseconds since Unix epoch |
 | from INTEGER (microseconds) | `epoch_col::TIMESTAMP[us]` | Microseconds since Unix epoch (default scale) |
 | from INTEGER (nanoseconds) | `epoch_col::TIMESTAMP[ns]` | Nanoseconds since Unix epoch |
+| to VARCHAR | `ts_col::VARCHAR` | Renders as 'YYYY-MM-DDTHH:MM:SS.ffffff' (ISO 8601, no offset — timestamps are naive). `CAST(ts_col AS VARCHAR FORMAT '...')` renders against an explicit pattern instead |
 
 ## Arithmetic
 
@@ -49,10 +51,10 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `TIMESTAMP`, `DATE`.
 
 ## Notes
 
-All scales are stored as INT64. At the default microsecond scale, the representable range is approximately 1677-09-21 to 2262-04-11. Timezone information is not stored — all timestamps are naive (no offset). String parsing accepts a space or T as the date/time separator. Timezone suffixes (Z, +01:00) in strings are ignored — only the local time portion is parsed.
+All scales are stored as INT64. The 1677-09-21 to 2262-04-11 range applies only to `TIMESTAMP[ns]`; the default microsecond scale covers a far wider range (tested from at least year 1500 to year 9999). Timezone information is not stored — all timestamps are naive (no offset). A trailing timezone suffix (`Z`, `+01:00`) in a string literal is accepted and discarded — the wall-clock date/time as written is kept, only the offset is dropped. String parsing accepts a space or T as the date/time separator.
 
 ## Limitations
 
-- Timezone offsets in string literals are silently ignored. Convert to UTC before storing if timezone matters.
 - `1::TIMESTAMP` is not valid — you must specify the scale: `1::TIMESTAMP[s]`.
-- Timestamps outside 1677–2262 are not representable at microsecond scale.
+- Timestamps outside 1677–2262 are not representable at `TIMESTAMP[ns]` scale (nanosecond storage overflows outside that range); the default microsecond scale does not have this restriction.
+- CAST ... FORMAT is not yet supported combined with TRY_CAST/SAFE_CAST.

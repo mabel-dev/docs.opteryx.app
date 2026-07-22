@@ -27,9 +27,8 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `DECIMAL`, `INTEGER`, `FLOAT`.
 
 ## Notes
 
-Precision 1–18 uses 64-bit integer storage. Precision 19–38 uses 128-bit integer storage. Precision above 38 is not supported. Arithmetic result precision follows SQL Server rules: addition/subtraction scales as `max(s1,s2)` with precision `max(p1-s1, p2-s2) + max(s1,s2) + 1`; multiplication gives `p1+p2` precision and `s1+s2` scale.
+Precision 1–18 uses 64-bit integer storage. Precision 19–38 uses 128-bit integer storage. Precision above 38 is not supported. Arithmetic result precision follows SQL Server rules: addition/subtraction scales as `max(s1,s2)` with precision `max(p1-s1, p2-s2) + max(s1,s2) + 1`; multiplication gives `p1+p2` precision and `s1+s2` scale; division gives `p1+6` precision and `max(s1+6, 6)` scale. FLOAT → DECIMAL casts round half-away-from-zero, not banker's rounding. Unlike INTEGER, DECIMAL arithmetic overflow (result too wide for the storage tier) raises an error rather than wrapping silently.
 
 ## Limitations
 
-- SUM, AVG, and MEDIAN do not support DECIMAL columns — cast to FLOAT first: `SUM(col::FLOAT)`.
-- DECIMAL columns from Parquet files are read correctly but aggregate functions reject them.
+- MEDIAN does not support DECIMAL columns — cast to FLOAT/DOUBLE first: `MEDIAN(col::DOUBLE)`. SUM, AVG, MIN, and MAX all support DECIMAL natively and preserve exactness (SUM/MIN/MAX stay DECIMAL; AVG returns DOUBLE).

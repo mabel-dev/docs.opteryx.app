@@ -1,11 +1,11 @@
 ---
 title: RANDOM_STRING — Opteryx Function
-description: Generate random strings.
+description: Computes n random bytes as varbinary, one value per row.
 ---
 
 # RANDOM_STRING
 
-Generate random strings.
+Computes n random bytes as varbinary, one value per row.
 
 **Category:** Utility Functions
 
@@ -18,7 +18,7 @@ RANDOM_STRING(n)
 ## Arguments
 
 - **n** `integer`
-    Length hint or row count used to generate random strings.
+    Number of random bytes to generate for each row.
 
 ## Returns
 
@@ -26,4 +26,4 @@ RANDOM_STRING(n)
 
 ## Usage Notes
 
-This function is volatile. The integer argument controls the generated output rather than supplying a seed.
+This function is volatile. It returns `n` random bytes as `VARBINARY` for each row; the integer argument is the byte length, not a seed.

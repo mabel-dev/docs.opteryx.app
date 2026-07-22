@@ -17,7 +17,7 @@ HUMANIZE(val)
 
 ## Arguments
 
-- **val** `any`
+- **val** `number`
     Input value.
 
 ## Returns

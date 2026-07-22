@@ -22,11 +22,11 @@ SELECT 'héllo wörld';
 
 ## Comparisons
 
-Can be compared (using `=`, `<`, `>`, etc.) with: `NVARCHAR`, `VARCHAR`.
+Can be compared (using `=`, `<`, `>`, etc.) with: `NVARCHAR`, `VARCHAR`, `VARBINARY`.
 
 ## Notes
 
-Supports `LIKE`, `ILIKE`, and `RLIKE` pattern matching. String functions that operate on character positions (e.g. SUBSTRING) count Unicode code points, not bytes.
+Supports `LIKE`, `ILIKE`, and `RLIKE` pattern matching. String functions that operate on character positions (e.g. SUBSTRING, LEFT, RIGHT) count Unicode code points, not bytes, ONLY when the position/length argument is a literal — when it comes from a column expression, the same functions currently fall back to a byte-based kernel and give wrong offsets for non-ASCII text.
 
 ## Limitations
 

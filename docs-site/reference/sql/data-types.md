@@ -16,7 +16,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 ## Temporal types
 
 - [DATE](types/date) — A calendar date with no time component. Stored as the number of days since 1970-01-01.
-- [TIME](types/time) — A time of day with no date component. Stores hours, minutes, seconds, and microseconds.
+- [TIME](types/time) — A time of day with no date component. Stored as microseconds since midnight (TIME64).
 - [TIMESTAMP](types/timestamp) — A date and time value. The default scale is microseconds. Use `TIMESTAMP[s]`, `TIMESTAMP[ms]`, `TIMESTAMP[us]`, `TIMESTAMP[ns]`, or `TIMESTAMP[d]` to declare a specific scale — this matters when casting integer epoch columns.
 
 ## Interval types
@@ -39,7 +39,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 ## Collection types
 
 - [ARRAY](types/array) — An ordered sequence of elements, all of the same type. Array columns appear when reading Parquet or JSONL files that contain repeated/array fields. The element type is declared as `ARRAY<type>` (e.g. `ARRAY<INTEGER>`, `ARRAY<VARCHAR>`).
-- [VARIANT](types/variant) — A semi-structured type for heterogeneous or schema-on-read data. VARIANT values are typically produced by reading JSON columns. Use the `->` operator to extract a field as NVARCHAR, or `->>` to extract as plain text.
+- [VARIANT](types/variant) — A semi-structured type produced exclusively by the `->` operator when extracting a JSON field from a VARCHAR/NVARCHAR/VARBINARY column. Use `->` to extract a field as VARIANT (a JSON value), or `->>` to extract the same field as NVARCHAR (JSON strings unquoted to plain text).
 
 ## Vector types
 

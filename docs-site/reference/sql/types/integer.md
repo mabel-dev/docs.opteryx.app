@@ -26,7 +26,7 @@ SELECT 42;
 |------|---------|-------|
 | from FLOAT | `3.9::INTEGER` | Truncates toward zero — 3.9 becomes 3, -3.9 becomes -3 |
 | from BOOLEAN | `TRUE::INTEGER` | TRUE → 1, FALSE → 0 |
-| from VARCHAR | `'42'::INTEGER` | String must contain only digits with an optional leading minus sign |
+| from VARCHAR | `'42'::INTEGER` | String must contain only digits with an optional leading minus sign — unlike FLOAT's VARCHAR cast, a leading '+' and surrounding whitespace are NOT tolerated |
 | from TIMESTAMP | `ts_col::INTEGER` | Returns microseconds since the Unix epoch (1970-01-01 00:00:00 UTC) |
 | from DATE | `date_col::INTEGER` | Returns days since the Unix epoch |
 
@@ -38,3 +38,4 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `INTEGER`, `FLOAT`, `DECIMAL`.
 
 - Cannot compare INTEGER to VARCHAR or temporal types — cast first.
 - Overflow is not detected at runtime: values outside the ±9,223,372,036,854,775,807 range wrap silently.
+- Division and modulo by zero do not raise — `INTEGER / 0` and `INTEGER % 0` silently return 0.
