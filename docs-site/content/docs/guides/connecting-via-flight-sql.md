@@ -17,7 +17,7 @@ Same bearer-token scheme as the rest of the hosted service (see [Authentication 
 authorization: Bearer <token>
 ```
 
-Calls with no `authorization` metadata at all are treated as anonymous rather than rejected outright — but almost every dataset still requires a real token; anonymous access is limited to the handful of datasets explicitly marked public (the same public-read datasets covered in [Access and Permissions](/docs/core-concepts/access-and-permissions)). Expect a permission error on anything else.
+**A token is required on every call.** Unlike the plain-HTTP API and the OData service, there is no anonymous access here at all — a call with no `authorization` metadata is rejected outright, before it reaches the query engine, regardless of what it's asking for.
 
 ## Python: pyarrow (low-level)
 
@@ -56,7 +56,7 @@ table = reader.read_all()
 print(table)
 ```
 
-Every call is this same two-step shape: `GetFlightInfo` returns the result schema and an opaque, single-use ticket; `DoGet` redeems that ticket for the actual data. This isn't Opteryx-specific — it's how Flight (and Flight SQL) always works.
+Every call is this same two-step shape: `GetFlightInfo` returns the result schema and an opaque, single-use ticket; `DoGet` redeems that ticket for the actual data. This isn't Opteryx-specific — it's how Flight (and Flight SQL) always works. `options` (carrying the bearer token) must be passed to *both* calls — `GetFlightInfo` without it fails before a ticket is even issued.
 
 ## Python: ADBC (recommended)
 
@@ -85,16 +85,24 @@ Straight into pandas:
 import pandas
 from adbc_driver_flightsql import dbapi
 
-with dbapi.connect("grpc+tls://flight.opteryx.app:443") as conn:
+with dbapi.connect(
+    "grpc+tls://flight.opteryx.app:443",
+    db_kwargs={"adbc.flight.sql.authorization_header": "Bearer YOUR_TOKEN"},
+) as conn:
     df = pandas.read_sql_query("SELECT * FROM opteryx.test.planets", conn)
 ```
 
+`adbc.flight.sql.authorization_header` isn't optional here — omitting `db_kwargs` entirely connects without credentials, and every call on that connection will fail with an authentication error.
+
 ### Discovering tables
 
-ADBC's catalog-introspection calls map onto the same `GetCatalogs`/`GetDbSchemas`/`GetTables` metadata calls a BI tool's table browser uses to populate its tree:
+ADBC's catalog-introspection calls map onto the same `GetCatalogs`/`GetDbSchemas`/`GetTables` metadata calls a BI tool's table browser uses to populate its tree — these need a token too, same as running a query:
 
 ```python
-with dbapi.connect("grpc+tls://flight.opteryx.app:443") as conn:
+with dbapi.connect(
+    "grpc+tls://flight.opteryx.app:443",
+    db_kwargs={"adbc.flight.sql.authorization_header": "Bearer YOUR_TOKEN"},
+) as conn:
     print(conn.adbc_get_table_types())          # ['TABLE', 'VIEW']
 
     objects = conn.adbc_get_objects(depth="all").read_all()
@@ -104,7 +112,7 @@ with dbapi.connect("grpc+tls://flight.opteryx.app:443") as conn:
             print(f"{row['catalog_name']}.{schema['db_schema_name']}: {tables}")
 ```
 
-Anonymously, this only lists the public-read datasets — the same ones a Flight SQL query can read without a token.
+This only lists datasets your token's policies actually grant you — same access model as the rest of the hosted service, see [Access and Permissions](/docs/core-concepts/access-and-permissions).
 
 ## GUI clients (DBeaver, JDBC/ODBC-capable tools)
 
@@ -115,14 +123,14 @@ Connection parameters, regardless of client:
 - **Host:** `flight.opteryx.app`
 - **Port:** `443`
 - **TLS:** required
-- **Auth:** bearer token, same as above — most Flight SQL drivers expose this as a "token" or "authorization header" connection property rather than a username/password pair.
+- **Auth:** bearer token, required on every connection — most Flight SQL drivers expose this as a "token" or "authorization header" connection property rather than a username/password pair. There's no anonymous fallback to fall back on if you skip it.
 
 ## Things to know
 
 - **Read-only.** No writes, no `DoPut` ingestion, no transactions in this release — the same scope as the OData service, just a different transport.
 - **No prepared statements yet.** Every query is a one-shot `CommandStatementQuery`; there's no `PREPARE`/execute-with-parameters step.
 - **Dataset names are the same as everywhere else** — dot-separated names like `opteryx.test.planets`, resolved through whatever policies your token grants. See [Access and Permissions](/docs/core-concepts/access-and-permissions).
-- **Anonymous access is intentionally narrow.** Unlike the plain-HTTP API, Flight SQL accepts calls with no token at all rather than rejecting them outright — but only a small set of public datasets are actually readable that way. Don't rely on this for anything beyond a quick, credential-free smoke test.
+- **No anonymous access, unlike the OData service.** `odata.opteryx` lets a couple of specific public datasets through with no credentials at all; the Flight SQL endpoint doesn't — every call, including a metadata call like `GetTableTypes`, needs a valid bearer token.
 
 ## Related
 
