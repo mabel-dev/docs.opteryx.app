@@ -50,6 +50,9 @@
           },
           {
             "Using SQLAlchemy from a notebook": "guides/using-sqlalchemy.md"
+          },
+          {
+            "Connecting via Arrow Flight SQL": "guides/connecting-via-flight-sql.md"
           }
         ]
       }
