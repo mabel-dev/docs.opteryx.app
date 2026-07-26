@@ -92,6 +92,12 @@ Get recent user queries.
 - **200** — Successful Response (`application/json` `array<QueryJob>`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+Supply your own bearer token in the embed's Authorization tab — requests run against the real service.
+
+<iframe src="https://hopp.sh/e/GEx6emtbbKch" title="Hoppscotch Embed" style="width: 100%; height: 480px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.1);"></iframe>
+
 ## Download job results
 
 **Request:** `[GET] /api/v1/jobs/{identifier}/download`

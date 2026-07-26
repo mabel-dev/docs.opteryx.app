@@ -28,6 +28,9 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://jobs.opteryx.app',
         'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
+        'hoppscotch_embeds': {
+            ('GET', '/api/v1/jobs/recent'): '<iframe src="https://hopp.sh/e/GEx6emtbbKch" title="Hoppscotch Embed" style="width: 100%; height: 480px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.1);"></iframe>',
+        },
     },
     'api-opteryx-odata.json': {
         'slug': 'odata-api',
@@ -368,6 +371,13 @@ def build_api_docs():
             _render_parameter_list(lines, 'Header Parameters', header_parameters)
             _render_request_body(lines, operation.get('requestBody') or {}, schemas)
             _render_responses(lines, operation.get('responses') or {})
+
+            embed_html = (doc_meta.get('hoppscotch_embeds') or {}).get((method, route))
+            if embed_html:
+                lines.append('### Try it live\n')
+                lines.append('Supply your own bearer token in the embed\'s Authorization tab — requests run against the real service.\n')
+                lines.append(embed_html)
+                lines.append('')
 
         write_md(output_path, lines)
         generated_specs.append({**doc_meta, 'definition': def_name})
