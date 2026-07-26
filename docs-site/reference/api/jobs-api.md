@@ -10,12 +10,12 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
 
 Endpoint | Method | Summary
 --- | --- | ---
-`/api/v1/jobs` | `POST` | Create and execute SQL job
-`/api/v1/jobs/estimate` | `POST` | Estimate result size
-`/api/v1/jobs/recent` | `GET` | Retrieve recent user queries
-`/api/v1/jobs/{identifier}/download` | `GET` | Download job results
-`/api/v1/jobs/{identifier}/results` | `GET` | Get job results
-`/api/v1/jobs/{identifier}/status` | `GET` | Get job status
+`/api/v1/jobs` | `POST` | [Create and execute SQL job](#create-and-execute-sql-job)
+`/api/v1/jobs/estimate` | `POST` | [Estimate result size](#estimate-result-size)
+`/api/v1/jobs/recent` | `GET` | [Retrieve recent user queries](#retrieve-recent-user-queries)
+`/api/v1/jobs/{identifier}/download` | `GET` | [Download job results](#download-job-results)
+`/api/v1/jobs/{identifier}/results` | `GET` | [Get job results](#get-job-results)
+`/api/v1/jobs/{identifier}/status` | `GET` | [Get job status](#get-job-status)
 
 ## Create and execute SQL job
 

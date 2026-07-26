@@ -2,6 +2,7 @@ import json
 import pathlib
 import re
 
+from collections import Counter
 from typing import Any, Dict, List, Optional, Tuple
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -513,6 +514,25 @@ def _render_try_it_live(
     lines.append('')
 
 
+def _operation_summary(operation: Dict[str, Any], route: str) -> str:
+    return operation.get('summary') or operation.get('operationId') or route
+
+
+def _heading_slug(text: str) -> str:
+    """Match docs-site/app/lib/renderMarkdown.ts::addHeadingIdsToHtml exactly.
+
+    That function assigns the anchor id every h2/h3 gets at render time, purely
+    from the heading's own text. The endpoint table needs to link to those same
+    ids, so the slugging logic must stay byte-for-byte identical to the JS —
+    diverge here and every link in the table silently 404s to nowhere.
+    """
+    slug = text.lower()
+    slug = re.sub(r'[^\w\s-]', '', slug, flags=re.ASCII)
+    slug = re.sub(r'\s+', '-', slug)
+    slug = re.sub(r'-+', '-', slug)
+    return slug.strip()
+
+
 def _sort_api_operations(spec: Dict[str, Any]) -> List[Tuple[str, str, Dict[str, Any]]]:
     operations: List[Tuple[str, str, Dict[str, Any]]] = []
     for route, methods in spec.get('paths', {}).items():
@@ -601,13 +621,28 @@ def build_api_docs():
         ]
 
         operations = _sort_api_operations(spec)
+
+        # Slugs must be unique per page — the JS assigns ids by heading text
+        # alone, so two operations sharing a summary would collide and the
+        # table would jump to whichever one the browser resolves first.
+        slug_counts = Counter(
+            _heading_slug(_operation_summary(operation, route)) for route, _, operation in operations
+        )
+        collisions = {slug for slug, count in slug_counts.items() if count > 1}
+        if collisions:
+            raise SystemExit(
+                f"{def_name}: duplicate operation summaries produce the same anchor "
+                f"{sorted(collisions)} — give each a distinct 'summary' in the source."
+            )
+
         for route, method, operation in operations:
-            summary = operation.get('summary') or operation.get('operationId') or route
-            lines.append(f'`{route}` | `{method}` | {summary}')
+            summary = _operation_summary(operation, route)
+            slug = _heading_slug(summary)
+            lines.append(f'`{route}` | `{method}` | [{summary}](#{slug})')
         lines.append('')
 
         for route, method, operation in operations:
-            summary = operation.get('summary') or route
+            summary = _operation_summary(operation, route)
             description = operation.get('description') or ''
             tags = operation.get('tags') or []
 

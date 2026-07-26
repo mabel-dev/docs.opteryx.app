@@ -10,12 +10,12 @@ Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and clien
 
 Endpoint | Method | Summary
 --- | --- | ---
-`/clients/{client_id}/credentials` | `GET` | List Credentials
-`/clients/{client_id}/credentials` | `POST` | Create Credential
-`/clients/{client_id}/credentials/{credential_id}` | `DELETE` | Revoke Credential
-`/jwks` | `GET` | Get signing keys
-`/me` | `GET` | Get current user
-`/token` | `POST` | Issue an access token
+`/clients/{client_id}/credentials` | `GET` | [List Credentials](#list-credentials)
+`/clients/{client_id}/credentials` | `POST` | [Create Credential](#create-credential)
+`/clients/{client_id}/credentials/{credential_id}` | `DELETE` | [Revoke Credential](#revoke-credential)
+`/jwks` | `GET` | [Get signing keys](#get-signing-keys)
+`/me` | `GET` | [Get current user](#get-current-user)
+`/token` | `POST` | [Issue an access token](#issue-an-access-token)
 
 ## List Credentials
 

@@ -10,11 +10,11 @@ Multipart upload sessions, part upload and deletion, session inspection, and com
 
 Endpoint | Method | Summary
 --- | --- | ---
-`/v1/upload/session` | `POST` | Start Upload Session
-`/v1/upload/{session_id}` | `PUT` | Upload Part
-`/v1/upload/{session_id}/commit` | `POST` | Commit Session
-`/v1/upload/{session_id}/inspect` | `GET` | Inspect Session
-`/v1/upload/{session_id}/part/{part}` | `DELETE` | Delete Part
+`/v1/upload/session` | `POST` | [Start Upload Session](#start-upload-session)
+`/v1/upload/{session_id}` | `PUT` | [Upload Part](#upload-part)
+`/v1/upload/{session_id}/commit` | `POST` | [Commit Session](#commit-session)
+`/v1/upload/{session_id}/inspect` | `GET` | [Inspect Session](#inspect-session)
+`/v1/upload/{session_id}/part/{part}` | `DELETE` | [Delete Part](#delete-part)
 
 ## Start Upload Session
 
