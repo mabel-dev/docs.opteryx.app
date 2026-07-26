@@ -41,6 +41,38 @@ Returns:
 - **200** — Successful Response (`application/json` `array<CredentialMetadata>`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">client_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="client_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Create Credential
 
 **Request:** `[POST] /clients/{client_id}/credentials`
@@ -82,6 +114,42 @@ Returns:
 - **200** — Successful Response (`application/json` `CreateCredentialResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">client_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="client_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · CreateCredentialRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Revoke Credential
 
 **Request:** `[DELETE] /clients/{client_id}/credentials/{credential_id}`
@@ -109,6 +177,40 @@ Returns:
 - **200** — Successful Response (`application/json` `object`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="DELETE" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials/{credential_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--delete">delete</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">client_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="client_id" placeholder="string">
+        <div class="t-pname">credential_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="credential_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Get signing keys
 
 **Request:** `[GET] /jwks`
@@ -120,6 +222,31 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
 ### Responses
 
 - **200** — Successful Response (`application/json` `object`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/jwks" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
 
 ## Get current user
 
@@ -135,6 +262,36 @@ Validates the bearer token and returns the caller identity and token scope detai
 
 - **200** — Successful Response (`application/json` `object`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/me" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
 
 ## Issue an access token
 
@@ -163,3 +320,49 @@ Creates access tokens for client credentials or refresh-token exchanges used by 
 
 - **200** — Successful Response (`application/json` `TokenResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://authenticate.opteryx.app" data-path="/token" data-auth-docs="/docs/reference/api/authentication-api" data-body-type="form">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"></span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">set_cookie<span>boolean · optional</span></div>
+        <input type="text" class="t-query" data-name="set_cookie" value="false" placeholder="boolean">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Form body <span class="t-opt">application/x-www-form-urlencoded · Body_token_endpoint_token_post</span></div>
+      <div class="t-params">
+        <div class="t-pname">grant_type<span>string · optional</span></div>
+        <input type="text" class="t-form" data-name="grant_type" value="client_credentials" autocomplete="off" placeholder="string">
+        <div class="t-pname">client_id<span>string · optional</span></div>
+        <input type="text" class="t-form" data-name="client_id" autocomplete="off" placeholder="string">
+        <div class="t-pname">client_secret<span>string · optional</span></div>
+        <input type="password" class="t-form" data-name="client_secret" data-secret="1" autocomplete="off" placeholder="string">
+        <div class="t-pname">refresh_token<span>string · optional</span></div>
+        <input type="password" class="t-form" data-name="refresh_token" data-secret="1" autocomplete="off" placeholder="string">
+      </div>
+      <div class="t-hint">Secret fields are sent only to the API — copied cURL and Python snippets carry a placeholder, never the value.</div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>

@@ -213,6 +213,78 @@
     }, 1200);
   }
 
+  // Typed confirmation before anything that removes or replaces live state.
+  // Required every time — a prior confirmation never carries over to the next
+  // send, because the second delete is as irreversible as the first.
+  var CONFIRM_PHRASE = "I understand";
+
+  function confirmDestructive(widget, onConfirm) {
+    var overlay = document.createElement("div");
+    overlay.className = "api-tryit-modal";
+    overlay.innerHTML =
+      '<div class="tm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="tm-title">' +
+      '<h2 class="tm-title" id="tm-title">Destructive action</h2>' +
+      '<p class="tm-body">This sends <code class="tm-verb">' +
+      esc(widget.dataset.method) +
+      "</code> to <code>" +
+      esc(buildURL(widget)) +
+      "</code> on the <b>live platform</b>. It removes or replaces real data and " +
+      "cannot be undone from this page.</p>" +
+      '<label class="tm-label" for="tm-input">Type <b>' +
+      CONFIRM_PHRASE +
+      "</b> to continue</label>" +
+      '<input id="tm-input" class="tm-input" type="text" autocomplete="off" spellcheck="false">' +
+      '<div class="tm-actions">' +
+      '<button type="button" class="t-btn tm-cancel">Cancel</button>' +
+      '<button type="button" class="t-btn tm-go" disabled>Send anyway</button>' +
+      "</div></div>";
+
+    var input = overlay.querySelector(".tm-input");
+    var go = overlay.querySelector(".tm-go");
+    var cancel = overlay.querySelector(".tm-cancel");
+    var lastFocus = document.activeElement;
+
+    function close() {
+      document.removeEventListener("keydown", onKey, true);
+      overlay.remove();
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function onKey(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    }
+
+    input.addEventListener("input", function () {
+      go.disabled =
+        input.value.trim().toLowerCase() !== CONFIRM_PHRASE.toLowerCase();
+    });
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !go.disabled) {
+        event.preventDefault();
+        close();
+        onConfirm();
+      }
+    });
+
+    go.addEventListener("click", function () {
+      close();
+      onConfirm();
+    });
+
+    cancel.addEventListener("click", close);
+    overlay.addEventListener("click", function (event) {
+      if (event.target === overlay) close();
+    });
+    document.addEventListener("keydown", onKey, true);
+
+    document.body.appendChild(overlay);
+    input.focus();
+  }
+
   function showResponse(widget, opts) {
     var resp = widget.querySelector(".t-resp");
     var pill = resp.querySelector(".t-pill");
@@ -281,6 +353,21 @@
       init.headers["Content-Type"] = "application/json";
       init.body = bodyEl.value;
     }
+
+    // Gate only after the request is known to be well-formed — no point making
+    // someone type a confirmation for something that cannot fire anyway.
+    if (widget.dataset.destructive) {
+      confirmDestructive(widget, function () {
+        dispatch(widget, init);
+      });
+      return;
+    }
+
+    dispatch(widget, init);
+  }
+
+  function dispatch(widget, init) {
+    var button = widget.querySelector(".t-send");
 
     button.disabled = true;
     button.innerHTML = '<span class="t-spin"></span>Sending';

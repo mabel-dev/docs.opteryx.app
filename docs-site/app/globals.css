@@ -3684,3 +3684,130 @@ kbd {
     border-color: var(--border-2);
     background: var(--panel);
 }
+
+/* Destructive-action confirmation modal (public/api-tryit.js) */
+
+.api-tryit-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-4);
+    background: rgba(31, 46, 97, 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.api-tryit-modal .tm-dialog {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-modal);
+    max-width: 520px;
+    width: 100%;
+    padding: var(--sp-6);
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--text);
+}
+
+.api-tryit-modal .tm-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--danger);
+    margin: 0 0 var(--sp-3);
+    letter-spacing: -0.01em;
+}
+
+.api-tryit-modal .tm-body {
+    margin: 0 0 var(--sp-4);
+    line-height: var(--lh-body);
+    color: var(--muted);
+    word-break: break-word;
+}
+
+.api-tryit-modal .tm-body b {
+    color: var(--text-deep);
+}
+
+.api-tryit-modal .tm-body code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--panel-2);
+    padding: 1px 5px;
+    border-radius: var(--r-s);
+    color: var(--text-deep);
+}
+
+.api-tryit-modal .tm-body code.tm-verb {
+    background: var(--danger-soft);
+    color: var(--danger);
+    font-weight: 700;
+}
+
+.api-tryit-modal .tm-label {
+    display: block;
+    font-size: var(--fs-caption);
+    color: var(--text-deep);
+    margin-bottom: var(--sp-2);
+}
+
+.api-tryit-modal .tm-input {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    color: var(--text);
+    background: var(--muted-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    padding: 8px 10px;
+}
+
+.api-tryit-modal .tm-input:focus {
+    outline: none;
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.api-tryit-modal .tm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sp-3);
+    margin-top: var(--sp-5);
+}
+
+.api-tryit-modal .tm-cancel {
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--border);
+}
+
+.api-tryit-modal .tm-cancel:hover {
+    color: var(--text-deep);
+    border-color: var(--border-2);
+    background: var(--panel);
+}
+
+.api-tryit-modal .tm-go {
+    background: var(--danger);
+    color: #fff;
+}
+
+.api-tryit-modal .tm-go:disabled {
+    background: var(--muted-2);
+    cursor: not-allowed;
+}
+
+/* Destructive cards read as dangerous before they are ever opened. */
+.api-tryit[data-destructive] .t-send {
+    background: var(--danger);
+}
+
+.api-tryit[data-destructive] .t-send:hover {
+    background: #b00000;
+}
+
+.api-tryit[data-destructive] .t-open {
+    color: var(--danger);
+}

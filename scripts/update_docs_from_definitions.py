@@ -272,6 +272,15 @@ def _is_secret_field(name: str) -> bool:
     return any(hint in lowered for hint in SECRET_FIELD_HINTS)
 
 
+# Methods that remove or replace existing state. Cards for these require an
+# explicit typed confirmation before they will fire against the live platform.
+DESTRUCTIVE_METHODS = ('DELETE', 'PUT')
+
+
+def _is_destructive(method: str) -> bool:
+    return method.upper() in DESTRUCTIVE_METHODS
+
+
 def _takes_bearer_token(operation: Dict[str, Any]) -> bool:
     """Whether the operation declares an `authorization` header parameter.
 
@@ -351,6 +360,7 @@ def _render_try_it_live(
         f'<details class="api-tryit" data-method="{method}" '
         f'data-base="{base_url}" data-path="{route}" data-auth-docs="{auth_docs}"'
         + (' data-body-type="form"' if is_form else '')
+        + (' data-destructive="1"' if _is_destructive(method) else '')
         + '>'
     )
     lines.append('  <summary class="api-tryit__bar">')
