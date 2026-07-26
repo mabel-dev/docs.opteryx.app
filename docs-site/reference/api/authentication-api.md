@@ -46,7 +46,7 @@ Returns:
 <details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/clients/{client_id}/credentials</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -67,6 +67,7 @@ Returns:
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -119,7 +120,7 @@ Returns:
 <details class="api-tryit" data-method="POST" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/clients/{client_id}/credentials</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -132,7 +133,12 @@ Returns:
     </div>
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · CreateCredentialRequest</span></div>
-      <textarea class="t-body" spellcheck="false">{}</textarea>
+      <textarea class="t-body" spellcheck="false">{
+  "type": "interactive",
+  "expires_in_days": 90,
+  "scopes": [],
+  "permissions": []
+}</textarea>
     </div>
     <div class="t-actions">
       <button type="button" class="t-btn t-send">Send request</button>
@@ -144,6 +150,7 @@ Returns:
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -182,7 +189,7 @@ Returns:
 <details class="api-tryit" data-method="DELETE" data-base="https://authenticate.opteryx.app" data-path="/clients/{client_id}/credentials/{credential_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/clients/{client_id}/credentials/{credential_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -205,6 +212,7 @@ Returns:
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -228,7 +236,7 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
 <details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/jwks" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/jwks</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -242,6 +250,7 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -268,7 +277,7 @@ Validates the bearer token and returns the caller identity and token scope detai
 <details class="api-tryit" data-method="GET" data-base="https://authenticate.opteryx.app" data-path="/me" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/me</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -287,6 +296,7 @@ Validates the bearer token and returns the caller identity and token scope detai
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -326,7 +336,7 @@ Creates access tokens for client credentials or refresh-token exchanges used by 
 <details class="api-tryit" data-method="POST" data-base="https://authenticate.opteryx.app" data-path="/token" data-auth-docs="/docs/reference/api/authentication-api" data-body-type="form">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://authenticate.opteryx.app</span>/token</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -361,6 +371,7 @@ Creates access tokens for client credentials or refresh-token exchanges used by 
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>

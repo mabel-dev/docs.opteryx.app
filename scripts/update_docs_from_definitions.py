@@ -302,6 +302,29 @@ def _request_body_content(operation: Dict[str, Any]) -> Tuple[Optional[str], Dic
     return None, {}
 
 
+def _placeholder_value(schema: Dict[str, Any], schemas: Dict[str, Any]) -> Any:
+    """A type-appropriate empty value for a field with no declared default."""
+    any_of = schema.get('anyOf')
+    if isinstance(any_of, list):
+        for item in any_of:
+            if item.get('type') != 'null':
+                return _placeholder_value(_resolve_schema(item, schemas), schemas)
+        return None
+
+    schema_type = schema.get('type')
+    if schema_type == 'array':
+        return []
+    if schema_type == 'object':
+        return {}
+    if schema_type == 'boolean':
+        return False
+    if schema_type in ('integer', 'number'):
+        return 0
+    if schema_type == 'string':
+        return ''
+    return None
+
+
 def _example_request_body(operation: Dict[str, Any], schemas: Dict[str, Any]) -> Optional[str]:
     """Return a pretty-printed JSON example for an operation's request body.
 
@@ -317,14 +340,19 @@ def _example_request_body(operation: Dict[str, Any], schemas: Dict[str, Any]) ->
 
     schema = _resolve_schema(content.get('schema', {}), schemas)
     properties = schema.get('properties', {}) or {}
-    required = schema.get('required', []) or []
-    if not required:
+    if not properties:
         return '{}'
 
+    # Every declared field, not just the required ones — an editor prefilled with
+    # `{}` tells the reader nothing about what the endpoint accepts. Declared
+    # defaults are used verbatim so the example matches the schema exactly.
     placeholder = {}
-    for field in required:
-        field_type = _schema_to_type(properties.get(field, {}))
-        placeholder[field] = '' if field_type.startswith('string') else None
+    for field, field_schema in properties.items():
+        resolved = _resolve_schema(field_schema, schemas)
+        if 'default' in resolved:
+            placeholder[field] = resolved['default']
+        else:
+            placeholder[field] = _placeholder_value(resolved, schemas)
 
     return json.dumps(placeholder, indent=2)
 
@@ -365,7 +393,12 @@ def _render_try_it_live(
     )
     lines.append('  <summary class="api-tryit__bar">')
     lines.append(f'    <span class="t-verb t-verb--{method.lower()}">{method.lower()}</span>')
-    lines.append('    <span class="t-url"></span>')
+    # Rendered here rather than left for the JS to fill in — the endpoint must be
+    # readable even if the script is slow, blocked, or never runs. The hydrator
+    # only rewrites this when a path or query value actually changes.
+    lines.append(
+        f'    <span class="t-url"><span class="t-host">{base_url}</span>{route}</span>'
+    )
     lines.append('    <span class="t-open"></span>')
     lines.append('  </summary>')
     lines.append('  <div class="api-tryit__body">')
@@ -471,6 +504,7 @@ def _render_try_it_live(
     lines.append('    <div class="t-resp__bar">')
     lines.append('      <span class="t-pill"></span>')
     lines.append('      <span class="t-meta"></span>')
+    lines.append('      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>')
     lines.append('    </div>')
     lines.append('    <pre class="t-pre"></pre>')
     lines.append('    <div class="t-note"></div>')

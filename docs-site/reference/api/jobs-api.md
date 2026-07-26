@@ -50,7 +50,7 @@ Submit a SQL job for execution.
 <details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -62,7 +62,9 @@ Submit a SQL job for execution.
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · JobCreateRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "sql_text": ""
+  "sql_text": "",
+  "client_info": {},
+  "parameters": {}
 }</textarea>
     </div>
     <div class="t-actions">
@@ -75,6 +77,7 @@ Submit a SQL job for execution.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -112,7 +115,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
 <details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/estimate</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -124,7 +127,8 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · EstimateRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "sql_text": ""
+  "sql_text": "",
+  "parameters": {}
 }</textarea>
     </div>
     <div class="t-actions">
@@ -137,6 +141,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -169,7 +174,7 @@ Get recent user queries.
 <details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/recent</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -195,6 +200,7 @@ Get recent user queries.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -237,7 +243,7 @@ Download the results of a previously submitted job as CSV, newline-delimited JSO
 <details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/{identifier}/download</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -274,6 +280,7 @@ Download the results of a previously submitted job as CSV, newline-delimited JSO
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -315,7 +322,7 @@ Retrieve the results of a previously submitted job.
 <details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/{identifier}/results</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -352,6 +359,7 @@ Retrieve the results of a previously submitted job.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -384,7 +392,7 @@ Retrieve the execution status of a previously submitted job.
 <details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/{identifier}/status</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -410,6 +418,7 @@ Retrieve the execution status of a previously submitted job.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>

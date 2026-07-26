@@ -10,7 +10,6 @@ Workspace policy listing, inspection, creation, updates, and deletion for access
 
 Endpoint | Method | Summary
 --- | --- | ---
-`/health` | `GET` | Health check
 `/v1/access/workspace/{workspace}` | `GET` | List workspace policies
 `/v1/access/workspace/{workspace}/policies` | `POST` | Create policy
 `/v1/access/workspace/{workspace}/policies/{policy_id}` | `GET` | Get policy details
@@ -19,43 +18,6 @@ Endpoint | Method | Summary
 `/v1/cost/{workspace}` | `GET` | Get cost policy
 `/v1/cost/{workspace}` | `POST` | Create/update cost policy
 `/v1/cost/{workspace}` | `DELETE` | Delete cost policy
-
-## Health check
-
-**Request:** `[GET] /health`
-
-**Tags:** Health
-
-Returns service health status.
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)
-
-### Try it live
-
-<details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/health" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
 
 ## List workspace policies
 
@@ -84,7 +46,7 @@ Get all access policies for a workspace. Requires owner or admin access.
 <details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -110,6 +72,7 @@ Get all access policies for a workspace. Requires owner or admin access.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -154,7 +117,7 @@ Create a new access policy for a user in the workspace.
 <details class="api-tryit" data-method="POST" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -173,7 +136,7 @@ Create a new access policy for a user in the workspace.
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · CreatePolicyRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "principal": null,
+  "principal": {},
   "role": "",
   "pattern": ""
 }</textarea>
@@ -188,6 +151,7 @@ Create a new access policy for a user in the workspace.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -223,7 +187,7 @@ Get detailed information about a specific policy.
 <details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -251,6 +215,7 @@ Get detailed information about a specific policy.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -295,7 +260,7 @@ Update an existing access policy.
 <details class="api-tryit" data-method="PUT" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--put">put</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -330,6 +295,7 @@ Update an existing access policy.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -365,7 +331,7 @@ Remove an access policy from the workspace.
 <details class="api-tryit" data-method="DELETE" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -393,6 +359,7 @@ Remove an access policy from the workspace.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -426,7 +393,7 @@ Retrieve the cost policy for a workspace.
 <details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/cost/{workspace}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/cost/{workspace}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -452,6 +419,7 @@ Retrieve the cost policy for a workspace.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -500,7 +468,7 @@ Create or update the cost policy for a workspace.
 <details class="api-tryit" data-method="POST" data-base="https://policy.opteryx.app" data-path="/v1/cost/{workspace}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/cost/{workspace}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -520,10 +488,10 @@ Create or update the cost policy for a workspace.
       <div class="t-label">Request body <span class="t-opt">application/json · CostPolicyRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
   "collection": "",
-  "budget_limit": null,
+  "budget_limit": 0,
   "window": "",
   "violation_action": "",
-  "warn_at": null
+  "warn_at": []
 }</textarea>
     </div>
     <div class="t-actions">
@@ -536,6 +504,7 @@ Create or update the cost policy for a workspace.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -569,7 +538,7 @@ Delete the cost policy for a workspace.
 <details class="api-tryit" data-method="DELETE" data-base="https://policy.opteryx.app" data-path="/v1/cost/{workspace}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/cost/{workspace}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -595,6 +564,7 @@ Delete the cost policy for a workspace.
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>

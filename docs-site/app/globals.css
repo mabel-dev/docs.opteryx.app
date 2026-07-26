@@ -3521,7 +3521,10 @@ kbd {
     flex-wrap: wrap;
 }
 
-.api-tryit .t-btn {
+/* The modal is appended to <body>, outside any .api-tryit, so it needs the base
+   button styling in its own right rather than through descendant scoping. */
+.api-tryit .t-btn,
+.api-tryit-modal .t-btn {
     font-family: var(--font-body);
     font-size: var(--fs-body-s);
     font-weight: 600;
@@ -3810,4 +3813,22 @@ kbd {
 
 .api-tryit[data-destructive] .t-open {
     color: var(--danger);
+}
+
+.api-tryit .t-copy-resp {
+    margin-left: auto;
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--border-2);
+    padding: 4px 12px;
+    font-size: var(--fs-micro);
+}
+
+.api-tryit .t-copy-resp:hover {
+    color: var(--text-deep);
+    background: var(--bg);
+}
+
+.api-tryit .t-copy-resp[hidden] {
+    display: none;
 }

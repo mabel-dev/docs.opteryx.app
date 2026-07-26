@@ -300,6 +300,13 @@
     pre.innerHTML = opts.bodyHTML || "";
     note.innerHTML = opts.note || "";
     resp.classList.add("is-open");
+
+    // Nothing to copy when the failure never produced a body (e.g. no token).
+    var copyButton = resp.querySelector(".t-copy-resp");
+    if (copyButton) {
+      copyButton.hidden = !opts.bodyHTML;
+      copyButton.textContent = "Copy";
+    }
   }
 
   function send(widget) {
@@ -461,6 +468,14 @@
     [
       [widget.querySelector(".t-curl"), curlFor],
       [widget.querySelector(".t-python"), pythonFor],
+      // textContent, not innerHTML — the reader wants the response, not the
+      // syntax-highlighting spans wrapped around it.
+      [
+        widget.querySelector(".t-copy-resp"),
+        function (w) {
+          return w.querySelector(".t-pre").textContent;
+        },
+      ],
     ].forEach(function (pair) {
       var button = pair[0];
       var render = pair[1];

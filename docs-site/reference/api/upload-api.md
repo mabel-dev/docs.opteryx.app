@@ -10,47 +10,11 @@ Multipart upload sessions, part upload and deletion, session inspection, and com
 
 Endpoint | Method | Summary
 --- | --- | ---
-`/health` | `GET` | Health
 `/v1/upload/session` | `POST` | Start Upload Session
 `/v1/upload/{session_id}` | `PUT` | Upload Part
 `/v1/upload/{session_id}/commit` | `POST` | Commit Session
 `/v1/upload/{session_id}/inspect` | `GET` | Inspect Session
 `/v1/upload/{session_id}/part/{part}` | `DELETE` | Delete Part
-
-## Health
-
-**Request:** `[GET] /health`
-
-**Tags:** service
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)
-
-### Try it live
-
-<details class="api-tryit" data-method="GET" data-base="https://upload.opteryx.app" data-path="/health" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
 
 ## Start Upload Session
 
@@ -72,7 +36,7 @@ Endpoint | Method | Summary
 <details class="api-tryit" data-method="POST" data-base="https://upload.opteryx.app" data-path="/v1/upload/session" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://upload.opteryx.app</span>/v1/upload/session</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -91,6 +55,7 @@ Endpoint | Method | Summary
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -126,7 +91,7 @@ Endpoint | Method | Summary
 <details class="api-tryit" data-method="PUT" data-base="https://upload.opteryx.app" data-path="/v1/upload/{session_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--put">put</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://upload.opteryx.app</span>/v1/upload/{session_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -161,6 +126,7 @@ Endpoint | Method | Summary
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -200,7 +166,7 @@ Endpoint | Method | Summary
 <details class="api-tryit" data-method="POST" data-base="https://upload.opteryx.app" data-path="/v1/upload/{session_id}/commit" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://upload.opteryx.app</span>/v1/upload/{session_id}/commit</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -219,7 +185,9 @@ Endpoint | Method | Summary
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · CommitRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "target": null
+  "target": {},
+  "snapshot_message": "",
+  "conflict_resolution": ""
 }</textarea>
     </div>
     <div class="t-actions">
@@ -232,6 +200,7 @@ Endpoint | Method | Summary
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -262,7 +231,7 @@ Endpoint | Method | Summary
 <details class="api-tryit" data-method="GET" data-base="https://upload.opteryx.app" data-path="/v1/upload/{session_id}/inspect" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://upload.opteryx.app</span>/v1/upload/{session_id}/inspect</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -288,6 +257,7 @@ Endpoint | Method | Summary
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
@@ -319,7 +289,7 @@ Endpoint | Method | Summary
 <details class="api-tryit" data-method="DELETE" data-base="https://upload.opteryx.app" data-path="/v1/upload/{session_id}/part/{part}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"></span>
+    <span class="t-url"><span class="t-host">https://upload.opteryx.app</span>/v1/upload/{session_id}/part/{part}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -347,6 +317,7 @@ Endpoint | Method | Summary
     <div class="t-resp__bar">
       <span class="t-pill"></span>
       <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
     </div>
     <pre class="t-pre"></pre>
     <div class="t-note"></div>

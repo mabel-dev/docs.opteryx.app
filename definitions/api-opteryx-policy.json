@@ -363,30 +363,6 @@
         }
       }
     },
-    "/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Health check",
-        "description": "Returns service health status.",
-        "operationId": "health_check_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Health Check Health Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/cost/{workspace}": {
       "get": {
         "tags": [
