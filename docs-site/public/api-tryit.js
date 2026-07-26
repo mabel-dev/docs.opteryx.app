@@ -199,12 +199,17 @@
     var token = tokenEl.value.trim();
 
     if (!token) {
+      var authDocs = widget.dataset.authDocs;
       showResponse(widget, {
         ok: false,
         status: 401,
         meta: "not sent",
         note:
-          "A bearer token is required. Get one from <code>POST https://authenticate.opteryx.app/token</code>.",
+          "<b>A bearer token is required.</b> See the " +
+          (authDocs
+            ? '<a href="' + authDocs + '">Authentication API</a>'
+            : "Authentication API") +
+          " for how to get one.",
       });
       tokenEl.focus();
       return;
@@ -251,11 +256,25 @@
             bodyHTML = esc(text) || "<em>empty response body</em>";
           }
 
+          // A token that the service rejects deserves the same signpost as no
+          // token at all — otherwise the reader just sees a bare 401 body.
+          var note = "";
+          if (response.status === 401 || response.status === 403) {
+            var docs = widget.dataset.authDocs;
+            note =
+              "The service rejected this token. See the " +
+              (docs
+                ? '<a href="' + docs + '">Authentication API</a>'
+                : "Authentication API") +
+              " for issuing a new one.";
+          }
+
           showResponse(widget, {
             ok: response.ok,
             status: response.status,
             meta: elapsed + " ms · " + formatBytes(new Blob([text]).size),
             bodyHTML: bodyHTML,
+            note: note,
           });
         });
       })

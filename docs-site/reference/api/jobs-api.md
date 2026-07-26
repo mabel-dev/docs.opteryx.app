@@ -47,7 +47,7 @@ Submit a SQL job for execution.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs">
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
     <span class="t-url"></span>
@@ -57,7 +57,7 @@ Submit a SQL job for execution.
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · JobCreateRequest</span></div>
@@ -109,7 +109,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate">
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
     <span class="t-url"></span>
@@ -119,7 +119,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · EstimateRequest</span></div>
@@ -166,7 +166,7 @@ Get recent user queries.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
@@ -176,7 +176,7 @@ Get recent user queries.
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Query parameters</div>
@@ -234,7 +234,7 @@ Download the results of a previously submitted job as CSV or JSON lines.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
@@ -244,7 +244,7 @@ Download the results of a previously submitted job as CSV or JSON lines.
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
@@ -312,7 +312,7 @@ Retrieve the results of a previously submitted job.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
@@ -322,7 +322,7 @@ Retrieve the results of a previously submitted job.
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
@@ -381,7 +381,7 @@ Retrieve the execution status of a previously submitted job.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
@@ -391,7 +391,7 @@ Retrieve the execution status of a previously submitted job.
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>

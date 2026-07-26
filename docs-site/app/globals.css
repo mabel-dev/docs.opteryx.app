@@ -3452,6 +3452,18 @@ kbd {
     margin-top: var(--sp-1);
 }
 
+.api-tryit .t-hint a,
+.api-tryit .t-note a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.api-tryit .t-hint a:hover,
+.api-tryit .t-note a:hover {
+    color: var(--text-deep);
+}
+
 .api-tryit input[type="text"],
 .api-tryit input[type="password"],
 .api-tryit textarea {

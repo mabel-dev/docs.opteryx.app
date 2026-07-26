@@ -53,6 +53,11 @@ API_DOC_SPECS = {
     },
 }
 
+# The service that issues the bearer tokens every other API expects. "Try it live"
+# cards link here rather than naming an endpoint, so the token instructions live in
+# one place and the link can't rot if the slug changes.
+AUTH_DEFINITION = 'api-opteryx-authenticate.json'
+
 API_MANUAL_DOC_SPECS = [
     {
         'slug': 'jobs-api',
@@ -248,6 +253,11 @@ def _render_responses(lines: List[str], responses: Dict[str, Any]):
     lines.append('')
 
 
+def _auth_docs_path() -> str:
+    """Docs path for the service that issues bearer tokens."""
+    return f"/docs/reference/api/{API_DOC_SPECS[AUTH_DEFINITION]['slug']}"
+
+
 def _example_request_body(operation: Dict[str, Any], schemas: Dict[str, Any]) -> Optional[str]:
     """Return a pretty-printed JSON example for an operation's request body.
 
@@ -298,9 +308,10 @@ def _render_try_it_live(
 
     # <details>/<summary> so the card is collapsed by default and the toggle works
     # natively — keyboard accessible, and correct even before the JS has loaded.
+    auth_docs = _auth_docs_path()
     lines.append(
         f'<details class="api-tryit" data-method="{method}" '
-        f'data-base="{base_url}" data-path="{route}">'
+        f'data-base="{base_url}" data-path="{route}" data-auth-docs="{auth_docs}">'
     )
     lines.append('  <summary class="api-tryit__bar">')
     lines.append(f'    <span class="t-verb t-verb--{method.lower()}">{method.lower()}</span>')
@@ -318,7 +329,7 @@ def _render_try_it_live(
     )
     lines.append(
         '      <div class="t-hint">Held in this tab only — never stored or logged. '
-        'Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>'
+        f'See the <a href="{auth_docs}">Authentication API</a> for how to get one.</div>'
     )
     lines.append('    </div>')
 
