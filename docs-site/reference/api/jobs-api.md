@@ -45,6 +45,45 @@ Submit a SQL job for execution.
 - **201** — Successful Response (`application/json` `JobCreateResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<div class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · JobCreateRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "sql_text": "SELECT customer_id, SUM(amount) AS total FROM sales GROUP BY customer_id ORDER BY total DESC LIMIT 10",
+  "client_info": {
+    "app": "docs-try-it",
+    "version": "1.0"
+  }
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>
+
 ## Estimate result size
 
 **Request:** `[POST] /api/v1/jobs/estimate`
@@ -71,6 +110,41 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
 - **200** — Successful Response (`application/json` `EstimateResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<div class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · EstimateRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "sql_text": "SELECT * FROM sales WHERE order_date >= '2026-01-01'"
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>
+
 ## Retrieve recent user queries
 
 **Request:** `[GET] /api/v1/jobs/recent`
@@ -94,9 +168,39 @@ Get recent user queries.
 
 ### Try it live
 
-Supply your own bearer token in the embed's Authorization tab — requests run against the real service.
-
-<iframe src="https://hopp.sh/e/GEx6emtbbKch" title="Hoppscotch Embed" style="width: 100%; height: 480px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.1);"></iframe>
+<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">filter<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="filter" placeholder="string | null">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>
 
 ## Download job results
 
@@ -129,6 +233,53 @@ Download the results of a previously submitted job as CSV or JSON lines.
 - **200** — Successful Response (`application/json` `object`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">identifier<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="identifier" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">file_format<span>string · optional</span></div>
+        <input type="text" class="t-query" data-name="file_format" value="csv" placeholder="string">
+        <div class="t-pname">limit<span>integer · optional</span></div>
+        <input type="text" class="t-query" data-name="limit" value="10000" placeholder="integer">
+        <div class="t-pname">offset<span>integer · optional</span></div>
+        <input type="text" class="t-query" data-name="offset" value="0" placeholder="integer">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>
+
 ## Get job results
 
 **Request:** `[GET] /api/v1/jobs/{identifier}/results`
@@ -159,6 +310,53 @@ Retrieve the results of a previously submitted job.
 - **200** — Successful Response (`application/json` `JobResultsResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">identifier<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="identifier" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">num_rows<span>integer · optional</span></div>
+        <input type="text" class="t-query" data-name="num_rows" value="5000" placeholder="integer">
+        <div class="t-pname">offset<span>integer · optional</span></div>
+        <input type="text" class="t-query" data-name="offset" value="0" placeholder="integer">
+        <div class="t-pname">verbose<span>boolean · optional</span></div>
+        <input type="text" class="t-query" data-name="verbose" value="false" placeholder="boolean">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>
+
 ## Get job status
 
 **Request:** `[GET] /api/v1/jobs/{identifier}/status`
@@ -179,3 +377,39 @@ Retrieve the execution status of a previously submitted job.
 
 - **200** — Successful Response (`application/json` `JobStatusResponse`)
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status">
+  <div class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"></span>
+  </div>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">identifier<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="identifier" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</div>

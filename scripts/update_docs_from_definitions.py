@@ -28,9 +28,7 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://jobs.opteryx.app',
         'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
-        'hoppscotch_embeds': {
-            ('GET', '/api/v1/jobs/recent'): '<iframe src="https://hopp.sh/e/GEx6emtbbKch" title="Hoppscotch Embed" style="width: 100%; height: 480px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.1);"></iframe>',
-        },
+        'try_it_live': True,
     },
     'api-opteryx-odata.json': {
         'slug': 'odata-api',
@@ -250,6 +248,134 @@ def _render_responses(lines: List[str], responses: Dict[str, Any]):
     lines.append('')
 
 
+def _example_request_body(operation: Dict[str, Any], schemas: Dict[str, Any]) -> Optional[str]:
+    """Return a pretty-printed JSON example for an operation's request body.
+
+    Uses the spec's own `example` when present, otherwise synthesizes one from
+    the schema's required fields so the editor is never handed an empty box.
+    """
+    content = ((operation.get('requestBody') or {}).get('content') or {}).get('application/json')
+    if not content:
+        return None
+
+    if 'example' in content:
+        return json.dumps(content['example'], indent=2)
+
+    schema = _resolve_schema(content.get('schema', {}), schemas)
+    properties = schema.get('properties', {}) or {}
+    required = schema.get('required', []) or []
+    if not required:
+        return '{}'
+
+    placeholder = {}
+    for field in required:
+        field_type = _schema_to_type(properties.get(field, {}))
+        placeholder[field] = '' if field_type.startswith('string') else None
+
+    return json.dumps(placeholder, indent=2)
+
+
+def _render_try_it_live(
+    lines: List[str],
+    method: str,
+    route: str,
+    operation: Dict[str, Any],
+    schemas: Dict[str, Any],
+    base_url: str,
+):
+    """Emit a 'Try it live' card for one operation.
+
+    The markup is plain HTML embedded in the markdown (marked passes it through);
+    docs-site/public/api-tryit.js hydrates it in the browser. Everything the card
+    needs is read off the OpenAPI operation, so it cannot drift from the spec.
+    """
+    parameters = operation.get('parameters', []) or []
+    path_params = [p for p in parameters if p.get('in') == 'path']
+    query_params = [p for p in parameters if p.get('in') == 'query']
+    example_body = _example_request_body(operation, schemas)
+
+    lines.append('### Try it live\n')
+
+    lines.append(
+        f'<div class="api-tryit" data-method="{method}" '
+        f'data-base="{base_url}" data-path="{route}">'
+    )
+    lines.append('  <div class="api-tryit__bar">')
+    lines.append(f'    <span class="t-verb t-verb--{method.lower()}">{method.lower()}</span>')
+    lines.append('    <span class="t-url"></span>')
+    lines.append('  </div>')
+    lines.append('  <div class="api-tryit__body">')
+
+    # Bearer token — every one of these services authenticates the same way.
+    lines.append('    <div class="t-field">')
+    lines.append('      <div class="t-label">Bearer token <span class="t-opt">required</span></div>')
+    lines.append(
+        '      <input type="password" class="t-token" autocomplete="off" '
+        'placeholder="paste a token from the Authentication API">'
+    )
+    lines.append(
+        '      <div class="t-hint">Held in this tab only — never stored or logged. '
+        'Get one from <code>POST https://authenticate.opteryx.app/token</code>.</div>'
+    )
+    lines.append('    </div>')
+
+    for heading, params, css_class in (
+        ('Path parameters', path_params, 't-path'),
+        ('Query parameters', query_params, 't-query'),
+    ):
+        if not params:
+            continue
+        lines.append('    <div class="t-field">')
+        lines.append(f'      <div class="t-label">{heading}</div>')
+        lines.append('      <div class="t-params">')
+        for param in params:
+            name = param.get('name', '')
+            required = 'required' if param.get('required') else 'optional'
+            param_type = _schema_to_type(param.get('schema', {}))
+            default = _schema_default_value(param.get('schema', {}))
+            lines.append(
+                f'        <div class="t-pname">{name}<span>{param_type} · {required}</span></div>'
+            )
+            lines.append(
+                f'        <input type="text" class="{css_class}" data-name="{name}"'
+                + (f' value="{default}"' if default is not None else '')
+                + f' placeholder="{param_type}">'
+            )
+        lines.append('      </div>')
+        lines.append('    </div>')
+
+    if example_body is not None:
+        schema_name = _schema_to_type(
+            ((operation.get('requestBody') or {}).get('content') or {})
+            .get('application/json', {})
+            .get('schema', {})
+        )
+        lines.append('    <div class="t-field">')
+        lines.append(
+            '      <div class="t-label">Request body '
+            f'<span class="t-opt">application/json · {schema_name}</span></div>'
+        )
+        lines.append(f'      <textarea class="t-body" spellcheck="false">{example_body}</textarea>')
+        lines.append('    </div>')
+
+    lines.append('    <div class="t-actions">')
+    lines.append('      <button type="button" class="t-btn t-send">Send request</button>')
+    lines.append('      <button type="button" class="t-btn t-curl">Copy as cURL</button>')
+    lines.append('      <button type="button" class="t-btn t-python">Copy as Python</button>')
+    lines.append('    </div>')
+    lines.append('  </div>')
+    lines.append('  <div class="t-resp">')
+    lines.append('    <div class="t-resp__bar">')
+    lines.append('      <span class="t-pill"></span>')
+    lines.append('      <span class="t-meta"></span>')
+    lines.append('    </div>')
+    lines.append('    <pre class="t-pre"></pre>')
+    lines.append('    <div class="t-note"></div>')
+    lines.append('  </div>')
+    lines.append('</div>')
+    lines.append('')
+
+
 def _sort_api_operations(spec: Dict[str, Any]) -> List[Tuple[str, str, Dict[str, Any]]]:
     operations: List[Tuple[str, str, Dict[str, Any]]] = []
     for route, methods in spec.get('paths', {}).items():
@@ -372,12 +498,8 @@ def build_api_docs():
             _render_request_body(lines, operation.get('requestBody') or {}, schemas)
             _render_responses(lines, operation.get('responses') or {})
 
-            embed_html = (doc_meta.get('hoppscotch_embeds') or {}).get((method, route))
-            if embed_html:
-                lines.append('### Try it live\n')
-                lines.append('Supply your own bearer token in the embed\'s Authorization tab — requests run against the real service.\n')
-                lines.append(embed_html)
-                lines.append('')
+            if doc_meta.get('try_it_live'):
+                _render_try_it_live(lines, method, route, operation, schemas, doc_meta['base_url'])
 
         write_md(output_path, lines)
         generated_specs.append({**doc_meta, 'definition': def_name})

@@ -17,7 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Hydrates the "Try it live" cards on the API reference pages. Must be
+            loaded here: markdown is injected with dangerouslySetInnerHTML, and
+            script tags inside that HTML are never executed by the browser. */}
+        <script defer src="/api-tryit.js" />
+      </body>
     </html>
   );
 }

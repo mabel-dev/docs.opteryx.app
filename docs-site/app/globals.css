@@ -3296,3 +3296,320 @@ kbd {
         justify-content: center;
     }
 }
+
+/* ============================================================
+   "Try it live" API cards
+   Markup emitted by scripts/update_docs_from_definitions.py,
+   hydrated by public/api-tryit.js.
+   ============================================================ */
+
+.api-tryit {
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--bg);
+    box-shadow: var(--shadow-xs);
+    overflow: hidden;
+    margin: var(--sp-4) 0 var(--sp-6);
+}
+
+.api-tryit__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--header-surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.api-tryit .t-verb {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: var(--r-s);
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.api-tryit .t-verb--get {
+    background: var(--accent-soft-2);
+    color: var(--opteryx-teal);
+}
+
+.api-tryit .t-verb--post,
+.api-tryit .t-verb--put {
+    background: rgba(254, 119, 1, 0.14);
+    color: #b45500;
+}
+
+.api-tryit .t-verb--delete {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.api-tryit .t-url {
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    color: var(--text-deep);
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+
+.api-tryit .t-host {
+    color: var(--muted);
+}
+
+.api-tryit__body {
+    padding: var(--sp-4);
+}
+
+.api-tryit .t-field {
+    margin-bottom: var(--sp-4);
+}
+
+.api-tryit .t-label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--text-deep);
+    margin-bottom: var(--sp-2);
+}
+
+.api-tryit .t-label .t-opt {
+    font-weight: 400;
+    color: var(--muted-2);
+    font-size: var(--fs-micro);
+}
+
+.api-tryit .t-hint {
+    font-size: var(--fs-micro);
+    color: var(--muted);
+    margin-top: var(--sp-1);
+}
+
+.api-tryit input[type="text"],
+.api-tryit input[type="password"],
+.api-tryit textarea {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    color: var(--text);
+    background: var(--muted-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    padding: 8px 10px;
+    transition:
+        border var(--t-fast),
+        box-shadow var(--t-fast);
+}
+
+.api-tryit input:focus,
+.api-tryit textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.api-tryit textarea {
+    resize: vertical;
+    min-height: 104px;
+    line-height: 1.55;
+}
+
+.api-tryit .t-params {
+    display: grid;
+    grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+    gap: var(--sp-2) var(--sp-3);
+    align-items: center;
+}
+
+.api-tryit .t-pname {
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    color: var(--text-deep);
+}
+
+.api-tryit .t-pname span {
+    color: var(--muted-2);
+    font-size: var(--fs-micro);
+    display: block;
+    font-family: var(--font-body);
+}
+
+.api-tryit .t-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding-top: var(--sp-2);
+    flex-wrap: wrap;
+}
+
+.api-tryit .t-btn {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-s);
+    font-weight: 600;
+    border-radius: var(--r-m);
+    padding: 8px 16px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all var(--t-fast);
+}
+
+.api-tryit .t-send {
+    background: var(--accent);
+    color: #fff;
+}
+
+.api-tryit .t-send:hover {
+    background: #066b6e;
+}
+
+.api-tryit .t-send:disabled {
+    background: var(--muted-2);
+    cursor: not-allowed;
+}
+
+.api-tryit .t-curl {
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--border);
+}
+
+.api-tryit .t-curl:hover {
+    color: var(--text-deep);
+    border-color: var(--border-2);
+    background: var(--panel);
+}
+
+.api-tryit .t-resp {
+    border-top: 1px solid var(--border);
+    background: var(--panel);
+    display: none;
+}
+
+.api-tryit .t-resp.is-open {
+    display: block;
+}
+
+.api-tryit .t-resp__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    flex-wrap: wrap;
+}
+
+.api-tryit .t-pill {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+}
+
+.api-tryit .t-pill--ok {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.api-tryit .t-pill--err {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.api-tryit .t-meta {
+    font-size: var(--fs-caption);
+    color: var(--muted);
+    font-family: var(--font-mono);
+}
+
+.api-tryit .t-pre {
+    margin: 0;
+    padding: 0 var(--sp-4) var(--sp-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    line-height: 1.65;
+    overflow-x: auto;
+    max-height: 340px;
+    overflow-y: auto;
+    white-space: pre;
+}
+
+.api-tryit .t-pre:empty {
+    display: none;
+}
+
+.api-tryit .j-key {
+    color: var(--opteryx-navy);
+}
+
+.api-tryit .j-str {
+    color: var(--opteryx-orange);
+}
+
+.api-tryit .j-num {
+    color: var(--warning);
+}
+
+.api-tryit .j-bool {
+    color: var(--opteryx-teal);
+}
+
+.api-tryit .j-null {
+    color: var(--muted-2);
+}
+
+.api-tryit .t-note {
+    font-size: var(--fs-body-s);
+    color: var(--muted);
+}
+
+.api-tryit .t-note:not(:empty) {
+    padding: 0 var(--sp-4) var(--sp-4);
+}
+
+.api-tryit .t-note b {
+    color: var(--text-deep);
+}
+
+.api-tryit .t-spin {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: api-tryit-spin 0.6s linear infinite;
+    vertical-align: -1px;
+    margin-right: 6px;
+}
+
+@keyframes api-tryit-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 620px) {
+    .api-tryit .t-params {
+        grid-template-columns: 1fr;
+    }
+}
+
+.api-tryit .t-python {
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--border);
+}
+
+.api-tryit .t-python:hover {
+    color: var(--text-deep);
+    border-color: var(--border-2);
+    background: var(--panel);
+}

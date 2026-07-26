@@ -37,6 +37,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/JobCreateRequest"
+              },
+              "example": {
+                "sql_text": "SELECT customer_id, SUM(amount) AS total FROM sales GROUP BY customer_id ORDER BY total DESC LIMIT 10",
+                "client_info": {
+                  "app": "docs-try-it",
+                  "version": "1.0"
+                }
               }
             }
           }
@@ -336,6 +343,9 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/EstimateRequest"
+              },
+              "example": {
+                "sql_text": "SELECT * FROM sales WHERE order_date >= '2026-01-01'"
               }
             }
           }
