@@ -86,13 +86,35 @@
       '<span class="t-host">' + esc(base) + "</span>" + esc(url.slice(base.length));
   }
 
+  // Snippets must never carry a real credential. A field marked data-secret
+  // renders as a placeholder the reader substitutes themselves.
+  function formEntries(widget, redactSecrets) {
+    var out = [];
+    widget.querySelectorAll(".t-form").forEach(function (input) {
+      var value = input.value.trim();
+      if (!value) return;
+      if (redactSecrets && input.dataset.secret) {
+        value = "YOUR_" + input.dataset.name.toUpperCase();
+      }
+      out.push([input.dataset.name, value]);
+    });
+    return out;
+  }
+
   function curlFor(widget) {
     var lines = ["curl -X " + widget.dataset.method + " '" + buildURL(widget) + "'"];
-    lines.push("  -H 'Authorization: Bearer YOUR_TOKEN'");
+    if (widget.querySelector(".t-token")) {
+      lines.push("  -H 'Authorization: Bearer YOUR_TOKEN'");
+    }
+
     var bodyEl = widget.querySelector(".t-body");
     if (bodyEl) {
       lines.push("  -H 'Content-Type: application/json'");
       lines.push("  -d '" + bodyEl.value.replace(/\s+/g, " ").trim() + "'");
+    } else if (widget.dataset.bodyType === "form") {
+      formEntries(widget, true).forEach(function (pair) {
+        lines.push("  --data-urlencode '" + pair[0] + "=" + pair[1] + "'");
+      });
     }
     return lines.join(" \\\n");
   }
@@ -123,7 +145,10 @@
       lines.push('url = "' + base + path + '"');
     }
 
-    lines.push('headers = {"Authorization": "Bearer " + TOKEN}');
+    var hasToken = !!widget.querySelector(".t-token");
+    if (hasToken) {
+      lines.push('headers = {"Authorization": "Bearer " + TOKEN}');
+    }
 
     var query = [];
     widget.querySelectorAll(".t-query").forEach(function (input) {
@@ -151,11 +176,24 @@
         pretty = "{}  # request body was not valid JSON";
       }
       lines.push("payload = " + pretty);
+    } else if (widget.dataset.bodyType === "form") {
+      var entries = formEntries(widget, true);
+      if (entries.length) {
+        lines.push("data = {");
+        entries.forEach(function (pair) {
+          lines.push('    "' + pair[0] + '": "' + pair[1] + '",');
+        });
+        lines.push("}");
+      }
     }
 
-    var args = ["url", "headers=headers"];
+    var args = ["url"];
+    if (hasToken) args.push("headers=headers");
     if (query.length) args.push("params=params");
     if (bodyEl) args.push("json=payload");
+    else if (widget.dataset.bodyType === "form" && formEntries(widget, true).length) {
+      args.push("data=data");
+    }
 
     lines.push("");
     lines.push(
@@ -196,9 +234,9 @@
     var button = widget.querySelector(".t-send");
     var tokenEl = widget.querySelector(".t-token");
     var bodyEl = widget.querySelector(".t-body");
-    var token = tokenEl.value.trim();
 
-    if (!token) {
+    // Absent on endpoints that do not take one — the token endpoint itself.
+    if (tokenEl && !tokenEl.value.trim()) {
       var authDocs = widget.dataset.authDocs;
       showResponse(widget, {
         ok: false,
@@ -215,10 +253,19 @@
       return;
     }
 
-    var init = {
-      method: widget.dataset.method,
-      headers: { Authorization: "Bearer " + token },
-    };
+    var init = { method: widget.dataset.method, headers: {} };
+    if (tokenEl) {
+      init.headers.Authorization = "Bearer " + tokenEl.value.trim();
+    }
+
+    if (widget.dataset.bodyType === "form") {
+      var params = new URLSearchParams();
+      formEntries(widget, false).forEach(function (pair) {
+        params.append(pair[0], pair[1]);
+      });
+      init.headers["Content-Type"] = "application/x-www-form-urlencoded";
+      init.body = params.toString();
+    }
 
     if (bodyEl) {
       try {
@@ -304,13 +351,15 @@
     var tokenEl = widget.querySelector(".t-token");
 
     // One token, shared across every card on the page, for the life of the tab.
-    if (sessionToken) tokenEl.value = sessionToken;
-    tokenEl.addEventListener("input", function () {
-      sessionToken = tokenEl.value;
-      document.querySelectorAll(".api-tryit .t-token").forEach(function (other) {
-        if (other !== tokenEl) other.value = sessionToken;
+    if (tokenEl) {
+      if (sessionToken) tokenEl.value = sessionToken;
+      tokenEl.addEventListener("input", function () {
+        sessionToken = tokenEl.value;
+        document.querySelectorAll(".api-tryit .t-token").forEach(function (other) {
+          if (other !== tokenEl) other.value = sessionToken;
+        });
       });
-    });
+    }
 
     widget.querySelectorAll(".t-path, .t-query").forEach(function (input) {
       input.addEventListener("input", function () {

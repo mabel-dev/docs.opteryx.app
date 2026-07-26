@@ -219,7 +219,7 @@
           "Jobs Management"
         ],
         "summary": "Download job results",
-        "description": "Download the results of a previously submitted job as CSV or JSON lines.",
+        "description": "Download the results of a previously submitted job as CSV, newline-delimited JSON, or Parquet.",
         "operationId": "download_job_api_v1_jobs__identifier__download_get",
         "parameters": [
           {
@@ -238,7 +238,8 @@
             "schema": {
               "enum": [
                 "csv",
-                "json"
+                "json",
+                "parquet"
               ],
               "type": "string",
               "default": "csv",

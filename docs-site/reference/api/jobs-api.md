@@ -207,7 +207,7 @@ Get recent user queries.
 
 **Tags:** Jobs Management
 
-Download the results of a previously submitted job as CSV or JSON lines.
+Download the results of a previously submitted job as CSV, newline-delimited JSON, or Parquet.
 
 ### Path Parameters
 
@@ -216,7 +216,7 @@ Download the results of a previously submitted job as CSV or JSON lines.
 ### Query Parameters
 
 - **file_format** `string` [query; optional]
-  Allowed values: `csv`, `json`
+  Allowed values: `csv`, `json`, `parquet`
   Default: `csv`
 - **limit** `integer` [query; optional]
   Default: `10000`

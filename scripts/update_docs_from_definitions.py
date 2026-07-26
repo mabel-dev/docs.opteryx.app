@@ -21,6 +21,7 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://authenticate.opteryx.app',
         'summary': 'Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.',
+        'try_it_live': True,
     },
     'api-opteryx-jobs.json': {
         'slug': 'jobs-api',
@@ -43,6 +44,7 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://policy.opteryx.app',
         'summary': 'Workspace policy listing, inspection, creation, updates, and deletion for access-control management.',
+        'try_it_live': True,
     },
     'api-opteryx-upload.json': {
         'slug': 'upload-api',
@@ -50,6 +52,7 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://upload.opteryx.app',
         'summary': 'Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.',
+        'try_it_live': True,
     },
 }
 
@@ -258,14 +261,46 @@ def _auth_docs_path() -> str:
     return f"/docs/reference/api/{API_DOC_SPECS[AUTH_DEFINITION]['slug']}"
 
 
+# Field names whose values are credentials. These render masked, and the
+# generated cURL/Python snippets emit a placeholder instead of the real value —
+# a copied snippet must never carry a live secret.
+SECRET_FIELD_HINTS = ('secret', 'password', 'passwd', 'token', 'credential', 'key')
+
+
+def _is_secret_field(name: str) -> bool:
+    lowered = name.lower()
+    return any(hint in lowered for hint in SECRET_FIELD_HINTS)
+
+
+def _takes_bearer_token(operation: Dict[str, Any]) -> bool:
+    """Whether the operation declares an `authorization` header parameter.
+
+    The token-issuing endpoint does not take one — showing it a bearer field
+    would tell the reader to supply the very thing they are there to obtain.
+    """
+    for param in operation.get('parameters', []) or []:
+        if param.get('in') == 'header' and param.get('name', '').lower() == 'authorization':
+            return True
+    return False
+
+
+def _request_body_content(operation: Dict[str, Any]) -> Tuple[Optional[str], Dict[str, Any]]:
+    """Return (content_type, media_object) for a body this widget can drive."""
+    content = (operation.get('requestBody') or {}).get('content') or {}
+    for content_type in ('application/json', 'application/x-www-form-urlencoded'):
+        if content_type in content:
+            return content_type, content[content_type]
+    return None, {}
+
+
 def _example_request_body(operation: Dict[str, Any], schemas: Dict[str, Any]) -> Optional[str]:
     """Return a pretty-printed JSON example for an operation's request body.
 
     Uses the spec's own `example` when present, otherwise synthesizes one from
     the schema's required fields so the editor is never handed an empty box.
     """
-    content = ((operation.get('requestBody') or {}).get('content') or {}).get('application/json')
-    if not content:
+    content_type, content = _request_body_content(operation)
+    if content_type != 'application/json':
         return None
 
     if 'example' in content:
@@ -303,6 +338,9 @@ def _render_try_it_live(
     path_params = [p for p in parameters if p.get('in') == 'path']
     query_params = [p for p in parameters if p.get('in') == 'query']
     example_body = _example_request_body(operation, schemas)
+    body_type, body_content = _request_body_content(operation)
+    is_form = body_type == 'application/x-www-form-urlencoded'
+    needs_token = _takes_bearer_token(operation)
 
     lines.append('### Try it live\n')
 
@@ -311,7 +349,9 @@ def _render_try_it_live(
     auth_docs = _auth_docs_path()
     lines.append(
         f'<details class="api-tryit" data-method="{method}" '
-        f'data-base="{base_url}" data-path="{route}" data-auth-docs="{auth_docs}">'
+        f'data-base="{base_url}" data-path="{route}" data-auth-docs="{auth_docs}"'
+        + (' data-body-type="form"' if is_form else '')
+        + '>'
     )
     lines.append('  <summary class="api-tryit__bar">')
     lines.append(f'    <span class="t-verb t-verb--{method.lower()}">{method.lower()}</span>')
@@ -320,18 +360,22 @@ def _render_try_it_live(
     lines.append('  </summary>')
     lines.append('  <div class="api-tryit__body">')
 
-    # Bearer token — every one of these services authenticates the same way.
-    lines.append('    <div class="t-field">')
-    lines.append('      <div class="t-label">Bearer token <span class="t-opt">required</span></div>')
-    lines.append(
-        '      <input type="password" class="t-token" autocomplete="off" '
-        'placeholder="paste a token from the Authentication API">'
-    )
-    lines.append(
-        '      <div class="t-hint">Held in this tab only — never stored or logged. '
-        f'See the <a href="{auth_docs}">Authentication API</a> for how to get one.</div>'
-    )
-    lines.append('    </div>')
+    # Only where the operation actually declares an authorization header. The
+    # token-issuing endpoint does not, and must not ask for what it hands out.
+    if needs_token:
+        lines.append('    <div class="t-field">')
+        lines.append(
+            '      <div class="t-label">Bearer token <span class="t-opt">required</span></div>'
+        )
+        lines.append(
+            '      <input type="password" class="t-token" autocomplete="off" '
+            'placeholder="paste a token from the Authentication API">'
+        )
+        lines.append(
+            '      <div class="t-hint">Held in this tab only — never stored or logged. '
+            f'See the <a href="{auth_docs}">Authentication API</a> for how to get one.</div>'
+        )
+        lines.append('    </div>')
 
     for heading, params, css_class in (
         ('Path parameters', path_params, 't-path'),
@@ -358,12 +402,47 @@ def _render_try_it_live(
         lines.append('      </div>')
         lines.append('    </div>')
 
-    if example_body is not None:
-        schema_name = _schema_to_type(
-            ((operation.get('requestBody') or {}).get('content') or {})
-            .get('application/json', {})
-            .get('schema', {})
+    if is_form:
+        # Form bodies get one field per property rather than a raw editor —
+        # x-www-form-urlencoded is not something a reader should hand-assemble.
+        form_schema = _resolve_schema(body_content.get('schema', {}), schemas)
+        form_props = form_schema.get('properties', {}) or {}
+        form_required = set(form_schema.get('required', []) or [])
+        schema_name = _schema_to_type(body_content.get('schema', {}))
+
+        lines.append('    <div class="t-field">')
+        lines.append(
+            '      <div class="t-label">Form body '
+            f'<span class="t-opt">application/x-www-form-urlencoded · {schema_name}</span></div>'
         )
+        lines.append('      <div class="t-params">')
+        has_secret = False
+        for name, field_schema in form_props.items():
+            required = 'required' if name in form_required else 'optional'
+            field_type = _schema_to_type(field_schema)
+            default = _schema_default_value(field_schema, schemas)
+            secret = _is_secret_field(name)
+            has_secret = has_secret or secret
+            lines.append(
+                f'        <div class="t-pname">{name}<span>{field_type} · {required}</span></div>'
+            )
+            lines.append(
+                f'        <input type="{"password" if secret else "text"}" class="t-form" '
+                f'data-name="{name}"'
+                + (' data-secret="1"' if secret else '')
+                + (f' value="{default}"' if default is not None else '')
+                + ' autocomplete="off"'
+                + f' placeholder="{field_type}">'
+            )
+        lines.append('      </div>')
+        if has_secret:
+            lines.append(
+                '      <div class="t-hint">Secret fields are sent only to the API — '
+                'copied cURL and Python snippets carry a placeholder, never the value.</div>'
+            )
+        lines.append('    </div>')
+    elif example_body is not None:
+        schema_name = _schema_to_type(body_content.get('schema', {}))
         lines.append('    <div class="t-field">')
         lines.append(
             '      <div class="t-label">Request body '
