@@ -3318,7 +3318,66 @@ kbd {
     gap: var(--sp-3);
     padding: var(--sp-3) var(--sp-4);
     background: var(--header-surface);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    transition: background var(--t-fast);
+}
+
+/* Collapsed by default — the divider only earns its place once the body shows. */
+.api-tryit[open] .api-tryit__bar {
     border-bottom: 1px solid var(--border);
+}
+
+.api-tryit__bar:hover {
+    background: var(--panel-2);
+}
+
+.api-tryit__bar::-webkit-details-marker {
+    display: none;
+}
+
+.api-tryit__bar::marker {
+    content: "";
+}
+
+.api-tryit .t-open {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Label is decorative — <summary> already announces expanded/collapsed to AT. */
+.api-tryit .t-open::before {
+    content: "Try it";
+}
+
+.api-tryit[open] .t-open::before {
+    content: "Hide";
+}
+
+.api-tryit .t-open::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform var(--t-base);
+}
+
+.api-tryit[open] .t-open {
+    color: var(--muted);
+}
+
+.api-tryit[open] .t-open::after {
+    transform: rotate(-135deg) translateY(-2px);
 }
 
 .api-tryit .t-verb {

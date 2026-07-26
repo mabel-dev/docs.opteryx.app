@@ -47,11 +47,12 @@ Submit a SQL job for execution.
 
 ### Try it live
 
-<div class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -61,11 +62,7 @@ Submit a SQL job for execution.
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · JobCreateRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "sql_text": "SELECT customer_id, SUM(amount) AS total FROM sales GROUP BY customer_id ORDER BY total DESC LIMIT 10",
-  "client_info": {
-    "app": "docs-try-it",
-    "version": "1.0"
-  }
+  "sql_text": ""
 }</textarea>
     </div>
     <div class="t-actions">
@@ -82,7 +79,7 @@ Submit a SQL job for execution.
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>
 
 ## Estimate result size
 
@@ -112,11 +109,12 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
 
 ### Try it live
 
-<div class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -126,7 +124,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · EstimateRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "sql_text": "SELECT * FROM sales WHERE order_date >= '2026-01-01'"
+  "sql_text": ""
 }</textarea>
     </div>
     <div class="t-actions">
@@ -143,7 +141,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>
 
 ## Retrieve recent user queries
 
@@ -168,11 +166,12 @@ Get recent user queries.
 
 ### Try it live
 
-<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/recent">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -200,7 +199,7 @@ Get recent user queries.
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>
 
 ## Download job results
 
@@ -235,11 +234,12 @@ Download the results of a previously submitted job as CSV or JSON lines.
 
 ### Try it live
 
-<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/download">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -278,7 +278,7 @@ Download the results of a previously submitted job as CSV or JSON lines.
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>
 
 ## Get job results
 
@@ -312,11 +312,12 @@ Retrieve the results of a previously submitted job.
 
 ### Try it live
 
-<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/results">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -355,7 +356,7 @@ Retrieve the results of a previously submitted job.
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>
 
 ## Get job status
 
@@ -380,11 +381,12 @@ Retrieve the execution status of a previously submitted job.
 
 ### Try it live
 
-<div class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status">
-  <div class="api-tryit__bar">
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/status">
+  <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"></span>
-  </div>
+    <span class="t-open"></span>
+  </summary>
   <div class="api-tryit__body">
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
@@ -412,4 +414,4 @@ Retrieve the execution status of a previously submitted job.
     <pre class="t-pre"></pre>
     <div class="t-note"></div>
   </div>
-</div>
+</details>

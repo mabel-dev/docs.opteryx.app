@@ -296,14 +296,17 @@ def _render_try_it_live(
 
     lines.append('### Try it live\n')
 
+    # <details>/<summary> so the card is collapsed by default and the toggle works
+    # natively — keyboard accessible, and correct even before the JS has loaded.
     lines.append(
-        f'<div class="api-tryit" data-method="{method}" '
+        f'<details class="api-tryit" data-method="{method}" '
         f'data-base="{base_url}" data-path="{route}">'
     )
-    lines.append('  <div class="api-tryit__bar">')
+    lines.append('  <summary class="api-tryit__bar">')
     lines.append(f'    <span class="t-verb t-verb--{method.lower()}">{method.lower()}</span>')
     lines.append('    <span class="t-url"></span>')
-    lines.append('  </div>')
+    lines.append('    <span class="t-open"></span>')
+    lines.append('  </summary>')
     lines.append('  <div class="api-tryit__body">')
 
     # Bearer token — every one of these services authenticates the same way.
@@ -372,7 +375,7 @@ def _render_try_it_live(
     lines.append('    <pre class="t-pre"></pre>')
     lines.append('    <div class="t-note"></div>')
     lines.append('  </div>')
-    lines.append('</div>')
+    lines.append('</details>')
     lines.append('')
 
 
