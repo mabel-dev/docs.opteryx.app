@@ -729,6 +729,78 @@ kbd {
     background: var(--muted-surface);
 }
 
+/* --- HTTP verb pill — reused by the endpoint index table and the
+   "Request:" line under each operation heading, so both agree on color. --- */
+.docs-article .ep-verb {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    margin-right: 5px;
+    border-radius: var(--r-xs);
+}
+.docs-article .ep-verb--get {
+    background: var(--accent-soft-2);
+    color: var(--opteryx-teal);
+}
+.docs-article .ep-verb--post,
+.docs-article .ep-verb--put,
+.docs-article .ep-verb--patch {
+    background: rgba(254, 119, 1, 0.14);
+    color: #b45500;
+}
+.docs-article .ep-verb--delete {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+/* --- Endpoint index (generated at the top of each API page) --------------- */
+.docs-article .endpoint-index {
+    table-layout: fixed;
+}
+.docs-article .endpoint-index th:last-child,
+.docs-article .endpoint-index td.ep-doc {
+    width: 72px;
+    text-align: right;
+    white-space: nowrap;
+}
+.docs-article .endpoint-index .ep-name {
+    display: block;
+    font-weight: 500;
+    color: var(--text-deep);
+    margin-bottom: 6px;
+}
+/* The route is the one place a long token has to break — the column is
+   fixed-width, so nowrap here would push the table past the content area
+   on narrow screens instead of wrapping. */
+.docs-article .endpoint-index code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+/* Out-specifies the blanket underlined-link rule above (0,3,2) — this link
+   reads as a control, not prose. */
+.docs-article table.endpoint-index td.ep-doc a {
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--opteryx-teal);
+    text-decoration: none;
+}
+.docs-article table.endpoint-index td.ep-doc a::after {
+    content: "\203a";
+    margin-left: 4px;
+    font-size: 13px;
+    line-height: 1;
+}
+.docs-article table.endpoint-index td.ep-doc a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--opteryx-teal);
+}
+
 /* ===========================================================================
    CODE BLOCKS
    =========================================================================== */

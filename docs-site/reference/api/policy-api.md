@@ -8,18 +8,41 @@ Workspace policy listing, inspection, creation, updates, and deletion for access
 
 ## Endpoints
 
-Endpoint | Method | Summary
---- | --- | ---
-`/v1/access/workspace/{workspace}` | `GET` | [List workspace policies](#list-workspace-policies)
-`/v1/access/workspace/{workspace}/effective-permissions.csv` | `GET` | [Export effective permissions](#export-effective-permissions)
-`/v1/access/workspace/{workspace}/policies` | `POST` | [Create policy](#create-policy)
-`/v1/access/workspace/{workspace}/policies/{policy_id}` | `GET` | [Get policy details](#get-policy-details)
-`/v1/access/workspace/{workspace}/policies/{policy_id}` | `PUT` | [Update policy](#update-policy)
-`/v1/access/workspace/{workspace}/policies/{policy_id}` | `DELETE` | [Delete policy](#delete-policy)
+<table class="endpoint-index">
+  <thead>
+    <tr><th>Service</th><th>Docs</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ep-name">List workspace policies</span><span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}</code></td>
+      <td class="ep-doc"><a href="#list-workspace-policies">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Export effective permissions</span><span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}/effective-permissions.csv</code></td>
+      <td class="ep-doc"><a href="#export-effective-permissions">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Create policy</span><span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/policies</code></td>
+      <td class="ep-doc"><a href="#create-policy">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get policy details</span><span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code></td>
+      <td class="ep-doc"><a href="#get-policy-details">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Update policy</span><span class="ep-verb ep-verb--put">put</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code></td>
+      <td class="ep-doc"><a href="#update-policy">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Delete policy</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code></td>
+      <td class="ep-doc"><a href="#delete-policy">View</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## List workspace policies
 
-**Request:** `[GET] /v1/access/workspace/{workspace}`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}</code>
 
 **Tags:** Access Control
 
@@ -79,7 +102,7 @@ Get all access policies for a workspace. Requires owner or admin access.
 
 ## Export effective permissions
 
-**Request:** `[GET] /v1/access/workspace/{workspace}/effective-permissions.csv`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}/effective-permissions.csv</code>
 
 **Tags:** Access Control
 
@@ -139,7 +162,7 @@ Export a CSV of who has access to every dataset and view in the workspace, resol
 
 ## Create policy
 
-**Request:** `[POST] /v1/access/workspace/{workspace}/policies`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/policies</code>
 
 **Tags:** Access Control
 
@@ -218,7 +241,7 @@ Create a new access policy for a user in the workspace.
 
 ## Get policy details
 
-**Request:** `[GET] /v1/access/workspace/{workspace}/policies/{policy_id}`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code>
 
 **Tags:** Access Control
 
@@ -282,7 +305,7 @@ Get detailed information about a specific policy.
 
 ## Update policy
 
-**Request:** `[PUT] /v1/access/workspace/{workspace}/policies/{policy_id}`
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code>
 
 **Tags:** Access Control
 
@@ -362,7 +385,7 @@ Update an existing access policy.
 
 ## Delete policy
 
-**Request:** `[DELETE] /v1/access/workspace/{workspace}/policies/{policy_id}`
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/access/workspace/{workspace}/policies/{policy_id}</code>
 
 **Tags:** Access Control
 

@@ -3,6 +3,7 @@ import pathlib
 import re
 
 from collections import Counter
+from html import escape
 from typing import Any, Dict, List, Optional, Tuple
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -616,8 +617,11 @@ def build_api_docs():
             '',
             '## Endpoints',
             '',
-            'Endpoint | Method | Summary',
-            '--- | --- | ---',
+            '<table class="endpoint-index">',
+            '  <thead>',
+            '    <tr><th>Service</th><th>Docs</th></tr>',
+            '  </thead>',
+            '  <tbody>',
         ]
 
         operations = _sort_api_operations(spec)
@@ -638,7 +642,20 @@ def build_api_docs():
         for route, method, operation in operations:
             summary = _operation_summary(operation, route)
             slug = _heading_slug(summary)
-            lines.append(f'`{route}` | `{method}` | [{summary}](#{slug})')
+            lines.append('    <tr>')
+            lines.append(
+                '      <td>'
+                f'<span class="ep-name">{escape(summary)}</span>'
+                f'<span class="ep-verb ep-verb--{method.lower()}">{method.lower()}</span>'
+                f'<code>{escape(route)}</code>'
+                '</td>'
+            )
+            lines.append(
+                f'      <td class="ep-doc"><a href="#{slug}">View</a></td>'
+            )
+            lines.append('    </tr>')
+        lines.append('  </tbody>')
+        lines.append('</table>')
         lines.append('')
 
         for route, method, operation in operations:
@@ -648,7 +665,11 @@ def build_api_docs():
 
             lines.append(f'## {summary}')
             lines.append('')
-            lines.append(f'**Request:** `[{method}] {route}`')
+            lines.append(
+                '**Request:** '
+                f'<span class="ep-verb ep-verb--{method.lower()}">{method.lower()}</span>'
+                f'<code>{escape(route)}</code>'
+            )
             lines.append('')
 
             if tags:

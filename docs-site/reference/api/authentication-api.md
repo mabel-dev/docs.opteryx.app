@@ -8,18 +8,41 @@ Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and clien
 
 ## Endpoints
 
-Endpoint | Method | Summary
---- | --- | ---
-`/clients/{client_id}/credentials` | `GET` | [List Credentials](#list-credentials)
-`/clients/{client_id}/credentials` | `POST` | [Create Credential](#create-credential)
-`/clients/{client_id}/credentials/{credential_id}` | `DELETE` | [Revoke Credential](#revoke-credential)
-`/jwks` | `GET` | [Get signing keys](#get-signing-keys)
-`/me` | `GET` | [Get current user](#get-current-user)
-`/token` | `POST` | [Issue an access token](#issue-an-access-token)
+<table class="endpoint-index">
+  <thead>
+    <tr><th>Service</th><th>Docs</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ep-name">List Credentials</span><span class="ep-verb ep-verb--get">get</span><code>/clients/{client_id}/credentials</code></td>
+      <td class="ep-doc"><a href="#list-credentials">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Create Credential</span><span class="ep-verb ep-verb--post">post</span><code>/clients/{client_id}/credentials</code></td>
+      <td class="ep-doc"><a href="#create-credential">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Revoke Credential</span><span class="ep-verb ep-verb--delete">delete</span><code>/clients/{client_id}/credentials/{credential_id}</code></td>
+      <td class="ep-doc"><a href="#revoke-credential">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get signing keys</span><span class="ep-verb ep-verb--get">get</span><code>/jwks</code></td>
+      <td class="ep-doc"><a href="#get-signing-keys">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get current user</span><span class="ep-verb ep-verb--get">get</span><code>/me</code></td>
+      <td class="ep-doc"><a href="#get-current-user">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Issue an access token</span><span class="ep-verb ep-verb--post">post</span><code>/token</code></td>
+      <td class="ep-doc"><a href="#issue-an-access-token">View</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## List Credentials
 
-**Request:** `[GET] /clients/{client_id}/credentials`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/clients/{client_id}/credentials</code>
 
 **Tags:** credentials
 
@@ -76,7 +99,7 @@ Returns:
 
 ## Create Credential
 
-**Request:** `[POST] /clients/{client_id}/credentials`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/clients/{client_id}/credentials</code>
 
 **Tags:** credentials
 
@@ -159,7 +182,7 @@ Returns:
 
 ## Revoke Credential
 
-**Request:** `[DELETE] /clients/{client_id}/credentials/{credential_id}`
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/clients/{client_id}/credentials/{credential_id}</code>
 
 **Tags:** credentials
 
@@ -221,7 +244,7 @@ Returns:
 
 ## Get signing keys
 
-**Request:** `[GET] /jwks`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/jwks</code>
 
 **Tags:** authentication
 
@@ -259,7 +282,7 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
 
 ## Get current user
 
-**Request:** `[GET] /me`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/me</code>
 
 Validates the bearer token and returns the caller identity and token scope details.
 
@@ -305,7 +328,7 @@ Validates the bearer token and returns the caller identity and token scope detai
 
 ## Issue an access token
 
-**Request:** `[POST] /token`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/token</code>
 
 **Tags:** authentication
 

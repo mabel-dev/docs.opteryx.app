@@ -8,18 +8,41 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
 
 ## Endpoints
 
-Endpoint | Method | Summary
---- | --- | ---
-`/api/v1/jobs` | `POST` | [Create and execute SQL job](#create-and-execute-sql-job)
-`/api/v1/jobs/estimate` | `POST` | [Estimate result size](#estimate-result-size)
-`/api/v1/jobs/recent` | `GET` | [Retrieve recent user queries](#retrieve-recent-user-queries)
-`/api/v1/jobs/{identifier}/download` | `GET` | [Download job results](#download-job-results)
-`/api/v1/jobs/{identifier}/results` | `GET` | [Get job results](#get-job-results)
-`/api/v1/jobs/{identifier}/status` | `GET` | [Get job status](#get-job-status)
+<table class="endpoint-index">
+  <thead>
+    <tr><th>Service</th><th>Docs</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ep-name">Create and execute SQL job</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs</code></td>
+      <td class="ep-doc"><a href="#create-and-execute-sql-job">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Estimate result size</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/estimate</code></td>
+      <td class="ep-doc"><a href="#estimate-result-size">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Retrieve recent user queries</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code></td>
+      <td class="ep-doc"><a href="#retrieve-recent-user-queries">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Download job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code></td>
+      <td class="ep-doc"><a href="#download-job-results">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/results</code></td>
+      <td class="ep-doc"><a href="#get-job-results">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get job status</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/status</code></td>
+      <td class="ep-doc"><a href="#get-job-status">View</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Create and execute SQL job
 
-**Request:** `[POST] /api/v1/jobs`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs</code>
 
 **Tags:** Jobs Management
 
@@ -86,7 +109,7 @@ Submit a SQL job for execution.
 
 ## Estimate result size
 
-**Request:** `[POST] /api/v1/jobs/estimate`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/estimate</code>
 
 **Tags:** Jobs Management
 
@@ -150,7 +173,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
 
 ## Retrieve recent user queries
 
-**Request:** `[GET] /api/v1/jobs/recent`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code>
 
 **Tags:** Jobs Management
 
@@ -209,7 +232,7 @@ Get recent user queries.
 
 ## Download job results
 
-**Request:** `[GET] /api/v1/jobs/{identifier}/download`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code>
 
 **Tags:** Jobs Management
 
@@ -289,7 +312,7 @@ Download the results of a previously submitted job as CSV, newline-delimited JSO
 
 ## Get job results
 
-**Request:** `[GET] /api/v1/jobs/{identifier}/results`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/results</code>
 
 **Tags:** Jobs Management
 
@@ -368,7 +391,7 @@ Retrieve the results of a previously submitted job.
 
 ## Get job status
 
-**Request:** `[GET] /api/v1/jobs/{identifier}/status`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/status</code>
 
 **Tags:** Jobs Management
 

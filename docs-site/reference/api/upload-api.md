@@ -8,17 +8,37 @@ Multipart upload sessions, part upload and deletion, session inspection, and com
 
 ## Endpoints
 
-Endpoint | Method | Summary
---- | --- | ---
-`/v1/upload/session` | `POST` | [Start Upload Session](#start-upload-session)
-`/v1/upload/{session_id}` | `PUT` | [Upload Part](#upload-part)
-`/v1/upload/{session_id}/commit` | `POST` | [Commit Session](#commit-session)
-`/v1/upload/{session_id}/inspect` | `GET` | [Inspect Session](#inspect-session)
-`/v1/upload/{session_id}/part/{part}` | `DELETE` | [Delete Part](#delete-part)
+<table class="endpoint-index">
+  <thead>
+    <tr><th>Service</th><th>Docs</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ep-name">Start Upload Session</span><span class="ep-verb ep-verb--post">post</span><code>/v1/upload/session</code></td>
+      <td class="ep-doc"><a href="#start-upload-session">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Upload Part</span><span class="ep-verb ep-verb--put">put</span><code>/v1/upload/{session_id}</code></td>
+      <td class="ep-doc"><a href="#upload-part">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Commit Session</span><span class="ep-verb ep-verb--post">post</span><code>/v1/upload/{session_id}/commit</code></td>
+      <td class="ep-doc"><a href="#commit-session">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Inspect Session</span><span class="ep-verb ep-verb--get">get</span><code>/v1/upload/{session_id}/inspect</code></td>
+      <td class="ep-doc"><a href="#inspect-session">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Delete Part</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/upload/{session_id}/part/{part}</code></td>
+      <td class="ep-doc"><a href="#delete-part">View</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Start Upload Session
 
-**Request:** `[POST] /v1/upload/session`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/upload/session</code>
 
 **Tags:** upload
 
@@ -64,7 +84,7 @@ Endpoint | Method | Summary
 
 ## Upload Part
 
-**Request:** `[PUT] /v1/upload/{session_id}`
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/upload/{session_id}</code>
 
 **Tags:** upload
 
@@ -135,7 +155,7 @@ Endpoint | Method | Summary
 
 ## Commit Session
 
-**Request:** `[POST] /v1/upload/{session_id}/commit`
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/upload/{session_id}/commit</code>
 
 **Tags:** upload
 
@@ -209,7 +229,7 @@ Endpoint | Method | Summary
 
 ## Inspect Session
 
-**Request:** `[GET] /v1/upload/{session_id}/inspect`
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/upload/{session_id}/inspect</code>
 
 **Tags:** upload
 
@@ -266,7 +286,7 @@ Endpoint | Method | Summary
 
 ## Delete Part
 
-**Request:** `[DELETE] /v1/upload/{session_id}/part/{part}`
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/upload/{session_id}/part/{part}</code>
 
 **Tags:** upload
 
