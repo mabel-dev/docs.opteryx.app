@@ -66,6 +66,71 @@
         }
       }
     },
+    "/v1/access/workspace/{workspace}/effective-permissions.csv": {
+      "get": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Export effective permissions",
+        "description": "Export a CSV of who has access to every dataset and view in the workspace, resolving each policy's pattern against the workspace's actual catalog. A policy scoped to a wildcard pattern appears on one row per dataset it covers, so the same policy_id can repeat across many rows. Owner-only: this is a full map of who can reach every resource in the workspace, not a single grant.",
+        "operationId": "export_effective_permissions_v1_access_workspace__workspace__effective_permissions_csv_get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV export of effective permissions.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/access/workspace/{workspace}/policies/{policy_id}": {
       "get": {
         "tags": [

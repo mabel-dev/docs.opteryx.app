@@ -11,6 +11,7 @@ Workspace policy listing, inspection, creation, updates, and deletion for access
 Endpoint | Method | Summary
 --- | --- | ---
 `/v1/access/workspace/{workspace}` | `GET` | [List workspace policies](#list-workspace-policies)
+`/v1/access/workspace/{workspace}/effective-permissions.csv` | `GET` | [Export effective permissions](#export-effective-permissions)
 `/v1/access/workspace/{workspace}/policies` | `POST` | [Create policy](#create-policy)
 `/v1/access/workspace/{workspace}/policies/{policy_id}` | `GET` | [Get policy details](#get-policy-details)
 `/v1/access/workspace/{workspace}/policies/{policy_id}` | `PUT` | [Update policy](#update-policy)
@@ -44,6 +45,66 @@ Get all access policies for a workspace. Requires owner or admin access.
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
     <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Export effective permissions
+
+**Request:** `[GET] /v1/access/workspace/{workspace}/effective-permissions.csv`
+
+**Tags:** Access Control
+
+Export a CSV of who has access to every dataset and view in the workspace, resolving each policy's pattern against the workspace's actual catalog. A policy scoped to a wildcard pattern appears on one row per dataset it covers, so the same policy_id can repeat across many rows. Owner-only: this is a full map of who can reach every resource in the workspace, not a single grant.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — CSV export of effective permissions. (`application/json` `object`, `text/csv` `string`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/effective-permissions.csv" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/effective-permissions.csv</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
