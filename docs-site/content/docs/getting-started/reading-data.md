@@ -1,27 +1,43 @@
-# Reading Data
+# Load and Query Data
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This page covers getting data into [opteryx.app](https://opteryx.app), the hosted service, and reading it back out with SQL. If you're embedding the `opteryx-core` engine directly in a Python process instead, see [Querying Local Data](/docs/guides/querying-local-data).
 
+## Loading Data
 
-### Sample Datasets
+Files are ingested through the [Upload API](/docs/reference/api/upload-api): open a session, upload one or more files as parts (Parquet, CSV, or NDJSON), then commit the session into a table. Opteryx Studio also has a guided upload flow in the UI that wraps the same API, if you'd rather drag and drop a file than script it.
 
-The public service exposes a collection of example datasets you can query immediately. Discover available EntitySets from the OData service document (`GET https://odata.opteryx.app/api/v4/`). Example public datasets include:
+For a full walkthrough of the session/part/commit flow, including the Python SDK, see [Upload client (Python SDK)](/docs/reference/python/upload).
 
- - `public.examples.planets` - small example table of planets (good for quick queries and demos).
- - `public.examples.vulnerabilities` - vulnerabilities sample dataset.
- - `public.github.events` - GitHub event stream samples (event-level rows).
- - `public.imdb.titles`, `public.imdb.ratings`, `public.imdb.cast` - IMDb example tables.
- - `public.nyc_taxi.<year>_yellow_taxi_trips` - NYC taxi trip tables by year (large, partitioned datasets; use filters when querying).
- - `mitre.attack.*` - MITRE ATT&CK tables (attack_pattern, campaign, malware, tool, relationship).
- - `opteryx.test.*` - test datasets (astronauts, planets, tweets, etc.) used for examples and benchmarking.
- - `benchmarks.tpch.*` & `benchmarks.clickbench.hits` - benchmark datasets useful for performance testing.
+## Reading Data
 
+Once data is loaded, there are three ways to query it:
 
-To query a dataset via OData, use the dataset path from the service document, for example:
+| Method | Auth | Best for |
+| --- | --- | --- |
+| [Jobs API](/docs/reference/api/jobs-api) | Required | Submitting arbitrary SQL over plain HTTP/JSON from any language. |
+| [OData API](/docs/guides/querying-via-odata) | Anonymous read on public datasets; a token for anything else | Quick, filterable reads without writing any client code - see below. |
+| [Arrow Flight SQL](/docs/guides/connecting-via-flight-sql) | Required | Larger result sets in Python - data streams as Arrow, no JSON round trip. |
 
-```
-GET https://odata.opteryx.app/api/v4/public/examples/planets?$top=10
-```
+See [Running a Query via the API](/docs/guides/running-a-query-via-the-api) for the Jobs API request/response walkthrough, and [Access and Permissions](/docs/core-concepts/access-and-permissions) for how tokens and policies control what each method can see.
 
-When you first explore large public datasets (for example the NYC taxi tables), prefer `$filter` and `$select` to limit returned rows and columns.
+### Try It: Public Sample Datasets
+
+A handful of datasets under the `public` schema are readable with no account or token at all - useful for trying a query before you've loaded anything of your own:
+
+| Dataset | Description |
+| --- | --- |
+| `public.astronomy.planets` | Small example table of planets (good for quick queries and demos). |
+| `public.geopolitics.countries` | Reference table of countries. |
+| `public.geopolitics.gdelt_events` | GDELT event records, ordered by `date_added`. |
+| `public.github.events` | GitHub event stream samples (event-level rows), ordered by `created_at`. |
+| `public.sales.orders` | Example sales orders table. |
+| `public.sales.sales` | Example sales transactions table. |
+| `public.security.cisa_kev` | CISA Known Exploited Vulnerabilities catalog. |
+| `public.security.epss` | Exploit Prediction Scoring System (EPSS) data. |
+| `public.security.exploit_db` | Exploit-DB entries. |
+| `public.security.ghsa_advisories` | GitHub Security Advisories, ordered by `published_at`. |
+| `public.security.ghsa_advisories_affected` | Packages/ecosystems affected by GHSA advisories, ordered by `ecosystem`. |
+| `public.security.nvd_vulnerabilities` | National Vulnerability Database (NVD) records. |
+| `public.security.exploited_vulnerabilities` | A view joining known-exploited and vulnerability data. |
+| `public.security.vulnerabilities_per_week` | A view summarizing vulnerability counts per week. |
 

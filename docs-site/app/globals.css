@@ -712,6 +712,14 @@ kbd {
     border-bottom: 1px solid var(--border);
     vertical-align: top;
 }
+/* Long inline code (e.g. dotted dataset/table names) shouldn't force a
+   table wider than its column — let it wrap instead of pushing the page
+   into horizontal scroll. */
+.docs-article td code,
+.docs-article th code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
 .docs-article thead th {
     background: var(--opteryx-pale-teal);
     font-family: var(--font-display);

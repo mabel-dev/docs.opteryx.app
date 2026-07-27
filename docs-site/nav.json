@@ -13,19 +13,40 @@
     ]
   },
   {
-    "Core Concepts": [
-      {
-        "Access and permissions": "core-concepts/access-and-permissions.md"
-      },
-      {
-        "Cost model": "core-concepts/cost-model.md"
-      }
-    ]
-  },
-  {
     "Guides": [
       {
-        "Local engine (opteryx-core)": [
+        "Cloud Warehouse": [
+          {
+            "Running a query via the API": "guides/running-a-query-via-the-api.md"
+          },
+          {
+            "Querying via OData": "guides/querying-via-odata.md"
+          },
+          {
+            "Using SQLAlchemy from a notebook": "guides/using-sqlalchemy.md"
+          },
+          {
+            "SQLAlchemy dialect reference": "reference/python/sqlalchemy.md"
+          },
+          {
+            "Connecting via Arrow Flight SQL": "guides/connecting-via-flight-sql.md"
+          },
+          {
+            "Upload client (Python SDK)": "reference/python/upload.md"
+          },
+          {
+            "Sample data": "reference/sql/advanced/adv-sample-data.md"
+          },
+          {
+            "Access and permissions": "core-concepts/access-and-permissions.md"
+          },
+          {
+            "Cost model": "core-concepts/cost-model.md"
+          }
+        ]
+      },
+      {
+        "Embedded Engine": [
           {
             "Querying local data": "guides/querying-local-data.md"
           },
@@ -42,35 +63,6 @@
             "Using Rugo standalone": "guides/rugo-standalone.md"
           }
         ]
-      },
-      {
-        "Hosted service (opteryx.app)": [
-          {
-            "Running a query via the API": "guides/running-a-query-via-the-api.md"
-          },
-          {
-            "Using SQLAlchemy from a notebook": "guides/using-sqlalchemy.md"
-          },
-          {
-            "Connecting via Arrow Flight SQL": "guides/connecting-via-flight-sql.md"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "API Reference": [
-      {
-        "Authentication API": "reference/api/authentication-api.md"
-      },
-      {
-        "Jobs API": "reference/api/jobs-api.md"
-      },
-      {
-        "Policy API": "reference/api/policy-api.md"
-      },
-      {
-        "Upload API": "reference/api/upload-api.md"
       }
     ]
   },
@@ -481,12 +473,6 @@
             "NULL semantics": "reference/sql/advanced/adv-null-semantics.md"
           },
           {
-            "Query optimization": "reference/sql/advanced/adv-query-optimization.md"
-          },
-          {
-            "Sample data": "reference/sql/advanced/adv-sample-data.md"
-          },
-          {
             "Temporary tables": "reference/sql/advanced/adv-temp-tables.md"
           },
           {
@@ -621,12 +607,18 @@
     ]
   },
   {
-    "Clients": [
+    "API Reference": [
       {
-        "SQLAlchemy": "reference/python/sqlalchemy.md"
+        "Authentication API": "reference/api/authentication-api.md"
       },
       {
-        "Upload": "reference/python/upload.md"
+        "Jobs API": "reference/api/jobs-api.md"
+      },
+      {
+        "Policy API": "reference/api/policy-api.md"
+      },
+      {
+        "Upload API": "reference/api/upload-api.md"
       }
     ]
   },
