@@ -210,8 +210,8 @@ result back to a probability and asks how likely it is to occur in the available
 positions of an average string:
 
 ```
-p_char     = class_proportion / bytes_in_class
-log(p_pos) = Σ decay**i × log(p_char(needle[i]))
+p_char      = class_proportion / bytes_in_class
+log(p_pos)  = Σ decay**i × log(p_char(needle[i]))
 selectivity = 1 - exp(-n_positions × p_pos)
 ```
 
