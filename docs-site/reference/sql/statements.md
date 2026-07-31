@@ -64,6 +64,7 @@ Manage table properties and statistics:
 
 | Statement | Purpose |
 |-----------|---------|
+| [CREATE TABLE](statements/create-table.md) | Create a table, or materialize a query as a new or replaced table |
 | [ANALYZE TABLE](statements/analyze-table.md) | Collect statistics for query optimization |
 | [COMMENT](statements/comment.md) | Add descriptive comments to tables and views |
 

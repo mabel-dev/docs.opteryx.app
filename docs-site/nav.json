@@ -399,6 +399,9 @@
               "COMMENT": "reference/sql/statements/comment.md"
             },
             {
+              "CREATE TABLE": "reference/sql/statements/create-table.md"
+            },
+            {
               "CREATE VIEW": "reference/sql/statements/create-view.md"
             },
             {
