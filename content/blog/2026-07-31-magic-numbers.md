@@ -16,144 +16,156 @@ tags:
 
 ## TL;DR
 
-* We replaced the flat `0.1` selectivity constant used for `LIKE '%needle%'` with a per-column byte-class estimator with geometric decay. Mean absolute error against real data dropped from **14.5%** to **4.45%**.
-* Wiring it into `ANALYZE TABLE` surfaced the actual state of the statistics pipeline: most per-file statistics were hardcoded empty on one write path, and computed in pure Python — over materialized lists, at terabyte scale — on the other. So the scope tripled: make statistics collection complete and native first, in both write paths, before the estimator could ship at all.
-* Testing against real data — not code review — caught five bugs that would otherwise have shipped silently, including one already live in production: `WHERE price = 0.5` was silently skipping files that contained matching rows, because float bounds were being compared as raw bit patterns instead of values.
+* **Problem:** every `LIKE '%needle%'` predicate used the same invented 10% selectivity, leading the optimizer to choose unnecessarily expensive plans.
+* **Action:** we tested several compact per-column estimators, selected decayed byte classes, and rebuilt the statistics pipeline needed to supply it.
+* **Outcome:** mean absolute error fell from **14.5%** to **4.45%**; real-data validation also exposed and fixed a latent float-pruning bug that could silently drop matching rows.
+
+## Why the magic number matters
 
 Somewhere in every query engine there is a number someone made up.
 
 Ours was `0.1`. When the optimizer saw `WHERE description LIKE '%buffer%'`, it
 had no idea how many rows would match, so it guessed ten percent. That guess
 feeds join ordering, memory reservations, and whether a filter runs early or
-late. A bad guess doesn't return wrong answers — it returns right answers
-slowly, which is harder to notice and harder to blame on anything.
+late.
+
+The problem is not just that ten percent is imprecise. It treats every text
+column and every needle alike: prose, a templated identifier, and a structured
+CVSS vector all get the same answer. A selective filter estimated as broad may
+run late, after a large join has already done unnecessary work. A broad filter
+estimated as selective can make the optimizer choose a plan that under-reserves
+memory or builds the wrong side of a join. The query still returns the right
+answer; it simply returns it slowly, which is harder to notice and harder to
+attribute.
 
 We set out to replace the magic number. We did. But the more interesting part
 of this story is what we found on the way there, and how we found it.
 
-## Part 1: The experiment
+## Part 1: Finding an estimator
 
-The first decision was to not touch the engine at all.
+This was an experiment in competing hypotheses: what small summary of a text
+column can predict whether a needle occurs, and which model gives the optimizer
+a better estimate than a constant?
 
-We built the whole thing as a standalone experiment first — separate
-directory, no imports from production, free to be wrong. That constraint
-turned out to matter more than any individual result, because it meant we
-could cheerfully test ideas that didn't work without any sunk cost in
-having wired them in.
+### The hypotheses
 
-### The model
-
-The idea: instead of one number for every column, store a small per-column
-summary of what its text actually looks like, and use that to estimate how
-likely a given needle is to appear.
-
-We classify every byte into one of 8 classes — uppercase, lowercase, digit,
-whitespace, text punctuation, semantic markers, extended, control — and store
-the proportion of each. That's 8 numbers per column. Then, for a needle,
-estimate the per-position probability of a match and fold it over the
-available positions:
+The common starting point was a compact per-column summary. We classify every
+byte into one of eight classes — uppercase, lowercase, digit, whitespace, text
+punctuation, semantic markers, extended, control — and store each class's
+proportion. That is eight numbers per column. For a needle, the model estimates
+a per-position match probability and folds it over the available positions:
 
 ```
 n_positions = max(avg_length - len(needle) + 1, 0)
 selectivity = 1 - exp(-n_positions * p_pos)
 ```
 
-This is the standard "independent positions, i.i.d. characters" containment
-approximation. It is, to be clear, wrong. English isn't i.i.d. and overlapping
-positions aren't independent. The question wasn't whether the model was true;
-it was whether it beat a constant.
+We tested four variants:
 
-### What we tested against
+* **Entropy:** collapse the distribution to one number
+  (`2**-entropy_bits`) as a per-character probability.
+* **Plain char classes:** multiply the class probabilities across the needle.
+* **Char classes with geometric decay:** discount later characters' contribution
+  to the probability.
+* **Markov bigrams:** add class-to-class transition probabilities to model
+  some of the correlation the independent-character model ignores.
 
-371,000 real rows from the NVD vulnerability database — CVE identifiers,
-descriptions, CVSS vectors. Real text with genuinely different shapes: prose,
-templated IDs, structured vectors. Plus a real ClickBench query
-(`LIKE '%google%'`) as an independent check on a completely different data
-distribution.
+The models are all approximations. English is not i.i.d.; overlapping positions
+are not independent. The test was not whether one was true. It was whether one
+was useful enough to beat `0.1`.
 
-We validated "true" selectivity independently of the engine's own LIKE
-implementation, so a bug in our matcher couldn't quietly grade its own
-homework. Five out of five cross-checks matched exactly.
+### How we tested them
 
-### What didn't work
+We measured estimates against true selectivity on 371,000 real rows from the
+NVD vulnerability database: CVE identifiers, prose descriptions, and CVSS
+vectors. Those columns have genuinely different shapes, which matters more than
+a single average score.
 
-Most of it. Worth recording, because the failures were more informative than
-the win:
+We calculated the true values independently of the engine's `LIKE`
+implementation, so a matcher bug could not quietly grade its own homework.
+Five out of five cross-checks matched exactly. After selecting the strongest
+models on NVD, we checked them again against a real ClickBench
+`LIKE '%google%'` query — a separate data distribution, not more of the same
+corpus.
 
-**Entropy.** Collapse the whole character distribution to one number
-(`2**-entropy_bits` as the per-character probability). Elegant, and worse than
-char classes across the board. One number is not enough to distinguish "mostly
-lowercase prose" from "mostly hex digits."
+### Down to two
 
-**Undamped char classes.** The straightforward multiplicative product across
-needle positions. Better than baseline, but it collapses hard on longer
-needles — every additional character multiplies the estimate toward zero, and
-on templated content (where characters are strongly correlated) that's wildly
-pessimistic.
+Entropy was out quickly: one number could not distinguish mostly-lowercase
+prose from mostly-hexadecimal identifiers. Plain char classes beat the
+constant, but multiplied every extra character toward zero; on correlated,
+templated content, it became wildly pessimistic for longer needles.
 
-**Markov bigrams.** The obvious next step: store transition probabilities
-between character classes, capturing some of the correlation the i.i.d. model
-throws away. We tested it at full precision, then quantized to fp16 and 8-bit
-fixed point to see if we could afford the storage.
+That left two candidates worth the secondary validation: decayed char classes
+and Markov bigrams. Both retain the useful class distribution; the difference
+is where they spend their complexity. The first limits how much a long needle
+can compound the estimate. The second adds a transition table in an attempt to
+model character-class correlation directly.
 
-It was a net loss. 7.41% mean absolute error versus 5.72% for the simpler
-model. And the *reason* was the interesting part: it improved `description`
-substantially while badly damaging `cvss_vector`. The bigram table has an
-"OTHER" bucket, and for `cvss_vector` the measured
-P(OTHER→OTHER) was genuinely 0% — a real signal about a rigidly structured
-column. Our fix for the aggregation noise elsewhere (flooring that probability
-at the 10% baseline) overwrote a correct zero with a wrong non-zero.
+### Comparing the finalists
 
-That's a general trap worth naming: **when you smooth away noise, check
-whether you're also smoothing away signal.** The same correction that helped
-the noisy column destroyed the clean one.
+**Markov bigrams** were the more ambitious model. We tested the transition table
+at full precision, then quantized it to fp16 and 8-bit fixed point to establish
+whether its additional storage was affordable. It lost its first head-to-head:
+7.41% mean absolute error versus 5.72% for the simpler class model. Adding
+decay improved the simpler model further.
 
-**Clamping.** Bound the output to `[lo, hi]` to cap worst-case error, like the
-flat constant is implicitly capped. We tested this because it seemed obviously
-prudent. It isn't symmetric: our worst errors are all *under*estimates, so a
-ceiling is nearly a no-op (MAE 4.45% → 4.57%, worst case unchanged at ~99.6%).
-A floor does something, but it does it by forcing every correctly-near-zero
-estimate up too. We declined it.
+The aggregate result mattered, but the mechanism mattered more. Bigrams
+substantially improved `description` while badly damaging `cvss_vector`. Its
+"OTHER" bucket measured P(OTHER→OTHER) as genuinely 0% for the rigidly
+structured vector column. We floored that probability at the 10% baseline to
+correct aggregation noise elsewhere, overwriting a correct zero with a wrong
+non-zero.
 
-### What won
+That is a general trap worth naming: **when you smooth away noise, check
+whether you are also smoothing away signal.** The same correction that helped
+the noisy column damaged the clean one.
 
-Char classes with a geometric decay applied to each position's
-*log*-contribution:
+**Decayed char classes** need only the eight stored proportions. They apply a
+geometric decay to each position's *log*-contribution:
 
 ```
 log(p_pos) = sum(decay**i * log(p_char(c_i)) for i, c_i in enumerate(needle))
 ```
 
-Aggregate MAE **4.45%** against the flat constant's **14.5%**, at
-`decay = 0.7`.
-
 The decay caps how far a long needle can drive the estimate toward zero —
 characters past roughly the first `1/(1-decay)` positions contribute a
-vanishing share. Critically, every term is ≤ 0, so the estimate stays
-monotonically non-increasing in needle length. An earlier hand-derived variant
-of ours broke that: it compared each character against a fixed 1/256 reference
-instead of discounting its own log-probability, and on a column using only ~16
-distinct bytes it concluded that `'CVE-20'` was *more* likely to match than
-`'CVE'`. A model that says a string is more common than its own prefix is not
-a model. Monotonicity became a required property, not a nice-to-have.
+vanishing share. Every term is ≤ 0, so the estimate remains monotonically
+non-increasing as the needle grows.
 
-### The limitation we're shipping with
+That invariant was non-negotiable. An earlier hand-derived variant compared
+each character against a fixed 1/256 reference rather than discounting its own
+log-probability. On a column using only about 16 distinct bytes, it concluded
+that `'CVE-20'` was *more* likely to match than `'CVE'`. A model that says a
+string is more common than its own prefix is not a model.
 
-This estimator cannot see character *identity*. Only class and length. So
-`'google'`, `'abcdef'`, and a needle that appears nowhere in the corpus all
-get the same estimate if they're the same shape.
+### The choice, and how we applied it
 
-That's not a rough edge — it's an unbounded, systematically-underestimating
-tail. On a templated ID column, a needle that matches nearly every row can be
-estimated at nearly zero.
+We selected decayed char classes at `decay = 0.7`: aggregate MAE was **4.45%**,
+versus **14.5%** for the flat constant. That is not a promise of a correct
+cardinality estimate. It is a considerably better signal for choosing a plan.
 
-We looked for a cheap signal to detect the dangerous needles in advance and
-fall back to the constant. There isn't one — detecting them is
-approximately the same problem as estimating them correctly. So we shipped
-without a guard, deliberately, with the trade written down: typical-case
-accuracy improves ~3x, worst-case risk gets worse. That's the right trade for
-a cost estimate, which biases plans rather than answers. It would be the wrong
-trade for anything load-bearing on correctness.
+We also tested clamping the result to `[lo, hi]`. It was not the safety measure
+it appeared to be: our largest errors are underestimates, so a ceiling was
+nearly a no-op (MAE 4.45% → 4.57%, worst case unchanged at ~99.6%). A floor
+would improve those errors only by raising correctly-near-zero estimates. We
+declined it.
+
+The selected model is intentionally small: `ANALYZE TABLE` records the byte
+class distribution and average length for each text column; planning uses them
+to estimate `LIKE '%needle%'`. When statistics are absent, it retains the old
+constant and records which estimator was used in telemetry.
+
+It cannot see character *identity*, only class and length. `'google'`,
+`'abcdef'`, and a needle absent from the corpus receive the same estimate if
+they have the same shape. On a templated ID column, a needle that matches
+nearly every row can therefore be estimated near zero.
+
+We looked for a cheap way to identify those dangerous needles and fall back to
+the constant. There isn't one — detecting them is approximately the same
+problem as estimating them correctly. We shipped the trade deliberately:
+typical-case accuracy improves roughly threefold; worst-case risk gets worse.
+That is acceptable for a cost estimate, which biases plans rather than answers.
+It would be the wrong trade for anything load-bearing on correctness.
 
 ## Part 2: Shipping it, and what was actually there
 
