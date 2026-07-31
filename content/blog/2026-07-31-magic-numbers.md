@@ -1,6 +1,6 @@
 ---
 title: Replacing a Magic Number
-description: We set out to replace a single hardcoded LIKE selectivity constant with a real estimator. Wiring it in surfaced a statistics pipeline that was mostly unimplemented, a Python hot path at terabyte scale, and a production bug that had been silently dropping matching rows.
+description: Replacing one hardcoded LIKE selectivity constant with a real estimator uncovered an unfinished statistics pipeline — and a production bug that was silently dropping matching rows.
 date: 2026-07-31
 author: Justin Joyce
 role: Opteryx Engineering
