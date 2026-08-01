@@ -6,6 +6,68 @@ Base URL: https://upload.opteryx.app
 
 Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.
 
+## Upload flow
+
+Ingesting a dataset is a short conversation, not a single call: open a session, upload one or more parts into it, optionally inspect what's there and drop parts that don't belong, then commit.
+
+<div class="api-flow">
+  <div class="api-flow__head">
+    <span class="api-flow__actor api-flow__actor--a">Client</span>
+    <span class="api-flow__actor api-flow__actor--b">Upload API</span>
+  </div>
+  <ol class="api-flow__steps">
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">1</span>
+      <span class="api-flow__label"><code>POST /v1/upload/session</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">2</span>
+      <span class="api-flow__label">201 &middot; <code>session_id</code>, <code>url</code>, <code>expires_at</code></span>
+    </li>
+    <li class="api-flow__group" data-label="Loop &mdash; for each file">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>PUT /v1/upload/{session_id}?part=N</code></span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">201 &middot; part accepted</span>
+        </li>
+      </ol>
+    </li>
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">3</span>
+      <span class="api-flow__label"><code>GET /v1/upload/{session_id}/inspect</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">4</span>
+      <span class="api-flow__label">200 &middot; schema, row estimate, <code>issues[]</code></span>
+    </li>
+    <li class="api-flow__group" data-label="If inspect reports issues">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>DELETE /v1/upload/{session_id}/part/{part}</code></span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">200 &middot; part removed</span>
+        </li>
+      </ol>
+      <div class="api-flow__note">Upload a replacement part, then inspect again</div>
+    </li>
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">5</span>
+      <span class="api-flow__label"><code>POST /v1/upload/{session_id}/commit</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">6</span>
+      <span class="api-flow__label">200 &middot; <code>commit_id</code>, <code>rows_written</code></span>
+    </li>
+  </ol>
+</div>
+
+- **Inspecting is optional but advisory** — it doesn't gate the commit. `GET .../inspect` returns `issues[]` referencing part numbers so you know what to replace with `DELETE .../part/{part}` before re-uploading.
+- **Commit is a single decision point.** `POST .../commit` takes a `target` (workspace/collection/dataset) and a `conflict_resolution` (`fail` | `overwrite` | `append`, default `fail`) — there's no separate "submit after validation passes" step; committing with unresolved issues just writes what's there.
+- **Sessions expire.** `expires_at` from the session-open response is how long you have to finish uploading and commit before the session is discarded.
+
 ## Endpoints
 
 <table class="endpoint-index">
