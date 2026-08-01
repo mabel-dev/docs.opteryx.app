@@ -11,7 +11,7 @@
           "Jobs Management"
         ],
         "summary": "Create and execute SQL job",
-        "description": "Submit a SQL job for execution.",
+        "description": "Submit a SQL job for execution. `:name` placeholders in sql_text are resolved from the parameters field, falling back to the caller's saved variables for anything not passed explicitly - see parameters below and the Variables API.",
         "operationId": "create_job_api_v1_jobs_post",
         "parameters": [
           {
@@ -107,6 +107,65 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JobStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{identifier}/cancel": {
+      "post": {
+        "tags": [
+          "Jobs Management"
+        ],
+        "summary": "Cancel job execution",
+        "description": "Cancel a running job.",
+        "operationId": "cancel_job_api_v1_jobs__identifier__cancel_post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCancelResponse"
                 }
               }
             }
@@ -311,7 +370,7 @@
           "Jobs Management"
         ],
         "summary": "Estimate result size",
-        "description": "Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job.",
+        "description": "Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job. `:name` placeholders are resolved the same way as job creation - see parameters below.",
         "operationId": "estimate_job_size_api_v1_jobs_estimate_post",
         "parameters": [
           {
@@ -434,6 +493,175 @@
           }
         }
       }
+    },
+    "/api/v1/variables": {
+      "get": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "List saved variables",
+        "description": "List the caller's saved query-parameter variables.",
+        "operationId": "get_variables_api_v1_variables_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariableListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/variables/{name}": {
+      "put": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Create or update a saved variable",
+        "description": "Create (or replace) a named query-parameter variable for the caller.",
+        "operationId": "put_variable_api_v1_variables__name__put",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VariableUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariableListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Delete a saved variable",
+        "description": "Delete a named query-parameter variable for the caller.",
+        "operationId": "delete_variable_endpoint_api_v1_variables__name__delete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -456,14 +684,17 @@
               }
             ],
             "title": "Parameters",
-            "description": "Optional query parameters"
+            "description": "Values for any `:name` placeholders in sql_text. Resolved the same way as job creation's parameters field: explicit values here take priority, anything else the query references is resolved from the caller's saved variables (see the Variables API)."
           }
         },
         "type": "object",
         "required": [
           "sql_text"
         ],
-        "title": "EstimateRequest"
+        "title": "EstimateRequest",
+        "example": {
+          "sql_text": "SELECT * FROM sales WHERE order_date >= '2026-01-01'"
+        }
       },
       "EstimateResponse": {
         "properties": {
@@ -491,6 +722,30 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "JobCancelResponse": {
+        "properties": {
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id"
+          },
+          "cancelled": {
+            "type": "boolean",
+            "title": "Cancelled"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current state of the job"
+          }
+        },
+        "type": "object",
+        "required": [
+          "execution_id",
+          "cancelled",
+          "status"
+        ],
+        "title": "JobCancelResponse"
       },
       "JobCreateRequest": {
         "properties": {
@@ -523,14 +778,21 @@
               }
             ],
             "title": "Parameters",
-            "description": "Query parameters, key-value pairs"
+            "description": "Values for any `:name` placeholders in sql_text, as key-value pairs. Values passed here always take priority. Any placeholder the query references that isn't included here is automatically resolved from the caller's saved variables (see the Variables API) - this is what lets a shared query stay generic (e.g. `WHERE department = :department`) while each caller's own saved value fills in without them passing it explicitly. A placeholder that's neither passed nor saved is left unresolved, and the job fails at execution with a parameter-not-defined error."
           }
         },
         "type": "object",
         "required": [
           "sql_text"
         ],
-        "title": "JobCreateRequest"
+        "title": "JobCreateRequest",
+        "example": {
+          "client_info": {
+            "app": "docs-try-it",
+            "version": "1.0"
+          },
+          "sql_text": "SELECT customer_id, SUM(amount) AS total FROM sales GROUP BY customer_id ORDER BY total DESC LIMIT 10"
+        }
       },
       "JobCreateResponse": {
         "properties": {
@@ -640,15 +902,33 @@
             "title": "Time Executing S",
             "default": 0
           },
-          "plan": {
-            "type": "string",
-            "title": "Plan",
-            "default": ""
+          "engine_timings": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Engine Timings"
+          },
+          "io_scan_diagnostics": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Io Scan Diagnostics"
           },
           "sensor_data": {
             "additionalProperties": true,
             "type": "object",
             "title": "Sensor Data"
+          },
+          "edges": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Edges"
           },
           "error_message": {
             "anyOf": [
@@ -678,6 +958,23 @@
             "type": "integer",
             "title": "Total Size Estimate",
             "default": 0
+          },
+          "has_trace": {
+            "type": "boolean",
+            "title": "Has Trace",
+            "default": false
+          },
+          "trace": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trace"
           },
           "data": {
             "items": {
@@ -1012,6 +1309,90 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VariableInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "value"
+        ],
+        "title": "VariableInfo",
+        "description": "A single saved query-parameter variable, as returned to the caller."
+      },
+      "VariableListResponse": {
+        "properties": {
+          "variables": {
+            "items": {
+              "$ref": "#/components/schemas/VariableInfo"
+            },
+            "type": "array",
+            "title": "Variables"
+          }
+        },
+        "type": "object",
+        "required": [
+          "variables"
+        ],
+        "title": "VariableListResponse"
+      },
+      "VariableUpsertRequest": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "One of 'string', 'number', or 'boolean'"
+          },
+          "value": {
+            "title": "Value",
+            "description": "The variable's value; its JSON type must match `type`"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "title": "VariableUpsertRequest"
       }
     }
   }

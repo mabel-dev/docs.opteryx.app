@@ -26,6 +26,10 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
       <td class="ep-doc"><a href="#retrieve-recent-user-queries">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">Cancel job execution</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/{identifier}/cancel</code></td>
+      <td class="ep-doc"><a href="#cancel-job-execution">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">Download job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code></td>
       <td class="ep-doc"><a href="#download-job-results">View</a></td>
     </tr>
@@ -37,6 +41,18 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
       <td><span class="ep-name">Get job status</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/status</code></td>
       <td class="ep-doc"><a href="#get-job-status">View</a></td>
     </tr>
+    <tr>
+      <td><span class="ep-name">List saved variables</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/variables</code></td>
+      <td class="ep-doc"><a href="#list-saved-variables">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Create or update a saved variable</span><span class="ep-verb ep-verb--put">put</span><code>/api/v1/variables/{name}</code></td>
+      <td class="ep-doc"><a href="#create-or-update-a-saved-variable">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Delete a saved variable</span><span class="ep-verb ep-verb--delete">delete</span><code>/api/v1/variables/{name}</code></td>
+      <td class="ep-doc"><a href="#delete-a-saved-variable">View</a></td>
+    </tr>
   </tbody>
 </table>
 
@@ -46,7 +62,7 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
 
 **Tags:** Jobs Management
 
-Submit a SQL job for execution.
+Submit a SQL job for execution. `:name` placeholders in sql_text are resolved from the parameters field, falling back to the caller's saved variables for anything not passed explicitly - see parameters below and the Variables API.
 
 ### Header Parameters
 
@@ -61,7 +77,7 @@ Submit a SQL job for execution.
   - **client_info** `object | null` [optional]
     Client information, e.g. application name/version
   - **parameters** `object | null` [optional]
-    Query parameters, key-value pairs
+    Values for any `:name` placeholders in sql_text, as key-value pairs. Values passed here always take priority. Any placeholder the query references that isn't included here is automatically resolved from the caller's saved variables (see the Variables API) - this is what lets a shared query stay generic (e.g. `WHERE department = :department`) while each caller's own saved value fills in without them passing it explicitly. A placeholder that's neither passed nor saved is left unresolved, and the job fails at execution with a parameter-not-defined error.
 
 ### Responses
 
@@ -113,7 +129,7 @@ Submit a SQL job for execution.
 
 **Tags:** Jobs Management
 
-Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job.
+Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job. `:name` placeholders are resolved the same way as job creation - see parameters below.
 
 ### Header Parameters
 
@@ -126,7 +142,7 @@ Return a coarse estimate of the bytes for a job result. Accepts a JSON body with
   - **sql_text** `string` [required]
     SQL statement to estimate
   - **parameters** `object | null` [optional]
-    Optional query parameters
+    Values for any `:name` placeholders in sql_text. Resolved the same way as job creation's parameters field: explicit values here take priority, anything else the query references is resolved from the caller's saved variables (see the Variables API).
 
 ### Responses
 
@@ -211,6 +227,65 @@ Get recent user queries.
       <div class="t-params">
         <div class="t-pname">filter<span>string | null · optional</span></div>
         <input type="text" class="t-query" data-name="filter" placeholder="string | null">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Cancel job execution
+
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/{identifier}/cancel</code>
+
+**Tags:** Jobs Management
+
+Cancel a running job.
+
+### Path Parameters
+
+- **identifier** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `JobCancelResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/cancel" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/{identifier}/cancel</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">identifier<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="identifier" placeholder="string">
       </div>
     </div>
     <div class="t-actions">
@@ -429,6 +504,188 @@ Retrieve the execution status of a previously submitted job.
       <div class="t-params">
         <div class="t-pname">identifier<span>string · required</span></div>
         <input type="text" class="t-path" data-name="identifier" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## List saved variables
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/variables</code>
+
+**Tags:** Variables
+
+List the caller's saved query-parameter variables.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `VariableListResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://jobs.opteryx.app" data-path="/api/v1/variables" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/variables</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Create or update a saved variable
+
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/api/v1/variables/{name}</code>
+
+**Tags:** Variables
+
+Create (or replace) a named query-parameter variable for the caller.
+
+### Path Parameters
+
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `VariableUpsertRequest`
+  - **type** `string` [required]
+    One of 'string', 'number', or 'boolean'
+  - **value** `object` [required]
+    The variable's value; its JSON type must match `type`
+
+### Responses
+
+- **200** — Successful Response (`application/json` `VariableListResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="PUT" data-base="https://jobs.opteryx.app" data-path="/api/v1/variables/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--put">put</span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/variables/{name}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · VariableUpsertRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "type": "",
+  "value": null
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Delete a saved variable
+
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/api/v1/variables/{name}</code>
+
+**Tags:** Variables
+
+Delete a named query-parameter variable for the caller.
+
+### Path Parameters
+
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **204** — Successful Response
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="DELETE" data-base="https://jobs.opteryx.app" data-path="/api/v1/variables/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--delete">delete</span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/variables/{name}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
       </div>
     </div>
     <div class="t-actions">
