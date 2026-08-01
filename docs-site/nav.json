@@ -438,6 +438,15 @@
               "ORDER BY": "reference/sql/statements/order-by.md"
             },
             {
+              "READ_CSV": "reference/sql/statements/read-csv.md"
+            },
+            {
+              "READ_JSONL": "reference/sql/statements/read-jsonl.md"
+            },
+            {
+              "READ_PARQUET": "reference/sql/statements/read-parquet.md"
+            },
+            {
               "SELECT": "reference/sql/statements/select.md"
             },
             {
