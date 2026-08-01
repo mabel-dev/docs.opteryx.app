@@ -1,73 +1,36 @@
 ---
 title: DELETE Statement — Opteryx Reference
-description: SQL DELETE statement syntax and examples for removing data in Opteryx
+description: DELETE is not currently supported in Opteryx
 ---
 
 # DELETE
 
-The `DELETE` statement removes rows from a table.
-
-## Basic Syntax
+`DELETE` removes specific rows from a table.
 
 !!! warning
-    DELETE is experimental and only works against the local backend. It is not suitable for production use.
+    **DELETE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'DELETE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
+
+## Working Around It
+
+Opteryx is built for read-heavy analytical workloads, not row-level mutation.
+
+- To remove specific rows, rewrite the table with the rows excluded:
 
 ~~~sql
-DELETE FROM table_name
- WHERE condition;
+CREATE OR REPLACE TABLE workspace.collection.sessions AS
+SELECT * FROM workspace.collection.sessions
+ WHERE expires_at >= CURRENT_TIMESTAMP;
 ~~~
 
-## Delete Specific Rows
+  This replaces the whole table with the query's output — it is not a
+  partial, in-place delete, and requires a connector that supports
+  `CREATE TABLE`.
 
-~~~sql
-DELETE FROM sessions
- WHERE expires_at < CURRENT_TIMESTAMP;
+- To remove every row while keeping the table and its schema, use
+  [TRUNCATE TABLE](truncate-table.md).
 
-DELETE FROM orders
- WHERE status = 'cancelled';
-~~~
-
-## Delete All Rows
-
-Remove all rows from a table:
-
-~~~sql
-DELETE FROM temporary_data;
-~~~
-
-!!! warning
-    Deleting all rows without a `WHERE` clause will remove all data from the table. Use with caution.
-
-## Delete with Subquery
-
-~~~sql
-DELETE FROM orders
- WHERE customer_id IN (
-   SELECT id FROM customers WHERE status = 'inactive'
- );
-~~~
-
-## Examples
-
-### Remove Expired Data
-~~~sql
-DELETE FROM sessions
- WHERE created_at < CURRENT_TIMESTAMP - INTERVAL 30 DAY;
-~~~
-
-### Cascade Delete Pattern
-~~~sql
-DELETE FROM order_items
- WHERE order_id IN (
-   SELECT id FROM orders WHERE status = 'cancelled'
- );
-
-DELETE FROM orders
- WHERE status = 'cancelled';
-~~~
+- To remove the table entirely, use [DROP TABLE](drop-table.md).
 
 ## Notes
 
-- DELETE is experimental and only works against the local backend.
-- Always include a `WHERE` clause to target specific rows.
-- Consider archiving data instead of deleting for compliance and audit purposes.
+- See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.

@@ -1,60 +1,28 @@
 ---
 title: UPDATE Statement — Opteryx Reference
-description: SQL UPDATE statement syntax and examples for modifying data in Opteryx
+description: UPDATE is not currently supported in Opteryx
 ---
 
 # UPDATE
 
-The `UPDATE` statement modifies existing rows in a table.
-
-## Basic Syntax
+`UPDATE` modifies existing rows in a table in place.
 
 !!! warning
-    UPDATE is experimental and only works against the local backend. It is not suitable for production use.
+    **UPDATE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'UPDATE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
+
+## Working Around It
+
+Opteryx is built for read-heavy analytical workloads, not row-level mutation. To apply row-level changes, rewrite the table:
 
 ~~~sql
-UPDATE table_name
-   SET column1 = value1, column2 = value2, ...
- WHERE condition;
+CREATE OR REPLACE TABLE workspace.collection.orders AS
+SELECT *,
+       CASE WHEN status = 'sale' THEN 99.99 ELSE price END AS price
+  FROM workspace.collection.orders;
 ~~~
 
-## Single Column Update
-
-~~~sql
-UPDATE users
-   SET active = FALSE
- WHERE last_login < '2023-01-01';
-~~~
-
-## Multiple Column Update
-
-~~~sql
-UPDATE products
-   SET price = 99.99, updated_at = CURRENT_TIMESTAMP
- WHERE category = 'sale';
-~~~
-
-## Update with Expressions
-
-~~~sql
-UPDATE orders
-   SET discount = amount * 0.1,
-       final_price = amount - (amount * 0.1)
- WHERE status = 'completed';
-~~~
-
-## Conditional Update
-
-~~~sql
-UPDATE inventory
-   SET quantity = CASE
-                    WHEN quantity > 100 THEN quantity - 10
-                    WHEN quantity > 50 THEN quantity - 5
-                    ELSE quantity
-                  END;
-~~~
+This replaces the whole table with the query's output — it is not a partial, in-place update, and requires a connector that supports `CREATE TABLE`.
 
 ## Notes
 
-- UPDATE is experimental and only works against the local backend.
-- Always include a `WHERE` clause to target specific rows; without it, all rows will be updated.
+- See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.

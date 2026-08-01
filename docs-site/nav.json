@@ -411,6 +411,9 @@
               "DISTINCT": "reference/sql/statements/distinct.md"
             },
             {
+              "DROP TABLE": "reference/sql/statements/drop-table.md"
+            },
+            {
               "DROP VIEW": "reference/sql/statements/drop-view.md"
             },
             {
@@ -438,7 +441,25 @@
               "SELECT": "reference/sql/statements/select.md"
             },
             {
+              "SHOW COLUMNS": "reference/sql/statements/show-columns.md"
+            },
+            {
+              "SHOW CREATE VIEW": "reference/sql/statements/show-create.md"
+            },
+            {
+              "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
+            },
+            {
+              "SHOW USER": "reference/sql/statements/show-user.md"
+            },
+            {
+              "SHOW VARIABLES": "reference/sql/statements/show-variables.md"
+            },
+            {
               "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
+            },
+            {
+              "TRUNCATE TABLE": "reference/sql/statements/truncate-table.md"
             },
             {
               "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"

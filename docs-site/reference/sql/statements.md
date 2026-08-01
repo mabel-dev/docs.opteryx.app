@@ -32,13 +32,13 @@ Combine results from multiple queries:
 
 ## Data Modification
 
-Statements for inserting, updating, and deleting data:
+Statements for inserting data, and row-level statements Opteryx does not yet support:
 
 | Statement | Purpose |
 |-----------|---------|
 | [INSERT](statements/insert.md) | Add new rows to a table |
-| [UPDATE](statements/update.md) | Modify existing rows |
-| [DELETE](statements/delete.md) | Remove rows from a table |
+| [UPDATE](statements/update.md) | *Not supported* — see the page for a working alternative |
+| [DELETE](statements/delete.md) | *Not supported* — see the page for a working alternative |
 
 ## Query Analysis
 
@@ -47,6 +47,18 @@ Understand and optimize query execution:
 | Statement | Purpose |
 |-----------|---------|
 | [EXPLAIN](statements/explain.md) | Display query plans and execution metrics |
+
+## Introspection
+
+Inspect schemas, definitions, session state, and dataset metadata:
+
+| Statement | Purpose |
+|-----------|---------|
+| [SHOW COLUMNS](statements/show-columns.md) | List a dataset's columns, types, and nullability |
+| [SHOW CREATE VIEW](statements/show-create.md) | Show the query a view was created from |
+| [SHOW MANIFEST FOR](statements/show-manifest.md) | Inspect a dataset's file-level manifest and per-file statistics |
+| [SHOW VARIABLES](statements/show-variables.md) | List session and system variables |
+| [SHOW USER](statements/show-user.md) | Show the current connection's identity |
 
 ## View Management
 
@@ -60,11 +72,13 @@ Create and manage views:
 
 ## Table Management
 
-Manage table properties and statistics:
+Manage tables, table properties, and statistics:
 
 | Statement | Purpose |
 |-----------|---------|
 | [CREATE TABLE](statements/create-table.md) | Create a table, or materialize a query as a new or replaced table |
+| [DROP TABLE](statements/drop-table.md) | Remove a table |
+| [TRUNCATE TABLE](statements/truncate-table.md) | Remove all rows from a table |
 | [ANALYZE TABLE](statements/analyze-table.md) | Collect statistics for query optimization |
 | [COMMENT](statements/comment.md) | Add descriptive comments to tables and views |
 
