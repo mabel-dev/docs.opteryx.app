@@ -6,6 +6,60 @@ Base URL: https://jobs.opteryx.app
 
 Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.
 
+## Job flow
+
+Jobs run asynchronously: submitting a query returns immediately with an `execution_id`, and the query keeps running in the background until you poll it to completion.
+
+<div class="api-flow">
+  <div class="api-flow__head">
+    <span class="api-flow__actor api-flow__actor--a">Client</span>
+    <span class="api-flow__actor api-flow__actor--b">Jobs API</span>
+  </div>
+  <ol class="api-flow__steps">
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">1</span>
+      <span class="api-flow__label"><code>POST /api/v1/jobs</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">2</span>
+      <span class="api-flow__label">201 &middot; <code>execution_id</code>, <code>status</code>, <code>status_url</code></span>
+    </li>
+    <li class="api-flow__group" data-label="Loop &mdash; poll until finished">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>GET /api/v1/jobs/{execution_id}/status</code></span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">200 &middot; <code>status</code>, <code>results_url</code></span>
+        </li>
+      </ol>
+      <div class="api-flow__note">Repeat on an interval until <code>status</code> is no longer in progress</div>
+    </li>
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">3</span>
+      <span class="api-flow__label"><code>GET /api/v1/jobs/{execution_id}/results</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">4</span>
+      <span class="api-flow__label">200 &middot; <code>data[]</code>, <code>total_rows</code>, <code>next_page</code></span>
+    </li>
+    <li class="api-flow__group" data-label="Or, to export instead">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>GET /api/v1/jobs/{execution_id}/download?file_format=csv|json|parquet</code></span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">200 &middot; file</span>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>
+
+- **Poll `status`, not `results`.** `GET .../status` is cheap and returns `results_url` once the job is done; `GET .../results` is what actually pages through the data, `num_rows`/`offset` at a time, following `next_page` for more.
+- **`results` and `download` are independent, not exclusive.** Pull a page inline with `results` to inspect it in your app, or stream the whole set with `download` as CSV, newline-delimited JSON, or Parquet — call either, neither, or both once the job has finished.
+- **Cancel works any time before the job finishes.** `POST .../cancel` stops execution but doesn't undo rows already returned by an earlier `results` call.
+
 ## Endpoints
 
 <table class="endpoint-index">
