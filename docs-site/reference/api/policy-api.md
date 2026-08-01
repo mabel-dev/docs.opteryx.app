@@ -184,7 +184,7 @@ Create a new access policy for a user in the workspace.
   - **principal** `Principal` [required]
     User to grant access to
   - **role** `string` [required]
-    Role to grant (e.g., 'owner', 'reader', 'writer')
+    Role to grant: `owner`, `admin`, `writer`, or `reader`. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do.
   - **pattern** `string` [required]
     Resource pattern (e.g., 'analytics.*')
 
