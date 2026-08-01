@@ -6,6 +6,60 @@ Base URL: https://authenticate.opteryx.app
 
 Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.
 
+## Getting a token
+
+Every other Opteryx API expects a bearer token. Getting one is a two-part conversation: create a credential once, then exchange it for access tokens as often as you need.
+
+<div class="api-flow">
+  <div class="api-flow__head">
+    <span class="api-flow__actor api-flow__actor--a">Client</span>
+    <span class="api-flow__actor api-flow__actor--b">Authentication API</span>
+  </div>
+  <ol class="api-flow__steps">
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">1</span>
+      <span class="api-flow__label"><code>POST /clients/{client_id}/credentials</code></span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">2</span>
+      <span class="api-flow__label">200 &middot; <code>credential_id</code>, <code>secret</code> (shown once)</span>
+    </li>
+    <li class="api-flow__step api-flow__step--req">
+      <span class="api-flow__num">3</span>
+      <span class="api-flow__label"><code>POST /token</code> &mdash; grant_type=client_credentials</span>
+    </li>
+    <li class="api-flow__step api-flow__step--res">
+      <span class="api-flow__num">4</span>
+      <span class="api-flow__label">200 &middot; <code>access_token</code>, <code>expires_in</code>, <code>refresh_token</code></span>
+    </li>
+    <li class="api-flow__group" data-label="To refresh, once access_token expires">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>POST /token</code> &mdash; grant_type=refresh_token</span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">200 &middot; new <code>access_token</code>, <code>expires_in</code></span>
+        </li>
+      </ol>
+    </li>
+    <li class="api-flow__group" data-label="Or, if no refresh_token was issued">
+      <ol class="api-flow__steps">
+        <li class="api-flow__step api-flow__step--req">
+          <span class="api-flow__label"><code>POST /token</code> &mdash; grant_type=client_credentials, again</span>
+        </li>
+        <li class="api-flow__step api-flow__step--res">
+          <span class="api-flow__label">200 &middot; new <code>access_token</code>, <code>expires_in</code></span>
+        </li>
+      </ol>
+    </li>
+    <li class="api-flow__note">Every other Opteryx API call sends this <code>access_token</code> as <code>Authorization: Bearer &lt;token&gt;</code></li>
+  </ol>
+</div>
+
+- **The secret is shown once.** `CreateCredentialResponse.secret` is only ever returned at creation time — store it immediately. If it's lost, revoke the credential and create a new one; there's no way to retrieve it again.
+- **Prefer refresh over the client secret when you have it.** If `/token` returned a `refresh_token`, use `grant_type=refresh_token` to rotate access tokens without touching the stored `client_secret` again.
+- **Tokens are bearer, not sessions.** There's no separate "login" call — holding a valid `access_token` is what authenticates every request to Upload, Jobs, and Policy.
+
 ## Endpoints
 
 <table class="endpoint-index">
