@@ -364,66 +364,6 @@
         }
       }
     },
-    "/api/v1/jobs/estimate": {
-      "post": {
-        "tags": [
-          "Jobs Management"
-        ],
-        "summary": "Estimate result size",
-        "description": "Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job. `:name` placeholders are resolved the same way as job creation - see parameters below.",
-        "operationId": "estimate_job_size_api_v1_jobs_estimate_post",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EstimateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EstimateResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/jobs/recent": {
       "get": {
         "tags": [
@@ -666,50 +606,6 @@
   },
   "components": {
     "schemas": {
-      "EstimateRequest": {
-        "properties": {
-          "sql_text": {
-            "type": "string",
-            "title": "Sql Text",
-            "description": "SQL statement to estimate"
-          },
-          "parameters": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Parameters",
-            "description": "Values for any `:name` placeholders in sql_text. Resolved the same way as job creation's parameters field: explicit values here take priority, anything else the query references is resolved from the caller's saved variables (see the Variables API)."
-          }
-        },
-        "type": "object",
-        "required": [
-          "sql_text"
-        ],
-        "title": "EstimateRequest",
-        "example": {
-          "sql_text": "SELECT * FROM sales WHERE order_date >= '2026-01-01'"
-        }
-      },
-      "EstimateResponse": {
-        "properties": {
-          "bytes": {
-            "type": "integer",
-            "title": "Bytes",
-            "description": "Estimated result size in bytes"
-          }
-        },
-        "type": "object",
-        "required": [
-          "bytes"
-        ],
-        "title": "EstimateResponse"
-      },
       "HTTPValidationError": {
         "properties": {
           "detail": {

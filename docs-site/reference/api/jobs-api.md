@@ -18,10 +18,6 @@ Job submission, execution status tracking, result retrieval, cancellation, and r
       <td class="ep-doc"><a href="#create-and-execute-sql-job">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Estimate result size</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/estimate</code></td>
-      <td class="ep-doc"><a href="#estimate-result-size">View</a></td>
-    </tr>
-    <tr>
       <td><span class="ep-name">Retrieve recent user queries</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code></td>
       <td class="ep-doc"><a href="#retrieve-recent-user-queries">View</a></td>
     </tr>
@@ -103,70 +99,6 @@ Submit a SQL job for execution. `:name` placeholders in sql_text are resolved fr
       <textarea class="t-body" spellcheck="false">{
   "sql_text": "",
   "client_info": {},
-  "parameters": {}
-}</textarea>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Estimate result size
-
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/estimate</code>
-
-**Tags:** Jobs Management
-
-Return a coarse estimate of the bytes for a job result. Accepts a JSON body with the SQL job. `:name` placeholders are resolved the same way as job creation - see parameters below.
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Request Body
-
-- **Content-Type:** `application/json`
-  Schema: `EstimateRequest`
-  - **sql_text** `string` [required]
-    SQL statement to estimate
-  - **parameters** `object | null` [optional]
-    Values for any `:name` placeholders in sql_text. Resolved the same way as job creation's parameters field: explicit values here take priority, anything else the query references is resolved from the caller's saved variables (see the Variables API).
-
-### Responses
-
-- **200** — Successful Response (`application/json` `EstimateResponse`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/estimate" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/estimate</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Request body <span class="t-opt">application/json · EstimateRequest</span></div>
-      <textarea class="t-body" spellcheck="false">{
-  "sql_text": "",
   "parameters": {}
 }</textarea>
     </div>
