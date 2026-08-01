@@ -18,7 +18,7 @@ tags:
 
 * Every `LIKE '%needle%'` predicate was assumed to match 10% of rows. For prose, identifiers, and structured strings alike, the optimizer had one invented number to plan with.
 * We tested compact per-column estimators against real data, selected decayed character classes, and rebuilt the statistics pipeline needed to supply them.
-* Mean absolute error fell from **14.5%** to **4.45%**. Running the completed path against real data also exposed and fixed a float-pruning bug that could silently drop matching rows.
+* Mean absolute error fell from **14.5%** to **4.45%**, improving optimizer decision making.
 
 ## Why the magic number matters
 
@@ -89,7 +89,7 @@ The first chart made the direction clear. The baseline is a horizontal line at
 classes tracked the diagonal — where estimate and reality agree — far more
 often.
 
-![All initial selectivity evaluations on a log-log scale. The x-axis is actual selectivity and the y-axis is the estimator's prediction; points on the diagonal are exact estimates.](/blog/2026-07-31-magic-numbers-evaluations.png)
+![All initial selectivity evaluations on a log-log scale. The x-axis is actual selectivity and the y-axis is the estimator's prediction; points on the diagonal are exact estimates.](/blog/2026-07-31-magic-numbers-evaluation.png)
 
 ### What we tried next
 
