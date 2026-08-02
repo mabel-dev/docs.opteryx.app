@@ -60,3 +60,4 @@ COMMENT ON VIEW warehouse.sales.daily_revenue IS 'Aggregated daily revenue by pr
 - Use the fully qualified name: `[workspace].[collection].[object_name]`.
 - The `IF EXISTS` clause prevents errors when the object may not exist.
 - Comments are typically retrieved through metadata queries or documentation tools.
+- Comment text supports a limited subset of Markdown when rendered in the web UI. See [Markdown in Comments and Descriptions](/docs/core-concepts/markdown-in-descriptions).
