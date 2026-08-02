@@ -417,6 +417,9 @@
               "DISTINCT": "reference/sql/statements/distinct.md"
             },
             {
+              "DROP COLLECTION": "reference/sql/statements/drop-collection.md"
+            },
+            {
               "DROP TABLE": "reference/sql/statements/drop-table.md"
             },
             {

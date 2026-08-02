@@ -70,6 +70,14 @@ Create and manage views:
 | [ALTER VIEW](statements/alter-view.md) | Modify an existing view definition |
 | [DROP VIEW](statements/drop-view.md) | Remove a view |
 
+## Collection Management
+
+Manage collections - the layer between a workspace and its tables/views:
+
+| Statement | Purpose |
+|-----------|---------|
+| [DROP COLLECTION](statements/drop-collection.md) | Remove an empty collection |
+
 ## Table Management
 
 Manage tables, table properties, and statistics:
