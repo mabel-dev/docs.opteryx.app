@@ -654,6 +654,9 @@
         "Authentication API": "reference/api/authentication-api.md"
       },
       {
+        "Billing API": "reference/api/billing-api.md"
+      },
+      {
         "Jobs API": "reference/api/jobs-api.md"
       },
       {

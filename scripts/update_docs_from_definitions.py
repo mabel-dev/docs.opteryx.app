@@ -17,6 +17,14 @@ REF_API_DIR = DOCS / 'reference' / 'api'
 API_INDEX_PATH = DOCS / 'reference' / 'sql' / 'api.md'
 
 API_DOC_SPECS = {
+    'api-opteryx-billing.json': {
+        'slug': 'billing-api',
+        'title': 'Billing API',
+        'status': 'Published',
+        'base_url': 'https://billing.opteryx.app',
+        'summary': 'Billing account and membership management, payment methods and charges, and workspace lifecycle (creation, deletion, locking).',
+        'try_it_live': True,
+    },
     'api-opteryx-authenticate.json': {
         'slug': 'authentication-api',
         'title': 'Authentication API',
