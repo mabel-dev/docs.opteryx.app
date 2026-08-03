@@ -4,6 +4,67 @@
     "title": "Opteryx Upload Service",
     "version": "0.1.0"
   },
+  "x-flow": {
+    "title": "Upload flow",
+    "intro": "Ingesting a dataset is a short conversation, not a single call: open a session, upload one or more parts into it, optionally inspect what's there and drop parts that don't belong, then commit.",
+    "actors": [
+      "Client",
+      "Upload API"
+    ],
+    "steps": [
+      {
+        "request": "POST /v1/upload/session"
+      },
+      {
+        "response": "201",
+        "returns": "`session_id`, `url`, `expires_at`"
+      },
+      {
+        "group": "Loop — for each file",
+        "steps": [
+          {
+            "request": "PUT /v1/upload/{session_id}?part=N"
+          },
+          {
+            "response": "201",
+            "returns": "part accepted"
+          }
+        ]
+      },
+      {
+        "request": "GET /v1/upload/{session_id}/inspect"
+      },
+      {
+        "response": "200",
+        "returns": "schema, row estimate, `issues[]`"
+      },
+      {
+        "group": "If inspect reports issues",
+        "steps": [
+          {
+            "request": "DELETE /v1/upload/{session_id}/part/{part}"
+          },
+          {
+            "response": "200",
+            "returns": "part removed"
+          }
+        ],
+        "note": "Upload a replacement part, then inspect again"
+      },
+      {
+        "request": "POST /v1/upload/{session_id}/commit"
+      },
+      {
+        "response": "200",
+        "returns": "`commit_id`, `rows_written`"
+      }
+    ],
+    "notes": [
+      "**Inspecting is optional but advisory** — it doesn't gate the commit. `GET .../inspect` returns `issues[]` referencing part numbers so you know what to replace with `DELETE .../part/{part}` before re-uploading.",
+      "**Commit is a single decision point.** `POST .../commit` takes a `target` (workspace/collection/dataset) and a `conflict_resolution` (`fail` | `overwrite` | `append`, default `fail`) — there's no separate \"submit after validation passes\" step; committing with unresolved issues just writes what's there.",
+      "**Sessions expire.** `expires_at` from the session-open response is how long you have to finish uploading and commit before the session is discarded."
+    ]
+  },
   "paths": {
     "/v1/upload/{session_id}/part/{part}": {
       "delete": {

@@ -22,6 +22,10 @@ Workspace policy listing, inspection, creation, updates, and deletion for access
       <td class="ep-doc"><a href="#export-effective-permissions">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">Bootstrap a new workspace&#x27;s initial policies</span><span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/genesis</code></td>
+      <td class="ep-doc"><a href="#bootstrap-a-new-workspaces-initial-policies">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">Create policy</span><span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/policies</code></td>
       <td class="ep-doc"><a href="#create-policy">View</a></td>
     </tr>
@@ -160,6 +164,79 @@ Export a CSV of who has access to every dataset and view in the workspace, resol
   </div>
 </details>
 
+## Bootstrap a new workspace's initial policies
+
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/genesis</code>
+
+**Tags:** Access Control
+
+Create the initial set of access policies for a brand-new workspace, one policy per {identity, role} pair, each scoped to the whole workspace (pattern `{workspace}.*`). This is a trusted bootstrap operation for whatever creates the workspace record in the first place (e.g. billing.opteryx's workspace-create endpoint) to hand it an explicit member list at creation time, rather than every caller becoming sole owner. Refuses with 409 if the workspace already has any policy at all -- this can only be used once, to bootstrap a workspace that doesn't have policies yet, not to add owners to one that already does.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+  Workspace name
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `GenesisGrantRequest`
+  - **grants** `array<GenesisGrant>` [required]
+    Identity/role pairs to grant over the whole workspace
+
+### Responses
+
+- **201** — Successful Response (`application/json` `GenesisGrantResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/genesis" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/genesis</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · GenesisGrantRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "grants": []
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Create policy
 
 **Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/policies</code>
@@ -184,7 +261,8 @@ Create a new access policy for a user in the workspace.
   - **principal** `Principal` [required]
     User to grant access to
   - **role** `string` [required]
-    Role to grant: `owner`, `admin`, `writer`, or `reader`. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do.
+    Role to grant. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do.
+    Allowed values: `owner`, `admin`, `writer`, `reader`
   - **pattern** `string` [required]
     Resource pattern (e.g., 'analytics.*')
 
@@ -327,7 +405,8 @@ Update an existing access policy.
 - **Content-Type:** `application/json`
   Schema: `UpdatePolicyRequest`
   - **role** `string` [required]
-    Updated role
+    Updated role. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do.
+    Allowed values: `owner`, `admin`, `writer`, `reader`
   - **pattern** `string` [required]
     Updated resource pattern
 

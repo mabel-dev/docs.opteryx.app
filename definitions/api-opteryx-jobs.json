@@ -4,6 +4,60 @@
     "title": "Opteryx Jobs Service",
     "version": "0.1.0"
   },
+  "x-flow": {
+    "title": "Job flow",
+    "intro": "Jobs run asynchronously: submitting a query returns immediately with an `execution_id`, and the query keeps running in the background until you poll it to completion.",
+    "actors": [
+      "Client",
+      "Jobs API"
+    ],
+    "steps": [
+      {
+        "request": "POST /api/v1/jobs"
+      },
+      {
+        "response": "201",
+        "returns": "`execution_id`, `status`, `status_url`"
+      },
+      {
+        "group": "Loop — poll until finished",
+        "steps": [
+          {
+            "request": "GET /api/v1/jobs/{execution_id}/status"
+          },
+          {
+            "response": "200",
+            "returns": "`status`, `results_url`"
+          }
+        ],
+        "note": "Repeat on an interval until `status` is no longer in progress"
+      },
+      {
+        "request": "GET /api/v1/jobs/{execution_id}/results"
+      },
+      {
+        "response": "200",
+        "returns": "`data[]`, `total_rows`, `next_page`"
+      },
+      {
+        "group": "Or, to export instead",
+        "steps": [
+          {
+            "request": "GET /api/v1/jobs/{execution_id}/download?file_format=csv|json|parquet"
+          },
+          {
+            "response": "200",
+            "returns": "file"
+          }
+        ]
+      }
+    ],
+    "notes": [
+      "**Poll `status`, not `results`.** `GET .../status` is cheap and returns `results_url` once the job is done; `GET .../results` is what actually pages through the data, `num_rows`/`offset` at a time, following `next_page` for more.",
+      "**`results` and `download` are independent, not exclusive.** Pull a page inline with `results` to inspect it in your app, or stream the whole set with `download` as CSV, newline-delimited JSON, or Parquet — call either, neither, or both once the job has finished.",
+      "**Cancel works any time before the job finishes.** `POST .../cancel` stops execution but doesn't undo rows already returned by an earlier `results` call."
+    ]
+  },
   "paths": {
     "/api/v1/jobs": {
       "post": {

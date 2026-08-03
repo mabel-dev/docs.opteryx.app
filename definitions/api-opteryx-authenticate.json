@@ -4,6 +4,65 @@
     "title": "Opteryx Auth Service",
     "version": "0.1.0"
   },
+  "x-flow": {
+    "title": "Getting a token",
+    "intro": "Every other Opteryx API expects a bearer token. Getting one is a two-part conversation: create a credential once, then exchange it for access tokens as often as you need.",
+    "actors": [
+      "Client",
+      "Authentication API"
+    ],
+    "steps": [
+      {
+        "request": "POST /clients/{client_id}/credentials"
+      },
+      {
+        "response": "200",
+        "returns": "`credential_id`, `secret` (shown once)"
+      },
+      {
+        "request": "POST /token",
+        "note": "grant_type=client_credentials"
+      },
+      {
+        "response": "200",
+        "returns": "`access_token`, `expires_in`, `refresh_token`"
+      },
+      {
+        "group": "To refresh, once access_token expires",
+        "steps": [
+          {
+            "request": "POST /token",
+            "note": "grant_type=refresh_token"
+          },
+          {
+            "response": "200",
+            "returns": "new `access_token`, `expires_in`"
+          }
+        ]
+      },
+      {
+        "group": "Or, if no refresh_token was issued",
+        "steps": [
+          {
+            "request": "POST /token",
+            "note": "grant_type=client_credentials, again"
+          },
+          {
+            "response": "200",
+            "returns": "new `access_token`, `expires_in`"
+          }
+        ]
+      },
+      {
+        "note": "Every other Opteryx API call sends this `access_token` as `Authorization: Bearer <token>`"
+      }
+    ],
+    "notes": [
+      "**The secret is shown once.** `CreateCredentialResponse.secret` is only ever returned at creation time — store it immediately. If it's lost, revoke the credential and create a new one; there's no way to retrieve it again.",
+      "**Prefer refresh over the client secret when you have it.** If `/token` returned a `refresh_token`, use `grant_type=refresh_token` to rotate access tokens without touching the stored `client_secret` again.",
+      "**Tokens are bearer, not sessions.** There's no separate \"login\" call — holding a valid `access_token` is what authenticates every request to Upload, Jobs, and Policy."
+    ]
+  },
   "paths": {
     "/jwks": {
       "get": {

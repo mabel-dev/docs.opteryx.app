@@ -427,6 +427,77 @@
           }
         }
       }
+    },
+    "/v1/access/workspace/{workspace}/genesis": {
+      "post": {
+        "tags": [
+          "Access Control"
+        ],
+        "summary": "Bootstrap a new workspace's initial policies",
+        "description": "Create the initial set of access policies for a brand-new workspace, one policy per {identity, role} pair, each scoped to the whole workspace (pattern `{workspace}.*`). This is a trusted bootstrap operation for whatever creates the workspace record in the first place (e.g. billing.opteryx's workspace-create endpoint) to hand it an explicit member list at creation time, rather than every caller becoming sole owner. Refuses with 409 if the workspace already has any policy at all -- this can only be used once, to bootstrap a workspace that doesn't have policies yet, not to add owners to one that already does.",
+        "operationId": "create_genesis_policies_v1_access_workspace__workspace__genesis_post",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workspace name",
+              "title": "Workspace"
+            },
+            "description": "Workspace name"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenesisGrantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenesisGrantResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -439,8 +510,14 @@
           },
           "role": {
             "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "writer",
+              "reader"
+            ],
             "title": "Role",
-            "description": "Role to grant (e.g., 'owner', 'reader', 'writer')"
+            "description": "Role to grant. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
           },
           "pattern": {
             "type": "string",
@@ -478,6 +555,76 @@
         "title": "CreatePolicyResponse",
         "description": "Response after creating a policy."
       },
+      "GenesisGrant": {
+        "properties": {
+          "identity": {
+            "type": "string",
+            "title": "Identity",
+            "description": "User identity to grant access to"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "writer",
+              "reader"
+            ],
+            "title": "Role",
+            "description": "Role to grant. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
+          }
+        },
+        "type": "object",
+        "required": [
+          "identity",
+          "role"
+        ],
+        "title": "GenesisGrant",
+        "description": "One identity/role pair to grant when bootstrapping a brand-new workspace."
+      },
+      "GenesisGrantRequest": {
+        "properties": {
+          "grants": {
+            "items": {
+              "$ref": "#/components/schemas/GenesisGrant"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Grants",
+            "description": "Identity/role pairs to grant over the whole workspace"
+          }
+        },
+        "type": "object",
+        "required": [
+          "grants"
+        ],
+        "title": "GenesisGrantRequest",
+        "description": "Request to create the initial set of policies for a brand-new workspace.\n\nUnlike `CreatePolicyRequest`, there's no single `pattern` on the request --\nevery grant is scoped to the whole workspace (`{workspace}.*`) by the route\nitself, since this is about establishing who owns/administers the workspace\nas a whole at creation time, not granting access to one resource within it."
+      },
+      "GenesisGrantResponse": {
+        "properties": {
+          "policies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Policies",
+            "description": "IDs of the created policy documents, one per grant"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policies",
+          "message"
+        ],
+        "title": "GenesisGrantResponse",
+        "description": "Response after bootstrapping a new workspace's initial policies."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -499,8 +646,14 @@
           },
           "role": {
             "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "writer",
+              "reader"
+            ],
             "title": "Role",
-            "description": "Role granted"
+            "description": "Role granted. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
           },
           "pattern": {
             "type": "string",
@@ -561,8 +714,14 @@
           },
           "role": {
             "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "writer",
+              "reader"
+            ],
             "title": "Role",
-            "description": "Role granted (e.g., 'owner', 'reader', 'writer')"
+            "description": "Role granted. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
           },
           "pattern": {
             "type": "string",
@@ -604,8 +763,14 @@
         "properties": {
           "role": {
             "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "writer",
+              "reader"
+            ],
             "title": "Role",
-            "description": "Updated role"
+            "description": "Updated role. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
           },
           "pattern": {
             "type": "string",
