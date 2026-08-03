@@ -1,256 +1,160 @@
+---
+title: Security & Permissions — Opteryx Reference
+description: How Opteryx decides what a session may read, write, or change — access policies, roles, special-cased namespaces, and row-level filtering.
+---
+
 # Security & Permissions
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-## Security Overview
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-### Security Principles
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-1. Lorem ipsum - Defense in depth
-2. Consectetur adipiscing - Principle of least privilege
-3. Sed do eiusmod - Security by default
-4. Tempor incididunt - Regular security audits
-
-## Authentication
-
-### User Authentication
-
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
-
-```python
-# Lorem ipsum authentication
-import opteryx
-
-connection = opteryx.connect(
-    username='user@example.com',
-    password='secure_password',
-    authentication_method='password'
-)
-```
-
-### API Keys
-
-Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-
-```python
-# Sed do eiusmod API key auth
-import opteryx
-
-connection = opteryx.connect(
-    api_key='your-api-key-here',
-    authentication_method='api_key'
-)
-```
-
-### OAuth Integration
-
-Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-### Multi-Factor Authentication
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-## Authorization
-
-### Role-Based Access Control (RBAC)
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
-#### Roles
-
-- **Admin**: Lorem ipsum dolor sit amet, full system access
-- **Power User**: Consectetur adipiscing elit, read/write data access
-- **Analyst**: Sed do eiusmod, read-only data access
-- **Viewer**: Tempor incididunt, limited query access
-
-### Attribute-Based Access Control (ABAC)
-
-Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-### Data-Level Permissions
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.
-
-```python
-# Lorem ipsum row-level security
-SELECT *
-FROM sensitive_data
-WHERE region IN (SELECT allowed_regions FROM user_permissions WHERE user_id = CURRENT_USER)
-```
-
-## Encryption
-
-### Data at Rest
-
-Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-#### File System Encryption
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-#### Database Encryption
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-## Data in Transit
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.
-
-#### TLS/SSL
-
-```python
-# Sed do eiusmod secure connection
-import opteryx
-
-connection = opteryx.connect(
-    host='secure.opteryx.example.com',
-    port=443,
-    ssl=True,
-    ssl_verify=True
-)
-```
-
-#### Certificate Management
-
-In voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
-
-## Key Management
-
-Id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo.
-
-## Audit Logging
-
-### Query Logging
-
-Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-
-```python
-# Lorem ipsum audit log
-{
-    "timestamp": "2024-01-15T10:30:00Z",
-    "user": "user@example.com",
-    "query": "SELECT * FROM users",
-    "status": "success",
-    "duration_ms": 245
-}
-```
-
-### Access Logging
-
-Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.
-
-### Security Events
-
-Adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-
-## Network Security
-
-### Firewall Configuration
-
-Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-### VPC Integration
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-### IP Whitelisting
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.
-
-```python
-# Sed do eiusmod IP whitelist
-allowed_ips = [
-    '192.168.1.0/24',
-    '10.0.0.0/8',
-    '172.16.0.0/12'
-]
-```
-
-## Data Privacy
-
-### PII Protection
-
-Sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
-
-#### Data Masking
+Opteryx has no login step and no credential store of its own. A session's identity and
+grants are asserted by whatever embeds Opteryx — typically a service that has already
+authenticated the caller — and handed to the engine at connection time. From there, the
+engine's job is narrow and mechanical: given the grants it was handed, decide whether a
+statement is allowed, and refuse the ones that aren't.
+
+**Opteryx never widens what a session can do.** There is no `GRANT` or `REVOKE`
+statement. Access policies are issued elsewhere — by the platform's access-control
+service — and are read-only from SQL's point of view; see
+[SHOW GRANTS](/docs/reference/sql/statements/show-grants) to inspect them.
+
+## Session Identity
+
+A session carries:
+
+| Field | Purpose |
+|-------|---------|
+| `user` | The caller's identity, used for attribution (who created a table, who dropped a collection) and for the `personal.<user>.*` namespace below |
+| `memberships` | Group names the caller belongs to. **Informational only** — surfaced via [SHOW USER](/docs/reference/sql/statements/show-user), never consulted by a permission check |
+| `entitlements` | Platform capabilities the caller holds, e.g. `platform_admin`. Gates a small set of server-side tuning variables — see [Engine Configuration](adv-engine-configuration) |
+| `access_policies` | The pattern/role grants that decide what the caller may read or change — this page's real subject |
+| `billing_account` | Who pays for the session. Distinct from `user`: many users can bill to one account |
+
+`SHOW USER` reports identity; `SHOW GRANTS` reports policies. Neither can be set from SQL.
+
+## Access Policies
+
+A policy is a `{pattern, role}` pair: `pattern` is a glob matched against a fully
+qualified name (`workspace.collection.table`), `role` is one of `reader`, `writer`,
+`owner`. A session can hold several policies; a statement is allowed if **any** policy's
+pattern matches the target and that policy's role permits the action.
 
 ```sql
--- Lorem ipsum data masking
-SELECT 
-    id,
-    MASK(email, 'email') as email,
-    MASK(phone, 'phone') as phone
-FROM users;
+SHOW GRANTS;
+```
+```
+ pattern      | role   | actions
+--------------+--------+------------------------------------------------------------
+ production.* | owner  | ALTER, CREATE, DELETE, DROP, MANIFEST, READ, UPDATE, WRITE
+ public.*     | reader | READ
 ```
 
-#### Tokenization
+### Roles Are Cumulative
 
-Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum eligendi optio commodi consequatur.
+| Role | Permits |
+|------|---------|
+| `reader` | Read data (`SELECT`) |
+| `writer` | Everything `reader` can, plus change what's *in* a relation (`INSERT`, `TRUNCATE`, `CREATE TABLE`) |
+| `owner` | Everything `writer` can, plus change or remove the relation itself (`DROP`, `ALTER TABLE`, `SHOW MANIFEST FOR`) |
 
-## Compliance
+The `owner` tier exists because some actions have a different blast radius than an
+ordinary write: dropping a table destroys its history, and `ALTER TABLE ... CLUSTER BY`
+changes what the table fundamentally is, not just its contents. A `writer` grant does not
+imply either.
 
-#### GDPR
+### Patterns Match Names, Not Path Depth
 
-Id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis.
+Matching is a plain glob (`fnmatch`) against the fully qualified name — `*` is not
+dot-aware, so it swallows dots along with everything else. This has a sharp consequence:
+a workspace-wide pattern matches the *names of things inside the workspace*, including a
+collection's own two-part name, but never the bare workspace name itself, which has no
+dot for `*` to stand in for:
 
-#### HIPAA
+| Pattern | Matches `production` | Matches `production.staging` | Matches `production.staging.t` |
+|---|---|---|---|
+| `production.staging.*` | no | no | **yes** |
+| `production.*`         | no | **yes** | **yes** |
+| `production`           | **yes** | no | no |
 
-Aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.
+So `production.*` (owner) is enough to `DROP COLLECTION production.staging` — the
+collection name matches it directly — but is **not** enough to
+`ALTER WORKSPACE production`, which needs a pattern matching the bare workspace name
+(`production` itself, or a global `*`).
 
-#### SOC 2
+The opposite gap is `production.staging.*`: owning everything created *inside* the
+collection does not reach the collection's own name, so it cannot drop the collection —
+only a pattern that matches `production.staging` itself (`production.staging`,
+`production.*`, or `*`) can.
 
-Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+```sql
+-- owner of `production.staging.*` (everything IN the collection) —
+DROP COLLECTION production.staging;   -- refused: does not match the collection's own name
 
-## Secrets Management
-
-### Environment Variables
-
-Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-
-```bash
-# Lorem ipsum secrets
-export OPTERYX_API_KEY='secret-key-here'
-export OPTERYX_DB_PASSWORD='database-password'
+-- owner of `production.*` (the whole workspace) —
+DROP COLLECTION production.staging;   -- allowed: `production.*` matches `production.staging`
+ALTER WORKSPACE production SET delete_protection TO OFF;   -- refused: does not match `production`
 ```
 
-### Secret Stores
+See [ALTER WORKSPACE](/docs/reference/sql/statements/alter-workspace) and
+[DROP COLLECTION](/docs/reference/sql/statements/drop-collection) for the specific tiers
+each statement requires.
 
-Ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+## Special-Cased Namespaces
 
-#### AWS Secrets Manager
+Three name shapes are decided before any policy is consulted, and no policy can change
+their outcome:
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste.
+| Name shape | Access |
+|------------|--------|
+| No dot in the name (a local/ad-hoc dataset) | `READ` only, always |
+| `public.*` | `READ` only, always |
+| `personal.<user>.*`, where `<user>` is the session's own user | Every action, always |
 
-#### HashiCorp Vault
+`personal.<user>.*` is scoped to the session's **own** identity — it never grants access
+to another user's personal namespace, regardless of any policy held.
 
-Natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+## The Default Session Is an Owner of Everything
 
-#### Azure Key Vault
+A session constructed with no `access_policies` at all is not a session with no
+access — it defaults to `[{"pattern": "*", "role": "owner"}]`: unrestricted owner access
+to everything. This is a convenience for local and single-tenant use, not a safe default
+for an embedding that serves untrusted callers. Any embedding that enforces real
+boundaries between callers must supply explicit, narrower policies for every session it
+creates.
 
-Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione.
+## Row-Level Filtering
 
-## Security Best Practices
+Access policies decide whether a relation is reachable at all. A separate mechanism
+narrows *which rows* of an otherwise-reachable relation are visible, applied per query
+call rather than per session: a `visibility_filters` mapping from relation name to a
+filter, expressed as the engine's internal DNF predicate form.
 
-1. Lorem ipsum dolor sit amet - Use strong authentication
-2. Consectetur adipiscing elit - Enable encryption everywhere
-3. Sed do eiusmod tempor - Implement least privilege access
-4. Incididunt ut labore - Regular security audits
-5. Et dolore magna aliqua - Monitor and log all access
+```python
+session.execute_to_morsels(
+    "SELECT name FROM $planets",
+    visibility_filters={"$planets": [[("id", "Gt", 5)]]},
+)
+```
 
-## Incident Response
+An empty filter list for a relation hides it entirely — the query succeeds and returns
+zero rows, rather than an error. This is a caller-side mechanism (the embedding computes
+the filter per request, typically from row-level rules held elsewhere); it is not
+expressible in SQL and has no relationship to `access_policies`.
 
-### Detection
+## What This Page Does Not Cover
 
-Voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.
+Opteryx is a query engine, not a platform. It has no SQL surface for encryption,
+transport security, secrets management, or compliance controls — those are properties of
+how and where you deploy it (object storage encryption, TLS termination, a secrets
+manager), not something the engine configures. Every write DDL/DML statement attributes
+its change to the session's `user` (visible as the connector's `author` parameter), which
+feeds whatever audit trail the catalog service you connect to keeps — but that trail is
+the catalog's, not the engine's, and its shape is not documented here.
 
-### Response Procedures
+## Notes
 
-Tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit.
-
-### Recovery
-
-Laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.
+- Policies are resolved once, when the session is constructed. A policy changed
+  elsewhere is picked up by the *next* session, not by one already running.
+- `ACTION_MAP` — the table mapping each SQL action to the roles that permit it — is fixed
+  by the engine, not configurable per deployment.
+- See [SHOW GRANTS](/docs/reference/sql/statements/show-grants) to answer "why can't I
+  see this table?" from inside a session, and
+  [SHOW USER](/docs/reference/sql/statements/show-user) for session identity.
