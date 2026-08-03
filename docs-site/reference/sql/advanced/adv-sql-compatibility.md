@@ -35,10 +35,18 @@ Many other engines treat all strings as UTF-8. Opteryx's `VARCHAR` may legitimat
 - `LENGTH` / `CHAR_LENGTH` / `CHARACTER_LENGTH` count **codepoints on `NVARCHAR`** and **bytes on `VARCHAR` / `VARBINARY`** — length in the type's natural unit.
 - `OCTET_LENGTH` (alias `BYTE_LENGTH`) always counts **bytes**, regardless of type.
 
-**For character-count semantics:** operate on `NVARCHAR` data, or use `OCTET_LENGTH` when you specifically want bytes.
+**For character-count semantics:** cast to `NVARCHAR`, or operate on data already typed
+`NVARCHAR`. Use `OCTET_LENGTH` when you specifically want bytes.
 
-!!! note
-    **Current limitation:** `CAST(... AS NVARCHAR)` does not yet re-tag a value as `NVARCHAR` — it stays `VARCHAR` — so character-length semantics are reachable today only when the source data is already typed `NVARCHAR`, not by casting a `VARCHAR` literal.
+`CAST(x AS NVARCHAR)` (equivalently `x::NVARCHAR`) re-tags the value, and the length
+functions then count codepoints:
+
+| Expression                              | Result           |
+|-----------------------------------------|------------------|
+| `LENGTH('ффф')`                         | 6 (bytes)        |
+| `LENGTH(CAST('ффф' AS NVARCHAR))`       | 3 (codepoints)   |
+| `CHAR_LENGTH(CAST('ффф' AS NVARCHAR))`  | 3 (codepoints)   |
+| `OCTET_LENGTH(CAST('ффф' AS NVARCHAR))` | 6 (always bytes) |
 
 !!! note
     The same byte-orientation applies to other string operations (substring, position, pattern matching). On ASCII data engines typically agree; they can diverge on multibyte or non-UTF-8 input.

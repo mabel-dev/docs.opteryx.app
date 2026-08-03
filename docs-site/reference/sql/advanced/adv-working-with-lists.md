@@ -9,16 +9,33 @@ An array is an ordered, 0-indexed collection of values of the same type.
 
 ## Creating Arrays
 
-Array literals use square bracket notation:
-
-```sql
-SELECT ['Mercury', 'Gemini', 'Apollo'];
-```
+!!! warning
+    **A literal array cannot be projected in a `SELECT` clause.** `SELECT ['a', 'b']` —
+    and the equivalent `SELECT ('a', 'b')` — is rejected when the query is planned,
+    whether or not it is aliased and whether or not the query has a `FROM`. An array
+    reaches a projection from a column, a function, or a cast; not from a literal
+    written inline.
 
 Split a delimited string into an array:
 
 ```sql
 SELECT SPLIT(string_column, ',') FROM my_table;
+```
+
+Build a relation from literal values with `UNNEST` in the `FROM` clause:
+
+```sql
+SELECT *
+  FROM UNNEST(('Mercury', 'Gemini', 'Apollo')) AS program;
+```
+
+Array literals *are* accepted as function and operator arguments, where they are not
+being projected:
+
+```sql
+SELECT name
+  FROM $astronauts
+ WHERE ARRAY_CONTAINS_ANY(missions, ('Apollo 11', 'Apollo 12'));
 ```
 
 ## Accessing Elements
