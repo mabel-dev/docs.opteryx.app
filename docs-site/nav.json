@@ -414,6 +414,9 @@
               "COMMENT": "reference/sql/statements/comment.md"
             },
             {
+              "CREATE COLLECTION": "reference/sql/statements/create-collection.md"
+            },
+            {
               "CREATE TABLE": "reference/sql/statements/create-table.md"
             },
             {
@@ -478,6 +481,9 @@
             },
             {
               "SHOW CREATE VIEW": "reference/sql/statements/show-create.md"
+            },
+            {
+              "SHOW GRANTS": "reference/sql/statements/show-grants.md"
             },
             {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"

@@ -34,7 +34,8 @@ DROP COLLECTION IF EXISTS workspace.staging;
   cascades and never removes tables or views on your behalf. `CASCADE` is rejected when
   the query is planned, rather than accepted and quietly not honoured.
 - Collections come into existence implicitly, with the first table or view created in
-  them; there is no `CREATE COLLECTION` statement.
+  them. [CREATE COLLECTION](create-collection.md) makes one ahead of its first relation,
+  but is never required.
 - Requires the `owner` role on the collection *itself*, not just on the tables inside
   it - a grant like `workspace.staging.*` covers everything *in* the collection but
   does not match the collection's own name, so it does not grant `DROP COLLECTION`.

@@ -59,6 +59,7 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | [SHOW MANIFEST FOR](statements/show-manifest.md) | Inspect a dataset's file-level manifest and per-file statistics |
 | [SHOW VARIABLES](statements/show-variables.md) | List session and system variables |
 | [SHOW USER](statements/show-user.md) | Show the current connection's identity |
+| [SHOW GRANTS](statements/show-grants.md) | List the access policies the current connection holds |
 
 ## Session State
 
@@ -92,9 +93,10 @@ Manage collections - the layer between a workspace and its tables/views:
 
 | Statement | Purpose |
 |-----------|---------|
+| [CREATE COLLECTION](statements/create-collection.md) | Create a collection |
 | [DROP COLLECTION](statements/drop-collection.md) | Remove an empty collection |
 
-Collections are created implicitly by the first table or view placed in them; there is no `CREATE COLLECTION` statement.
+Creating a collection is optional — one comes into existence anyway with the first table or view placed in it.
 
 ## Table Management
 
