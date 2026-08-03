@@ -18,10 +18,24 @@ The above query batch contains two statements, the `SET` and the `SELECT` separa
 
 ## Query Parameters
 
-Query parameters which affect the execution of the query can be tuned on a per-query basis using the `SET` statement.
+Query parameters which affect the execution of the query can be tuned on a per-query basis
+using the `SET` statement — subject to who owns the variable.
 
-!!! function "`disable_optimizer`: _boolean_ = **false**"    
+Variables you define yourself (`@name`) are always yours to set. **System variables are
+not**: each declares an owner, and setting one you do not outrank is refused rather than
+silently ignored:
+
+~~~
+User does not have permission to set variable `disable_optimizer`
+~~~
+
+Use [SHOW VARIABLES](/docs/reference/sql/statements/show-variables) to see which variables
+your session can see, and its `owner` column to see which you may set.
+
+!!! function "`disable_optimizer`: _boolean_ = **false**"
     Disable the use of the query optimizer (default is **false**).
+    **Platform administrators only** — this variable is server-owned, so an ordinary
+    session cannot set it.
 
 ## WITH hints
 

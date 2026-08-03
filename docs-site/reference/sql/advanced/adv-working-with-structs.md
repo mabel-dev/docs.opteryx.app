@@ -104,6 +104,18 @@ SELECT *
  WHERE config = '{"mode": "strict"}';
 ```
 
+!!! warning
+    This is **string** equality, not structural equality — structs are stored as JSON
+    text. The literal has to match the stored text exactly, so a difference in whitespace
+    or key order silently returns no rows:
+
+    ```sql
+    SELECT '{"mode":"strict"}' = '{"mode":"strict"}';    -- true
+    SELECT '{"mode":"strict"}' = '{"mode": "strict"}';   -- false (one extra space)
+    ```
+
+    To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
+
 ## Limitations
 
 - Key access requires the `->` or `->>` operators; square-bracket subscript (`struct['key']`) is for integer-indexed arrays, not struct fields
