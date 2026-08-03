@@ -56,6 +56,11 @@ COMMENT ON VIEW warehouse.sales.daily_revenue IS 'Aggregated daily revenue by pr
 
 ## Notes
 
+- `TABLE` and `VIEW` are the only supported object types. `COMMENT ON COLUMN` and other
+  forms are rejected when the query is planned.
+- Requires write access to the object being commented on, and a connector with somewhere
+  to store the comment — not every backend has one.
+- The comment is attributed to the session user who set it.
 - Comments are useful for documenting data lineage and business logic.
 - Use the fully qualified name: `[workspace].[collection].[object_name]`.
 - The `IF EXISTS` clause prevents errors when the object may not exist.

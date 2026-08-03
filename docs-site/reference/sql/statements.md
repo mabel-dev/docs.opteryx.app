@@ -60,6 +60,12 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | [SHOW VARIABLES](statements/show-variables.md) | List session and system variables |
 | [SHOW USER](statements/show-user.md) | Show the current connection's identity |
 
+## Session State
+
+| Statement | Purpose |
+|-----------|---------|
+| [SET](statements/set.md) | Assign a session or system variable |
+
 ## View Management
 
 Create and manage views:
@@ -78,6 +84,8 @@ Manage workspaces - the top level of the naming hierarchy:
 |-----------|---------|
 | [ALTER WORKSPACE](statements/alter-workspace.md) | Set a workspace property, such as `delete_protection` |
 
+Workspaces themselves are created and deleted through the platform, not through SQL.
+
 ## Collection Management
 
 Manage collections - the layer between a workspace and its tables/views:
@@ -85,6 +93,8 @@ Manage collections - the layer between a workspace and its tables/views:
 | Statement | Purpose |
 |-----------|---------|
 | [DROP COLLECTION](statements/drop-collection.md) | Remove an empty collection |
+
+Collections are created implicitly by the first table or view placed in them; there is no `CREATE COLLECTION` statement.
 
 ## Table Management
 
@@ -97,6 +107,7 @@ Manage tables, table properties, and statistics:
 | [DROP TABLE](statements/drop-table.md) | Remove a table |
 | [TRUNCATE TABLE](statements/truncate-table.md) | Remove all rows from a table |
 | [ANALYZE TABLE](statements/analyze-table.md) | Collect statistics for query optimization |
+| [DROP STATISTICS](statements/drop-statistics.md) | Discard statistics collected by `ANALYZE TABLE` |
 | [COMMENT](statements/comment.md) | Add descriptive comments to tables and views |
 
 ## Advanced Features

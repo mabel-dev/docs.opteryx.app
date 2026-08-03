@@ -31,7 +31,9 @@ EXPLAIN ANALYZE SELECT * FROM orders WHERE id = 1;
 
 ## Output Formats
 
-By default, `EXPLAIN` produces tabular output. The `FORMAT` clause is only available when using `EXPLAIN ANALYZE`.
+By default, `EXPLAIN` produces tabular output (equivalent to `FORMAT TEXT`). The `FORMAT` clause works with or without `ANALYZE`.
+
+`TEXT` and `MERMAID` are the only supported formats — `FORMAT GRAPHVIZ` and `FORMAT JSON` are rejected rather than quietly answered in a different format.
 
 ### MERMAID
 Generate a Mermaid diagram of the query plan:
@@ -62,6 +64,6 @@ SELECT o.id, c.name, o.amount
 
 - Default `EXPLAIN` output is tabular and does not execute the query.
 - `EXPLAIN ANALYZE` executes the query, so use with caution on large datasets.
-- The `FORMAT` clause only applies with `EXPLAIN ANALYZE`; `FORMAT MERMAID` produces diagram output suitable for visualization.
+- `FORMAT MERMAID` produces diagram output suitable for visualization, with or without `ANALYZE`.
 - Output format may change across versions and is not intended for machine parsing.
 - Use `EXPLAIN` to understand query plans and identify potential optimizations.

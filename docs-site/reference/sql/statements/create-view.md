@@ -10,9 +10,16 @@ The `CREATE VIEW` statement creates a new view that exposes the result of a quer
 ## Basic Syntax
 
 ~~~sql
-CREATE VIEW [workspace].[collection].[view_name] AS
+CREATE [OR REPLACE] VIEW [IF NOT EXISTS] [workspace].[collection].[view_name] AS
 SELECT ...;
 ~~~
+
+- `OR REPLACE` overwrites an existing view's definition.
+- `IF NOT EXISTS` leaves an existing view untouched instead of failing.
+
+Materialized views are **not supported**. `CREATE MATERIALIZED VIEW` is rejected when the
+query is planned rather than quietly creating an ordinary view — Opteryx stores a view's
+query and plans it afresh on every reference, so nothing is precomputed.
 
 ## Examples
 

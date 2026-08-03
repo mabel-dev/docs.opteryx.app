@@ -108,6 +108,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [IFNOTNULL](functions/ifnotnull) — Return second argument if first is not null.
 - [IFNULL](functions/ifnull) — Return value if not null, else default.
 - [IIF](functions/iif) — Inline if: return second or third arg based on condition.
+- [IP_TRUNC](functions/ip_trunc) — Network address of an IPv4 address for a given prefix length.
 - [NORMAL](functions/normal) — Generate normally-distributed random numbers.
 - [NULLIF](functions/nullif) — Return null if equal, else first value.
 - [RANDOM](functions/random) — Generate random numbers.

@@ -239,6 +239,9 @@
               "INITCAP": "reference/sql/functions/initcap.md"
             },
             {
+              "IP_TRUNC": "reference/sql/functions/ip_trunc.md"
+            },
+            {
               "JSONB_OBJECT_KEYS": "reference/sql/functions/jsonb_object_keys.md"
             },
             {
@@ -426,6 +429,9 @@
               "DROP COLLECTION": "reference/sql/statements/drop-collection.md"
             },
             {
+              "DROP STATISTICS": "reference/sql/statements/drop-statistics.md"
+            },
+            {
               "DROP TABLE": "reference/sql/statements/drop-table.md"
             },
             {
@@ -463,6 +469,9 @@
             },
             {
               "SELECT": "reference/sql/statements/select.md"
+            },
+            {
+              "SET": "reference/sql/statements/set.md"
             },
             {
               "SHOW COLUMNS": "reference/sql/statements/show-columns.md"

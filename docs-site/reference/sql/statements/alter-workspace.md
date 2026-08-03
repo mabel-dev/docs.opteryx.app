@@ -43,7 +43,12 @@ ALTER WORKSPACE production SET delete_protection TO OFF;
 be deleted; the attempt is refused with an error naming the statement that clears the flag.
 
 It is a guard against losing a whole workspace - every collection, table and view in it -
-in a single action. To delete a protected workspace, clear the flag first:
+in a single action.
+
+Workspaces are created and deleted through the platform, not through SQL: there is no
+`CREATE WORKSPACE` or `DROP WORKSPACE` statement. `ALTER WORKSPACE` sets the flag; the
+deletion it guards happens elsewhere. To delete a protected workspace, clear the flag
+first:
 
 ~~~sql
 ALTER WORKSPACE production SET delete_protection TO OFF;
@@ -59,8 +64,10 @@ normally in a protected workspace:
 - [ALTER TABLE ... RENAME TO](alter-table.md#rename-to)
 - [INSERT](insert.md), or `CREATE TABLE ... AS SELECT` with `OR REPLACE`
 
-To protect an individual table or collection from being dropped, use its own lock rather
-than this flag - `delete_protection` is not a workspace-wide drop freeze.
+`delete_protection` is not a workspace-wide drop freeze, and there is no per-table or
+per-collection equivalent — restricting who can drop an individual relation is done with
+[access policies](/docs/core-concepts/access-and-permissions), by not granting `owner` on
+it, rather than with a flag.
 
 ## Notes
 

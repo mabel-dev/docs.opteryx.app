@@ -19,7 +19,8 @@ This page gives a concise, practical summary of the SQL features supported by Op
 - Window functions: `ROW_NUMBER()`, `RANK()`, `SUM() OVER (...)`, etc.
 - Aggregates: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
 - Set ops: `UNION` / `UNION ALL`, `INTERSECT`, `EXCEPT`
-- Data mod: `INSERT`, `UPDATE`, `DELETE` (backend-dependent)
+- Data mod: `INSERT` (experimental, backend-dependent). `UPDATE` and `DELETE` are **not supported** — see [UPDATE](/docs/reference/sql/statements/update) and [DELETE](/docs/reference/sql/statements/delete) for the rewrite-the-table alternative.
+- DDL: `CREATE` / `DROP` / `TRUNCATE` / `ALTER TABLE`, `CREATE` / `ALTER` / `DROP VIEW`, `DROP COLLECTION`, `ALTER WORKSPACE`, `COMMENT ON`, `ANALYZE TABLE`
 
 > Tip: Opteryx targets a pragmatic, file-oriented SQL subset suitable for ad-hoc analytical queries — not full RDBMS parity.
 

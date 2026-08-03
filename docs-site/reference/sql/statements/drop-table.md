@@ -34,4 +34,5 @@ DROP TABLE IF EXISTS workspace.collection.staging_data;
 
 - `IF EXISTS` skips the operation without error if the table does not exist.
 - Requires the `owner` role on the table, and a connector that supports dropping — not every backend does.
+- `CASCADE`, `RESTRICT` and `PURGE` are **not supported** and are rejected when the query is planned rather than accepted and ignored.
 - Dropping a table removes the data it holds; this cannot be undone.

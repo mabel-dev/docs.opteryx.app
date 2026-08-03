@@ -48,6 +48,6 @@ you only need part of the manifest.
 ## Notes
 
 - **Requires ownership.** `SHOW MANIFEST FOR` exposes file paths and storage layout, not just data — it requires the `owner` role on the dataset, which is stricter than the `reader`/`writer` roles that are enough to `SELECT` from it.
-- **Always returns the whole manifest.** `SHOW` statements have no `WHERE` clause or column list, so there is no way to filter or project this at the source — wrap it in a subquery (as in the example above) if you only need part of it.
+- **Always returns the whole manifest.** `SHOW` statements have no `WHERE` clause or column list, and the result is not a subquery source, so there is no way to filter or project it at the source at all — filter the rows client-side if you only need part of the manifest.
 - **Free to run.** The manifest is metadata the engine already holds for query planning; no data files are read to answer this.
 - Works against both local filesystem datasets and catalog-backed (workspace) datasets.

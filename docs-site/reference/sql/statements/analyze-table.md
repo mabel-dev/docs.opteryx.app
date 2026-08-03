@@ -10,8 +10,10 @@ The `ANALYZE TABLE` statement collects statistics for a named relation. These st
 ## Basic Syntax
 
 ~~~sql
-ANALYZE TABLE [workspace].[collection].[table_name];
+ANALYZE TABLE [workspace].[collection].[table_name] [FOR COLUMNS column [, column ...]];
 ~~~
+
+The `TABLE` keyword is required — `ANALYZE table_name` without it is rejected.
 
 ## Examples
 
@@ -19,6 +21,15 @@ ANALYZE TABLE [workspace].[collection].[table_name];
 ~~~sql
 ANALYZE TABLE workspace.collection.large_dataset;
 ~~~
+
+### Analyze Specific Columns
+~~~sql
+ANALYZE TABLE workspace.collection.large_dataset FOR COLUMNS region, created_at;
+~~~
+
+`FOR COLUMNS` narrows the work to the named columns, leaving other columns' existing
+statistics in place. It is supported for local filesystem datasets only — see
+[Backend Support](#backend-support).
 
 ### Analyze Before Running Complex Queries
 ~~~sql
@@ -30,9 +41,23 @@ SELECT o.*, c.name
   JOIN customers c ON o.customer_id = c.id;
 ~~~
 
+## Backend Support
+
+| Dataset | Behaviour |
+|---------|-----------|
+| Catalog-backed (workspace) | Recomputes every column of every file and commits a new snapshot. `FOR COLUMNS` is **rejected** — the catalog's statistics builder has no column-subset concept, and honouring the clause would mean silently analyzing more than was asked. |
+| Local filesystem | Computes statistics directly and rewrites the dataset manifest. `FOR COLUMNS` is supported. |
+| Any other backend | Rejected — `ANALYZE / DROP STATISTICS is not supported for this dataset's storage backend.` |
+
+Analyzing a catalog-backed dataset never rewrites, merges, or splits its data files; it is
+a lighter operation than compaction.
+
 ## Notes
 
 - Use the fully qualified name: `[workspace].[collection].[table_name]`.
 - Running `ANALYZE TABLE` gathers statistics that the optimizer uses for query planning.
+- **Requires the `owner` role** on the table — the same tier as `ALTER TABLE`. It rewrites
+  the metadata the optimizer plans from, which a `writer` grant does not cover.
 - The cost and benefit of analyzing tables depends on the underlying data store.
 - Regular analysis is recommended for large datasets that change frequently.
+- To discard collected statistics, see [DROP STATISTICS](drop-statistics.md).
