@@ -97,6 +97,9 @@
               "INTERVAL": "reference/sql/types/interval.md"
             },
             {
+              "IPV4": "reference/sql/types/ipv4.md"
+            },
+            {
               "NULL": "reference/sql/types/null.md"
             },
             {
@@ -399,6 +402,9 @@
               "ALTER VIEW": "reference/sql/statements/alter-view.md"
             },
             {
+              "ALTER WORKSPACE": "reference/sql/statements/alter-workspace.md"
+            },
+            {
               "ANALYZE TABLE": "reference/sql/statements/analyze-table.md"
             },
             {
@@ -579,6 +585,12 @@
             },
             {
               "Integer division": "reference/sql/operators/myintegerdivide.md"
+            },
+            {
+              "IP contained by": "reference/sql/operators/ipcontainedby.md"
+            },
+            {
+              "IP contains": "reference/sql/operators/ipcontains.md"
             },
             {
               "JSON extract": "reference/sql/operators/arrow.md"

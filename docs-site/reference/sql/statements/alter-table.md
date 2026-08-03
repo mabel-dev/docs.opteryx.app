@@ -1,20 +1,25 @@
 ---
 title: ALTER TABLE Statement — Opteryx Reference
-description: SQL ALTER TABLE ... CLUSTER BY statement syntax and examples for setting a table's clustering columns in Opteryx
+description: SQL ALTER TABLE syntax and examples for setting a table's clustering columns, and for renaming or moving a table, in Opteryx
 ---
 
 # ALTER TABLE
 
-The `ALTER TABLE` statement changes a table's physical layout. Opteryx currently supports one operation: `CLUSTER BY`, which sets the columns a catalog-backed table should be sorted/clustered by.
+The `ALTER TABLE` statement changes a table's physical layout or its name. Opteryx supports two operations:
 
-## Basic Syntax
+| Operation | Purpose |
+|-----------|---------|
+| [`CLUSTER BY`](#cluster-by) | Set the columns a catalog-backed table should be sorted/clustered by |
+| [`RENAME TO`](#rename-to) | Rename a table, optionally moving it to another collection |
+
+Any other `ALTER TABLE` operation (`ADD COLUMN`, `DROP COLUMN`, ...) is rejected when the query is planned.
+
+## CLUSTER BY
 
 ~~~sql
 ALTER TABLE [IF EXISTS] [workspace].[collection].[table_name]
 CLUSTER BY (column [, column ...]);
 ~~~
-
-## Examples
 
 ### Cluster by a Single Column
 ~~~sql
@@ -36,7 +41,7 @@ ALTER TABLE IF EXISTS workspace.collection.observations
 CLUSTER BY (name);
 ~~~
 
-## Notes
+### Notes
 
 - Requires the `owner` role on the table - the same tier as `DROP TABLE`, since clustering changes what the table fundamentally is, not just what's in it. See [Security & Permissions](/docs/core-concepts/access-and-permissions).
 - `CLUSTER BY` replaces the table's entire clustering configuration; it does not add to a previous one.
@@ -44,3 +49,46 @@ CLUSTER BY (name);
 - `IF EXISTS` skips the operation without error if the table does not exist.
 - Requires a connector with a catalog to persist the clustering configuration in - not every backend supports this.
 - Setting clustering columns declares intent for future compaction; it does not itself reorder existing data files. Data locality improves as the table is compacted.
+
+## RENAME TO
+
+~~~sql
+ALTER TABLE [IF EXISTS] [workspace].[collection].[table_name]
+RENAME TO [workspace].[collection].[new_table_name];
+~~~
+
+### Rename Within a Collection
+~~~sql
+ALTER TABLE workspace.collection.observations
+RENAME TO workspace.collection.readings;
+~~~
+
+### Move to Another Collection
+~~~sql
+ALTER TABLE workspace.collection.observations
+RENAME TO workspace.archive.observations;
+~~~
+
+A rename may change the collection, the table name, or both.
+
+### Only If It Exists
+~~~sql
+ALTER TABLE IF EXISTS workspace.collection.observations
+RENAME TO workspace.collection.readings;
+~~~
+
+### Notes
+
+- The workspace must be the same on both sides. Moving a table between workspaces is rejected when the query is planned - two workspaces are two catalogs, and moving data between them is a copy, not a rename.
+- Requires the `owner` role on the source table (the same tier as `DROP TABLE` - the table stops existing under its old name) **and** create permission at the target. Owning the source does not let you move a table into a collection you have no grant on.
+- The target must not already exist. A rename never absorbs an existing table, which would destroy that table's data and history with no `DROP` anywhere in the statement.
+- Renaming a table to its own name is rejected rather than reported as a successful rename that changed nothing.
+- `IF EXISTS` skips the operation without error if the source table does not exist.
+
+### Performance
+
+A rename is not a metadata-only operation. The table's data files, every snapshot's manifest, and its catalog entry all move, so that its storage location keeps matching its name.
+
+That means the cost scales with the size of the table, not with the length of the statement. Copies happen server-side, but a large table is still a long-running operation behind a statement that reads as instant. Snapshot history is preserved, so time travel keeps working across a rename; the cost also scales with how much history the table has.
+
+The vacated storage location is reclaimed by the same background sweep that reclaims dropped tables, not deleted immediately.

@@ -14,6 +14,8 @@ Opteryx uses workspaces as the default permission boundary. Within a workspace, 
 | Drop a collection | | | ✅ |
 | `CREATE OR REPLACE` an existing table | | | ✅ |
 | `ALTER TABLE ... CLUSTER BY` | | | ✅ |
+| `ALTER TABLE ... RENAME TO` | | | ✅ |
+| `ALTER WORKSPACE ... SET` | | | ✅ |
 | View a table's manifest (`SHOW MANIFEST FOR`) | | | ✅ |
 | Grant or revoke access to other users | | | ✅ |
 
@@ -25,6 +27,8 @@ A couple of things that surprise people:
 - **`writer` cannot replace a table.** `CREATE OR REPLACE TABLE` has the same blast radius as `DROP TABLE` - the existing data and history are gone - so it requires `owner`, even though `CREATE TABLE` for a brand-new table only requires `writer`.
 - **`writer` cannot change a table's clustering.** `ALTER TABLE ... CLUSTER BY` changes the table's physical layout rather than its contents, so it sits at the same `owner` tier as `DROP TABLE`, not the `writer` tier that governs inserts and truncates.
 - **`DROP COLLECTION` checks the grant against the collection's own name, not a pattern over its contents.** An `owner` grant on `workspace.staging.*` covers every table and view *inside* the `staging` collection but does not match `workspace.staging` itself, so it does not permit dropping the collection. You need a grant that matches `workspace.staging` directly - an exact grant on it, or a workspace-wide `workspace.*`.
+- **`ALTER WORKSPACE` needs ownership of the workspace itself, and owning its contents is not enough.** This goes one level further than the `DROP COLLECTION` rule above: even a workspace-wide `workspace.*` grant does not permit it, because that pattern covers everything *in* the workspace without matching the workspace's own name. You need a grant matching `workspace` directly, or a global `*`. Workspace properties govern the whole workspace, so the grant has to be scoped to it.
+- **`ALTER TABLE ... RENAME TO` is checked at both ends.** It needs `owner` on the source (the table stops existing under that name) *and* create permission at the target, so owning a table does not let you move it into a collection you have no grant on.
 - **There's also an `admin` role**, but it only applies to the [Policy API](/docs/reference/api/policy-api) - an admin can view and manage other users' grants on a pattern they administer. It does **not** grant any query access on its own; an admin who also needs to run queries needs a separate `reader`/`writer`/`owner` grant.
 
 ## Workspace boundaries

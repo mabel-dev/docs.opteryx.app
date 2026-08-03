@@ -459,6 +459,52 @@
             "jsonl": []
         }
     },
+    "ipv4": {
+        "canonical_name": "IPV4",
+        "aliases": [],
+        "accepted_spellings": [
+            "ipv4"
+        ],
+        "family": "network",
+        "flags": {
+            "numeric": false,
+            "temporal": false,
+            "collection": false,
+            "parameterized": false
+        },
+        "metadata": {
+            "description": "An IPv4 address. Stored as an unsigned 32-bit integer and displayed in dotted-decimal notation. Because the storage is numeric, ordering, grouping, joining and comparison all operate on the underlying integer \u2014 and unsigned integer order is exactly IPv4 address order.",
+            "example": "CAST('192.168.1.1' AS IPV4)",
+            "notes": "Parquet has no IP type: an address column is stored as a plain uint32 and stays readable by tools that do not know about IPv4. The IPv4 typing comes from the Opteryx catalog, which records the column as IPV4 over that uint32.",
+            "cast_to": [
+                {
+                    "type": "varchar",
+                    "example": "CAST(ip AS VARCHAR)",
+                    "note": "Renders dotted-decimal."
+                },
+                {
+                    "type": "uint32",
+                    "example": "CAST(ip AS UINT32)",
+                    "note": "Exposes the raw address as an integer; no bits change."
+                }
+            ],
+            "comparable_with": [
+                "ipv4",
+                "integer"
+            ],
+            "limitations": [
+                "IPv4 only. There is no IPv6 type.",
+                "Address text is parsed strictly: no shorthand forms such as `10.1` for `10.0.0.1`, and no leading zeros such as `010.0.0.1`. Both are rejected rather than guessed, because a parser and an access rule disagreeing about what an address means is a security bug.",
+                "An address does not carry a prefix length (unlike a PostgreSQL `inet`). The prefix is always an operand of the operation that needs it \u2014 `ip <<= '10.0.0.0/8'`."
+            ]
+        },
+        "parameterized_forms": [],
+        "ingestion_mappings": {
+            "parquet_physical": [],
+            "parquet_logical": [],
+            "jsonl": []
+        }
+    },
     "null": {
         "canonical_name": "NULL",
         "aliases": [],

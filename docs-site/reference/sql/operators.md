@@ -34,6 +34,8 @@ The following operators are supported by Opteryx.  Click a name for details.
 - [Greater than `>`](operators/gt)
 - [Greater than or equal `>=`](operators/gteq)
 - [Case-insensitive like `ILIKE`](operators/ilike)
+- [IP contained by `<<=`](operators/ipcontainedby)
+- [IP contains `>>=`](operators/ipcontains)
 - [In list `IN`](operators/inlist)
 - [Like `LIKE`](operators/like)
 - [Less than `<`](operators/lt)
