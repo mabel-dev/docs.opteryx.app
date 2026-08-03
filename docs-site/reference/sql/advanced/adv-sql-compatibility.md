@@ -111,7 +111,20 @@ The SQL standard does not define which rows survive when many rows share the sam
 
 NULL values within a column propagate correctly through scalar functions (three-valued logic: `f(NULL) = NULL`).
 
-A **bare untyped `NULL` literal** passed directly to some functions (e.g. `LENGTH(NULL)`, `OCTET_LENGTH(NULL)`) currently raises an error rather than returning `NULL`, because the argument has no resolvable type. This is a known limitation. Cast the literal (`CAST(NULL AS VARCHAR)`) or rely on column data, which carries a type.
+A **bare untyped `NULL` literal** passed to a function that requires a concrete type is rejected when the query is planned, rather than returning `NULL`. `NULL` on its own carries no type, so there is no overload to select:
+
+~~~
+OCTET_LENGTH arg1 (NULL): expected STRING - an untyped NULL has no type to match;
+write `CAST(NULL AS VARCHAR)`.
+~~~
+
+Give the literal a type, or use column data, which carries one:
+
+~~~sql
+SELECT OCTET_LENGTH(CAST(NULL AS VARCHAR));   -- returns NULL
+~~~
+
+This applies only to the bare literal. A `NULL` **value** in a typed column propagates normally (`f(NULL) = NULL`), and functions that exist to handle `NULL` — `COALESCE`, `IFNULL`, `NULLIF` — accept an untyped `NULL` argument because they do not require a concrete type.
 
 ---
 
