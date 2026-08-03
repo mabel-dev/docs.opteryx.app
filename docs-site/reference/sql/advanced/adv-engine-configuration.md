@@ -22,20 +22,29 @@ Query parameters which affect the execution of the query can be tuned on a per-q
 using the `SET` statement — subject to who owns the variable.
 
 Variables you define yourself (`@name`) are always yours to set. **System variables are
-not**: each declares an owner, and setting one you do not outrank is refused rather than
-silently ignored:
+not**: each declares an owner tier, and a session tops out at the `USER` tier — setting
+one you do not outrank is refused rather than silently ignored:
 
 ~~~
 User does not have permission to set variable `disable_optimizer`
 ~~~
 
-Use [SHOW VARIABLES](/docs/reference/sql/statements/show-variables) to see which variables
-your session can see, and its `owner` column to see which you may set.
+Some `USER`-tier variables additionally require the `platform_admin` entitlement to set,
+independent of the tier check:
+
+~~~
+Setting `parquet_gcs_io_workers` requires the `platform_admin` entitlement.
+~~~
+
+A few variables are **server-owned** and cannot be set through SQL at all, by any
+caller — they are fixed once, at server startup:
 
 !!! function "`disable_optimizer`: _boolean_ = **false**"
-    Disable the use of the query optimizer (default is **false**).
-    **Platform administrators only** — this variable is server-owned, so an ordinary
-    session cannot set it.
+    Disable the use of the query optimizer (default is **false**). Server-owned; not
+    settable via `SET`, including by a caller holding `platform_admin`.
+
+Use [SHOW VARIABLES](/docs/reference/sql/statements/show-variables) to see which variables
+your session can see and their `owner` column.
 
 ## WITH hints
 

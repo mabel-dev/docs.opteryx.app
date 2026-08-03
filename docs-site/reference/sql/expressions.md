@@ -47,9 +47,11 @@ Operator     | Description
 `NOT RLIKE`  | Negation of `RLIKE` (aliases: `!~`, `NOT SIMILAR TO`)
 `~*`         | Case-insensitive regular expression matching
 `IS`         | Special comparison for `true`, `false`, and `null`
-`|`          | Bitwise OR, or IP address containment
+`|`          | Bitwise OR
 `&`          | Bitwise AND
 `^`          | Bitwise XOR
+`<<=`        | IPv4 address is contained by a CIDR network
+`>>=`        | IPv4 network contains an address
 
 ## Other Comparisons
 
