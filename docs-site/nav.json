@@ -54,6 +54,9 @@
             "Querying local data": "guides/querying-local-data.md"
           },
           {
+            "Connectors": "guides/connectors.md"
+          },
+          {
             "Exploratory analysis in notebooks": "guides/exploratory-analysis.md"
           },
           {
@@ -131,6 +134,15 @@
       },
       {
         "System Variables": "reference/sql/variables.md"
+      },
+      {
+        "Reserved Words": "reference/sql/reserved-words.md"
+      },
+      {
+        "Virtual Datasets": "reference/sql/virtual-datasets.md"
+      },
+      {
+        "Limits": "reference/sql/limits.md"
       },
       {
         "Functions": {
