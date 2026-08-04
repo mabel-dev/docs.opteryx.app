@@ -130,6 +130,9 @@
         "Expressions": "reference/sql/expressions.md"
       },
       {
+        "System Variables": "reference/sql/variables.md"
+      },
+      {
         "Functions": {
           "href": "reference/sql/functions.md",
           "items": [

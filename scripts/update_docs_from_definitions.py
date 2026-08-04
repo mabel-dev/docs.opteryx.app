@@ -1586,11 +1586,92 @@ def _prune_stale(directory: pathlib.Path, keep_slugs: set[str]) -> None:
             print(f'  removed stale: {path.name}')
 
 
+def build_variables_docs(variables_def: Dict[str, Any]):
+    """Render the system-variable (settings) reference.
+
+    Generated, not hand-written: the source catalog is produced from
+    `SYSTEM_VARIABLES_DEFAULTS` by opteryx-core's `make reference`, so the
+    ownership tiers here cannot drift from the ones actually enforced.
+    """
+    settable = {n: v for n, v in variables_def.items() if v.get('settable')}
+    any_session = {n: v for n, v in settable.items() if not v.get('requires_entitlement')}
+    admin_only = {n: v for n, v in settable.items() if v.get('requires_entitlement')}
+    fixed = {n: v for n, v in variables_def.items() if not v.get('settable')}
+
+    lines = [
+        '---',
+        'title: System Variables — Opteryx Reference',
+        'description: Every Opteryx system variable, its type, and who is permitted to set it.',
+        '---', '',
+        '# System Variables', '',
+        'Opteryx exposes %d system variables. Use [SHOW VARIABLES](statements/show-variables) '
+        'to see the ones your session can read, and [SET](statements/set) to change the ones '
+        'you are permitted to change.' % len(variables_def), '',
+        '!!! note',
+        '    Most system variables are **not** settable from SQL. A session runs at the `USER` '
+        'tier, so only `USER`-owned variables are reachable by `SET` at all, and those marked '
+        '`RESTRICTED` additionally require the `platform_admin` entitlement. Everything else is '
+        'fixed by the server or stamped per session.', '',
+    ]
+
+    def table(title, entries, note=None):
+        if not entries:
+            return
+        lines.append('## ' + title)
+        lines.append('')
+        if note:
+            lines.append(note)
+            lines.append('')
+        lines.append('| Variable | Type | Default |')
+        lines.append('|---|---|---|')
+        for name, info in sorted(entries.items()):
+            source = info.get('default_source')
+            if source == 'literal':
+                default = '`%s`' % (info.get('default'),)
+            elif source == 'environment':
+                default = 'env `%s`' % info.get('environment_key')
+            elif source == 'host':
+                default = '_detected from the host_'
+            elif source == 'build':
+                default = '_from the build_'
+            else:
+                default = '_per session_'
+            lines.append('| `%s` | %s | %s |' % (name, info.get('type'), default))
+        lines.append('')
+
+    table('Settable by any session', any_session)
+    table(
+        'Settable with `platform_admin`',
+        admin_only,
+        'These are `USER`-owned but `RESTRICTED`, so they are hidden from `SHOW VARIABLES` '
+        'and refused by `SET` unless the caller holds the `platform_admin` entitlement.',
+    )
+    table(
+        'Not settable from SQL',
+        fixed,
+        'Read-only from a session. Server-owned values are fixed when the server starts; '
+        'session-identity values are stamped from the connection.',
+    )
+
+    lines += [
+        '## Where defaults come from', '',
+        '- **`env KEY`** — read from that environment variable when the server starts. The '
+        'shipped fallback lives in the engine\'s configuration, not here: recording a value '
+        'generated on one machine would describe that machine rather than the product.',
+        '- **detected from the host** — derived at startup (CPU count, memory limits, platform).',
+        '- **per session** — identity asserted by the connecting service, not configuration. '
+        'See [SHOW USER](statements/show-user) and [SHOW GRANTS](statements/show-grants).', '',
+    ]
+
+    write_md(REF_SQL_DIR / 'variables.md', lines)
+
+
 def main():
     functions_def = load_json(DEFS / 'functions.json')
     operators_def = load_json(DEFS / 'operators.json')
     types_def = load_json(DEFS / 'types.json')
     aggregates_def = load_json(DEFS / 'aggregates.json')
+    variables_def = load_json(DEFS / 'variables.json')
 
     # Prune stale entries before regenerating so removed items disappear.
     _prune_stale(REF_SQL_DIR / 'functions', {slugify(n) for n in functions_def})
@@ -1601,6 +1682,7 @@ def main():
     build_operators_docs(operators_def)
     build_types_docs(types_def)
     build_aggregates_docs(aggregates_def)
+    build_variables_docs(variables_def)
     build_api_docs()
     update_nav(functions_def, operators_def, types_def)
     print('docs regenerated')
