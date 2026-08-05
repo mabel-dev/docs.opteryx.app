@@ -7,6 +7,7 @@ This section documents the HTTP APIs exposed by Opteryx services.
 - [Authentication API](/docs/reference/api/authentication-api) — Authentication, OAuth 2.0, OpenID Connect discovery, JWKS publication, and client credential management.
 - [Billing API](/docs/reference/api/billing-api) — Billing account and membership management, payment methods and charges, and workspace lifecycle (creation, deletion, locking).
 - [Jobs API](/docs/reference/api/jobs-api) — Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.
+- [OData API](/docs/reference/api/odata-api) — OData service discovery, metadata, and dataset query endpoints for compatible clients and BI tools.
 - [Policy API](/docs/reference/api/policy-api) — Workspace policy listing, inspection, creation, updates, and deletion for access-control management.
 - [Upload API](/docs/reference/api/upload-api) — Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.
 

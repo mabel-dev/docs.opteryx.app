@@ -99,29 +99,7 @@ rugo preview -n 5 space_missions.parquet  # first rows as a table
 rugo convert space_missions.parquet space_missions.jsonl   # format inferred from extensions
 ```
 
-The most useful verbs:
-
-| Verb | What it does |
-|---|---|
-| `info` | High-level metadata — rows, columns, size, format |
-| `schema` / `columns` | Column names and types |
-| `count` | Row count |
-| `preview` / `head` | First N rows (`-n`, and `-c` to project columns) |
-| `describe` / `stats` | Per-column null counts, min/max, distinct *(Parquet only)* |
-| `inspect` | Low-level footer / row-group / encoding dump *(Parquet only)* |
-| `diff` | Compare two files' schemas — columns added, removed, retyped |
-| `convert` | Convert between Parquet, CSV, and JSONL |
-| `merge` | Concatenate schema-identical files into one |
-| `split` | Split a file into row-count-bounded chunks (`--rows`) |
-
-Every verb takes `--json` for machine-readable output, so the CLI composes with tools like `jq`:
-
-```bash
-rugo count --json events.parquet | jq .num_rows
-rugo describe --json events.parquet | jq '.columns[] | select(.null_count > 0)'
-```
-
-`describe`, `stats`, and `inspect` read statistics from the Parquet footer that CSV and JSONL don't carry, so they apply to Parquet only; `merge` requires identical schemas across its inputs and fails loud on a mismatch rather than coercing.
+See [The Rugo Command Line](/docs/guides/rugo-cli) for the full set of verbs, the `--json` output mode, and the Parquet-only statistics commands.
 
 ## Converting to Arrow
 
@@ -151,6 +129,7 @@ The standalone `rugo` wheel is **local-filesystem only**. Opteryx's copy of Rugo
 
 ## Related
 
+- [The Rugo Command Line](/docs/guides/rugo-cli)
 - [Rugo — the file engine](/docs/reference/internals/rugo)
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [What is Opteryx](/docs/introduction/what-is-opteryx)

@@ -1,0 +1,512 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Opteryx OData Service",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/.well-known/llms.txt": {
+      "get": {
+        "tags": [
+          "service"
+        ],
+        "summary": "Well Known Llms",
+        "description": "Serve LLM directives file for automated agents.",
+        "operationId": "well_known_llms__well_known_llms_txt_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v4/": {
+      "get": {
+        "summary": "OData v4 Service Document",
+        "description": "Returns the OData v4 service document listing all accessible EntitySets grouped by workspace and collection.",
+        "operationId": "get_service_document_api_v4__get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service document with EntitySet list and access metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Service Document Api V4  Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authentication"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v4/$metadata": {
+      "get": {
+        "summary": "OData v4 Service-wide EDMX Metadata",
+        "description": "Returns the complete OData v4 EDMX metadata document describing all EntityTypes and EntitySets accessible to the authenticated user.",
+        "operationId": "get_edmx_metadata_api_v4__metadata_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EDMX metadata document (XML)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Edmx Metadata Api V4  Metadata Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authentication"
+          },
+          "504": {
+            "description": "Firestore unavailable; cannot enumerate datasets"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v4/{workstream}/{collection}/{dataset}": {
+      "get": {
+        "tags": [
+          "OData v4"
+        ],
+        "summary": "Query dataset rows",
+        "description": "Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $orderby, $top, $skip, $apply, $count). Returns paginated results with total count and nextLink for server-driven paging.",
+        "operationId": "read_dataset_api_v4__workstream___collection___dataset__get",
+        "parameters": [
+          {
+            "name": "workstream",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workstream"
+            }
+          },
+          {
+            "name": "collection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collection"
+            }
+          },
+          {
+            "name": "dataset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset"
+            }
+          },
+          {
+            "name": "$filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error.",
+              "title": "$Filter"
+            },
+            "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error."
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.",
+              "title": "$Top"
+            },
+            "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated."
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Skip N rows for pagination (server-driven). Example: &$skip=100 to fetch rows 101+. Combine with $top for paging.",
+              "title": "$Skip"
+            },
+            "description": "Skip N rows for pagination (server-driven). Example: &$skip=100 to fetch rows 101+. Combine with $top for paging."
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Sort by column(s): 'col1 asc, col2 desc'. Default ascending. Example: &$orderby=created_date desc",
+              "title": "$Orderby"
+            },
+            "description": "Sort by column(s): 'col1 asc, col2 desc'. Default ascending. Example: &$orderby=created_date desc"
+          },
+          {
+            "name": "$count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Include total row count in response: 'true' or 'false' (default false). Use with $top=0 to get count only.",
+              "title": "$Count"
+            },
+            "description": "Include total row count in response: 'true' or 'false' (default false). Use with $top=0 to get count only."
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Select specific columns: 'col1,col2,col3' or '*' for all (default all). Reduces payload size.",
+              "title": "$Select"
+            },
+            "description": "Select specific columns: 'col1,col2,col3' or '*' for all (default all). Reduces payload size."
+          },
+          {
+            "name": "$search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Full-text search (not implemented; returns 501)",
+              "title": "$Search"
+            },
+            "description": "Full-text search (not implemented; returns 501)"
+          },
+          {
+            "name": "$apply",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Data aggregation: groupby((col), aggregate(sum(amount) as Total, $count as Count)). Supports min, max, average, sum, countdistinct.",
+              "title": "$Apply"
+            },
+            "description": "Data aggregation: groupby((col), aggregate(sum(amount) as Total, $count as Count)). Supports min, max, average, sum, countdistinct."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query succeeded; returns rows and pagination metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Dataset Api V4  Workstream   Collection   Dataset  Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), invalid $count value, or invalid $apply expression"
+          },
+          "401": {
+            "description": "Missing or invalid authentication (no bearer token or basic auth)"
+          },
+          "403": {
+            "description": "Forbidden: authenticated but no permission for dataset"
+          },
+          "501": {
+            "description": "Unsupported query feature: $search or $expand not implemented"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v4/{workstream}/{collection}/{dataset}/$metadata": {
+      "get": {
+        "tags": [
+          "OData v4"
+        ],
+        "summary": "Per-dataset OData EDMX metadata",
+        "description": "Returns OData $metadata (EDMX) for a single dataset, including column types, nullability, cardinality, and min/max values as custom annotations.",
+        "operationId": "dataset_metadata_api_v4__workstream___collection___dataset___metadata_get",
+        "parameters": [
+          {
+            "name": "workstream",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workstream"
+            }
+          },
+          {
+            "name": "collection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collection"
+            }
+          },
+          {
+            "name": "dataset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EDMX metadata document returned as XML",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Dataset Metadata Api V4  Workstream   Collection   Dataset   Metadata Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authentication"
+          },
+          "403": {
+            "description": "Forbidden: no permission to view dataset metadata"
+          },
+          "404": {
+            "description": "Dataset not found in catalog"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

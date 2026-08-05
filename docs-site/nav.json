@@ -69,6 +69,16 @@
             "Using Rugo standalone": "guides/rugo-standalone.md"
           }
         ]
+      },
+      {
+        "Command Line": [
+          {
+            "Opteryx": "guides/opteryx-cli.md"
+          },
+          {
+            "Rugo": "guides/rugo-cli.md"
+          }
+        ]
       }
     ]
   },
@@ -700,6 +710,9 @@
       },
       {
         "Jobs API": "reference/api/jobs-api.md"
+      },
+      {
+        "OData API": "reference/api/odata-api.md"
       },
       {
         "Policy API": "reference/api/policy-api.md"

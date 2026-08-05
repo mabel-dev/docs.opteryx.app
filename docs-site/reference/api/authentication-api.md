@@ -113,6 +113,11 @@ Returns:
 - **client_id** `string` [path; required]
   Client identifier
 
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+- **x-admin-token** `string | null` [header; optional]
+
 ### Responses
 
 - **200** — Successful Response (`application/json` `array<CredentialMetadata>`)
@@ -127,6 +132,11 @@ Returns:
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
       <div class="t-params">
@@ -162,6 +172,9 @@ Create a new client credential (PAT).
 This creates a Personal Access Token (PAT) for machine-to-machine authentication.
 The secret is shown only once and must be stored securely by the caller.
 
+Callers may create credentials for their own client_id (authenticated via bearer
+token) or, with an admin token, for any client_id.
+
 Args:
     client_id: Client identifier
     request: Credential creation parameters
@@ -174,18 +187,25 @@ Returns:
 - **client_id** `string` [path; required]
   Client identifier
 
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+- **x-admin-token** `string | null` [header; optional]
+
 ### Request Body
 
 - **Content-Type:** `application/json`
   Schema: `CreateCredentialRequest`
   - **type** `string` [optional]
+    Credential type: 'interactive', or a named identifier for a machine credential.
     Default: `interactive`
-  - **expires_in_days** `integer` [optional]
+  - **expires_in_days** `integer | null` [optional]
+    Lifetime of the credential in days. Pass null for a credential that never expires.
     Default: `90`
   - **scopes** `array<string>` [optional]
-    Default: `[]`
+    Scopes to grant the credential. Empty grants the caller's default scopes.
   - **permissions** `array<array<string>>` [optional]
-    Default: `[]`
+    Resource grants as [pattern, role] pairs, e.g. [['analytics.*', 'reader']]. Roles are 'owner', 'admin', 'writer' or 'reader'.
 
 ### Responses
 
@@ -201,6 +221,11 @@ Returns:
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
       <div class="t-params">
@@ -256,6 +281,11 @@ Returns:
 - **credential_id** `string` [path; required]
   Credential ID to revoke
 
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+- **x-admin-token** `string | null` [header; optional]
+
 ### Responses
 
 - **200** — Successful Response (`application/json` `object`)
@@ -270,6 +300,11 @@ Returns:
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
       <div class="t-params">
@@ -338,7 +373,7 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/me</code>
 
-Validates the bearer token and returns the caller identity and token scope details.
+Validates the bearer token and returns the caller identity, billing account and token scope details.
 
 ### Header Parameters
 

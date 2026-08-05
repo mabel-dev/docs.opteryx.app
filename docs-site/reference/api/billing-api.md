@@ -90,14 +90,6 @@ Billing account and membership management, payment methods and charges, and work
       <td class="ep-doc"><a href="#delete-workspace">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Lock Workspace</span><span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}/lock</code></td>
-      <td class="ep-doc"><a href="#lock-workspace">View</a></td>
-    </tr>
-    <tr>
-      <td><span class="ep-name">Unlock Workspace</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/workspaces/{name}/lock</code></td>
-      <td class="ep-doc"><a href="#unlock-workspace">View</a></td>
-    </tr>
-    <tr>
       <td><span class="ep-name">Restore Workspace</span><span class="ep-verb ep-verb--post">post</span><code>/v1/workspaces/{name}/restore</code></td>
       <td class="ep-doc"><a href="#restore-workspace">View</a></td>
     </tr>
@@ -499,7 +491,8 @@ account* resets the 7-day clock instead of erroring - a fresh
 
 - **Content-Type:** `application/json`
   Schema: `InviteMemberRequest`
-  - **identity_or_email** `string` [required]
+  - **identity** `string` [required]
+  - **email** `string` [required]
   - **role** `string` [required]
 
 ### Responses
@@ -531,7 +524,8 @@ account* resets the 7-day clock instead of erroring - a fresh
     <div class="t-field">
       <div class="t-label">Request body <span class="t-opt">application/json · InviteMemberRequest</span></div>
       <textarea class="t-body" spellcheck="false">{
-  "identity_or_email": "",
+  "identity": "",
+  "email": "",
   "role": ""
 }</textarea>
     </div>
@@ -1293,6 +1287,20 @@ Starts the 24h soft-delete. Caller must be an active `billing_admin`
 on the workspace's billing account. 423 if the workspace is currently
 locked.
 
+Delete authority (billing_admin, here) and lock authority are
+deliberately independent - a workspace owner with no billing-account
+role at all can still block a billing_admin's delete by holding the
+lock, which is cleared only from SQL against the workspace
+(`ALTER WORKSPACE <name> SET delete_protection TO OFF`), never over
+this API. This is intentional, not an oversight worth "fixing" into a
+single permission set: billing_admin controls lifecycle/cost, workspace
+owners control operational safety, and the lock is specifically meant to
+let an owner interpose a deliberate speed bump against a delete
+initiated by someone who may not have day-to-day context on whether the
+workspace is safe to remove - see api-v2.md's lock design ("this is
+mostly about accidental [deletion]... defeating this control is about
+intent").
+
 ### Path Parameters
 
 - **name** `string` [path; required]
@@ -1312,124 +1320,6 @@ locked.
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
     <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">name<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="name" placeholder="string">
-      </div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Lock Workspace
-
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}/lock</code>
-
-Workspace **owner** sets the lock - workspace-level (checked against
-this workspace's own `members` list), not billing-account-level.
-
-### Path Parameters
-
-- **name** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="PUT" data-base="https://billing.opteryx.app" data-path="/v1/workspaces/{name}/lock" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--put">put</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}/lock</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">name<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="name" placeholder="string">
-      </div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Unlock Workspace
-
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/workspaces/{name}/lock</code>
-
-A **different** owner clears the lock. Not a hard access-control
-boundary (per api-v2.md) - the point is a second identity on record,
-so a straightforward identity-inequality check against the current
-`locked-by` is sufficient.
-
-### Path Parameters
-
-- **name** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="DELETE" data-base="https://billing.opteryx.app" data-path="/v1/workspaces/{name}/lock" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}/lock</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">

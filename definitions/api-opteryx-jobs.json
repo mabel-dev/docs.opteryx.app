@@ -54,8 +54,7 @@
     ],
     "notes": [
       "**Poll `status`, not `results`.** `GET .../status` is cheap and returns `results_url` once the job is done; `GET .../results` is what actually pages through the data, `num_rows`/`offset` at a time, following `next_page` for more.",
-      "**`results` and `download` are independent, not exclusive.** Pull a page inline with `results` to inspect it in your app, or stream the whole set with `download` as CSV, newline-delimited JSON, or Parquet — call either, neither, or both once the job has finished.",
-      "**Cancel works any time before the job finishes.** `POST .../cancel` stops execution but doesn't undo rows already returned by an earlier `results` call."
+      "**`results` and `download` are independent, not exclusive.** Pull a page inline with `results` to inspect it in your app, or stream the whole set with `download` as CSV, newline-delimited JSON, or Parquet — call either, neither, or both once the job has finished."
     ]
   },
   "paths": {
@@ -161,65 +160,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JobStatusResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/jobs/{identifier}/cancel": {
-      "post": {
-        "tags": [
-          "Jobs Management"
-        ],
-        "summary": "Cancel job execution",
-        "description": "Cancel a running job.",
-        "operationId": "cancel_job_api_v1_jobs__identifier__cancel_post",
-        "parameters": [
-          {
-            "name": "identifier",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Identifier"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCancelResponse"
                 }
               }
             }
@@ -672,30 +612,6 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
-      },
-      "JobCancelResponse": {
-        "properties": {
-          "execution_id": {
-            "type": "string",
-            "title": "Execution Id"
-          },
-          "cancelled": {
-            "type": "boolean",
-            "title": "Cancelled"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current state of the job"
-          }
-        },
-        "type": "object",
-        "required": [
-          "execution_id",
-          "cancelled",
-          "status"
-        ],
-        "title": "JobCancelResponse"
       },
       "JobCreateRequest": {
         "properties": {

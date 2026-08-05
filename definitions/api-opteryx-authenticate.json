@@ -143,7 +143,7 @@
           "credentials"
         ],
         "summary": "Create Credential",
-        "description": "Create a new client credential (PAT).\n\nThis creates a Personal Access Token (PAT) for machine-to-machine authentication.\nThe secret is shown only once and must be stored securely by the caller.\n\nArgs:\n    client_id: Client identifier\n    request: Credential creation parameters\n\nReturns:\n    Credential metadata with plaintext secret (shown only once)",
+        "description": "Create a new client credential (PAT).\n\nThis creates a Personal Access Token (PAT) for machine-to-machine authentication.\nThe secret is shown only once and must be stored securely by the caller.\n\nCallers may create credentials for their own client_id (authenticated via bearer\ntoken) or, with an admin token, for any client_id.\n\nArgs:\n    client_id: Client identifier\n    request: Credential creation parameters\n\nReturns:\n    Credential metadata with plaintext secret (shown only once)",
         "operationId": "create_credential_clients__client_id__credentials_post",
         "parameters": [
           {
@@ -156,6 +156,38 @@
               "title": "Client Id"
             },
             "description": "Client identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
           }
         ],
         "requestBody": {
@@ -209,6 +241,38 @@
               "title": "Client Id"
             },
             "description": "Client identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
           }
         ],
         "responses": {
@@ -269,6 +333,38 @@
               "title": "Credential Id"
             },
             "description": "Credential ID to revoke"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
           }
         ],
         "responses": {
@@ -296,7 +392,7 @@
     "/me": {
       "get": {
         "summary": "Get current user",
-        "description": "Validates the bearer token and returns the caller identity and token scope details.",
+        "description": "Validates the bearer token and returns the caller identity, billing account and token scope details.",
         "operationId": "get_current_user_me_get",
         "parameters": [
           {
@@ -369,11 +465,20 @@
           "type": {
             "type": "string",
             "title": "Type",
+            "description": "Credential type: 'interactive', or a named identifier for a machine credential.",
             "default": "interactive"
           },
           "expires_in_days": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Expires In Days",
+            "description": "Lifetime of the credential in days. Pass null for a credential that never expires.",
             "default": 90
           },
           "scopes": {
@@ -382,7 +487,7 @@
             },
             "type": "array",
             "title": "Scopes",
-            "default": []
+            "description": "Scopes to grant the credential. Empty grants the caller's default scopes."
           },
           "permissions": {
             "items": {
@@ -393,11 +498,22 @@
             },
             "type": "array",
             "title": "Permissions",
-            "default": []
+            "description": "Resource grants as [pattern, role] pairs, e.g. [['analytics.*', 'reader']]. Roles are 'owner', 'admin', 'writer' or 'reader'."
           }
         },
         "type": "object",
-        "title": "CreateCredentialRequest"
+        "title": "CreateCredentialRequest",
+        "example": {
+          "expires_in_days": 90,
+          "permissions": [
+            [
+              "analytics.*",
+              "reader"
+            ]
+          ],
+          "scopes": [],
+          "type": "interactive"
+        }
       },
       "CreateCredentialResponse": {
         "properties": {
@@ -414,7 +530,14 @@
             "title": "Secret"
           },
           "expires_in_days": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Expires In Days"
           }
         },

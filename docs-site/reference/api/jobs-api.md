@@ -58,7 +58,6 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
 
 - **Poll `status`, not `results`.** `GET .../status` is cheap and returns `results_url` once the job is done; `GET .../results` is what actually pages through the data, `num_rows`/`offset` at a time, following `next_page` for more.
 - **`results` and `download` are independent, not exclusive.** Pull a page inline with `results` to inspect it in your app, or stream the whole set with `download` as CSV, newline-delimited JSON, or Parquet — call either, neither, or both once the job has finished.
-- **Cancel works any time before the job finishes.** `POST .../cancel` stops execution but doesn't undo rows already returned by an earlier `results` call.
 
 ## Endpoints
 
@@ -74,10 +73,6 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
     <tr>
       <td><span class="ep-name">Retrieve recent user queries</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code></td>
       <td class="ep-doc"><a href="#retrieve-recent-user-queries">View</a></td>
-    </tr>
-    <tr>
-      <td><span class="ep-name">Cancel job execution</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/{identifier}/cancel</code></td>
-      <td class="ep-doc"><a href="#cancel-job-execution">View</a></td>
     </tr>
     <tr>
       <td><span class="ep-name">Download job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code></td>
@@ -213,65 +208,6 @@ Get recent user queries.
       <div class="t-params">
         <div class="t-pname">filter<span>string | null · optional</span></div>
         <input type="text" class="t-query" data-name="filter" placeholder="string | null">
-      </div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Cancel job execution
-
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs/{identifier}/cancel</code>
-
-**Tags:** Jobs Management
-
-Cancel a running job.
-
-### Path Parameters
-
-- **identifier** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `JobCancelResponse`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/jobs/{identifier}/cancel" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/jobs/{identifier}/cancel</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">identifier<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="identifier" placeholder="string">
       </div>
     </div>
     <div class="t-actions">
