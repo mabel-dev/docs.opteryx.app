@@ -4084,3 +4084,396 @@ kbd {
 .api-tryit .t-copy-resp[hidden] {
     display: none;
 }
+
+/* ===========================================================================
+   STATUS PAGE (/status)
+   A read-model over the public Statuspage summary for status.opteryx.app.
+   Statuspage stays the system of record — it owns incident declaration,
+   subscriber fan-out and uptime history; this page just renders its JSON in
+   our own type and colour.
+   =========================================================================== */
+.status-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 28px 96px;
+}
+.status-page h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-h1);
+    line-height: var(--lh-heading);
+    color: var(--text-deep);
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+}
+.status-page .status-sub {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--muted);
+    margin: 0 0 32px;
+}
+
+/* --- Overall banner --- */
+.status-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel);
+    margin-bottom: 32px;
+}
+.status-banner.is-ok {
+    background: var(--success-soft);
+    border-color: rgba(24, 128, 56, 0.28);
+}
+.status-banner.is-degraded {
+    background: var(--warning-soft);
+    border-color: rgba(255, 165, 3, 0.42);
+}
+.status-banner.is-outage {
+    background: var(--danger-soft);
+    border-color: rgba(213, 0, 0, 0.28);
+}
+.status-banner__text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.status-banner__head {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    color: var(--text-deep);
+    line-height: 1.25;
+}
+.status-banner__meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* --- Dots --- */
+.st-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--muted-2);
+    display: inline-block;
+}
+.st-dot--sm {
+    width: 9px;
+    height: 9px;
+}
+.st-dot--ok {
+    background: var(--success);
+}
+.st-dot--degraded {
+    background: var(--warning);
+}
+.st-dot--outage {
+    background: var(--danger);
+}
+.st-dot--unknown {
+    background: var(--muted-2);
+}
+
+/* --- Section headings --- */
+.status-page h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 40px 0 12px;
+}
+
+/* --- Component list --- */
+.status-components {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+}
+.status-components li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+}
+.status-components li:last-child {
+    border-bottom: none;
+}
+.status-components .name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--text-deep);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.status-components .desc {
+    display: block;
+    font-size: var(--fs-caption);
+    color: var(--muted);
+    margin-top: 2px;
+}
+.status-components .state {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+/* --- Incidents --- */
+.status-incident {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    background: var(--bg);
+}
+.status-incident--live {
+    border-color: rgba(213, 0, 0, 0.28);
+    background: var(--danger-soft);
+}
+.status-incident__head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.status-incident__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-body-l);
+    font-weight: 600;
+    color: var(--text-deep);
+}
+.status-incident__impact {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border-2);
+    color: var(--muted);
+}
+.status-incident__impact.is-critical,
+.status-incident__impact.is-major {
+    color: var(--danger);
+    border-color: rgba(213, 0, 0, 0.35);
+}
+.status-incident__impact.is-minor {
+    color: #8a5a00;
+    border-color: rgba(255, 165, 3, 0.5);
+}
+.status-updates {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--border);
+}
+.status-updates li {
+    padding: 0 0 14px 14px;
+    position: relative;
+}
+.status-updates li:last-child {
+    padding-bottom: 0;
+}
+.status-updates li::before {
+    content: "";
+    position: absolute;
+    left: -23px;
+    top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--muted-2);
+    border: 2px solid var(--bg);
+}
+.status-updates li:first-child::before {
+    background: var(--opteryx-teal);
+}
+.status-updates .u-status {
+    font-family: var(--font-display);
+    font-size: var(--fs-body-s);
+    font-weight: 600;
+    color: var(--text-deep);
+    text-transform: capitalize;
+}
+.status-updates .u-time {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    color: var(--muted);
+    margin-left: 8px;
+}
+.status-updates .u-body {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-s);
+    line-height: var(--lh-body);
+    color: var(--text);
+    margin-top: 3px;
+    white-space: pre-wrap;
+}
+
+/* --- History --- */
+.status-history-month {
+    font-family: var(--font-display);
+    font-size: var(--fs-body-l);
+    font-weight: 600;
+    color: var(--text-deep);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin: 28px 0 14px;
+}
+.status-history-none {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-s);
+    color: var(--muted);
+    padding: 4px 0 14px;
+}
+
+/* --- Footer strip --- */
+.status-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+}
+.status-foot a {
+    color: var(--opteryx-teal);
+    text-decoration: none;
+    font-weight: 500;
+}
+.status-foot a:hover {
+    text-decoration: underline;
+}
+
+/* --- Loading / error --- */
+.status-note {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-s);
+    color: var(--muted);
+    padding: 14px 0;
+}
+
+/* Incident update bodies — rendered from a small Markdown subset into React
+   nodes (see app/status/page.tsx), so these style real elements, not a
+   dangerouslySetInnerHTML blob. */
+.status-updates .u-body {
+    white-space: normal;
+}
+.status-updates .u-body p {
+    margin: 0 0 8px;
+}
+.status-updates .u-body p:last-child {
+    margin-bottom: 0;
+}
+.status-updates .u-subhead {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-deep);
+}
+.status-updates .u-list {
+    margin: 0 0 8px;
+    padding-left: 20px;
+}
+.status-updates .u-list li {
+    padding: 0 0 2px 0;
+    position: static;
+}
+.status-updates .u-list li::before {
+    content: none;
+}
+.status-updates .u-body code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--panel-2);
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+.status-updates .u-body a {
+    color: var(--opteryx-teal);
+}
+
+/* Rules, tables and the resolved-incident disclosure inside update bodies. */
+.status-updates .u-rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 12px 0;
+}
+.u-table-wrap {
+    overflow-x: auto;
+    margin: 0 0 10px;
+}
+.u-table {
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    min-width: 100%;
+}
+.u-table th,
+.u-table td {
+    text-align: left;
+    padding: 6px 12px 6px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+.u-table th {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-deep);
+}
+.u-table td {
+    color: var(--text);
+}
+
+.status-incident__more {
+    margin-top: 12px;
+}
+.status-incident__more > summary {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: var(--fs-body-s);
+    font-weight: 500;
+    color: var(--opteryx-teal);
+    list-style: none;
+}
+.status-incident__more > summary::-webkit-details-marker {
+    display: none;
+}
+.status-incident__more > summary::before {
+    content: "▸ ";
+    display: inline-block;
+    transition: transform 0.15s;
+}
+.status-incident__more[open] > summary::before {
+    content: "▾ ";
+}
+.status-incident__more > summary:hover {
+    text-decoration: underline;
+}
+.status-updates .u-quote {
+    margin: 0 0 10px;
+    padding: 2px 0 2px 14px;
+    border-left: 3px solid var(--accent-soft-3);
+    color: var(--text);
+}
+.status-updates .u-quote p:last-child {
+    margin-bottom: 0;
+}
