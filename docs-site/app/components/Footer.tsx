@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import StatusLink from "@/app/components/StatusLink";
 
 export default function Footer() {
   return (
@@ -15,14 +16,7 @@ export default function Footer() {
           <span>Try Opteryx Now</span>
         </Link>
         <div className="docs-footer-meta">
-          <Link
-            href="https://opteryx.statuspage.io/"
-            className="docs-footer-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Status
-          </Link>
+          <StatusLink />
           <span className="docs-footer-legal">
             © {new Date().getFullYear()} Opteryx, All Rights Reserved
           </span>

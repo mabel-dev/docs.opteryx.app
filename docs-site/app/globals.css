@@ -1129,6 +1129,17 @@ kbd {
     color: var(--opteryx-teal);
     text-decoration: none;
 }
+/* The live dot next to "Status". Smaller than the one on /status itself —
+   footer chrome, not a headline. Absent until the state is known. */
+.docs-footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.docs-footer-status .st-dot {
+    width: 8px;
+    height: 8px;
+}
 .docs-footer-legal {
     color: var(--muted);
     font-size: 12px;
