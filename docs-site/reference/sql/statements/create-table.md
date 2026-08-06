@@ -74,3 +74,4 @@ SELECT id, name, email
 - `CREATE OR REPLACE TABLE ... AS SELECT` creates the table if it doesn't exist yet, or atomically replaces its contents if it does. The replacement is all-or-nothing: if the query fails partway through, the existing table is left completely untouched.
 - Replacing an existing table currently requires the new query's columns to match the existing table's columns exactly. Changing the column set with `CREATE OR REPLACE` is not yet supported.
 - Creating a new table requires `writer` or `owner` access to the target. Replacing an existing table's contents requires `owner` access — the same requirement as `DROP TABLE`, since it discards the table's previous contents.
+- To keep a CTAS result up to date automatically as its sources change, use [CREATE MATERIALIZED VIEW](create-materialized-view.md) — the self-refreshing variant of `CREATE TABLE ... AS SELECT`.

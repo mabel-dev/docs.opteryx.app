@@ -17,9 +17,10 @@ SELECT ...;
 - `OR REPLACE` overwrites an existing view's definition.
 - `IF NOT EXISTS` leaves an existing view untouched instead of failing.
 
-Materialized views are **not supported**. `CREATE MATERIALIZED VIEW` is rejected when the
-query is planned rather than quietly creating an ordinary view — Opteryx stores a view's
-query and plans it afresh on every reference, so nothing is precomputed.
+A view stores only the query text and plans it afresh on every reference, so nothing is
+precomputed. If you want the result stored as a physical table and kept up to date
+automatically as its sources change, use
+[CREATE MATERIALIZED VIEW](create-materialized-view.md) instead.
 
 ## Examples
 

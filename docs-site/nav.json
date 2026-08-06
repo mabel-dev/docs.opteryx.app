@@ -442,6 +442,9 @@
               "CREATE COLLECTION": "reference/sql/statements/create-collection.md"
             },
             {
+              "CREATE MATERIALIZED VIEW": "reference/sql/statements/create-materialized-view.md"
+            },
+            {
               "CREATE TABLE": "reference/sql/statements/create-table.md"
             },
             {
@@ -457,10 +460,16 @@
               "DROP COLLECTION": "reference/sql/statements/drop-collection.md"
             },
             {
+              "DROP MATERIALIZED VIEW": "reference/sql/statements/drop-materialized-view.md"
+            },
+            {
               "DROP STATISTICS": "reference/sql/statements/drop-statistics.md"
             },
             {
               "DROP TABLE": "reference/sql/statements/drop-table.md"
+            },
+            {
+              "DROP TRIGGER": "reference/sql/statements/drop-trigger.md"
             },
             {
               "DROP VIEW": "reference/sql/statements/drop-view.md"
@@ -512,6 +521,9 @@
             },
             {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
+            },
+            {
+              "SHOW TRIGGERS FOR": "reference/sql/statements/show-triggers.md"
             },
             {
               "SHOW USER": "reference/sql/statements/show-user.md"
