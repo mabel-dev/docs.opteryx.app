@@ -57,5 +57,4 @@ The package ships with **no required runtime dependencies** (`dependencies = []`
 ## Related
 
 - [Known Limits](known-limits)
-- [Stability Promises](stability-promises)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)

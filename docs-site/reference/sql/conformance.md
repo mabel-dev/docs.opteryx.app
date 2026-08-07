@@ -68,7 +68,7 @@ certified conformance at that feature level.
 | Feature | Reference | Support | Notes |
 |:--|:--|:--|:--|
 | Boolean type | T031 | **yes** | `BOOLEAN` is a first-class type. |
-| Window functions | T611 | **partial** | `ROW_NUMBER`, `RANK`, `DENSE_RANK`, and the aggregate forms `SUM` / `COUNT` / `AVG` `OVER (...)`. Ranking functions require an `ORDER BY` inside the `OVER` clause. Explicit window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, and `LEAD` / `LAG` are **not** implemented. See [Window Functions](statements/window-functions). |
+| Window functions | T611 | **partial** | Two families with different rules: ranking (`ROW_NUMBER`, `RANK`, `DENSE_RANK`) **requires** `ORDER BY` inside `OVER`; aggregate windows (`SUM` / `COUNT` / `AVG` `OVER (PARTITION BY ...)`) **reject** it. Window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, and `LEAD` / `LAG` are **not** implemented, so running totals and moving averages are unavailable. See [Window Functions](statements/window-functions). |
 | `information_schema` | — | **partial** | Three views — `tables`, `columns`, `triggers` — read live from the catalog. Addressed as `<workspace>.information_schema.<view>`. See [Information schema](advanced/adv-information-schema). |
 | Temporal query | — | **extension** | `FOR TIMESTAMP AS OF` reads a table as at a point in time. Not a standard feature; see [TIMESTAMP AS OF](statements/timestamp-as-of). |
 | Semi-structured types | — | **extension** | `ARRAY`, `VARIANT`, `VECTOR`, and `IPV4`, with JSON path operators (`->`, `->>`, `@?`). Outside the standard entirely. |
@@ -116,5 +116,3 @@ that is a documentation bug worth
   from other engines
 - [Limits](limits) — the ceilings the engine enforces
 - [Reserved Words](reserved-words) — what cannot be a bare identifier
-- [Stability Promises](/docs/roadmap-guarantees/stability-promises) — what stays
-  still between releases

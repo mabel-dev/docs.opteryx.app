@@ -130,10 +130,9 @@ millisecond figures from one developer's laptop say nothing about anyone else's.
 ### What the numbers are not
 
 - **Not audited.** No third party has verified any of these runs.
-- **Not a service level.** See [Stability
-  Promises](/docs/roadmap-guarantees/stability-promises) — there is no
-  performance guarantee, and an optimizer change that helps most queries can slow
-  an individual one.
+- **Not a service level.** There is no performance guarantee. Opteryx is pre-1.0
+  and still being tuned hard, so an optimizer change that helps most queries can
+  slow an individual one.
 - **Not a claim of parity.** Several suites currently exist precisely because
   Opteryx is behind on them; that gap is the point of running them.
 
