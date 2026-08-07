@@ -9,12 +9,7 @@ An array is an ordered, 0-indexed collection of values of the same type.
 
 ## Creating Arrays
 
-!!! warning
-    **A literal array cannot be projected in a `SELECT` clause.** `SELECT ['a', 'b']` —
-    and the equivalent `SELECT ('a', 'b')` — is rejected when the query is planned,
-    whether or not it is aliased and whether or not the query has a `FROM`. An array
-    reaches a projection from a column, a function, or a cast; not from a literal
-    written inline.
+> Warning: **A literal array cannot be projected in a `SELECT` clause.** `SELECT ['a', 'b']` — and the equivalent `SELECT ('a', 'b')` — is rejected when the query is planned, whether or not it is aliased and whether or not the query has a `FROM`. An array reaches a projection from a column, a function, or a cast; not from a literal written inline.
 
 Split a delimited string into an array:
 
@@ -179,5 +174,4 @@ CAST(column AS ARRAY<element_type>)
 - `ALL` operator only supports `=` and `!=`; comparison operators (`>`, `<`, etc.) are not supported
 - Arrays cannot be used in `ORDER BY`
 
-!!! Note  
-    Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove array columns that are never read. Do not rely on specific optimizer behavior.
+> Be Aware: Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove array columns that are never read. Do not rely on specific optimizer behavior.

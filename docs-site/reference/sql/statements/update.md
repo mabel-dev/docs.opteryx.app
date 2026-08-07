@@ -7,8 +7,7 @@ description: UPDATE is not currently supported in Opteryx
 
 `UPDATE` modifies existing rows in a table in place.
 
-!!! warning
-    **UPDATE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'UPDATE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
+> Warning: **UPDATE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'UPDATE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
 
 ## Working Around It
 

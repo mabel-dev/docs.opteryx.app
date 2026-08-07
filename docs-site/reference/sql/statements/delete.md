@@ -7,8 +7,7 @@ description: DELETE is not currently supported in Opteryx
 
 `DELETE` removes specific rows from a table.
 
-!!! warning
-    **DELETE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'DELETE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
+> Warning: **DELETE is not currently supported.** Opteryx rejects it at parse time with `Opteryx does not support 'DELETE' type queries.` — there is no backend, experimental or otherwise, that accepts it.
 
 ## Working Around It
 

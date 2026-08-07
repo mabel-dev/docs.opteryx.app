@@ -559,6 +559,9 @@
         "SQL Supported": "reference/sql/supported-sql.md"
       },
       {
+        "SQL Conformance": "reference/sql/conformance.md"
+      },
+      {
         "Advanced topics": [
           {
             "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"
@@ -756,6 +759,19 @@
       },
       {
         "RISC-V support": "reference/internals/riscv-support.md"
+      },
+      {
+        "Benchmarking": "reference/internals/benchmarking.md"
+      }
+    ]
+  },
+  {
+    "Roadmap & Guarantees": [
+      {
+        "Compatibility": "roadmap-guarantees/compatibility.md"
+      },
+      {
+        "Stability promises": "roadmap-guarantees/stability-promises.md"
       }
     ]
   }

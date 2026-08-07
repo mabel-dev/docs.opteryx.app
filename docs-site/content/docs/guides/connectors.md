@@ -23,10 +23,7 @@ SELECT name FROM testdata.astronauts;   -- reads ./testdata/astronauts/
 That directory is scanned for data files (Parquet, CSV, JSONL). This is the
 whole configuration story for local querying — there is nothing to register.
 
-!!! warning
-    Because the path is resolved against the **current working directory**, the
-    same query run from a different directory reads different data, or fails.
-    Register a prefix (below) if you need a fixed location.
+> Warning: Because the path is resolved against the **current working directory**, the same query run from a different directory reads different data, or fails. Register a prefix (below) if you need a fixed location.
 
 To read a specific file rather than a directory, use the table functions, which
 take a path directly and ignore the prefix rules:
@@ -83,11 +80,7 @@ register_workspace("local", create_local_connector)
 register_workspace("archive", create_gcs_connector, bucket="my-bucket")
 ```
 
-!!! note
-    `FileSystemConnector` has **no root directory setting** — the relation name
-    *is* the path. Registering a prefix for it does not re-root anything; the
-    prefix simply becomes the first path segment. Use `LocalStoreConnector` with
-    `store_root` when you want a fixed base directory.
+> Be Aware: `FileSystemConnector` has **no root directory setting** — the relation name *is* the path. Registering a prefix for it does not re-root anything; the prefix simply becomes the first path segment. Use `LocalStoreConnector` with `store_root` when you want a fixed base directory.
 
 `DiskConnector` and `GcpCloudStorageConnector` are retained as legacy names for
 the two factories above.

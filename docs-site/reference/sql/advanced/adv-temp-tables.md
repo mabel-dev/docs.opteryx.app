@@ -53,8 +53,7 @@ Result:
       3
 ~~~
 
-!!! note
-    The values in the `UNNEST` function are in two sets of parenthesis. The function accepts a list of values, parenthesis is used to wrap parameters to functions and also used to define lists.
+> Be Aware: The values in the `UNNEST` function are in two sets of parenthesis. The function accepts a list of values, parenthesis is used to wrap parameters to functions and also used to define lists.
 
 ## Using `generate_series`
 

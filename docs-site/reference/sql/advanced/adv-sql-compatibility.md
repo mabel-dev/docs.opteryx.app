@@ -48,8 +48,7 @@ functions then count codepoints:
 | `CHAR_LENGTH(CAST('ффф' AS NVARCHAR))`  | 3 (codepoints)   |
 | `OCTET_LENGTH(CAST('ффф' AS NVARCHAR))` | 6 (always bytes) |
 
-!!! note
-    The same byte-orientation applies to other string operations (substring, position, pattern matching). On ASCII data engines typically agree; they can diverge on multibyte or non-UTF-8 input.
+> Be Aware: The same byte-orientation applies to other string operations (substring, position, pattern matching). On ASCII data engines typically agree; they can diverge on multibyte or non-UTF-8 input.
 
 ---
 

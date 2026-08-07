@@ -50,5 +50,4 @@ SELECT name
 
 Also, returns an empty set.
 
-!!! note
-    `null` comparison returning `null` holds true even for `null = null`. Do not test for null using an equals condition, use `IS NULL`.
+> Be Aware: `null` comparison returning `null` holds true even for `null = null`. Do not test for null using an equals condition, use `IS NULL`.

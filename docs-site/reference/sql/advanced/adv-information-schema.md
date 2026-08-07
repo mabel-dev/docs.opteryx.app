@@ -71,8 +71,7 @@ SELECT column_name, data_type, is_nullable
  ORDER BY ordinal_position;
 ```
 
-!!! note
-    `information_schema.columns` only covers tables — views are not included. A view's columns are only known once its query is planned, and that isn't done just to populate this listing.
+> Be Aware: `information_schema.columns` only covers tables — views are not included. A view's columns are only known once its query is planned, and that isn't done just to populate this listing.
 
 ---
 

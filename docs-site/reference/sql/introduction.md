@@ -94,8 +94,7 @@ Pluto  	|       153.3 |             5
 
 The order of results is not guaranteed and should not be relied upon. If you request the results of the query below, you might get Mercury or Venus in either order. 
 
-!!! note
-    The same query, on the same data in the same version of the query engine, will likely return results in the same order. Don't expect to test result order non-determinism by rerunning the query millions of times and looking for differences. These differences may manifest across different versions, or from subtle differences in the query statement or data.
+> Be Aware: The same query, on the same data in the same version of the query engine, will likely return results in the same order. Don't expect to test result order non-determinism by rerunning the query millions of times and looking for differences. These differences may manifest across different versions, or from subtle differences in the query statement or data.
 
 ~~~sql
 SELECT name,

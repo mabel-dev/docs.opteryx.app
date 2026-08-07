@@ -7,8 +7,7 @@ description: Every Opteryx system variable, its type, and who is permitted to se
 
 Opteryx exposes 54 system variables. Use [SHOW VARIABLES](statements/show-variables) to see the ones your session can read, and [SET](statements/set) to change the ones you are permitted to change.
 
-!!! note
-    Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all, and those marked `RESTRICTED` additionally require the `platform_admin` entitlement. Everything else is fixed by the server or stamped per session.
+> Be Aware: Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all, and those marked `RESTRICTED` additionally require the `platform_admin` entitlement. Everything else is fixed by the server or stamped per session.
 
 ## Settable by any session
 

@@ -104,17 +104,14 @@ SELECT *
  WHERE config = '{"mode": "strict"}';
 ```
 
-!!! warning
-    This is **string** equality, not structural equality — structs are stored as JSON
-    text. The literal has to match the stored text exactly, so a difference in whitespace
-    or key order silently returns no rows:
+> Warning: This is **string** equality, not structural equality — structs are stored as JSON text. The literal has to match the stored text exactly, so a difference in whitespace or key order silently returns no rows.
 
-    ```sql
-    SELECT '{"mode":"strict"}' = '{"mode":"strict"}';    -- true
-    SELECT '{"mode":"strict"}' = '{"mode": "strict"}';   -- false (one extra space)
-    ```
+```sql
+SELECT '{"mode":"strict"}' = '{"mode":"strict"}';    -- true
+SELECT '{"mode":"strict"}' = '{"mode": "strict"}';   -- false (one extra space)
+```
 
-    To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
+To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
 
 ## Limitations
 
@@ -122,5 +119,4 @@ SELECT *
 - Struct values are opaque to the query planner — predicates on struct fields cannot use row-group pruning or bloom filters
 - Projection pushdown may remove struct columns as part of optimization; do not rely on specific optimizer behavior
 
-!!! Note  
-    Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove struct columns you never read. However, you should not rely on the optimizer to take any particular action.
+> Be Aware: Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove struct columns you never read. However, you should not rely on the optimizer to take any particular action.

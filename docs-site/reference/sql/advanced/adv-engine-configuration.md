@@ -39,9 +39,10 @@ Setting `parquet_gcs_io_workers` requires the `platform_admin` entitlement.
 A few variables are **server-owned** and cannot be set through SQL at all, by any
 caller — they are fixed once, at server startup:
 
-!!! function "`disable_optimizer`: _boolean_ = **false**"
-    Disable the use of the query optimizer (default is **false**). Server-owned; not
-    settable via `SET`, including by a caller holding `platform_admin`.
+**`disable_optimizer`**: _boolean_ = **false**
+
+Disable the use of the query optimizer (default is **false**). Server-owned; not
+settable via `SET`, including by a caller holding `platform_admin`.
 
 Use [SHOW VARIABLES](/docs/reference/sql/statements/show-variables) to see which variables
 your session can see and their `owner` column.

@@ -15,10 +15,11 @@ SELECT *
 
 The expression after `AS OF` is evaluated at query time and must resolve to a timestamp. Any expression that produces a temporal value is accepted.
 
-!!! Note
-    - Data must be partitioned in a way that supports temporal queries (e.g. Mabel partitioning).
-    - If no `TIMESTAMP AS OF` clause is provided, the query reads current data.
-    - There is no implicit deduplication when data from multiple partitions is combined.
+**Notes:**
+
+- Data must be partitioned in a way that supports temporal queries (e.g. Mabel partitioning).
+- If no `TIMESTAMP AS OF` clause is provided, the query reads current data.
+- There is no implicit deduplication when data from multiple partitions is combined.
 
 ## Examples
 

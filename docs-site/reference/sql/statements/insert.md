@@ -9,8 +9,7 @@ The `INSERT` statement adds new rows to a table.
 
 ## Basic Syntax
 
-!!! warning
-    INSERT is experimental and only works against local or limited storage backends. It is not suitable for production use.
+> Warning: INSERT is experimental and only works against local or limited storage backends. It is not suitable for production use.
 
 ~~~sql
 INSERT INTO table_name [(column1, column2, ...)]

@@ -64,8 +64,7 @@ Predicate                 | Description
 a `BETWEEN` x `AND` y     | Equivalent to `a >= x AND a <= y`
 a `NOT BETWEEN` x `AND` y | Equivalent to `a < x OR a > y`
 
-!!! Warning  
-    Using `BETWEEN` with other predicates in complex expressions, especially when combined with additional `AND` conjunctions, can sometimes cause the query parser to fail. Consider using explicit comparison operators for complex conditions.
+> Warning: Using `BETWEEN` with other predicates in complex expressions, especially when combined with additional `AND` conjunctions, can sometimes cause the query parser to fail. Consider using explicit comparison operators for complex conditions.
 
 ### CASE
 

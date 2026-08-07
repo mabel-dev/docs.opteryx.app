@@ -9,8 +9,7 @@ Working with DATE and TIMESTAMP often involves working with INTERVALs.
 
 INTERVALs may not always act as expected, especially when working with months and years, primarily due to the complexity of accurately determining whether a number of days equals a given number of months.
 
-!!! Note  
-    Functions that return the current time or date (including `CURRENT_DATE` and `CURRENT_TIMESTAMP`) return the value as at the start of the query execution.
+> Be Aware: Functions that return the current time or date (including `CURRENT_DATE` and `CURRENT_TIMESTAMP`) return the value as at the start of the query execution.
 
 ## Casting
 
@@ -163,10 +162,9 @@ Both `start` and `end` must be `TIMESTAMP` (cast DATE values explicitly):
 SELECT DATEDIFF('day', '2024-01-01'::TIMESTAMP, '2024-12-31'::TIMESTAMP);
 ```
 
-!!! Note
-    INTERVALs created as the result of timestamp subtraction have no month or year component and are handled internally as microseconds. This may produce unexpected results when mixed with month calculations.
+> Be Aware: INTERVALs created as the result of timestamp subtraction have no month or year component and are handled internally as microseconds. This may produce unexpected results when mixed with month calculations.
 
-    The comparison form `WHERE death - birth > INTERVAL '100' YEAR` is not supported. Use `WHERE birth + INTERVAL '100' YEAR > death` instead.
+The comparison form `WHERE death - birth > INTERVAL '100' YEAR` is not supported. Use `WHERE birth + INTERVAL '100' YEAR > death` instead.
 
 DATEDIFF with `month` units can be unreliable — use day-level units where precision matters.
 
