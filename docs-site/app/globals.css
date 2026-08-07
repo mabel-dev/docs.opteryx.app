@@ -189,6 +189,31 @@ body {
     line-height: var(--lh-body);
     -webkit-font-smoothing: antialiased;
 }
+/* No programming ligatures in code.
+   JetBrains Mono draws `<<=`, `->`, `!=`, `>=`, `<>` and friends as single
+   combined glyphs. That is fine in an editor, where you typed the characters
+   and know what is there — but these docs SPELL OPERATORS OUT, so a reader
+   copying `ip <<= '10.0.0.0/8'` off the page sees one arrow and cannot tell
+   which characters to type. Ligatures are switched off everywhere monospace
+   is used; `calt` matters as much as `liga`, because JetBrains Mono routes
+   most operator combinations through contextual alternates. Body text keeps
+   its ordinary fi/fl ligatures. */
+code,
+kbd,
+pre,
+samp,
+tt,
+.mono,
+.font-mono,
+.docs-article dt {
+    font-variant-ligatures: none;
+    font-feature-settings:
+        "liga" 0,
+        "clig" 0,
+        "calt" 0,
+        "dlig" 0;
+}
+
 a {
     color: var(--opteryx-teal);
     text-decoration: none;

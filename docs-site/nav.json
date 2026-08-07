@@ -746,6 +746,9 @@
         "Rugo file engine": "reference/internals/rugo.md"
       },
       {
+        "Skene file format": "reference/internals/skene.md"
+      },
+      {
         "Draken vector library": "reference/internals/draken.md"
       },
       {

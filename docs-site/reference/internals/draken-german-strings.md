@@ -31,17 +31,17 @@ Short strings are extremely common — identifiers, country codes, status values
 ### Long strings (> 12 bytes) keep a summary in the slot
 
 ```
-[ uint32 length ][ uint32 prefix ][ uint32 hash32 ][ uint32 arena_offset ]
+[ uint32 length ][ uint32 prefix ][ uint32 reserved ][ uint32 arena_offset ]
 ```
 
-When a string is too long to inline, the slot instead stores a **summary** of it, and the actual bytes live in the arena. The four fields are:
+When a string is too long to inline, the slot instead stores a **summary** of it, and the actual bytes live in the arena. The fields are:
 
 - **`length`** — the full byte length.
 - **`prefix`** — the first 4 payload bytes, stored **big-endian**. Storing them big-endian means a plain unsigned-integer comparison of two prefixes gives the same answer as a lexicographic comparison of the first four bytes. This is what makes ordering fast (below).
-- **`hash32`** — a 32-bit content hash (the low 32 bits of XXH3). Equal strings always have equal hashes, so an unequal hash is an instant "not equal" verdict without reading any bytes.
 - **`arena_offset`** — a `uint32` byte offset into the column's arena where the full payload lives. This caps a single string column's arena at 4 GB; overflow is a hard error, never a silent wrap.
+- **`reserved`** — four bytes that once held a 32-bit content hash. They are now always zero, and **no hash is computed when a slot is built** (see [below](#the-hash-a-query-actually-needs)). The bytes are not reclaimed because they buy nothing: the short form already sets the 16-byte floor.
 
-So even for a long string, the slot alone carries its length, its first four bytes, and a fingerprint of its full content — enough to answer most comparisons without dereferencing into the arena.
+So even for a long string, the slot alone carries its length and its first four bytes — enough to settle most comparisons without dereferencing into the arena.
 
 ---
 
@@ -56,9 +56,11 @@ The first 8 bytes of every slot are the 4-byte `length` plus the first 4 payload
 If the `lp_word`s do match:
 
 - **Short strings:** the remaining 8 bytes of the slot are also compared. Because short slots are fully inline and zero-padded, a 16-byte slot match *is* string equality — no arena access ever happens for short strings.
-- **Long strings:** the 32-bit `hash32` is checked next. Different hash → not equal. Only when length, prefix, *and* hash all agree does Draken fall through to a full byte comparison in the arena — and by then a true match is overwhelmingly likely.
+- **Long strings:** Draken falls through to an authoritative byte comparison in the arena. By then the two strings share a length and a first four bytes, so a true match is already likely.
 
-The arena is touched only in the rare case where two genuinely-long strings collide on length, first-four-bytes, and a 32-bit hash. For the vast majority of comparisons, equality is decided from the slot alone.
+An earlier design checked a 32-bit content hash in the slot before that byte comparison. It was removed, because it was rejecting nothing it was asked to reject: the hash-bucketed callers — `GROUP BY`, joins, `DISTINCT`, dictionary dedup — only reach a slot comparison *after* the candidates already matched on a 64-bit keying hash, and re-checking 32 bits of that same hash cannot fail. On plain filters the saving was negligible, and it cost a full hash of every long string at decode time whether or not the query ever needed one.
+
+So the arena is touched only when two genuinely-long strings agree on length and first-four-bytes. For the vast majority of comparisons — and for *every* comparison between short strings — equality is decided from the slot alone.
 
 ### Ordering compares prefixes first
 
@@ -72,11 +74,33 @@ Every slot carries its length in the first four bytes, in both forms. `LENGTH()`
 
 ---
 
-## Re-homing without rehashing
+## The hash a query actually needs
 
-Operations like aggregation accumulate group keys by copying string slots from one place to another — for example, from an input morsel's arena into a hash table's own arena. When a long slot is copied, its payload bytes are written into the destination arena and only the `arena_offset` field is rewritten to point at the new location. The `length`, `prefix`, and `hash32` fields are copied verbatim.
+A `GROUP BY`, join, or `DISTINCT` on a string column needs a 64-bit keying hash, and that hash has to come from somewhere. Computing it in the slot builder — for every long string, in every column, whether or not the query hashes it — is the wrong default; most columns are never keys.
 
-That means **no rehash and no re-derivation of the prefix** when a string moves between arenas — the expensive part (hashing the full content) was done once at construction and travels with the slot. Re-homing a string key is essentially a 16-byte copy plus an arena append.
+Instead the hash is produced **at decode, only for the columns that will be keyed**, and carried beside the vector in a companion buffer rather than inside the slot. A producer that is already walking the bytes to build a slot emits the hash *seed* in the same pass: for a long string that is one XXH3 over the payload it is copying anyway; for a short string it is folded from the two 64-bit slot words, with no arena read at all. The operator then loads the seed instead of re-hashing the arena, and runs the identical mixing step — so the result is bit-identical to hashing at probe time by construction, not merely equivalent in practice.
+
+The seed cannot live in the slot: it is 64 bits and the slot is full. That is the whole reason it is a separate buffer, and the reason the old 32-bit field could not simply be widened.
+
+The win is that the bytes are hashed once instead of twice. On a `GROUP BY` over ClickBench's `URL` column, key-hash time collapsed from about 16 ms per query to under 1 ms, taking roughly 7% off the query as a whole.
+
+---
+
+## Re-homing without re-deriving
+
+Operations like aggregation accumulate group keys by copying string slots from one place to another — for example, from an input morsel's arena into a hash table's own arena. When a long slot is copied, its payload bytes are written into the destination arena and only the `arena_offset` field is rewritten to point at the new location. Everything else in the slot is copied verbatim.
+
+That means **no re-derivation of the prefix** and no work proportional to the string's length beyond the byte copy itself. Re-homing a string key is essentially a 16-byte copy plus an arena append.
+
+Because a long slot holds an *offset* rather than a pointer, slots and arena are also byte-for-byte relocatable as a pair — which is what lets a string column be written to disk and read back without rebuilding anything (see [Skene](skene.md)).
+
+---
+
+## Length-only columns
+
+Sometimes the planner can prove a column is only ever read through operations that the length alone can answer. Such a column is decoded as slots with correct lengths and **no payload bytes at all** — no arena is materialised.
+
+This is stated explicitly by a flag on the column rather than inferred from the arena being absent; a missing arena answers a different question ("none was allocated"), and the two only ever agreed by accident of construction order. Its polarity is chosen so that a construction site that forgets it degrades to *correct but unoptimised*, never to silently dropping real data. Every long slot in such a column is stamped with a trap offset of `0xFFFFFFFF`, so an accidental dereference faults immediately instead of quietly returning whatever bytes sit nearby.
 
 ---
 
@@ -99,8 +123,8 @@ All four store their bytes the same way; the type tag decides how higher-level k
 |---|---|---|
 | Slot size | 16 bytes | 16 bytes |
 | Payload location | inline in the slot | arena, via `arena_offset` |
-| Equality | 16-byte slot compare | `lp_word` → `hash32` → arena compare |
+| Equality | 16-byte slot compare | `lp_word` → arena compare |
 | Ordering | prefix compare → inline bytes | prefix compare → arena compare |
-| Arena access | never | only on prefix+hash collision |
+| Arena access | never | only when length and first 4 bytes agree |
 
 The recurring theme is the same one that runs through Draken generally: **arrange the layout so the common operation finishes against fixed-width, cache-resident data, and only pay the variable-length cost when you genuinely have to read the bytes.**

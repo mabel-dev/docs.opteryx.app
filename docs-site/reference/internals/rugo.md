@@ -52,6 +52,8 @@ The CSV and JSONL readers are built for throughput too: each uses a SIMD structu
 
 Rugo is a full round-trip engine, not just a reader. It writes all three formats natively from Draken morsels — Parquet (with optional bloom filters and the usual compression codecs), RFC 4180 CSV, and one-JSON-object-per-row JSONL — without Arrow anywhere in the path. The same vendored codecs that decompress on the way in compress on the way out.
 
+Those three are the *interchange* formats, and what a Parquet round trip cannot preserve is Draken's own refinements — logical types, vector flags, the dictionary as written. Where the engine is writing vectors for itself rather than for anyone else, it uses [Skene](skene.md) instead. The two are deliberately parallel and disjoint: neither imports the other, and both sit directly on Draken.
+
 ---
 
 ## In short
