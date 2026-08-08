@@ -15,5 +15,6 @@ gcloud builds submit --config cloudbuild/cloudbuild.yaml --substitutions=_IMAGE_
 ```
 
 Notes:
-- This config builds the image from `docs-site/` (the step sets `dir: 'docs-site'`).
-- The runtime Dockerfile used by the build is `docs-site/Dockerfile`.
+- The build context is the repository root and the Dockerfile is `./Dockerfile`; it needs the root context because the site build reads `content/blog/`, which lives outside `docs-site/`.
+- The site is a static export (`output: 'export'` in `docs-site/next.config.mjs`), so the runtime image is nginx serving `docs-site/out` — there is no Node server. Serving rules live in `cloudbuild/nginx.conf` and mirror `firebase.json`.
+- Cloud Run is the live front door. Firebase Hosting (`make deploy-firebase`) serves the same export and is where the site is headed, but that migration has not happened — both paths are expected to work, so a change to how pages are served (clean URLs, cache headers, redirects) belongs in `cloudbuild/nginx.conf` **and** `firebase.json`.

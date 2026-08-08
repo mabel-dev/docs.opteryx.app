@@ -33,7 +33,68 @@ SELECT *
 > The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
 
 > **SPECIAL CASE**  
-> `CROSS JOIN UNNEST` is a specific variation where values in an ARRAY column are treated as if they were rows in a single-column relation.
+> `CROSS JOIN UNNEST` and `CROSS JOIN CIDR_UNNEST` join against an expansion of each row's own value rather than against another relation — see [CROSS JOIN UNNEST](#cross-join-unnest) below.
+
+## CROSS JOIN UNNEST
+
+~~~
+FROM relation CROSS JOIN < UNNEST(array_expr) | CIDR_UNNEST(cidr_expr) > AS alias
+~~~
+
+A `CROSS JOIN` against an **expansion function** instead of a relation. Each input row is paired with the rows produced from that row's own value, so one input row becomes many. A row whose value expands to nothing — a `NULL` or an empty array — contributes no output rows at all, so the result can be smaller than the input.
+
+Unlike a plain `CROSS JOIN`, the result size is not the product of two relations; it is the sum, over input rows, of what each row expands to. `AS alias` is required, because the produced column has no name of its own.
+
+Only `CROSS JOIN` is supported for these forms — there is nothing to write an `ON` condition against.
+
+### UNNEST — expand an ARRAY
+
+Each element of the array becomes a row, and the produced column takes the array's element type:
+
+~~~sql
+SELECT name, mission
+  FROM testdata.astronauts
+ CROSS JOIN UNNEST(missions) AS mission;
+~~~
+
+A literal array works the same way:
+
+~~~sql
+SELECT a
+  FROM $no_table
+ CROSS JOIN UNNEST(('x', 'y', 'z')) AS a;
+-- three rows: x, y, z
+~~~
+
+### CIDR_UNNEST — expand a CIDR block
+
+Each address covered by the block becomes a row, and the produced column is [`IPV4`](/docs/reference/sql/types/ipv4):
+
+~~~sql
+SELECT ip
+  FROM $no_table
+ CROSS JOIN CIDR_UNNEST('10.0.0.0/30') AS ip;
+-- four rows: 10.0.0.0, 10.0.0.1, 10.0.0.2, 10.0.0.3
+~~~
+
+Because the produced column is a real `IPV4` it composes with the IP operators, ordering, joins, and `CIDR_AGG`. Expanding an allowlist so it can be joined against traffic:
+
+~~~sql
+SELECT l.*
+  FROM network_logs AS l
+ INNER JOIN (
+         SELECT ip
+           FROM allowlist AS a
+          CROSS JOIN CIDR_UNNEST(a.block) AS ip
+       ) AS allowed
+    ON l.ip_address::IPV4 = allowed.ip;
+~~~
+
+Expansion is **streamed**, so memory does not grow with the prefix length — but the row count does. A `/16` is 65,536 rows, a `/8` is 16,777,216, and a `/0` is 4,294,967,296. There is no minimum prefix length; bound the result with a `WHERE` clause or `LIMIT` when exploring.
+
+Block parsing is strict: shorthand forms and leading zeros raise rather than being reinterpreted, because an access list and a parser disagreeing about what `010.1` means is a known source of security bugs. A `NULL` block contributes no rows.
+
+See [Working with IPs](/docs/reference/sql/advanced/adv-working-with-ips) for the full IPv4 surface, including `CIDR_AGG`, which is the inverse of this.
 
 ## INNER JOIN
 

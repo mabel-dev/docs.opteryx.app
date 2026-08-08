@@ -1595,10 +1595,18 @@ def build_variables_docs(variables_def: Dict[str, Any]):
     `SYSTEM_VARIABLES_DEFAULTS` by opteryx-core's `make reference`, so the
     ownership tiers here cannot drift from the ones actually enforced.
     """
-    settable = {n: v for n, v in variables_def.items() if v.get('settable')}
+    # Only UNRESTRICTED variables are documented. RESTRICTED ones are withheld from
+    # SHOW VARIABLES and unreachable by SET without the platform_admin entitlement,
+    # so listing them describes a surface almost no reader of these docs has — and
+    # several are session identity or internal policy state rather than a setting
+    # at all. The catalog still carries them; this page is deliberately narrower
+    # than the catalog.
+    public = {n: v for n, v in variables_def.items()
+              if v.get('visibility') == 'UNRESTRICTED'}
+    settable = {n: v for n, v in public.items() if v.get('settable')}
     any_session = {n: v for n, v in settable.items() if not v.get('requires_entitlement')}
     admin_only = {n: v for n, v in settable.items() if v.get('requires_entitlement')}
-    fixed = {n: v for n, v in variables_def.items() if not v.get('settable')}
+    fixed = {n: v for n, v in public.items() if not v.get('settable')}
 
     lines = [
         '---',
@@ -1606,17 +1614,20 @@ def build_variables_docs(variables_def: Dict[str, Any]):
         'description: Every Opteryx system variable, its type, and who is permitted to set it.',
         '---', '',
         '# System Variables', '',
-        'Opteryx exposes %d system variables. Use [SHOW VARIABLES](statements/show-variables) '
-        'to see the ones your session can read, and [SET](statements/set) to change the ones '
-        'you are permitted to change.' % len(variables_def), '',
+        'Opteryx exposes %d system variables that a session can read. Use '
+        '[SHOW VARIABLES](statements/show-variables) to list them, and '
+        '[SET](statements/set) to change the ones you are permitted to change.'
+        % len(public), '',
         # Callouts are blockquotes opened with a recognised label — renderMarkdown.ts
         # rewrites `<blockquote><p>Be Aware: ...` into the styled callout. MkDocs-style
         # `!!! note` has no renderer support and shipped as literal "!!! note" text.
         # Must stay on ONE line: the regex matches a single <p>.
         '> Be Aware: Most system variables are **not** settable from SQL. A session runs at the '
-        '`USER` tier, so only `USER`-owned variables are reachable by `SET` at all, and those '
-        'marked `RESTRICTED` additionally require the `platform_admin` entitlement. Everything '
+        '`USER` tier, so only `USER`-owned variables are reachable by `SET` at all. Everything '
         'else is fixed by the server or stamped per session.', '',
+        '> Note: This page lists the variables a session can see. An embedded build of '
+        '`opteryx-core` may display additional variables that are internal to the hosted '
+        'service and not part of the documented SQL surface.', '',
     ]
 
     def table(title, entries, note=None):
