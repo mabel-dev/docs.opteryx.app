@@ -1,291 +1,44 @@
+---
+title: Known Limits - Architectural and Feature Gaps in Opteryx
+description: The architectural and feature-level gaps in Opteryx, as distinct from the numeric limits the engine enforces at query time.
+---
+
 # Known Limits
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This page covers the architectural and feature-level gaps worth knowing before you commit to Opteryx — the things a query can't do because of how the engine is built, not because of a bug. For numeric ceilings the engine enforces at query time (result size, `DECIMAL` precision, `ARRAY_AGG` group size), see [Limits](/docs/reference/sql/limits) instead. For the full picture of what's supported at all, see [Compatibility](compatibility) and [SQL Conformance](/docs/reference/sql/conformance).
 
-## System Limits
+## Single-node only
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Opteryx scales up, not out. It runs as one process on one machine — there is no distributed execution, no shuffle across workers, and no cluster to add capacity to. The work that goes into handling larger datasets is single-process efficiency (vectorised operators, pushdown, careful memory management), not a distributed runtime. If a dataset genuinely exceeds what one machine can hold, the fix is a smaller working set or a different engine, not more tuning. See [When to Use Opteryx](/docs/introduction/when-to-use) for where that line sits.
 
-### Memory Limits
+## Not a transactional store
 
-#### Maximum Query Memory
+There is no `COMMIT`, `ROLLBACK`, `SET TRANSACTION`, or isolation level — a query reads the snapshot it resolves at plan time. `INSERT` is experimental and limited to some storage backends; `UPDATE` and `DELETE` are rejected at parse time in favour of a rewrite-the-table approach. Integrity constraints (`PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, `UNIQUE`) are accepted in `CREATE TABLE` syntax but not enforced. See [SQL Conformance](/docs/reference/sql/conformance) for the complete statement-by-statement breakdown.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+## Storage and file formats
 
-- Default: Lorem ipsum 4GB per query
-- Configurable: Dolor sit amet up to system memory
-- Spill to disk: Consectetur adipiscing when memory exceeded
+- **Storage backends**: local disk, Google Cloud Storage, and plain HTTP(S) are implemented. S3, Azure Blob Storage, and MinIO are not — despite references to them in test configuration and code comments, there is no corresponding connector.
+- **File formats**: Parquet, JSONL, and Skene (the engine's own native format) are supported as dataset formats; CSV is queryable through `READ_CSV` but is not a dataset format. ORC and Avro are not supported at all.
 
-#### Buffer Pool Size
+See [Compatibility](compatibility) for the full list, including platform and Python version support.
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+## SQL features not implemented
 
-### Concurrency Limits
+- `GROUPING SETS`, `ROLLUP`, and `CUBE`
+- `WITH RECURSIVE`
+- Window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, `LEAD` / `LAG` — so running totals and moving averages via window functions aren't available
+- `WITH TIME ZONE` — timestamps carry no zone
+- `RIGHT SEMI` / `RIGHT ANTI` joins — swap the relation order and use `LEFT SEMI` / `LEFT ANTI` instead
+- Cursors (`DECLARE CURSOR`, `FETCH`) — results stream to the client as morsels instead
+- `GRANT` / `REVOKE` — access is governed by connection-level policies instead
 
-#### Maximum Concurrent Queries
+## Not a server by itself
 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore.
+Opteryx Core is an in-process library, not a service — there's no REST, GraphQL, or gRPC server, and no Docker image, Helm chart, or Kubernetes manifests shipped with the project. The hosted [opteryx.app](https://opteryx.app) provides a server surface (Jobs API, OData, Arrow Flight SQL) separately, if that's what you need instead of embedding the engine.
 
-- Default: Lorem ipsum 10 concurrent queries
-- Configurable: Dolor sit amet based on resources
-- Queue management: Consectetur adipiscing for excess queries
+## Related
 
-#### Thread Pool Size
-
-Magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-## Data Size Limits
-
-### Table Size
-
-#### Maximum Rows per Table
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-- Practical limit: Lorem ipsum billions of rows
-- Performance: Dolor sit amet optimal under 100M rows per partition
-- Recommendation: Consectetur adipiscing use partitioning for larger datasets
-
-#### Maximum Columns per Table
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati.
-
-- Hard limit: 10,000 columns
-- Recommended: Under 1,000 columns for optimal performance
-
-### File Size Limits
-
-#### Single File Size
-
-Cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-- Minimum: No practical minimum
-- Maximum: Lorem ipsum limited by storage system
-- Optimal: Dolor sit amet 128MB to 1GB per file
-
-#### Partition Size
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-### String and Binary Limits
-
-#### Maximum String Length
-
-Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-- Default: Lorem ipsum 1MB per string
-- Configurable: Dolor sit amet up to 100MB
-- Recommendation: Consectetur adipiscing use external storage for large strings
-
-#### Maximum Binary Size
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-## Query Limits
-
-### Query Complexity
-
-#### Maximum Join Operations
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-
-- Practical limit: 32 tables in a single query
-- Performance: Best with under 10 joins
-- Recommendation: Break complex queries into CTEs
-
-#### Maximum Subquery Depth
-
-Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-- Hard limit: Lorem ipsum 10 levels of nesting
-- Recommended: Dolor sit amet 3-4 levels maximum
-
-#### Maximum Expression Depth
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
-
-- Parser limit: 100 nested expressions
-- Practical: Keep expressions simple for readability
-
-### Query Size
-
-#### Maximum Query Length
-
-Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-- Character limit: Lorem ipsum 1MB query text
-- Practical: Dolor sit amet keep queries under 10KB
-
-#### Maximum Parameters
-
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-
-- Prepared statements: 1,000 parameters
-- Query variables: 100 variables
-
-## Aggregation Limits
-
-### GROUP BY Limits
-
-#### Maximum Group By Columns
-
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.
-
-- Hard limit: Lorem ipsum 100 columns
-- Practical: Dolor sit amet 20 columns for performance
-
-#### Maximum Distinct Groups
-
-Aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-- Memory-dependent: Lorem ipsum millions of groups possible
-- Performance: Dolor sit amet best under 10M distinct groups
-
-### Window Function Limits
-
-#### Maximum Window Partitions
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-- Practical: Lorem ipsum hundreds of millions
-- Performance: Dolor sit amet depends on partition size
-
-## Network Limits
-
-### Connection Limits
-
-#### Maximum Concurrent Connections
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate.
-
-- Default: 100 connections
-- Configurable: Up to 10,000 connections
-
-#### Request Size Limits
-
-Non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-- HTTP request: Lorem ipsum 10MB
-- gRPC message: Dolor sit amet 4MB default
-
-### Transfer Limits
-
-#### Maximum Result Set Size
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.
-
-- Streaming: Lorem ipsum unlimited
-- Buffered: Dolor sit amet 100MB default
-- Recommendation: Consectetur adipiscing use streaming for large results
-
-## Storage Limits
-
-### Local Storage
-
-#### Cache Size Limits
-
-Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-- Default: 10GB cache
-- Maximum: Limited by disk space
-- Management: LRU eviction policy
-
-#### Temporary Storage
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-- Spill directory: Lorem ipsum system-dependent
-- Cleanup: Dolor sit amet automatic on query completion
-
-### Remote Storage
-
-#### S3 Object Limits
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-
-- Maximum object size: 5TB (AWS limit)
-- Maximum objects per query: Unlimited
-- Request rate: Subject to AWS throttling
-
-## Metadata Limits
-
-### Schema Limits
-
-#### Maximum Tables
-
-Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-- Catalog: Lorem ipsum 100,000 tables
-- Performance: Dolor sit amet best under 10,000 tables
-
-#### Maximum Indexes
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.
-
-- Per table: 64 indexes
-- Recommended: 5-10 indexes per table
-
-### Statistics Limits
-
-#### Histogram Buckets
-
-Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-
-- Default: Lorem ipsum 256 buckets
-- Maximum: Dolor sit amet 1,024 buckets
-
-## Function Limits
-
-### User-Defined Functions
-
-#### Maximum UDF Size
-
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-
-- Code size: 1MB per function
-- Number of UDFs: 1,000 per session
-
-### Aggregate Functions
-
-#### Maximum Aggregation State
-
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam.
-
-- Per group: Lorem ipsum 10MB
-- Total: Dolor sit amet memory-dependent
-
-## Performance Considerations
-
-### Scalability Limits
-
-Quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-- Vertical: Lorem ipsum up to 1TB RAM tested
-- Horizontal: Dolor sit amet distributed execution available
-- Data size: Consectetur adipiscing petabyte-scale supported
-
-### Known Performance Bottlenecks
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-1. Lorem ipsum - Highly skewed data distributions
-2. Dolor sit amet - Extremely wide tables (1000+ columns)
-3. Consectetur adipiscing - Very deep query nesting
-4. Sed do eiusmod - Large string operations
-
-## Workarounds
-
-### Exceeding Limits
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati.
-
-- **Partitioning**: Cupiditate non provident split large datasets
-- **Streaming**: Similique sunt process data in batches
-- **External storage**: In culpa use for large objects
-- **Query optimization**: Qui officia break complex queries
-
-## Future Improvements
-
-Deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.
-
-Many of these limits will be increased or removed in future versions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+- [Compatibility](compatibility) — verified Python versions, platforms, storage backends, and file formats
+- [Limits](/docs/reference/sql/limits) — numeric ceilings enforced at query time
+- [SQL Conformance](/docs/reference/sql/conformance) — feature-by-feature SQL-92 support
+- [When to Use Opteryx](/docs/introduction/when-to-use)

@@ -1,82 +1,38 @@
-# Quick Start
+# Quick Start: Site Tour
 
-This guide will help you get started with Opteryx quickly.
+This page is a short tour of Opteryx Studio, the web app for [opteryx.app](https://opteryx.app), the hosted Opteryx service. It gets you running your first SQL query without loading any data of your own. If you haven't signed in yet, start with [Logging In](registration).
 
-## Your First Query
+If you're looking to embed the Opteryx engine directly in a Python process instead of using the hosted service, see [Querying Local Data](/docs/guides/querying-local-data).
 
-Here's a simple example to get you started with Opteryx:
+## The Studio workspace
 
-```python
-import opteryx
+Once you're signed in, Studio gives you:
 
-# Execute a simple query
-result = opteryx.query("SELECT 'Hello, Opteryx!' AS greeting")
+- A **SQL editor**, where you write and run queries
+- A **results view**, where returned rows are displayed once a query finishes
+- A **catalog** of the datasets available to you — your own tables plus a handful of public sample datasets
+- **Query history**, so you can find and re-run queries you've written before
+- **Settings**, where API tokens for programmatic access are created and managed (see [Logging In](registration))
 
-# Display the results
-for row in result:
-    print(row)
+## Run your first query
+
+You don't need to load any data to try Studio out. A handful of datasets under the `public` schema are readable by anyone signed in, with no upload required:
+
+```sql
+SELECT *
+  FROM public.astronomy.planets
+ LIMIT 10;
 ```
 
-## Working with Data
+Run it from the SQL editor and the results view fills in with the returned rows. See [Load and Query Data](reading-data) for the full list of public sample datasets, and for what else `public` includes (geopolitical, security, and sales reference tables).
 
-### Querying In-Memory Data
+## Next steps
 
-You can query data from Python data structures:
-
-```python
-import opteryx
-
-# Create sample data
-data = [
-    {"name": "Alice", "age": 30},
-    {"name": "Bob", "age": 25},
-    {"name": "Charlie", "age": 35}
-]
-
-# Query the data
-result = opteryx.query("""
-    SELECT name, age 
-    FROM $data 
-    WHERE age > 25
-""", variables={"data": data})
-
-# Print results
-for row in result:
-    print(f"{row['name']} is {row['age']} years old")
-```
-
-## Basic SQL Operations
-
-### SELECT Queries
-
-```python
-import opteryx
-
-# Simple SELECT
-result = opteryx.query("SELECT 1 AS number, 'test' AS text")
-```
-
-### Filtering Data
-
-```python
-import opteryx
-
-# Using WHERE clause
-result = opteryx.query("""
-    SELECT * 
-    FROM my_data 
-    WHERE column_name = 'value'
-""")
-```
-
-## Next Steps
-
-Now that you've learned the basics, you can:
-
-- Explore more complex SQL queries
-- Learn about connecting to different data sources
-- Check out advanced features and optimizations
+- [Load and Query Data](reading-data) — load your own files into Opteryx and query them back with SQL
+- [Running a Query via the API](/docs/guides/running-a-query-via-the-api) — submit SQL over HTTP instead of using the Studio editor
+- [Querying via OData](/docs/guides/querying-via-odata) — filterable reads with no client code
+- [Querying Local Data](/docs/guides/querying-local-data) — embed the Opteryx engine in your own Python process instead of using the hosted service
 
 ## Need Help?
 
-If you encounter any issues, please visit our [GitHub repository](https://github.com/mabel-dev/opteryx) or check the documentation for more detailed information.
+If you encounter any issues, please visit our [GitHub repository](https://github.com/mabel-dev/opteryx) or check the rest of the documentation for more detail.

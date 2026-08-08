@@ -1,6 +1,6 @@
 # Installation
 
-This guide will help you install Opteryx on your system.
+This guide covers installing Opteryx Core, the Python library, to embed the engine directly in your own process. If you'd rather use the hosted service instead, see [Logging In](registration) — there's nothing to install for that.
 
 ## Prerequisites
 
@@ -13,10 +13,10 @@ Before installing Opteryx, ensure you have:
 
 ### Install via pip
 
-The easiest way to install Opteryx is using pip:
+The easiest way to install Opteryx Core is using pip:
 
 ```bash
-pip install opteryx
+pip install opteryx-core
 ```
 
 ### Install from Source
@@ -40,4 +40,4 @@ print(opteryx.__version__)
 
 ## Next Steps
 
-Once you have Opteryx installed, proceed to the [Quick Start Guide](quick-start) to learn how to use it.
+Once you have Opteryx Core installed, proceed to [Querying Local Data](/docs/guides/querying-local-data) to learn how to use it.

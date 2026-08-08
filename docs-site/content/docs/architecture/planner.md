@@ -1,158 +1,35 @@
-# Planner
+# The Planner
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Before Opteryx runs a query, it plans one. Everything from parsing SQL text to producing a runnable physical plan happens in Python; nothing here touches data. This page covers that half of the engine — parsing and planning. What happens once the plan is handed off to run is covered in [Execution Model](../core-concepts/execution-model).
 
-## Query Planning Overview
+For the complete pipeline diagram and the execution half, see [How Opteryx Plans and Runs a Query](/docs/reference/internals/engine-overview).
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## From text to an abstract syntax tree
 
-### Planning Phases
+A query starts as a plain SQL string. Two steps turn it into a structured tree:
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+- **SQL rewriter** — normalises the raw query string before anything tries to parse it. Some things are simpler to fix as text than as a parsed tree, so this runs first.
+- **Parser** — a native Rust parser (the `sqlparser` crate, driven through an Opteryx-specific SQL dialect) turns the cleaned SQL into an abstract syntax tree (AST).
 
-1. Lorem ipsum - Logical plan construction
-2. Consectetur adipiscing - Query rewriting
-3. Sed do eiusmod - Physical plan generation
-4. Tempor incididunt - Cost estimation
-5. Ut labore et dolore - Plan selection
+## From an AST to a logical plan
 
-## Logical Planning
+- **AST rewriter** — puts the AST into a canonical form: query parameters are substituted, and syntactic shapes are normalised so later stages see fewer special cases.
+- **Logical planner** — turns the canonical AST into a **logical plan**, a directed graph of relational operations (`Scan`, `Filter`, `Project`, `Join`, `Aggregate`, and so on). This is the first representation that describes *what* the query means, rather than a parse of the text.
 
-### Abstract Syntax Tree
+## Binding and optimisation
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
+- **Plan rewriter** — restructures the logical plan (for example, turning certain subqueries and set operations into joins) so the binder and optimizer work over a smaller, more regular vocabulary of nodes.
+- **Binder** — resolves every name against the catalogue: columns get a concrete type, a schema, and a stable identity, and the relations a query reads are validated. This is where the plan stops being bare identifiers and becomes fully-typed. The catalogue also supplies the statistics and schemas that cost-based decisions in the next step depend on.
+- **Optimizer** — runs an ordered pipeline of strategies over the bound plan. Most are rule-based rewrites that are always beneficial: constant folding, boolean simplification, predicate pushdown, projection pushdown, redundant-cast elimination, limit pushdown, and more. A handful are cost-based, consulting statistics to make a genuine choice:
+  - **Join planning** — enumerating join orders (DPccp).
+  - **Join ordering** — reordering joins by estimated cardinality.
+  - **Correlated filters** — propagating a filter's effect onto the opposite side of a join.
+  - **Predicate ordering** — running cheaper, more selective predicates first.
 
-### Relational Algebra
+  The guiding principle throughout is the same one that shows up in [Troubleshooting Queries](/docs/guides/troubleshooting): read less data, and do less work on the data you do read.
 
-Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
+## Handing off to execution
 
-### Plan Tree Structure
+The **physical planner** is where planning ends: the optimized logical plan is turned into a physical plan, with each logical operation bound to a concrete operator implementation — a Parquet scan, a specific join algorithm, an aggregate, a sort, a limit. Nothing above this line is consulted again at run time; the physical plan is handed to the executor as a finished, native program. What happens from there is covered in [Execution Model](../core-concepts/execution-model).
 
-Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-## Query Rewriting
-
-### Predicate Pushdown
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
-```python
-# Lorem ipsum predicate pushdown example
-# Before: Filter after Join
-# After: Filter before Join
-```
-
-### Projection Pruning
-
-Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-### Subquery Unnesting
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-## Physical Planning
-
-### Operator Selection
-
-Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-#### Scan Operators
-
-Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-
-#### Join Operators
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-
-##### Hash Join
-
-Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
-
-##### Merge Join
-
-Cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-##### Nested Loop Join
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.
-
-#### Aggregation Operators
-
-Et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-
-## Plan Enumeration
-
-### Bottom-Up Enumeration
-
-Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.
-
-### Top-Down Enumeration
-
-Adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-
-### Heuristic Pruning
-
-Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-## Join Ordering
-
-### Dynamic Programming
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-### Greedy Algorithms
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.
-
-### Bushy vs. Left-Deep Plans
-
-Sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
-
-## Metadata Management
-
-### Statistics Usage
-
-Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-
-### Cardinality Estimation
-
-Id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis.
-
-### Cost Models
-
-Aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.
-
-## Plan Representation
-
-### Plan Nodes
-
-Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-### Plan Properties
-
-Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-
-### Serialization
-
-Ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-## Debugging and Visualization
-
-### EXPLAIN Plans
-
-```sql
--- Lorem ipsum EXPLAIN
-EXPLAIN
-SELECT *
-FROM orders o
-JOIN customers c ON o.customer_id = c.id
-WHERE o.order_date > '2024-01-01';
-```
-
-### Plan Trees
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.
-
-### Execution Metrics
-
-Sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+To see the plan a specific query produces, prefix it with `EXPLAIN` — see [Troubleshooting Queries](/docs/guides/troubleshooting).

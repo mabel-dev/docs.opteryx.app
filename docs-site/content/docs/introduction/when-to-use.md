@@ -1,49 +1,24 @@
 # When to Use Opteryx
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+[What is Opteryx](what-is-opteryx) covers what the engine is; this page is about where it fits and where it doesn't.
 
-## Ideal Scenarios
+## Good fits
 
-### Large-Scale Data Analysis
+- **Ad-hoc analysis over files** — SQL directly against Parquet, JSONL, or Skene datasets on local disk, GCS, or plain HTTP(S), without an ETL step to load them somewhere first. See [Querying Local Data](/docs/guides/querying-local-data).
+- **Embedded analytics inside a Python process** — `pip install opteryx-core` gets you a full SQL engine in-process, with no server to run and no cluster to operate. See [Embedding in a Service](/docs/guides/embedding-in-a-service).
+- **Read-heavy, analytical workloads** — wide scans, filters, joins, and aggregations over columnar data, where the win comes from reading less data rather than from a distributed shuffle. The engine is built around pushing predicates and projections into the scan; see [Troubleshooting Queries](/docs/guides/troubleshooting) for what that looks like in practice.
+- **A dataset that fits on one machine** — the design target is up to hundreds of millions of rows on a single node, not a cluster-scale table.
+- **Hosted, multi-tenant querying without embedding anything** — [opteryx.app](https://opteryx.app) runs the same engine as a service, reached through the [Jobs API](/docs/reference/api/jobs-api), [OData](/docs/guides/querying-via-odata), or [Arrow Flight SQL](/docs/guides/connecting-via-flight-sql), if you'd rather not run the engine yourself.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## Not a good fit
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+- **Data too large for one machine.** Opteryx is single-node by design — it scales up, not out. If a working set genuinely exceeds what one machine can hold, no amount of query tuning fixes that; the answer is a smaller working set or a different, distributed engine. See [Known Limits](/docs/roadmap-guarantees/known-limits).
+- **Transactional or write-heavy workloads.** There is no `COMMIT`, `ROLLBACK`, or isolation level — a query reads the snapshot it resolves at plan time. `INSERT` is experimental and limited to some storage backends; `UPDATE` and `DELETE` are rejected at parse time. See [SQL Conformance](/docs/reference/sql/conformance) for the full statement-by-statement breakdown.
+- **A system of record with enforced integrity constraints.** `PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, and `UNIQUE` are not enforced by the engine.
+- **Storage backends outside Parquet, JSONL, Skene, local disk, GCS, and HTTP(S).** S3, Azure Blob Storage, MinIO, ORC, and Avro are not implemented — see [Compatibility](/docs/roadmap-guarantees/compatibility).
+- **A strict ANSI SQL, PostgreSQL, or MySQL dialect.** Opteryx parses its own dialect, close to but not identical to any of those — check syntax that leans on another engine's specifics before assuming it carries over.
 
-### Multi-Source Data Queries
+## Still not sure?
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
-
-### Ad-Hoc Analysis
-
-Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-## When Not to Use
-
-### Real-Time Transactional Systems
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
-### Extremely Low Latency Requirements
-
-Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-
-## Comparison with Alternatives
-
-### Traditional Databases
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-### Other Query Engines
-
-Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.
-
-## Best Practices
-
-1. Lorem ipsum dolor sit amet, consectetur adipiscing elit
-2. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-3. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-4. Duis aute irure dolor in reprehenderit in voluptate velit esse
-5. Excepteur sint occaecat cupidatat non proident
+- [Known Limits](/docs/roadmap-guarantees/known-limits) lists the specific architectural and feature gaps.
+- [Troubleshooting Queries](/docs/guides/troubleshooting) covers the point at which a slow query stops being a tuning problem and becomes a "wrong tool" problem.

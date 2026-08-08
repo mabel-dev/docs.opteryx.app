@@ -1,87 +1,31 @@
 # Execution Model
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Planning in Opteryx is Python; running the plan is native. This page covers what happens once the [planner](../architecture/planner) hands off a finished physical plan — the boundary is crossed exactly once, and the executor never calls back into Python planning logic.
 
-## Overview
+For the complete pipeline diagram and the planning half, see [How Opteryx Plans and Runs a Query](/docs/reference/internals/engine-overview).
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## The physical plan is the contract
 
-### Query Execution Pipeline
+The physical plan is a graph of native operators — a concrete scan, a specific join algorithm (hash, nested-loop, outer, cross, as-of, and others), an aggregate, a sort, a limit. Everything about *what* to run was decided during planning; nothing above that line is re-consulted at run time. Once the physical plan exists, the query is a native program.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+## Morsels: how data moves
 
-1. Lorem ipsum dolor sit amet - parsing
-2. Consectetur adipiscing elit - planning
-3. Sed do eiusmod tempor - optimization
-4. Incididunt ut labore - execution
-5. Et dolore magna aliqua - result assembly
+Data flows through the operators in **morsels** — batches of columnar [Draken](/docs/reference/internals/draken) vectors, rather than one row or one column at a time. The per-morsel drive loop, the operator pipeline, and dispatch all live in native code.
 
-## Query Processing Stages
+Working in batches rather than rows is what makes the engine vectorised: operators process a batch of values in one pass instead of interpreting an expression once per row.
 
-### Parsing Phase
+## Serial paths and the scheduler
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
+Not every statement needs the full machinery. Simple metadata and DDL statements take a serial path. Data pipelines — the queries that actually scan and transform rows — are driven by the native scheduler, which executes operators across worker threads with the GIL released, so native execution isn't serialised behind Python's interpreter lock.
 
-### Planning Phase
+## I/O is part of execution
 
-Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
+Scans aren't a separate phase bolted onto the front of execution — they're operators like any other, scheduled by the same native runtime. For file-backed sources, the engine reads through [Rugo](/docs/reference/internals/rugo), its native file engine: fine-grained byte-range reads against column-chunk metadata, pipelined with decompression and decoding, so the engine isn't idle waiting for bytes it already knows it needs. Which column chunks and row groups get read at all was already narrowed down by projection and predicate pushdown during planning — see [The Planner](../architecture/planner).
 
-### Optimization Phase
+## Getting results out
 
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.
+Results stream back to the caller as they're produced rather than materialising all at once. In the Python API this surfaces as morsels from `session.execute_to_morsels(...)`, or a single collected Arrow table from `session.execute_to_arrow(...)` for results you know are small — see [Querying Local Data](/docs/guides/querying-local-data).
 
-### Execution Phase
+## Why native, why Python
 
-Deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
-
-## Parallel Execution
-
-### Task Parallelism
-
-Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-### Data Parallelism
-
-Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur.
-
-### Pipeline Parallelism
-
-Aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-## Resource Management
-
-### Memory Allocation
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-### CPU Scheduling
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-
-### I/O Optimization
-
-Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-
-## Error Handling
-
-### Fault Tolerance
-
-Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.
-
-### Recovery Mechanisms
-
-Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-
-## Performance Characteristics
-
-### Latency
-
-Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
-
-### Throughput
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
-### Scalability
-
-Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+Keeping planning in Python buys flexibility where it's cheap: the planner handles one query at a time, and clarity matters more than nanoseconds there. Keeping execution native buys speed where it counts: the engine may process billions of rows, so the per-row and per-morsel paths need to be tight, branch-predictable, and free of the interpreter and the GIL.
