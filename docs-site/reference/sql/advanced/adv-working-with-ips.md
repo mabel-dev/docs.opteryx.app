@@ -130,7 +130,7 @@ address it covers. It sits in the `CROSS JOIN` position, alongside `UNNEST`:
 
 ~~~sql
 SELECT ip
-  FROM $no_table
+  FROM (SELECT 1) AS t
  CROSS JOIN CIDR_UNNEST('10.0.0.0/29') AS ip;
 ~~~
 
@@ -139,7 +139,7 @@ joins, and `CIDR_AGG` itself:
 
 ~~~sql
 SELECT CIDR_AGG(ip)
-  FROM $no_table
+  FROM (SELECT 1) AS t
  CROSS JOIN CIDR_UNNEST('10.0.0.0/29') AS ip;
 -- returns ['10.0.0.0/29'] — the round trip
 ~~~

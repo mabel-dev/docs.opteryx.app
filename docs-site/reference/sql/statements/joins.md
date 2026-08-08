@@ -61,7 +61,7 @@ A literal array works the same way:
 
 ~~~sql
 SELECT a
-  FROM $no_table
+  FROM (SELECT 1) AS t
  CROSS JOIN UNNEST(('x', 'y', 'z')) AS a;
 -- three rows: x, y, z
 ~~~
@@ -72,7 +72,7 @@ Each address covered by the block becomes a row, and the produced column is [`IP
 
 ~~~sql
 SELECT ip
-  FROM $no_table
+  FROM (SELECT 1) AS t
  CROSS JOIN CIDR_UNNEST('10.0.0.0/30') AS ip;
 -- four rows: 10.0.0.0, 10.0.0.1, 10.0.0.2, 10.0.0.3
 ~~~
