@@ -17,7 +17,7 @@ HASH(val)
 
 ## Arguments
 
-- **val** `any`
+- **val** `varchar`
     Input value.
 
 ## Returns

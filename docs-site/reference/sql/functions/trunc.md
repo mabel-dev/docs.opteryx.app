@@ -33,7 +33,7 @@ TRUNC(value, unit)
 ## Returns
 
 **FLOAT** — Returns the computed result as `FLOAT`.
-**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.
+**TIMESTAMP[US]** — Returns the computed result as `TIMESTAMP[US]`.
 
 ## Usage Notes
 

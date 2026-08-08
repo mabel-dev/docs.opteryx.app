@@ -17,7 +17,7 @@ HEX_ENCODE(blob)
 
 ## Arguments
 
-- **blob** `any`
+- **blob** `varchar`
     Binary or text value to encode, decode, or transform.
 
 ## Returns

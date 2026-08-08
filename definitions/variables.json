@@ -21,17 +21,16 @@
         "default": null,
         "default_source": "host"
     },
-    "array_agg_max_values_per_group": {
-        "name": "array_agg_max_values_per_group",
+    "array_agg_memory_budget_bytes": {
+        "name": "array_agg_memory_budget_bytes",
         "type": "INT64",
         "owner": "SERVER",
         "visibility": "UNRESTRICTED",
         "settable": false,
         "requires_entitlement": null,
         "set_by": "not settable via SQL",
-        "default": null,
-        "default_source": "environment",
-        "environment_key": "ARRAY_AGG_MAX_VALUES_PER_GROUP"
+        "default": 536870912,
+        "default_source": "literal"
     },
     "billing_account": {
         "name": "billing_account",
@@ -53,6 +52,28 @@
         "requires_entitlement": null,
         "set_by": "not settable via SQL",
         "default": "utf8",
+        "default_source": "literal"
+    },
+    "cidr_agg_emit_budget_bytes": {
+        "name": "cidr_agg_emit_budget_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": 536870912,
+        "default_source": "literal"
+    },
+    "cidr_agg_state_budget_bytes": {
+        "name": "cidr_agg_state_budget_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": 536870912,
         "default_source": "literal"
     },
     "cpu_count": {
@@ -79,7 +100,7 @@
     },
     "disable_gc_during_query": {
         "name": "disable_gc_during_query",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "SERVER",
         "visibility": "RESTRICTED",
         "settable": false,
@@ -91,7 +112,7 @@
     },
     "disable_http2": {
         "name": "disable_http2",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "USER",
         "visibility": "RESTRICTED",
         "settable": true,
@@ -103,7 +124,7 @@
     },
     "disable_http_multiplexing": {
         "name": "disable_http_multiplexing",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "USER",
         "visibility": "RESTRICTED",
         "settable": true,
@@ -115,7 +136,7 @@
     },
     "disable_optimizer": {
         "name": "disable_optimizer",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "SERVER",
         "visibility": "RESTRICTED",
         "settable": false,
@@ -198,7 +219,7 @@
     },
     "http_pipewait": {
         "name": "http_pipewait",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "USER",
         "visibility": "RESTRICTED",
         "settable": true,
@@ -222,7 +243,7 @@
     },
     "instrument_engine": {
         "name": "instrument_engine",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "SERVER",
         "visibility": "RESTRICTED",
         "settable": false,
@@ -385,6 +406,17 @@
         "default": 256000,
         "default_source": "literal"
     },
+    "median_memory_budget_bytes": {
+        "name": "median_memory_budget_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": 536870912,
+        "default_source": "literal"
+    },
     "memory_limit_bytes": {
         "name": "memory_limit_bytes",
         "type": "INT64",
@@ -409,7 +441,7 @@
     },
     "opteryx_debug": {
         "name": "opteryx_debug",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "SERVER",
         "visibility": "RESTRICTED",
         "settable": false,
@@ -536,6 +568,30 @@
         "default": 7,
         "default_source": "literal"
     },
+    "skene_late_materialization_max_selectivity": {
+        "name": "skene_late_materialization_max_selectivity",
+        "type": "FLOAT64",
+        "owner": "SERVER",
+        "visibility": "RESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SKENE_LATE_MATERIALIZATION_MAX_SELECTIVITY"
+    },
+    "skene_late_materialization_min_deferred_columns": {
+        "name": "skene_late_materialization_min_deferred_columns",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "RESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SKENE_LATE_MATERIALIZATION_MIN_DEFERRED_COLUMNS"
+    },
     "sql_mode": {
         "name": "sql_mode",
         "type": "VARCHAR",
@@ -571,7 +627,7 @@
     },
     "trace": {
         "name": "trace",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "USER",
         "visibility": "UNRESTRICTED",
         "settable": true,
@@ -605,7 +661,7 @@
     },
     "validate_optimizer_plans": {
         "name": "validate_optimizer_plans",
-        "type": "BOOLEAN",
+        "type": "BOOL",
         "owner": "SERVER",
         "visibility": "RESTRICTED",
         "settable": false,

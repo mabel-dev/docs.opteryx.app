@@ -25,8 +25,6 @@ function parseFrontmatter(source: string) {
   return { frontmatter: fm, body };
 }
 
-export const dynamic = "force-dynamic";
-
 type PostMeta = {
   slug: string;
   title: string;

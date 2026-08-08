@@ -22,4 +22,4 @@ FROM_UNIXTIME(ts)
 
 ## Returns
 
-**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.
+**TIMESTAMP[US]** — Returns the computed result as `TIMESTAMP[US]`.

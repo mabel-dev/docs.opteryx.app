@@ -17,7 +17,7 @@ CURRENT_TIME
 
 ## Returns
 
-**TIME** — Returns the computed result as `TIME`.
+**TIME[US]** — Returns the computed result as `TIME[US]`.
 
 ## Usage Notes
 

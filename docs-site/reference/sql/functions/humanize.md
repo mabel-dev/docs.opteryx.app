@@ -12,13 +12,15 @@ Format number in human-readable form.
 ## Syntax
 
 ```sql
-HUMANIZE(val)
+HUMANIZE(val, [mode])
 ```
 
 ## Arguments
 
 - **val** `number`
     Input value.
+- **mode** `varchar` [optional | constant]
+    Scale system to render into: 'words' (default), 'compact', 'bytes', 'si', 'time', 'clock', 'percent' or 'odds'. Must be a constant expression. Optional.
 
 ## Returns
 

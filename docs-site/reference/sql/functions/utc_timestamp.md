@@ -17,4 +17,4 @@ UTC_TIMESTAMP()
 
 ## Returns
 
-**TIMESTAMP** — Returns the computed result as `TIMESTAMP`.
+**TIMESTAMP[US]** — Returns the computed result as `TIMESTAMP[US]`.

@@ -1573,7 +1573,9 @@ def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], typ
         }[name]
         _populate_nav_items(item, nav_prefix, entries, title_fn)
 
-    NAV_PATH.write_text(json.dumps(nav, indent=2))
+    # Trailing newline: without it every regeneration shows nav.json as modified
+    # (POSIX "\ No newline at end of file") even when the nav itself is unchanged.
+    NAV_PATH.write_text(json.dumps(nav, indent=2) + '\n')
 
 
 def _prune_stale(directory: pathlib.Path, keep_slugs: set[str]) -> None:
@@ -1607,11 +1609,14 @@ def build_variables_docs(variables_def: Dict[str, Any]):
         'Opteryx exposes %d system variables. Use [SHOW VARIABLES](statements/show-variables) '
         'to see the ones your session can read, and [SET](statements/set) to change the ones '
         'you are permitted to change.' % len(variables_def), '',
-        '!!! note',
-        '    Most system variables are **not** settable from SQL. A session runs at the `USER` '
-        'tier, so only `USER`-owned variables are reachable by `SET` at all, and those marked '
-        '`RESTRICTED` additionally require the `platform_admin` entitlement. Everything else is '
-        'fixed by the server or stamped per session.', '',
+        # Callouts are blockquotes opened with a recognised label — renderMarkdown.ts
+        # rewrites `<blockquote><p>Be Aware: ...` into the styled callout. MkDocs-style
+        # `!!! note` has no renderer support and shipped as literal "!!! note" text.
+        # Must stay on ONE line: the regex matches a single <p>.
+        '> Be Aware: Most system variables are **not** settable from SQL. A session runs at the '
+        '`USER` tier, so only `USER`-owned variables are reachable by `SET` at all, and those '
+        'marked `RESTRICTED` additionally require the `platform_admin` entitlement. Everything '
+        'else is fixed by the server or stamped per session.', '',
     ]
 
     def table(title, entries, note=None):

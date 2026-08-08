@@ -17,7 +17,7 @@ MD5(val)
 
 ## Arguments
 
-- **val** `any`
+- **val** `varchar`
     Input value.
 
 ## Returns

@@ -409,9 +409,6 @@
             },
             {
               "UTC_TIMESTAMP": "reference/sql/functions/utc_timestamp.md"
-            },
-            {
-              "VERSION": "reference/sql/functions/version.md"
             }
           ]
         }

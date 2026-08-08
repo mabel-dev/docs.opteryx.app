@@ -17,7 +17,7 @@ JSONB_OBJECT_KEYS(json)
 
 ## Arguments
 
-- **json** `any`
+- **json** `varchar`
     JSON object or document value to inspect.
 
 ## Returns

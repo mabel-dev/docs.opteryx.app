@@ -300,7 +300,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -357,7 +357,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -414,7 +414,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -471,7 +471,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -1106,10 +1106,10 @@
                     "DATE",
                     "EXTRACT"
                 ],
-                "return_type": "TIME",
+                "return_type": "TIME[US]",
                 "returns": {
-                    "type": "TIME",
-                    "documentation": "Returns the computed result as `TIME`."
+                    "type": "TIME[US]",
+                    "documentation": "Returns the computed result as `TIME[US]`."
                 },
                 "arity": {
                     "minimum": 0,
@@ -1156,10 +1156,10 @@
                     "DATE",
                     "EXTRACT"
                 ],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 0,
@@ -1681,10 +1681,10 @@
                     "TODAY",
                     "DATE"
                 ],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 1,
@@ -1813,7 +1813,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -1870,7 +1870,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -1927,7 +1927,7 @@
                 "parameters": [
                     {
                         "label": "blob",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Binary or text value to encode, decode, or transform.",
                         "optional": false,
                         "variadic": false,
@@ -1956,7 +1956,7 @@
         "overloads": [
             {
                 "id": "HUMANIZE_default",
-                "label": "HUMANIZE(val)",
+                "label": "HUMANIZE(val, [mode])",
                 "category": "Conversion Functions",
                 "documentation": "Format number in human-readable form.",
                 "related_functions": [
@@ -1973,13 +1973,13 @@
                 },
                 "arity": {
                     "minimum": 1,
-                    "maximum": 1,
+                    "maximum": 2,
                     "variadic": false
                 },
                 "execution": {
                     "kernel_id": "default",
                     "engine": "draken",
-                    "cost_us_per_million": 775947.17
+                    "cost_us_per_million": 111871.7
                 },
                 "parameters": [
                     {
@@ -1989,6 +1989,15 @@
                         "optional": false,
                         "variadic": false,
                         "constant_only": false,
+                        "null_handling": "strict"
+                    },
+                    {
+                        "label": "mode",
+                        "type": "varchar",
+                        "documentation": "Scale system to render into: 'words' (default), 'compact', 'bytes', 'si', 'time', 'clock', 'percent' or 'odds'. Must be a constant expression. Optional.",
+                        "optional": true,
+                        "variadic": false,
+                        "constant_only": true,
                         "null_handling": "strict"
                     }
                 ]
@@ -2367,7 +2376,7 @@
                 "parameters": [
                     {
                         "label": "json",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "JSON object or document value to inspect.",
                         "optional": false,
                         "variadic": false,
@@ -3036,7 +3045,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -4195,7 +4204,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -4252,7 +4261,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -4309,7 +4318,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -4366,7 +4375,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -4423,7 +4432,7 @@
                 "parameters": [
                     {
                         "label": "val",
-                        "type": "any",
+                        "type": "varchar",
                         "documentation": "Input value.",
                         "optional": false,
                         "variadic": false,
@@ -5008,10 +5017,10 @@
                     "CURRENT_DATE",
                     "CURRENT_TIME"
                 ],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 3,
@@ -5311,10 +5320,10 @@
                     "CURRENT_DATE",
                     "CURRENT_TIME"
                 ],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 2,
@@ -5360,10 +5369,10 @@
                     "CURRENT_DATE",
                     "CURRENT_TIME"
                 ],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 2,
@@ -5586,57 +5595,10 @@
                 "category": "Misc",
                 "documentation": "Current UTC timestamp.",
                 "related_functions": [],
-                "return_type": "TIMESTAMP",
+                "return_type": "TIMESTAMP[US]",
                 "returns": {
-                    "type": "TIMESTAMP",
-                    "documentation": "Returns the computed result as `TIMESTAMP`."
-                },
-                "arity": {
-                    "minimum": 0,
-                    "maximum": 0,
-                    "variadic": false
-                },
-                "execution": {
-                    "kernel_id": "default",
-                    "engine": "draken",
-                    "cost_us_per_million": 1.0
-                },
-                "parameters": []
-            }
-        ]
-    },
-    "VERSION": {
-        "catalog_name": "VERSION",
-        "aliases": [],
-        "summary": "Database version string.",
-        "volatility": "immutable",
-        "deterministic": true,
-        "foldable": false,
-        "pushdown_safe": false,
-        "lifecycle": {
-            "status": "active",
-            "introduced": null,
-            "deprecated_in": null,
-            "remove_after": null,
-            "replacement": null
-        },
-        "overloads": [
-            {
-                "id": "VERSION_default",
-                "label": "VERSION()",
-                "category": "Utility Functions",
-                "documentation": "Database version string.",
-                "related_functions": [
-                    "COALESCE",
-                    "IFNULL",
-                    "IFNOTNULL",
-                    "NULLIF",
-                    "IIF"
-                ],
-                "return_type": "VARCHAR",
-                "returns": {
-                    "type": "VARCHAR",
-                    "documentation": "Returns the computed result as `VARCHAR`."
+                    "type": "TIMESTAMP[US]",
+                    "documentation": "Returns the computed result as `TIMESTAMP[US]`."
                 },
                 "arity": {
                     "minimum": 0,

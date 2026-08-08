@@ -114,7 +114,6 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [RANDOM](functions/random) — Generate random numbers.
 - [RANDOM_STRING](functions/random_string) — Generate random bytes.
 - [USER](functions/user) — Current user name.
-- [VERSION](functions/version) — Database version string.
 
 ## Vector / Embedding Functions
 
