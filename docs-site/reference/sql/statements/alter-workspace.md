@@ -84,11 +84,19 @@ it, rather than with a flag.
 
 `egress_protection` guards **the data in the workspace against being copied out of it**.
 While it is on, a statement that would read this workspace's tables and write a durable
-copy into a *different* workspace is refused. That covers:
+copy into a *different* workspace is refused. That is intended to cover:
 
 - `CREATE TABLE other.mart.copy AS SELECT ... FROM landing.events`
 - `CREATE MATERIALIZED VIEW other.mart.copy AS SELECT ... FROM landing.events`, at creation
   **and** at every refresh
+
+> **Not yet enforced.** The property can be set and stored today, and the catalog refuses
+> the copies described here, but **no SQL statement currently consults it**: the engine does
+> not call the check on the `CREATE TABLE ... AS SELECT` path, and a materialized view
+> cannot name a source in another workspace at all yet. Setting `egress_protection` today
+> therefore prevents nothing. It is documented here because the default is already `ON`, so
+> the setting is live and visible — but do not rely on it as a control until this note is
+> removed.
 
 The **source** workspace's setting decides, never the destination's — the property protects
 data *leaving*. A copy that stays inside the source workspace is not egress and is never
