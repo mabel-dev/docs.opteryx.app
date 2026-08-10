@@ -48,8 +48,8 @@ Art. 37}}
 
 ### 2.1 Account and identity data
 
-You sign in through Google, Microsoft or GitHub, or through your organisation's
-single sign-on. We receive from that provider:
+You sign in through Google or GitHub, or through your organisation's single
+sign-on. We receive from that provider:
 
 - your name and email address;
 - your provider account identifier;
@@ -65,10 +65,11 @@ memberships, and the access grants configured for you.
 Billing account details, billing contact name and email, billing address, VAT
 number where supplied, invoices and payment history.
 
-**Payment card details are collected and processed directly by our payment
-processor, {{PAYMENT_PROCESSOR}}.** We receive only a token and limited
-metadata such as card brand and last four digits. We do not store full card
-numbers.
+**Payment card details are collected and processed directly by Stripe.** The
+card form in Opteryx Studio is a Stripe-hosted element served from Stripe's own
+domain; card numbers are sent to Stripe and never reach our servers. We store
+only Stripe's payment method identifier and limited metadata — the card brand
+and last four digits — so we can show you which card is attached.
 
 ### 2.3 Usage and metering data
 
@@ -95,15 +96,35 @@ Messages you send us, and records of support requests and their resolution.
 
 The datasets you upload. As explained above, we handle these as a processor.
 
-### 2.7 Cookies and similar technologies
+### 2.7 Cookies and browser storage
 
-`docs.opteryx.app` sets no cookies and runs no analytics or tracking scripts.
+**We set no cookies, and we run no analytics, advertising or tracking scripts —
+on `opteryx.app`, in Opteryx Studio, or on `docs.opteryx.app`.** There is no
+Google Analytics, no product analytics, and no third-party tag of any kind.
 
-{{STUDIO_COOKIE_STATEMENT — confirm and describe what opteryx.app itself sets.
-Strictly necessary cookies (session, authentication, CSRF) need no consent
-under PECR but must still be described here. Any analytics, product-analytics
-or marketing cookie requires prior consent via a banner. Do not publish this
-notice until this section reflects what Studio actually sets.}}
+Studio does store information in your browser's `localStorage` and
+`sessionStorage`. UK law (PECR regulation 6) treats that the same way as
+cookies, so here is what is stored and why:
+
+| Stored item | Where | Purpose |
+| --- | --- | --- |
+| `opteryx_access_token`, `opteryx_auth_token`, `opteryx_token_expires_at`, `opteryx_access_token_issued_at`, `opteryx_session_info` | `sessionStorage` | Keeping you signed in for the current session |
+| `opteryx_refresh_token`, `opteryx_auth_token` | `localStorage` | Keeping you signed in across sessions |
+| `opteryx-theme` | `localStorage` | Remembering light/dark preference |
+| `opteryx_last_query`, query history, `opteryx_row_limit`, `opteryx_plan_details_expert`, editor layout and chart settings | `localStorage` | Remembering your work and preferences in the SQL editor between visits |
+
+All of these are **strictly necessary for, or directly requested as part of,
+the service you have asked for**, so no consent banner is required. None is used
+to track you, build a profile, or share anything with a third party.
+
+Two things worth knowing:
+
+- **Your recent query text is stored in your own browser.** If you type personal
+  data into a query, it stays in that browser's storage until cleared. Sign out,
+  or clear site data, on a shared machine.
+- **Signing out clears these items.** You can also clear them at any time
+  through your browser's site-data controls, though clearing the authentication
+  items signs you out.
 
 ## 3. Why we use it, and our legal basis
 
@@ -144,8 +165,8 @@ what the purpose requires.
   delivery, status page and support tooling. The current list, with each
   provider's role and location, is published at
   [Sub-processors](./sub-processors.md).
-- **Identity providers** — Google, Microsoft or GitHub, at the point you sign
-  in. Their handling of your data is governed by their own privacy notices.
+- **Identity providers** — Google or GitHub, at the point you sign in. Their
+  handling of your data is governed by their own privacy notices.
 - **Professional advisers** — accountants, auditors and lawyers, under duties of
   confidentiality.
 - **Authorities** — where required by law, court order, or to establish,

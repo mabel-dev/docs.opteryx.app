@@ -45,7 +45,7 @@ contents of your datasets.
 
 | Sub-processor | Role | Data processed | Location | Transfer mechanism |
 | --- | --- | --- | --- | --- |
-| {{PAYMENT_PROCESSOR}} | Payment method storage, card processing, invoicing | Billing contact details, billing address, card token and metadata, transaction records | {{PAYMENT_PROCESSOR_LOCATION}} | {{PAYMENT_PROCESSOR_TRANSFER}} |
+| Stripe (Stripe Payments Europe Ltd / Stripe Inc.) | Card collection and processing, payment method storage | Billing contact details, billing address, card details (collected directly by Stripe), transaction records | Ireland / United States | UK Addendum to SCCs {{— confirm against your signed Stripe DPA}} |
 | Atlassian (Statuspage) | Public status page and incident subscriber notifications at `status.opteryx.app` | Subscriber email addresses (self-supplied); no customer data | United States | UK Addendum to SCCs |
 | {{EMAIL_PROVIDER}} | Transactional and service notification email | Recipient name and email address, message content | {{EMAIL_PROVIDER_LOCATION}} | {{EMAIL_PROVIDER_TRANSFER}} |
 | {{SUPPORT_TOOL}} | Support ticketing and correspondence | Name, email address, support correspondence, any data you include in a ticket | {{SUPPORT_TOOL_LOCATION}} | {{SUPPORT_TOOL_TRANSFER}} |
@@ -53,10 +53,10 @@ contents of your datasets.
 
 ## Identity providers — not sub-processors
 
-When you sign in with Google, Microsoft or GitHub, you authenticate **directly
-with that provider**. They act as independent controllers for that
-authentication, under their own privacy notices, and are not our sub-processors.
-We receive your name, email address and provider account identifier as a result.
+When you sign in with Google or GitHub, you authenticate **directly with that
+provider**. They act as independent controllers for that authentication, under
+their own privacy notices, and are not our sub-processors. We receive your name,
+email address and provider account identifier as a result.
 
 The same applies where your organisation uses its own SSO identity provider.
 

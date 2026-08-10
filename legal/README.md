@@ -29,6 +29,46 @@ grep -rn "{{" legal/ docs-site/public/.well-known/security.txt
 | [support-policy.md](./support-policy.md) | Severity levels and response targets. | No |
 | [`../docs-site/public/.well-known/security.txt`](../docs-site/public/.well-known/security.txt) | RFC 9116 machine-readable security contact. | No |
 
+## Facts verified against the codebase
+
+These were checked against `../web.opteryx` and this repo, and are stated as
+fact in the drafts rather than left as placeholders:
+
+- **No cookies, no analytics, no tracking.** Nothing sets `document.cookie` in
+  application code, and there is no Google Analytics, Sentry, PostHog, Plausible
+  or any other third-party tag on `opteryx.app`, in Studio, or on
+  `docs.opteryx.app`. Studio uses `localStorage`/`sessionStorage` only.
+- **Payments are Stripe.** Card details go to a Stripe-hosted element; the
+  billing client stores only `stripe_payment_method_id`, brand and last4.
+- **Sign-in is Google and GitHub.** Microsoft was removed in `a1f4245`.
+- **Workspace protections exist** — `deletion_protection` and
+  `egress_protection`, set via `ALTER WORKSPACE`.
+
+## Two inconsistencies found while checking
+
+1. **The docs still offer Microsoft sign-in.**
+   [`getting-started/registration.md`](../docs-site/content/docs/getting-started/registration.md)
+   says OAuth is supported with "Google, Microsoft and GitHub" and that SSO is
+   available "via Google and Microsoft". The login page offers only GitHub and
+   Google. This is a documentation bug independent of the legal work.
+2. **`opteryx.app` advertises policies that do not exist.**
+   `static/index.html:489` renders `Privacy · Terms · Acceptable use` as **plain
+   text, not links**, and the Company column's About / Security / Contact /
+   Careers links all point at `#`. Publishing these drafts is what makes that
+   footer honest.
+
+## Follow-ups in `../web.opteryx`
+
+Not made — that repo was read, not modified:
+
+- **`firebase.json` has the same `**/.*` ignore problem.** `opteryx.app` is the
+  canonical location for `security.txt` under RFC 9116, and it would be silently
+  dropped from the deploy. Same fix as applied here.
+- **Wire up the footer** once these are published.
+- Consider adding `Content-Security-Policy` beyond `frame-ancestors 'self'` —
+  Studio loads Stripe and Monaco, so a `connect-src`/`script-src` policy is
+  worth having, and it is the kind of thing a security questionnaire asks about.
+
 ## Where these should live
 
 These govern the **service**, not the documentation, so they belong on
@@ -65,7 +105,7 @@ dotfiles by default and needs no change.
 
 | Placeholder | What it needs |
 | --- | --- |
-| `LEGAL_ENTITY` | Registered company name. `about.md` says "Mabel Dev"; the GCP project is `mabeldev`. Confirm the trading entity. |
+| `LEGAL_ENTITY` | Registered company name. The marketing site footer says "© 2026 Mabel", `about.md` says "Mabel Dev", and the GCP project is `mabeldev`. None of these is a registered entity name — confirm what is at Companies House, and make the three consistent. |
 | `COMPANY_NUMBER` | Companies House registration number |
 | `REGISTERED_ADDRESS` | Registered office address |
 | `VAT_NUMBER` | VAT registration number — the cost model already charges VAT |
@@ -90,9 +130,8 @@ an unstaffed process.
 
 | Placeholder | Notes |
 | --- | --- |
-| `HOSTING_REGION` | Where Customer Data actually lives. This repo only reveals that the *docs site* deploys to `us-central1` — the product's region is unknown and it matters for the privacy notice, the DPA and every transfer assessment. |
-| `PAYMENT_PROCESSOR` + location and transfer mechanism | The Billing API exposes payment-method endpoints but never names the processor. |
-| `EMAIL_PROVIDER`, `SUPPORT_TOOL`, `ERROR_MONITORING` + locations and transfer mechanisms | |
+| `HOSTING_REGION` | Where Customer Data actually lives. Neither repo reveals it — the docs site deploys to `us-central1`, but that says nothing about the product. It matters for the privacy notice, the DPA and every transfer assessment. |
+| `EMAIL_PROVIDER`, `SUPPORT_TOOL`, `ERROR_MONITORING` + locations and transfer mechanisms | No error monitoring or analytics SDK appears in the web app, so `ERROR_MONITORING` may simply be "none" — confirm server-side. |
 | `ADDITIONAL_INFRA_PROVIDER` | Any infrastructure beyond GCP |
 | `AFFILIATE_STATEMENT` | Group companies with access to personal data, or "None." |
 | `TLS_VERSION`, `ENCRYPTION_AT_REST_DETAIL`, `NETWORK_CONTROLS`, `SECRETS_MANAGEMENT`, `ENDPOINT_CONTROLS` | |
@@ -148,7 +187,7 @@ pounds — which is not a credible cap to offer, and reads badly in diligence.
 
 | Placeholder | Decision |
 | --- | --- |
-| `STUDIO_COOKIE_STATEMENT` | **Blocks publication of the privacy notice.** The docs site sets no cookies and runs no analytics — verified. What `opteryx.app` sets is unknown from here. Strictly necessary cookies need description but not consent; anything else needs a consent banner under PECR. |
+| ~~`STUDIO_COOKIE_STATEMENT`~~ | **Resolved.** Verified against `../web.opteryx`: no cookies, no analytics, no third-party tags anywhere. Studio uses `localStorage`/`sessionStorage` only, all strictly necessary or user-requested. Section 2.7 of the privacy notice now lists every key. **No consent banner is required.** |
 | `DPO_STATEMENT` | Are you required to appoint a DPO under UK GDPR Art. 37? Probably not, but decide and record it. |
 | `CERTIFICATION_STATEMENT` | ISO 27001 / SOC 2 / Cyber Essentials, or state plainly that you hold none. |
 | `PENTEST_STATEMENT` | Independent test, or delete the line. |
@@ -163,9 +202,9 @@ pounds — which is not a credible cap to offer, and reads badly in diligence.
 
 1. **Company identity and contact addresses.** Everything else is blocked on
    these.
-2. **Privacy notice + Studio cookie audit.** This is the one that is legally
-   mandatory right now, and the cookie question is the only thing standing
-   between the draft and publication.
+2. **Privacy notice.** Legally mandatory right now. The cookie audit is done and
+   the answer was the good one — no banner needed. What remains is company
+   identity, the hosting region, and the retention periods.
 3. **Terms of service.** The biggest commercial exposure — you are taking money
    with no contract. Note that
    [`cost-model.md`](../docs-site/content/docs/core-concepts/cost-model.md)

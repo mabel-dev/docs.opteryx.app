@@ -257,8 +257,9 @@ contact you notify to us.
   only.
 - `public.*` schemas are read-only for all principals; `personal.<username>.*`
   schemas are accessible only to the owning user.
-- Authentication via OAuth 2.0 / OpenID Connect through Google, Microsoft and
-  GitHub, with enterprise SSO available.
+- Authentication via OAuth 2.0 / OpenID Connect through Google and GitHub, with
+  enterprise SSO available.
+- Workspace-level `deletion_protection` and `egress_protection` settings.
 - Short-lived bearer tokens issued from client credentials; secrets displayed
   once at creation and stored hashed.
 - Role-based, least-privilege internal access to production, granted on business

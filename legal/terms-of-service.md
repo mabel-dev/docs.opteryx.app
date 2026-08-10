@@ -50,9 +50,9 @@ the hosted Service, these Terms prevail.
 jurisdiction, to use the Service.
 
 3.2 Accounts are created by signing in through a supported identity provider
-(currently Google, Microsoft and GitHub) or, for organisation-managed accounts,
-through single sign-on. You are responsible for maintaining the accuracy of your
-account details.
+(currently Google and GitHub) or, for organisation-managed accounts, through
+single sign-on. You are responsible for maintaining the accuracy of your account
+details.
 
 3.3 **Credentials.** API tokens, client credentials and personal access tokens
 issued by the Service are secrets. You are responsible for keeping them
@@ -119,8 +119,8 @@ at the prevailing rate.
 
 6.4 **Payment.** Invoices are issued monthly in arrears and are payable within
 {{PAYMENT_TERMS_DAYS}} days of the invoice date, by the payment method attached
-to your Billing Account. Payment card details are collected and processed by our
-payment processor, {{PAYMENT_PROCESSOR}}; we do not store full card numbers.
+to your Billing Account. Payment card details are collected and processed
+directly by Stripe; we do not receive or store full card numbers.
 
 6.5 **Late payment.** We may charge interest on overdue sums at
 {{LATE_INTEREST_RATE}}, accruing daily. For business customers, statutory

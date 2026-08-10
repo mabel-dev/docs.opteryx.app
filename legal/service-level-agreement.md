@@ -108,9 +108,8 @@ Unavailable Minutes exclude any period of unavailability arising from:
   vulnerability or imminent service failure;
 - factors outside our reasonable control, including internet or network failures
   beyond our infrastructure boundary, and force majeure events;
-- failure of a **third-party identity provider** (Google, Microsoft, GitHub, or
-  your own SSO provider) where our authentication service is otherwise
-  operating;
+- failure of a **third-party identity provider** (Google, GitHub, or your own
+  SSO provider) where our authentication service is otherwise operating;
 - **your** equipment, software, network or configuration, or that of a third
   party acting on your behalf;
 - use of the Service in breach of the Terms of Service or the

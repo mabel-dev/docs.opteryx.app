@@ -46,14 +46,27 @@ Destructive operations sit above the tier that might be expected:
 `ALTER WORKSPACE` requires a grant matching the workspace name itself — a
 workspace-wide `workspace.*` grant does not confer it.
 
+**Workspace protections.** Workspaces support `deletion_protection` and
+`egress_protection` settings, applied with `ALTER WORKSPACE ... SET`, which
+respectively guard against destructive operations and against data being read
+out of the workspace by CTAS and materialised views.
+
 **Authentication.** Interactive access is via OAuth 2.0 / OpenID Connect through
-Google, Microsoft and GitHub. Enterprise SSO is supported where your identity
-provider enforces access policy. We never receive or store your identity
-provider password.
+Google and GitHub. Enterprise SSO is supported where your identity provider
+enforces access policy. We never receive or store your identity provider
+password.
 
 Programmatic access uses client credentials exchanged for short-lived bearer
 tokens at `authenticate.opteryx.app`. Client secrets are displayed once at
 creation and stored hashed. Tokens can be revoked from Studio.
+
+**No tracking.** We set no cookies and run no analytics, advertising or tracking
+scripts on any Opteryx property. Studio holds session and preference data in
+browser storage only; see the [Privacy Notice](./privacy-notice.md).
+
+**Payments.** Card details are collected by a Stripe-hosted element and never
+reach our servers. We store only Stripe's payment method identifier, the card
+brand and the last four digits.
 
 **Encryption.** TLS {{TLS_VERSION}} or higher for all API and web traffic.
 Encryption at rest for datasets, backups and metadata via
