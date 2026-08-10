@@ -32,3 +32,4 @@ TRUNCATE TABLE IF EXISTS workspace.collection.staging_data;
 - `IF EXISTS` skips the operation without error if the table does not exist.
 - Requires a connector that supports truncation — not every backend does.
 - Removing all rows this way cannot be undone.
+- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).

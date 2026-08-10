@@ -55,9 +55,10 @@ Refresh is automatic and event-driven, not scheduled:
 - When the materialized view is created, a refresh trigger is created on **every** catalog
   table the query reads. Use [SHOW TRIGGERS FOR](show-triggers.md) to see them; trigger
   names are generated as `refresh__<collection>__<view_name>`.
-- Any user data commit to a source table fires the trigger, and the platform's worker
-  re-runs the defining query as a `CREATE OR REPLACE TABLE ... AS ...`, atomically
-  replacing the stored result.
+- Any user data commit to a source table fires the trigger, and the platform's worker runs
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md), which re-runs the defining
+  query and atomically replaces the stored result. You can run that statement yourself to
+  rebuild a view on demand.
 - Rapid successive commits within roughly 60 seconds coalesce into a single refresh
   rather than one refresh per commit.
 - The refresh runs with the permissions of the user whose commit triggered it (invoker
@@ -68,10 +69,14 @@ Refresh is automatic and event-driven, not scheduled:
 
 ## Permissions
 
-- Creating or replacing a materialized view requires the `owner` role on the materialized
-  view's own name.
+- Creating or replacing a materialized view requires the `writer` role on the materialized
+  view's own name. Note this makes `CREATE OR REPLACE MATERIALIZED VIEW` writer-tier where
+  `CREATE OR REPLACE TABLE` stays owner-tier: a view's contents are rebuildable from its
+  definition, so the blast radius genuinely is lower.
 - It also requires the `writer` role on **every** source table the query reads — creating
   a refresh trigger is an update to that table.
+- Refreshing is writer-tier too — see
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md).
 
 ## Notes
 
@@ -80,10 +85,17 @@ Refresh is automatic and event-driven, not scheduled:
   `$planets`, `information_schema` views, and function sources like `read_parquet(...)`
   never commit data, so they cannot fire a refresh — the query must read at least one
   catalog table.
-- A materialized view may read other materialized views, forming a refresh chain. Cycles
-  are rejected when the view is created.
-- [DROP TABLE](drop-table.md) against a materialized view is rejected and points you to
-  [DROP MATERIALIZED VIEW](drop-materialized-view.md) — and vice versa.
+- **Materialized views do not stack.** Every source must be a plain table: registration is
+  rejected if a source is itself a materialized view, and equally if the relation being
+  registered is one that some other view already reads. Stacking would leave the outer view
+  permanently a refresh behind the inner one, and a failed inner refresh would silently pin
+  everything above it. Cycles are rejected at creation too, as the backstop behind that rule.
+- **A materialized view is not a table.** Every table modifier — `CREATE TABLE ... AS
+  SELECT`, [INSERT](insert.md), [TRUNCATE TABLE](truncate-table.md),
+  [ALTER TABLE](alter-table.md), [DROP TABLE](drop-table.md) — is rejected against one, and
+  the error names the statement that does apply. See
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table)
+  for the full list.
 - Contrast with [CREATE VIEW](create-view.md): an ordinary view stores only the query
   text and plans it afresh on every reference; a materialized view stores the query's
   result as a physical table and refreshes it automatically.

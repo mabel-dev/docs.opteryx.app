@@ -86,6 +86,7 @@ Materialized views store a query's result as a physical table and refresh it aut
 |-----------|---------|
 | [CREATE MATERIALIZED VIEW](statements/create-materialized-view.md) | Materialize a query as a self-refreshing table |
 | [DROP MATERIALIZED VIEW](statements/drop-materialized-view.md) | Remove a materialized view and its refresh triggers |
+| [REFRESH MATERIALIZED VIEW](statements/refresh-materialized-view.md) | Rebuild a materialized view from its defining SELECT |
 | [DROP TRIGGER](statements/drop-trigger.md) | Remove one refresh trigger from a table |
 | [SHOW TRIGGERS FOR](statements/show-triggers.md) | List the refresh triggers attached to a table |
 

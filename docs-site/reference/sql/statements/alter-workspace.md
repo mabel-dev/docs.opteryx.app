@@ -84,19 +84,20 @@ it, rather than with a flag.
 
 `egress_protection` guards **the data in the workspace against being copied out of it**.
 While it is on, a statement that would read this workspace's tables and write a durable
-copy into a *different* workspace is refused. That is intended to cover:
+copy into a *different* workspace is refused. That covers:
 
 - `CREATE TABLE other.mart.copy AS SELECT ... FROM landing.events`
+- `CREATE OR REPLACE TABLE other.mart.copy AS SELECT ... FROM landing.events`
+- `INSERT INTO other.mart.copy SELECT ... FROM landing.events`
 - `CREATE MATERIALIZED VIEW other.mart.copy AS SELECT ... FROM landing.events`, at creation
   **and** at every refresh
 
-> **Not yet enforced.** The property can be set and stored today, and the catalog refuses
-> the copies described here, but **no SQL statement currently consults it**: the engine does
-> not call the check on the `CREATE TABLE ... AS SELECT` path, and a materialized view
-> cannot name a source in another workspace at all yet. Setting `egress_protection` today
-> therefore prevents nothing. It is documented here because the default is already `ON`, so
-> the setting is live and visible — but do not rely on it as a control until this note is
-> removed.
+`INSERT` is covered as well as `CREATE`, deliberately: it copies just as durably, and a
+boundary that stopped only `CREATE TABLE ... AS SELECT` would be two statements away from
+being bypassed.
+
+The refusal happens when the statement is planned, before anything is written, and reports
+as an error naming the source workspace and the statement that would clear the flag.
 
 The **source** workspace's setting decides, never the destination's — the property protects
 data *leaving*. A copy that stays inside the source workspace is not egress and is never
@@ -128,6 +129,9 @@ never understood to include.
 
 A refresh of an existing materialized view that is blocked by this setting fails visibly —
 the view stops updating and records why — rather than silently continuing to copy.
+[REFRESH MATERIALIZED VIEW](refresh-materialized-view.md) is a write like any other, so it
+meets this check when it is planned, and it meets it again in the catalog before an
+automatic refresh is even queued.
 
 ## Notes
 

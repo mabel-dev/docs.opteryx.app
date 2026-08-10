@@ -92,3 +92,7 @@ A rename is not a metadata-only operation. The table's data files, every snapsho
 That means the cost scales with the size of the table, not with the length of the statement. Copies happen server-side, but a large table is still a long-running operation behind a statement that reads as instant. Snapshot history is preserved, so time travel keeps working across a rename; the cost also scales with how much history the table has.
 
 The vacated storage location is reclaimed by the same background sweep that reclaims dropped tables, not deleted immediately.
+
+## Materialized Views
+
+`ALTER TABLE` is rejected against a materialized view, both `RENAME TO` and `CLUSTER BY`. A view is defined by its `SELECT`, not authored as a table — change it with `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view.md).

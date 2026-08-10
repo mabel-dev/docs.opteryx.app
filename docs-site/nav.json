@@ -502,6 +502,9 @@
               "READ_PARQUET": "reference/sql/statements/read-parquet.md"
             },
             {
+              "REFRESH MATERIALIZED VIEW": "reference/sql/statements/refresh-materialized-view.md"
+            },
+            {
               "SELECT": "reference/sql/statements/select.md"
             },
             {

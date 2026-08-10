@@ -75,3 +75,4 @@ SELECT id, name, email
 - Replacing an existing table currently requires the new query's columns to match the existing table's columns exactly. Changing the column set with `CREATE OR REPLACE` is not yet supported.
 - Creating a new table requires `writer` or `owner` access to the target. Replacing an existing table's contents requires `owner` access — the same requirement as `DROP TABLE`, since it discards the table's previous contents.
 - To keep a CTAS result up to date automatically as its sources change, use [CREATE MATERIALIZED VIEW](create-materialized-view.md) — the self-refreshing variant of `CREATE TABLE ... AS SELECT`.
+- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).

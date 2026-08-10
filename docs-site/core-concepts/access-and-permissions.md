@@ -52,13 +52,19 @@ SHOW GRANTS;
 | Role | Permits |
 |------|---------|
 | `reader` | Read data (`SELECT`) |
-| `writer` | Everything `reader` can, plus change what's *in* a relation (`INSERT`, `TRUNCATE`, `CREATE TABLE`) |
+| `writer` | Everything `reader` can, plus change what's *in* a relation (`INSERT`, `TRUNCATE`, `CREATE TABLE`, `REFRESH MATERIALIZED VIEW`) |
 | `owner` | Everything `writer` can, plus change or remove the relation itself (`DROP`, `ALTER TABLE`, `SHOW MANIFEST FOR`) |
 
 The `owner` tier exists because some actions have a different blast radius than an
 ordinary write: dropping a table destroys its history, and `ALTER TABLE ... CLUSTER BY`
 changes what the table fundamentally is, not just its contents. A `writer` grant does not
 imply either.
+
+Materialized views are the deliberate exception. Creating, replacing and refreshing one are
+all writer-tier, even though replacing a hand-written table is owner-tier — a view's
+contents are derived from its definition and rebuildable from it, so the blast radius is
+lower. It also avoids the trap of letting a `writer` create a view that only an `owner`
+could ever keep fresh.
 
 ### Patterns Match Names, Not Path Depth
 
