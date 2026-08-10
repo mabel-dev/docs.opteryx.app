@@ -1291,7 +1291,7 @@ Delete authority (billing_admin, here) and lock authority are
 deliberately independent - a workspace owner with no billing-account
 role at all can still block a billing_admin's delete by holding the
 lock, which is cleared only from SQL against the workspace
-(`ALTER WORKSPACE <name> SET delete_protection TO OFF`), never over
+(`ALTER WORKSPACE <name> SET deletion_protection TO OFF`), never over
 this API. This is intentional, not an oversight worth "fixing" into a
 single permission set: billing_admin controls lifecycle/cost, workspace
 owners control operational safety, and the lock is specifically meant to

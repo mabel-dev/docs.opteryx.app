@@ -97,7 +97,7 @@ Manage workspaces - the top level of the naming hierarchy:
 
 | Statement | Purpose |
 |-----------|---------|
-| [ALTER WORKSPACE](statements/alter-workspace.md) | Set a workspace property, such as `delete_protection` |
+| [ALTER WORKSPACE](statements/alter-workspace.md) | Set a workspace property, such as `deletion_protection` |
 
 Workspaces themselves are created and deleted through the platform, not through SQL.
 

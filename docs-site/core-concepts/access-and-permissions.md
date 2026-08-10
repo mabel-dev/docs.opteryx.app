@@ -90,7 +90,7 @@ DROP COLLECTION production.staging;   -- refused: does not match the collection'
 
 -- owner of `production.*` (the whole workspace) —
 DROP COLLECTION production.staging;   -- allowed: `production.*` matches `production.staging`
-ALTER WORKSPACE production SET delete_protection TO OFF;   -- refused: does not match `production`
+ALTER WORKSPACE production SET deletion_protection TO OFF;   -- refused: does not match `production`
 ```
 
 See [ALTER WORKSPACE](/docs/reference/sql/statements/alter-workspace) and

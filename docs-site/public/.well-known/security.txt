@@ -1,0 +1,24 @@
+# Opteryx security contact — RFC 9116
+#
+# Report security vulnerabilities to the address below.
+# Full policy: https://opteryx.app/legal/vulnerability-disclosure-policy
+#
+# NOTE: Expires is mandatory under RFC 9116 and must be refreshed before it
+# passes. Set a calendar reminder; an expired security.txt is treated as
+# invalid by scanners and researchers.
+
+Contact: mailto:{{SECURITY_EMAIL}}
+Expires: {{SECURITY_TXT_EXPIRES}}
+Policy: https://opteryx.app/legal/vulnerability-disclosure-policy
+Preferred-Languages: en
+Canonical: https://opteryx.app/.well-known/security.txt
+Canonical: https://docs.opteryx.app/.well-known/security.txt
+
+# Uncomment once a PGP key is published:
+# Encryption: {{PGP_KEY_URL}}
+
+# Uncomment if you publish an acknowledgements page:
+# Acknowledgments: https://opteryx.app/legal/security-acknowledgements
+
+# Uncomment if you advertise security roles:
+# Hiring: https://opteryx.app/careers
