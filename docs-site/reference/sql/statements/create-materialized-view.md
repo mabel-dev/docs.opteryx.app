@@ -54,18 +54,26 @@ Refresh is automatic and event-driven, not scheduled:
 
 - When the materialized view is created, a refresh trigger is created on **every** catalog
   table the query reads. Use [SHOW TRIGGERS FOR](show-triggers.md) to see them; trigger
-  names are generated as `refresh__<collection>__<view_name>`.
+  names are generated as `refresh__<collection>__<view_name>__<suffix>`, the suffix
+  distinguishing views whose collection and name would otherwise collide.
 - Any user data commit to a source table fires the trigger, and the platform's worker runs
   [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md), which re-runs the defining
   query and atomically replaces the stored result. You can run that statement yourself to
   rebuild a view on demand.
 - Rapid successive commits within roughly 60 seconds coalesce into a single refresh
   rather than one refresh per commit.
-- The refresh runs with the permissions of the user whose commit triggered it (invoker
-  semantics). If that user cannot read every source or write the materialized view, the
-  refresh is denied and the view goes stale — visibly so: check `last_fired_status` in
+- The refresh runs with the permissions of the view's **owner** — the identity that created
+  it, recorded as `runs_as` — not those of whoever's commit triggered it. The committer is
+  incidental: an ingest account with rights on a source table but none where the view lives
+  would otherwise make the view permanently unrefreshable, and which principal happened to
+  write last would decide whether a refresh worked. Ownership is pinned at creation and moves
+  only with [ALTER MATERIALIZED VIEW ... OWNER TO](alter-materialized-view.md).
+- If the owner loses the permissions the refresh needs, it is denied and the view goes stale —
+  visibly so: check `last_fired_status` in
   [information_schema.triggers](../advanced/adv-information-schema.md)
   and the view's refresh metadata.
+- Automatic refresh can be stopped and restarted with
+  [ALTER MATERIALIZED VIEW ... SUSPEND](alter-materialized-view.md#suspend-and-resume).
 
 ## Permissions
 
@@ -73,8 +81,10 @@ Refresh is automatic and event-driven, not scheduled:
   view's own name. Note this makes `CREATE OR REPLACE MATERIALIZED VIEW` writer-tier where
   `CREATE OR REPLACE TABLE` stays owner-tier: a view's contents are rebuildable from its
   definition, so the blast radius genuinely is lower.
-- It also requires the `writer` role on **every** source table the query reads — creating
-  a refresh trigger is an update to that table.
+- It requires the `reader` role on **every** source table the query reads: if you can read a
+  table you may derive from it, provided you can write where the result lands. This is
+  re-checked on every redefinition, against whoever is redefining, so a view can never be
+  repointed at sources its editor could not have read themselves.
 - Refreshing is writer-tier too — see
   [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md).
 

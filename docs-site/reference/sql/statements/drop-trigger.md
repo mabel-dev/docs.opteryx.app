@@ -7,7 +7,10 @@ description: SQL DROP TRIGGER statement syntax and examples for removing a mater
 
 The `DROP TRIGGER` statement removes one refresh trigger from a table. The materialized
 view the trigger served stays queryable, but commits to that table no longer refresh it —
-this is the supported way to pause a single materialized view's refresh.
+To stop a view refreshing, prefer
+[ALTER MATERIALIZED VIEW ... SUSPEND](alter-materialized-view.md#suspend-and-resume):
+a dropped trigger is indistinguishable from one that was never created or that broke,
+whereas a suspended view records that it was switched off deliberately, when, and by whom.
 
 ## Basic Syntax
 
@@ -15,7 +18,7 @@ this is the supported way to pause a single materialized view's refresh.
 DROP TRIGGER [IF EXISTS] trigger_name ON [workspace].[collection].[table_name];
 ~~~
 
-Trigger names are auto-generated as `refresh__<collection>__<view_name>` when a
+Trigger names are auto-generated as `refresh__<collection>__<view_name>__<suffix>` when a
 materialized view is created. Use [SHOW TRIGGERS FOR](show-triggers.md) to list the
 triggers on a table.
 

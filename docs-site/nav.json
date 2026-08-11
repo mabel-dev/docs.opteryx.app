@@ -421,6 +421,9 @@
           "href": "reference/sql/statements.md",
           "items": [
             {
+              "ALTER MATERIALIZED VIEW": "reference/sql/statements/alter-materialized-view.md"
+            },
+            {
               "ALTER TABLE": "reference/sql/statements/alter-table.md"
             },
             {

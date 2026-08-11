@@ -85,7 +85,7 @@ re-run a materialized view's query when data is committed to a source table.
 |----------------------|-------------|--------------------------------------------------------------------|
 | `trigger_catalog`    | `VARCHAR`   | The workspace name                                                 |
 | `trigger_collection` | `VARCHAR`   | The collection the trigger belongs to                              |
-| `trigger_name`       | `VARCHAR`   | The trigger name, generated as `refresh__<collection>__<view_name>` |
+| `trigger_name`       | `VARCHAR`   | The trigger name, generated as `refresh__<collection>__<view_name>__<suffix>` |
 | `event_object_table` | `VARCHAR`   | The source table the trigger is attached to, as `collection.dataset` |
 | `action_kind`        | `VARCHAR`   | The kind of action the trigger performs                            |
 | `target_view`        | `VARCHAR`   | The materialized view the trigger refreshes                        |

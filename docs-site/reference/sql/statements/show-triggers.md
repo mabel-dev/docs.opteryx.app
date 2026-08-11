@@ -32,7 +32,7 @@ SHOW TRIGGERS FOR my_workspace.sales.orders;
 
 ## Notes
 
-- Trigger names are auto-generated as `refresh__<collection>__<view_name>`.
+- Trigger names are auto-generated as `refresh__<collection>__<view_name>__<suffix>`.
 - The columns returned are those of
   [information_schema.triggers](../advanced/adv-information-schema.md),
   including `target_view`, `last_fired_at`, and `last_fired_status` — the place to look
