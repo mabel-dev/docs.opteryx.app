@@ -59,3 +59,7 @@ Example - granting `writer` on every dataset in the `sales` collection:
 All access is audited at query time. Audit logs are retained according to the account's retention settings and are accessible to workspace owners.
 
 For API-level authentication, see the [Authentication API](/docs/reference/api/authentication-api).
+
+## Platform identities
+
+Not every row in an access list is a person. `federator` is a platform-managed system identity used for materialized view ownership and background compaction - see [Federator](/docs/core-concepts/federator) for what it is and why it needs write access.
