@@ -7,20 +7,38 @@ description: SQL SELECT clause syntax, usage, and examples for querying data in 
 
 The `SELECT` clause specifies which columns or expressions to retrieve from a query.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT [ DISTINCT | DISTINCT ON (col1, col2, ...) ] 
-       column1, column2, ..., expression1, ...
-  FROM relation_name
- WHERE conditions
- GROUP BY ...
- HAVING ...
- ORDER BY ...
- LIMIT ...;
+SELECT [ DISTINCT | DISTINCT ON ( <column> [, ...] ) ] <column> [, ...]
+  FROM <relation_name>
+ WHERE <condition>
+ GROUP BY <column> [, ...]
+ HAVING <condition>
+ ORDER BY <column> [, ...]
+ LIMIT <count>;
+
+SELECT * [ EXCEPT ( <column> [, ...] ) ]
+  FROM <relation_name>;
 ~~~
 
-## Core Features
+## Parameters
+
+- **`<column>`** — a column name, expression, or `*`, comma-separated for multiple.
+- **`<relation_name>`** — a table, view, subquery, or CTE to read from. See
+  [Joins](joins.md) for combining rows from more than one relation.
+- `DISTINCT` — remove duplicate rows from the result. See [DISTINCT](distinct.md).
+- `DISTINCT ON (<column> [, ...])` — keep only the first row for each unique combination of
+  the given columns. See [DISTINCT](distinct.md).
+- `* EXCEPT (<column> [, ...])` — expand `*` to all columns except those listed.
+- `WHERE <condition>` — filter rows before grouping. See [WHERE](where.md).
+- `GROUP BY <column> [, ...]` — group rows for aggregation. See [GROUP BY](group-by.md).
+- `HAVING <condition>` — filter groups after aggregation. See [HAVING](having.md).
+- `ORDER BY <column> [, ...]` — sort the result. See [ORDER BY](order-by.md).
+- `LIMIT <count>` — restrict the number of rows returned. See
+  [LIMIT and OFFSET](limit.md).
+
+## Examples
 
 ### Standard Selection
 Retrieve specific columns or all columns using the wildcard `*`:
@@ -34,7 +52,6 @@ SELECT *
 ~~~
 
 ### DISTINCT
-
 Remove duplicate rows from results:
 
 ~~~sql
@@ -42,8 +59,9 @@ SELECT DISTINCT customer_id
   FROM orders;
 ~~~
 
-### DISTINCT ON
+See [DISTINCT](distinct.md) for the full set of forms, including `DISTINCT ON`.
 
+### DISTINCT ON
 Return distinct results based on specified columns while keeping the first occurrence:
 
 ~~~sql
@@ -54,21 +72,11 @@ SELECT DISTINCT ON (customer_id)
 ~~~
 
 ### SELECT * EXCEPT
-
 Exclude specific columns from `*` expansion:
 
 ~~~sql
 SELECT * EXCEPT (internal_id, debug_field)
   FROM users;
-~~~
-
-## Examples
-
-### Basic Selection
-~~~sql
-SELECT id, name, email
-  FROM users
- WHERE active = TRUE;
 ~~~
 
 ### With Expressions and Aliases
@@ -93,15 +101,14 @@ GROUP BY category
 ORDER BY total_amount DESC;
 ~~~
 
-## Subqueries and CTEs
-
-See the WITH page for using Common Table Expressions.
-
+### Filtering with a Subquery
 ~~~sql
 SELECT p.id, p.name, p.price
   FROM products p
  WHERE p.price > (SELECT AVG(price) FROM products);
 ~~~
+
+For named, reusable subqueries instead of inline ones, see [WITH (CTE)](with.md).
 
 ## Notes
 
@@ -109,3 +116,16 @@ SELECT p.id, p.name, p.price
 - Expressions and functions are fully supported in the select list.
 - Results are ordered by the `ORDER BY` clause if specified; otherwise, order is undefined.
 - `LIMIT` restricts the number of rows returned.
+
+## See Also
+
+- [DISTINCT](distinct.md)
+- [WHERE](where.md)
+- [GROUP BY](group-by.md)
+- [HAVING](having.md)
+- [ORDER BY](order-by.md)
+- [LIMIT and OFFSET](limit.md)
+- [WITH (CTE)](with.md)
+- [Joins](joins.md)
+- [Window Functions](window-functions.md)
+- [UNION, INTERSECT, and EXCEPT](union.md)

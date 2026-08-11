@@ -7,17 +7,23 @@ description: SQL WITH clause (Common Table Expressions) syntax and examples for 
 
 The `WITH` clause defines Common Table Expressions (CTEs), which are named subqueries that can be reused multiple times within a single query. CTEs improve readability and reduce duplication.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-WITH cte_name AS (
-  SELECT ... -- CTE query
-)
-SELECT ... -- Main query referencing the CTE
+WITH <cte_name> AS ( <query> ) [, ...]
+<statement>;
 ~~~
 
-## Single CTE
+## Parameters
 
+- **`<cte_name>`** — the name the CTE is referenced by in `<statement>` and in later CTEs.
+- **`<query>`** — the `SELECT` that defines the CTE's contents.
+- **`<statement>`** — the main query, typically a [`SELECT`](select.md), that references one or
+  more of the CTEs defined above it.
+
+## Examples
+
+### Single CTE
 Define and use a single named subquery:
 
 ~~~sql
@@ -29,8 +35,7 @@ SELECT customer_id, COUNT(*) AS order_count
  GROUP BY customer_id;
 ~~~
 
-## Multiple CTEs
-
+### Multiple CTEs
 Chain multiple CTEs together:
 
 ~~~sql
@@ -48,8 +53,6 @@ FROM active_customers c
 JOIN high_value_orders o ON c.id = o.customer_id
 GROUP BY c.customer_id, c.name;
 ~~~
-
-## Examples
 
 ### Simplifying Complex Queries
 ~~~sql
@@ -94,3 +97,10 @@ SELECT * FROM deduped;
 - Multiple CTEs are separated by commas.
 - A CTE can reference previously defined CTEs but not later ones.
 - CTEs are useful for improving query readability and reducing repetition.
+
+## See Also
+
+- [SELECT](select.md)
+- [DISTINCT](distinct.md)
+- [GROUP BY](group-by.md)
+- [WHERE](where.md)

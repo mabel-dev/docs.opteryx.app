@@ -25,6 +25,13 @@ SELECT * FROM workspace.collection.sessions
   partial, in-place delete, and requires a connector that supports
   `CREATE TABLE`.
 
+  Because it reads and rewrites every row, this is **not recommended for
+  tables with millions of rows or more** — the cost scales with the size
+  of the whole table, not with how many rows are actually removed. For
+  large tables, prefer partitioning the data so only the affected
+  partitions need rewriting, or batch the rewrite during a low-traffic
+  window.
+
 - To remove every row while keeping the table and its schema, use
   [TRUNCATE TABLE](truncate-table.md).
 

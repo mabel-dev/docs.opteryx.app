@@ -7,18 +7,26 @@ description: SQL GROUP BY clause syntax, aggregation, and examples for grouping 
 
 The `GROUP BY` clause groups rows by one or more columns and applies aggregate functions to each group.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT column1, column2, aggregate_function(column3)
-  FROM relation_name
- WHERE conditions
- GROUP BY column1, column2
+SELECT <column> [, ...], <aggregate_function>(<column>)
+  FROM <relation_name>
+ WHERE <condition>
+ GROUP BY { <column> [, ...] | ALL }
  ORDER BY ...;
 ~~~
 
-## Grouping by Columns
+## Parameters
 
+- **`<column>`** — one or more columns to group rows by, comma-separated. Every non-aggregated
+  column in the `SELECT` list must appear here.
+- `ALL` — group by every non-aggregated column in the `SELECT` list automatically, equivalent
+  to listing them explicitly.
+
+## Examples
+
+### Grouping by Columns
 Group results by one or more columns:
 
 ~~~sql
@@ -31,8 +39,7 @@ SELECT country, city, COUNT(*) AS user_count
  GROUP BY country, city;
 ~~~
 
-## GROUP BY ALL
-
+### GROUP BY ALL
 Include all non-aggregated columns from the `SELECT` list automatically:
 
 ~~~sql
@@ -41,16 +48,6 @@ SELECT category, brand, COUNT(*) AS count
  GROUP BY ALL;
 -- Equivalent to: GROUP BY category, brand
 ~~~
-
-## Common Aggregate Functions
-
-- `COUNT(*)` - count all rows in the group
-- `SUM(column)` - sum values in the group
-- `AVG(column)` - average of values in the group
-- `MIN(column)` - minimum value in the group
-- `MAX(column)` - maximum value in the group
-
-## Examples
 
 ### Single Column Grouping
 ~~~sql
@@ -95,5 +92,14 @@ SELECT category, COUNT(*) AS count
 
 - Columns in `SELECT` must either be in `GROUP BY` or used within an aggregate function.
 - `GROUP BY ALL` automatically groups by all non-aggregated columns.
+- Common aggregate functions used with `GROUP BY`: `COUNT(*)`, `SUM(column)`, `AVG(column)`, `MIN(column)`, `MAX(column)`.
 - Use `HAVING` to filter groups after aggregation.
 - `WHERE` filters rows before grouping; `HAVING` filters groups after.
+
+## See Also
+
+- [SELECT](select.md)
+- [HAVING](having.md)
+- [WHERE](where.md)
+- [ORDER BY](order-by.md)
+- [Window Functions](window-functions.md)

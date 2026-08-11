@@ -22,6 +22,8 @@ SELECT *,
 
 This replaces the whole table with the query's output — it is not a partial, in-place update, and requires a connector that supports `CREATE TABLE`.
 
+Because it reads and rewrites every row, this is **not recommended for tables with millions of rows or more** — the cost scales with the size of the whole table, not with how many rows actually change. For large tables, prefer partitioning the data so only the affected partitions need rewriting, or batch the rewrite during a low-traffic window.
+
 ## Notes
 
 - See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.

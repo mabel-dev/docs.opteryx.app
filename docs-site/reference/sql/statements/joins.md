@@ -7,20 +7,62 @@ description: Master SQL joins in Opteryx. Learn INNER JOIN, LEFT JOIN, RIGHT JOI
 
 Joins allow you to combine data from multiple relations (tables or datasets) into a single result set. Different join types provide different ways to combine data, each suited to specific use cases.
 
+| Join Type | Purpose |
+|-----------|---------|
+| [`CROSS JOIN`](#cross-join) | Cartesian product of two relations |
+| [`CROSS JOIN UNNEST`](#cross-join-unnest) | Expand an array or CIDR block into rows |
+| [`INNER JOIN`](#inner-join) | Rows matching in both relations |
+| [`NATURAL JOIN`](#natural-join) | Inner join with implicit, name-matched conditions |
+| [`LEFT JOIN`](#left-join) | All rows from the left relation, matched where possible |
+| [`RIGHT JOIN`](#right-join) | All rows from the right relation, matched where possible |
+| [`FULL JOIN`](#full-join) | All rows from both relations |
+| [`LEFT SEMI JOIN`](#left-semi-join) | Left rows with a match, left columns only |
+| [`LEFT ANTI JOIN`](#left-anti-join) | Left rows without a match |
+| [`ASOF JOIN`](#asof-join) | Nearest match by inequality, for time-series-style data |
+
+`RIGHT SEMI JOIN` and `RIGHT ANTI JOIN` are not supported — see [LEFT SEMI JOIN](#left-semi-join) and [LEFT ANTI JOIN](#left-anti-join) for the equivalent, relations swapped.
+
+## Syntax
+
+~~~sql
+FROM <left_relation> CROSS JOIN <right_relation>
+
+FROM <relation> CROSS JOIN { UNNEST(<array_expr>) | CIDR_UNNEST(<cidr_expr>) } AS <alias>
+
+FROM <left_relation> [ INNER ] JOIN <right_relation> { ON <condition> | USING (<column>) }
+
+FROM <left_relation> NATURAL JOIN <right_relation>
+
+FROM <left_relation> LEFT [ OUTER ] JOIN <right_relation> ON <condition>
+
+FROM <left_relation> RIGHT [ OUTER ] JOIN <right_relation> ON <condition>
+
+FROM <left_relation> FULL [ OUTER ] JOIN <right_relation> ON <condition>
+
+FROM <left_relation> LEFT SEMI JOIN <right_relation> ON <condition>
+
+FROM <left_relation> LEFT ANTI JOIN <right_relation> ON <condition>
+
+FROM <left_relation> ASOF JOIN <right_relation> MATCH_CONDITION( <condition> )
+~~~
+
 ## CROSS JOIN
+
+~~~sql
+FROM <left_relation> CROSS JOIN <right_relation>
+~~~
 
 A `CROSS JOIN` returns the Cartesian product (all possible combinations) of two relations. Each row from the left relation is paired with every row from the right relation.
 
-~~~
-FROM left_relation CROSS JOIN right_relation
+An alternate form omits the keyword and uses comma-separated relations in the `FROM` clause — however, it is recommended to use the explicit `CROSS JOIN` syntax for clarity and to avoid confusion:
+
+~~~sql
+FROM <left_relation>, <right_relation>
 ~~~
 
-A alternate form omits the keyword and uses comma-separated relations in the `FROM` clause - however, it is recommended to use the explicit `CROSS JOIN` syntax for clarity and to avoid confusion:
+### Examples
 
-~~~
-FROM left_relation, right_relation
-~~~
-
+#### Cartesian Product
 ~~~sql
 SELECT *
   FROM left_relation
@@ -28,6 +70,8 @@ SELECT *
 ~~~
 
 ![CROSS JOIN](/images/cross-join.svg)
+
+### Notes
 
 > **USE SPARINGLY**   
 > The size of the result set from a `CROSS JOIN` is the product of the row counts of the two input datasets (2 × 3 = 6 in the pictorial example). This can easily result in extremely large datasets. When an alternative join approach is available, it will almost always perform better than a `CROSS JOIN`.
@@ -37,18 +81,25 @@ SELECT *
 
 ## CROSS JOIN UNNEST
 
-~~~
-FROM relation CROSS JOIN < UNNEST(array_expr) | CIDR_UNNEST(cidr_expr) > AS alias
+~~~sql
+FROM <relation> CROSS JOIN { UNNEST(<array_expr>) | CIDR_UNNEST(<cidr_expr>) } AS <alias>
 ~~~
 
 A `CROSS JOIN` against an **expansion function** instead of a relation. Each input row is paired with the rows produced from that row's own value, so one input row becomes many. A row whose value expands to nothing — a `NULL` or an empty array — contributes no output rows at all, so the result can be smaller than the input.
 
-Unlike a plain `CROSS JOIN`, the result size is not the product of two relations; it is the sum, over input rows, of what each row expands to. `AS alias` is required, because the produced column has no name of its own.
+Unlike a plain `CROSS JOIN`, the result size is not the product of two relations; it is the sum, over input rows, of what each row expands to.
 
 Only `CROSS JOIN` is supported for these forms — there is nothing to write an `ON` condition against.
 
-### UNNEST — expand an ARRAY
+### Parameters
 
+- **`UNNEST(<array_expr>)`** — expand an array column or literal into one row per element.
+- **`CIDR_UNNEST(<cidr_expr>)`** — expand a CIDR block into one row per address it covers.
+- **`AS <alias>`** — required, because the produced column has no name of its own.
+
+### Examples
+
+#### UNNEST — Expand an Array
 Each element of the array becomes a row, and the produced column takes the array's element type:
 
 ~~~sql
@@ -66,8 +117,7 @@ SELECT a
 -- three rows: x, y, z
 ~~~
 
-### CIDR_UNNEST — expand a CIDR block
-
+#### CIDR_UNNEST — Expand a CIDR Block
 Each address covered by the block becomes a row, and the produced column is [`IPV4`](/docs/reference/sql/types/ipv4):
 
 ~~~sql
@@ -90,24 +140,33 @@ SELECT l.*
     ON l.ip_address::IPV4 = allowed.ip;
 ~~~
 
-Expansion is **streamed**, so memory does not grow with the prefix length — but the row count does. A `/16` is 65,536 rows, a `/8` is 16,777,216, and a `/0` is 4,294,967,296. There is no minimum prefix length; bound the result with a `WHERE` clause or `LIMIT` when exploring.
+### Notes
 
-Block parsing is strict: shorthand forms and leading zeros raise rather than being reinterpreted, because an access list and a parser disagreeing about what `010.1` means is a known source of security bugs. A `NULL` block contributes no rows.
-
-See [Working with IPs](/docs/reference/sql/advanced/adv-working-with-ips) for the full IPv4 surface, including `CIDR_AGG`, which is the inverse of this.
+- Expansion is **streamed**, so memory does not grow with the prefix length — but the row count does. A `/16` is 65,536 rows, a `/8` is 16,777,216, and a `/0` is 4,294,967,296. There is no minimum prefix length; bound the result with a `WHERE` clause or `LIMIT` when exploring.
+- Block parsing is strict: shorthand forms and leading zeros raise rather than being reinterpreted, because an access list and a parser disagreeing about what `010.1` means is a known source of security bugs. A `NULL` block contributes no rows.
+- See [Working with IPs](/docs/reference/sql/advanced/adv-working-with-ips) for the full IPv4 surface, including `CIDR_AGG`, which is the inverse of this.
 
 ## INNER JOIN
 
-~~~
-FROM left_relation [ INNER ] JOIN right_relation < ON condition | USING (column) >
+~~~sql
+FROM <left_relation> [ INNER ] JOIN <right_relation> { ON <condition> | USING (<column>) }
 ~~~
 
 An `INNER JOIN` returns only the rows from both relations where the values in the joining columns match. It's the most commonly used join type due to its straightforward and predictable behavior.
 
-**Syntax**
-
 You can specify an `INNER JOIN` using the full `INNER JOIN` keyword or the shorter `JOIN` keyword. You can define the joining condition using either the `ON` clause or the `USING (column)` syntax.
 
+### Parameters
+
+- `ON <condition>` — an arbitrary join condition, typically an equality between columns from
+  each relation. Retains all columns from both relations in the result.
+- `USING (<column>)` — shorthand for joining on identically-named columns. Keeps only a single
+  instance of the columns specified, which are not considered members of either the left or
+  right relation.
+
+### Examples
+
+#### Match Rows on a Condition
 ~~~sql
 SELECT *
   FROM left_relation
@@ -119,39 +178,39 @@ SELECT *
 
 In this example, the blue column is used as the joining column in both relations. Only the value `1` appears in both relations, so the result set contains the combination of rows with `1` from both _left_relation_ and _right_relation_.
 
-**Note on column handling:**
+### Notes
 
 - `INNER JOIN ... ON` retains all columns from both relations in the result.
 - `INNER JOIN ... USING` keeps only a single instance of the columns specified in the `USING` clause. These shared columns are not considered members of either the left or right relation.
 
 ## NATURAL JOIN
 
-~~~
-FROM left_relation NATURAL JOIN right_relation
+~~~sql
+FROM <left_relation> NATURAL JOIN <right_relation>
 ~~~
 
 A `NATURAL JOIN` performs a join similar to an `INNER JOIN` where the join conditions are automatically determined. It creates equality conditions between all columns with matching names in both relations.
 
-**Gotchas**
+For these reasons below, `NATURAL JOIN` is not recommended in production systems. An explicit `INNER JOIN ... ON` or `INNER JOIN ... USING` makes the join conditions visible and safe.
+
+### Notes
 
 - **Schema changes silently break queries.** If a new column is added to either relation with the same name as a column in the other, it will be picked up as a join condition without any warning. Queries that previously returned correct results may return wrong results or no results at all.
 - **Join columns are implicit.** There is no way to tell from the query itself which columns are being used to join — you must inspect the schemas of both relations. This makes queries harder to read, review, and debug.
 - **Accidental matches are easy.** Common column names like `id`, `name`, or `created_at` will be joined on automatically, even if they refer to unrelated concepts in each relation.
-
-For these reasons, `NATURAL JOIN` is not recommended in production systems. An explicit `INNER JOIN ... ON` or `INNER JOIN ... USING` makes the join conditions visible and safe.
-
-**Special behavior:** Performing a self `NATURAL JOIN` (using the same relation for both left and right sides) effectively filters out rows containing `null` values in any column. This can be used as a concise way to remove incomplete rows from a dataset, though an explicit `WHERE` clause is usually clearer.
+- **Special behavior:** Performing a self `NATURAL JOIN` (using the same relation for both left and right sides) effectively filters out rows containing `null` values in any column. This can be used as a concise way to remove incomplete rows from a dataset, though an explicit `WHERE` clause is usually clearer.
 
 ## LEFT JOIN
 
-~~~
-FROM left_relation LEFT [ OUTER ] JOIN right_relation ON condition
+~~~sql
+FROM <left_relation> LEFT [ OUTER ] JOIN <right_relation> ON <condition>
 ~~~
 
 A `LEFT JOIN` returns all rows from the left relation. For rows with matching values in the right relation, the corresponding right relation columns are included. For rows without a match, the right relation columns are filled with `null` values. The `OUTER` keyword is optional and does not change behaviour.
 
-**Syntax**
+### Examples
 
+#### Keep All Left Rows
 ~~~sql
 SELECT *
   FROM left_relation
@@ -165,22 +224,23 @@ In this example, the blue column is used as the joining column in both relations
 
 ## RIGHT JOIN
 
-~~~
-FROM left_relation RIGHT [ OUTER ] JOIN right_relation ON condition
+~~~sql
+FROM <left_relation> RIGHT [ OUTER ] JOIN <right_relation> ON <condition>
 ~~~
 
 A `RIGHT JOIN` is functionally equivalent to a `LEFT JOIN` with the left and right relations swapped. It returns all rows from the right relation, with matching left relation data where available, and `null` values for non-matching rows.
 
 ## FULL JOIN
 
-~~~
-FROM left_relation FULL [ OUTER ] JOIN right_relation ON condition
+~~~sql
+FROM <left_relation> FULL [ OUTER ] JOIN <right_relation> ON <condition>
 ~~~
 
 The `FULL JOIN` (also called `FULL OUTER JOIN`) returns all rows from both the left and right relations. Where rows have matching values in the joining column, they are aligned in the result. For non-matching rows from either side, the columns from the other relation are filled with `null` values.
 
-**Syntax**
+### Examples
 
+#### Keep All Rows from Both Sides
 ~~~sql
 SELECT *
   FROM left_relation
@@ -194,14 +254,15 @@ In this example, the blue column is used as the joining column in both relations
 
 ## LEFT SEMI JOIN
 
-~~~
-FROM left_relation LEFT SEMI JOIN right_relation ON condition
+~~~sql
+FROM <left_relation> LEFT SEMI JOIN <right_relation> ON <condition>
 ~~~
 
 A `LEFT SEMI JOIN` returns rows from the left relation that have at least one matching row in the right relation, but includes only columns from the left relation. This is useful when you want to filter the left relation based on the existence of a match in the right relation, without including any columns from the right relation in the result.
 
-**Syntax**
+### Examples
 
+#### Filter Left Rows by Existence of a Match
 ~~~sql
 SELECT *
   FROM left_relation
@@ -213,20 +274,21 @@ SELECT *
 
 In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Only value `1` has a match in _right_relation_, so only that row from _left_relation_ is returned. Value `2` has no match and is excluded. No columns from _right_relation_ appear in the result.
 
-## RIGHT SEMI JOIN
+### RIGHT SEMI JOIN
 
 Opteryx does not support `RIGHT SEMI JOIN`. Use a `LEFT SEMI JOIN` with the relations swapped to achieve the same result.
 
 ## LEFT ANTI JOIN
 
-~~~
-FROM left_relation LEFT ANTI JOIN right_relation ON condition
+~~~sql
+FROM <left_relation> LEFT ANTI JOIN <right_relation> ON <condition>
 ~~~
 
 The `LEFT ANTI JOIN` returns rows from the left relation that do **not** have matching rows in the right relation. Only columns from the left relation are included in the result; the right relation serves only to filter out matching rows.
 
-**Syntax**
+### Examples
 
+#### Filter Out Left Rows with a Match
 ~~~sql
 SELECT *
   FROM left_relation
@@ -238,23 +300,27 @@ SELECT *
 
 In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Value `1` has a match in _right_relation_ and is therefore excluded. Value `2` has no match, so it is the only row returned. No columns from _right_relation_ appear in the result.
 
-## RIGHT ANTI JOIN
+### RIGHT ANTI JOIN
 
 Opteryx does not support `RIGHT ANTI JOIN`. Use a `LEFT ANTI JOIN` with the relations swapped to achieve the same result.
 
 ## ASOF JOIN
 
-~~~
-FROM left_relation ASOF JOIN right_relation MATCH_CONDITION(left_relation.column >= right_relation.column)
-FROM left_relation ASOF JOIN right_relation MATCH_CONDITION(left_relation.column <= right_relation.column)
+~~~sql
+FROM <left_relation> ASOF JOIN <right_relation> MATCH_CONDITION( <condition> )
 ~~~
 
 An `ASOF JOIN` matches each row from the left relation to the closest row in the right relation based on an inequality condition. It is useful for aligning time-series or ordered data where exact matches are rarely available — for example, joining events to the most recent price or state that was valid at the time of the event.
 
-The join condition is specified using `MATCH_CONDITION(...)` rather than `ON`. The condition must be a single inequality comparing one column from each relation. Only `>=` and `<=` are supported; equality (`=`) and not-equal (`!=`) are not.
+### Parameters
 
-**Syntax**
+- **`MATCH_CONDITION( <condition> )`** — used instead of `ON`. The condition must be a single
+  inequality comparing one column from each relation. Only `>=` and `<=` are supported;
+  equality (`=`) and not-equal (`!=`) are not.
 
+### Examples
+
+#### Match the Closest Prior Row
 ~~~sql
 SELECT p.name, p2.name AS match_name
   FROM $planets AS p
@@ -262,6 +328,7 @@ SELECT p.name, p2.name AS match_name
     MATCH_CONDITION(p.gravity >= p2.gravity);
 ~~~
 
+#### Right Relation as a Subquery
 The right relation can be a subquery:
 
 ~~~sql
@@ -272,3 +339,17 @@ SELECT p.name, p2.name AS match_name
   ) AS p2
     MATCH_CONDITION(p.id >= p2.id);
 ~~~
+
+## Notes
+
+- Opteryx does not support `RIGHT SEMI JOIN` or `RIGHT ANTI JOIN`; swap the relations and use `LEFT SEMI JOIN` / `LEFT ANTI JOIN` instead.
+- `ON` and `USING` are supported for equality-style joins; `ASOF JOIN` uses `MATCH_CONDITION(...)` instead of `ON`.
+- `CROSS JOIN UNNEST` and `CROSS JOIN CIDR_UNNEST` join against an expansion of each row's own value, not against a second relation — see [CROSS JOIN UNNEST](#cross-join-unnest).
+
+## See Also
+
+- [SELECT](select.md)
+- [WHERE](where.md)
+- [WITH (CTE)](with.md)
+- [UNION, INTERSECT, and EXCEPT](union.md)
+- [Working with IPs](/docs/reference/sql/advanced/adv-working-with-ips)

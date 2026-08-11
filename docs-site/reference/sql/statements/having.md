@@ -7,19 +7,20 @@ description: SQL HAVING clause syntax and examples for filtering grouped results
 
 The `HAVING` clause filters grouped results after aggregation. It is always used with `GROUP BY`.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT column1, aggregate_function(column2)
-  FROM relation_name
- GROUP BY column1
- HAVING condition;
+SELECT <column>, <aggregate_function>(<column>)
+  FROM <relation_name>
+ GROUP BY <column>
+ HAVING <condition>;
 ~~~
 
-## Key Differences from WHERE
+## Parameters
 
-- **WHERE** filters rows before grouping
-- **HAVING** filters groups after aggregation
+- **`<condition>`** — a boolean expression evaluated after grouping and aggregation. It may
+  reference aggregate functions directly, or a `SELECT` alias (an Opteryx-specific extension —
+  see Notes).
 
 ## Examples
 
@@ -45,7 +46,7 @@ HAVING COUNT(*) > 2
 
 ### Using Aliases
 
-Oteryx supports filtering by `SELECT` aliases in `HAVING`:
+Opteryx supports filtering by `SELECT` aliases in `HAVING`:
 
 ~~~sql
 SELECT 
@@ -68,13 +69,9 @@ HAVING COUNT(DISTINCT customer_id) > 100
    AND SUM(amount) > 100000;
 ~~~
 
-## Notes
+### Combined with WHERE
+`WHERE` and `HAVING` can be used together, filtering before and after grouping respectively:
 
-- `HAVING` requires a preceding `GROUP BY`.
-- You can filter on aggregate functions directly in the condition.
-- Combining `WHERE` and `HAVING` filters before and after grouping respectively.
-
-Example with both WHERE and HAVING:
 ~~~sql
 SELECT category, COUNT(*) AS count
   FROM products
@@ -82,3 +79,16 @@ SELECT category, COUNT(*) AS count
  GROUP BY category
  HAVING COUNT(*) > 5;
 ~~~
+
+## Notes
+
+- `HAVING` filters groups after aggregation; `WHERE` filters rows before grouping.
+- `HAVING` requires a preceding `GROUP BY`.
+- You can filter on aggregate functions directly in the condition.
+- Opteryx supports filtering by `SELECT` aliases in `HAVING`.
+
+## See Also
+
+- [SELECT](select.md)
+- [GROUP BY](group-by.md)
+- [WHERE](where.md)

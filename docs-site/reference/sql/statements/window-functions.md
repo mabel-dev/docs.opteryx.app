@@ -11,24 +11,43 @@ Opteryx supports two families of window function, and **they follow different ru
 
 | Family | Functions | `ORDER BY` inside `OVER` |
 |:--|:--|:--|
-| Ranking | `ROW_NUMBER`, `RANK`, `DENSE_RANK` | **Required** |
-| Aggregate | `SUM`, `COUNT`, `AVG` | **Not supported** |
+| [Ranking](#ranking-functions) | `ROW_NUMBER`, `RANK`, `DENSE_RANK` | **Required** |
+| [Aggregate](#aggregate-windows) | `SUM`, `COUNT`, `AVG` | **Not supported** |
 
 Neither family supports a frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`).
 
+## Syntax
+
+~~~sql
+SELECT <ranking_function>() OVER ( [ PARTITION BY <column> ] ORDER BY <column> [ ASC | DESC ] )
+  FROM <relation_name>;
+
+SELECT <aggregate_function>(<column>) OVER ( [ PARTITION BY <column> ] )
+  FROM <relation_name>;
+~~~
+
 ## Ranking Functions
 
+~~~sql
+SELECT <ranking_function>() OVER ( [ PARTITION BY <column> ] ORDER BY <column> [ ASC | DESC ] )
+  FROM <relation_name>;
 ~~~
-SELECT ranking_function() OVER ([PARTITION BY column] ORDER BY column [ASC|DESC])
-  FROM relation_name;
-~~~
 
-- **`ROW_NUMBER()`** — 1..n within each partition, ties broken arbitrarily.
-- **`RANK()`** — ties share a rank, and the next rank skips (1, 1, 3).
-- **`DENSE_RANK()`** — ties share a rank, and the next rank does not skip (1, 1, 2).
+### Parameters
 
-`ORDER BY` inside the `OVER` clause is **required** — without it the numbering would have no defined meaning, so Opteryx rejects the query rather than returning an arbitrary answer:
+- **`<ranking_function>`**:
+  - `ROW_NUMBER()` — 1..n within each partition, ties broken arbitrarily.
+  - `RANK()` — ties share a rank, and the next rank skips (1, 1, 3).
+  - `DENSE_RANK()` — ties share a rank, and the next rank does not skip (1, 1, 2).
+- `PARTITION BY <column>` — optional. Without it, the whole relation is one window; with it,
+  numbering restarts in each partition.
+- `ORDER BY <column>` — **required** for ranking functions; without it the numbering would
+  have no defined meaning, so Opteryx rejects the query rather than returning an arbitrary
+  answer.
 
+### Examples
+
+#### ORDER BY Is Required
 ~~~sql
 SELECT ROW_NUMBER() OVER (PARTITION BY id) FROM $planets;
 -- ROW_NUMBER() requires an ORDER BY in its OVER (...) clause.
@@ -36,20 +55,19 @@ SELECT ROW_NUMBER() OVER (PARTITION BY id) FROM $planets;
 
 A ranking function without an `OVER` clause at all is rejected the same way — these functions are window-only.
 
-`PARTITION BY` is optional. Without it, the whole relation is one window:
-
+#### PARTITION BY Is Optional
 ~~~sql
 SELECT name, RANK() OVER (ORDER BY id) AS rk
   FROM $planets;
 ~~~
 
-With it, numbering restarts in each partition:
-
+#### Numbering Restarts per Partition
 ~~~sql
 SELECT planetId, ROW_NUMBER() OVER (PARTITION BY planetId ORDER BY id) AS rn
   FROM testdata.satellites;
 ~~~
 
+#### Multiple Ranking Functions from One Sort
 Several ranking functions sharing the same `PARTITION BY` and `ORDER BY` are computed from a single sort:
 
 ~~~sql
@@ -62,18 +80,26 @@ SELECT id,
 
 ## Aggregate Windows
 
-~~~
-SELECT aggregate_function(column) OVER (PARTITION BY column)
-  FROM relation_name;
+~~~sql
+SELECT <aggregate_function>(<column>) OVER ( [ PARTITION BY <column> ] )
+  FROM <relation_name>;
 ~~~
 
-`SUM`, `COUNT`, and `AVG` are the same aggregates used with `GROUP BY`, applied per-partition without collapsing rows:
+### Parameters
 
+- **`<aggregate_function>`** — `SUM`, `COUNT`, or `AVG`; the same aggregates used with
+  `GROUP BY`, applied per-partition without collapsing rows.
+- `PARTITION BY <column>` — optional. The partition key does not have to be unique.
+
+### Examples
+
+#### Basic Aggregate Window
 ~~~sql
 SELECT name, SUM(gravity) OVER (PARTITION BY id)
   FROM $planets;
 ~~~
 
+#### Multiple Window Expressions
 Multiple window expressions can appear in the same query, and can be aliased:
 
 ~~~sql
@@ -83,6 +109,7 @@ SELECT name,
   FROM $planets;
 ~~~
 
+#### Non-Unique Partition Key
 The partition key does not have to be unique — this counts satellites per planet, on every row:
 
 ~~~sql
@@ -90,16 +117,21 @@ SELECT name, COUNT(name) OVER (PARTITION BY planetId)
   FROM testdata.satellites;
 ~~~
 
-> Be Aware: An `ORDER BY` inside the `OVER` clause of an **aggregate** window is rejected — `SUM(gravity) OVER (PARTITION BY id ORDER BY id)` raises `Window functions with ORDER BY are not supported. Use PARTITION BY only.` This is the opposite of the ranking functions above, where `ORDER BY` is required. Running totals and moving averages, which are what that syntax would express, are not available.
+### Notes
 
-An aggregate window cannot be combined with `GROUP BY` in the same query:
+- An `ORDER BY` inside the `OVER` clause of an **aggregate** window is rejected —
+  `SUM(gravity) OVER (PARTITION BY id ORDER BY id)` raises `Window functions with ORDER BY
+  are not supported. Use PARTITION BY only.` This is the opposite of the ranking functions
+  above, where `ORDER BY` is required. Running totals and moving averages, which are what
+  that syntax would express, are not available.
+- An aggregate window cannot be combined with `GROUP BY` in the same query:
 
-~~~sql
-SELECT id, SUM(gravity) OVER (PARTITION BY id)
-  FROM $planets
- GROUP BY id;
--- rejected
-~~~
+  ~~~sql
+  SELECT id, SUM(gravity) OVER (PARTITION BY id)
+    FROM $planets
+   GROUP BY id;
+  -- rejected
+  ~~~
 
 ## Notes
 
@@ -109,8 +141,10 @@ SELECT id, SUM(gravity) OVER (PARTITION BY id)
 - Frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`) is not supported for either family.
 - `LEAD`, `LAG`, `NTILE`, `FIRST_VALUE`, `LAST_VALUE`, and named `WINDOW` clauses are not implemented.
 
-## Related
+## See Also
 
 - [SQL Conformance](/docs/reference/sql/conformance) — how this compares to the standard
 - [Aggregates](/docs/reference/sql/aggregates) — the same functions used with `GROUP BY`
-- [GROUP BY](group-by)
+- [GROUP BY](group-by.md)
+- [SELECT](select.md)
+- [ORDER BY](order-by.md)

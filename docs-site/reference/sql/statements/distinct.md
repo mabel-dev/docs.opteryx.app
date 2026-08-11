@@ -7,23 +7,32 @@ description: SQL DISTINCT clause syntax and examples for removing duplicates in 
 
 The `DISTINCT` keyword removes duplicate rows from query results, returning only unique rows.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT DISTINCT column1, column2, ...
-  FROM relation_name;
+SELECT DISTINCT [ ON ( <column> [, ...] ) ] <column> [, ...]
+  FROM <relation_name>;
 ~~~
 
-## DISTINCT (All Columns)
+## Parameters
 
+- **`<column>`** — without `ON`, the columns considered when deduplicating rows (or every
+  column, for `SELECT DISTINCT *`). With `ON`, the columns whose unique combinations
+  determine grouping.
+- `ON (<column> [, ...])` — keep only the first row for each unique combination of the given
+  columns, instead of deduplicating on the full row. Typically paired with `ORDER BY` to
+  control which row within each group counts as "first".
+
+## Examples
+
+### DISTINCT (All Columns)
 Remove duplicate rows across all columns:
 
 ~~~sql
 SELECT DISTINCT * FROM users;
 ~~~
 
-## DISTINCT (Specific Columns)
-
+### DISTINCT (Specific Columns)
 Return unique combinations of specified columns:
 
 ~~~sql
@@ -34,8 +43,7 @@ SELECT DISTINCT category, brand
   FROM products;
 ~~~
 
-## DISTINCT ON
-
+### DISTINCT ON
 Return distinct rows based on specified columns while keeping the first occurrence of each group:
 
 ~~~sql
@@ -46,8 +54,6 @@ SELECT DISTINCT ON (customer_id)
 ~~~
 
 This returns the most recent order for each customer.
-
-## Examples
 
 ### Finding Unique Values
 ~~~sql
@@ -89,3 +95,9 @@ SELECT DISTINCT ON (customer_id)
 - `DISTINCT ON` is useful for finding the "first" or "last" row per group when combined with `ORDER BY`.
 - Using `DISTINCT` can be expensive on large datasets; consider using `GROUP BY` if you need aggregates.
 - `COUNT(DISTINCT column)` counts unique values in a column efficiently.
+
+## See Also
+
+- [SELECT](select.md)
+- [GROUP BY](group-by.md)
+- [ORDER BY](order-by.md)

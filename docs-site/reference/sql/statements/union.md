@@ -5,20 +5,42 @@ description: Set operations (UNION, INTERSECT, EXCEPT) for combining query resul
 
 # Set Operations
 
-Set operations combine the results of multiple queries into a single result set.
+Set operations combine the results of multiple queries into a single result set. Opteryx supports three operators:
+
+| Operator | Purpose |
+|----------|---------|
+| [`UNION`](#union) | Combine rows from two queries, removing duplicates (or `UNION ALL` to keep them) |
+| [`INTERSECT`](#intersect) | Return rows that appear in both query results |
+| [`EXCEPT`](#except) | Return rows from the first query that don't appear in the second |
+
+## Syntax
+
+~~~sql
+<query> UNION [ ALL ] <query>;
+
+<query> INTERSECT <query>;
+
+<query> EXCEPT <query>;
+~~~
+
+All result sets combined this way must have the same number and types of columns; column names in the result come from the first query, and column order must match across queries.
 
 ## UNION
 
-Combines results from two or more queries, removing duplicate rows.
-
-### Basic Syntax
 ~~~sql
-SELECT columns FROM table1
-UNION
-SELECT columns FROM table2;
+<query> UNION [ ALL ] <query>;
 ~~~
 
-### Example
+Combines results from two or more queries.
+
+### Parameters
+
+- `ALL` — keep duplicate rows instead of removing them. Faster than the default, since no
+  deduplication pass is needed.
+
+### Examples
+
+#### Combine Two Queries
 ~~~sql
 SELECT customer_id, 'order' AS source
   FROM orders
@@ -27,8 +49,7 @@ SELECT customer_id, 'return' AS source
   FROM returns;
 ~~~
 
-### UNION ALL
-
+#### UNION ALL
 Combines results without removing duplicates (faster):
 
 ~~~sql
@@ -37,18 +58,24 @@ UNION ALL
 SELECT id FROM legacy_customers;
 ~~~
 
+#### Finding Unique Customers Across Multiple Sources
+~~~sql
+SELECT customer_id FROM current_customers
+UNION
+SELECT customer_id FROM archived_customers;
+~~~
+
 ## INTERSECT
+
+~~~sql
+<query> INTERSECT <query>;
+~~~
 
 Returns rows that appear in both query results.
 
-### Syntax
-~~~sql
-SELECT columns FROM table1
-INTERSECT
-SELECT columns FROM table2;
-~~~
+### Examples
 
-### Example
+#### Basic INTERSECT
 ~~~sql
 SELECT customer_id FROM orders WHERE amount > 1000
 INTERSECT
@@ -56,23 +83,38 @@ SELECT customer_id FROM customers WHERE status = 'premium';
 -- Returns customers who placed orders > $1000 AND have premium status
 ~~~
 
+#### Finding Active Customers in Multiple Categories
+~~~sql
+SELECT customer_id FROM electronics_buyers
+INTERSECT
+SELECT customer_id FROM software_buyers;
+-- Returns customers who bought from both categories
+~~~
+
 ## EXCEPT
+
+~~~sql
+<query> EXCEPT <query>;
+~~~
 
 Returns rows from the first query that don't appear in the second query.
 
-### Syntax
-~~~sql
-SELECT columns FROM table1
-EXCEPT
-SELECT columns FROM table2;
-~~~
+### Examples
 
-### Example
+#### Basic EXCEPT
 ~~~sql
 SELECT customer_id FROM all_customers
 EXCEPT
 SELECT customer_id FROM suspended_customers;
 -- Returns customers who are not suspended
+~~~
+
+#### Finding Customers with Missing Data
+~~~sql
+SELECT customer_id FROM orders
+EXCEPT
+SELECT customer_id FROM customer_profiles;
+-- Returns customer IDs in orders but not in profiles
 ~~~
 
 ## Literal Values
@@ -112,30 +154,6 @@ SELECT *
   ) AS difference;
 ~~~
 
-
-### Finding Unique Customers Across Multiple Sources
-~~~sql
-SELECT customer_id FROM current_customers
-UNION
-SELECT customer_id FROM archived_customers;
-~~~
-
-### Finding Active Customers in Multiple Categories
-~~~sql
-SELECT customer_id FROM electronics_buyers
-INTERSECT
-SELECT customer_id FROM software_buyers;
--- Returns customers who bought from both categories
-~~~
-
-### Finding Customers with Missing Data
-~~~sql
-SELECT customer_id FROM orders
-EXCEPT
-SELECT customer_id FROM customer_profiles;
--- Returns customer IDs in orders but not in profiles
-~~~
-
 ## Notes
 
 - All result sets in a `UNION`/`INTERSECT`/`EXCEPT` must have the same number and types of columns.
@@ -143,3 +161,9 @@ SELECT customer_id FROM customer_profiles;
 - `UNION` removes duplicates; use `UNION ALL` to keep them.
 - Column order must match across queries.
 - You can use `ORDER BY` at the end of a set operation to sort final results.
+
+## See Also
+
+- [SELECT](select.md)
+- [WITH (CTE)](with.md)
+- [ORDER BY](order-by.md)

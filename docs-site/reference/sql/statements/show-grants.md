@@ -9,11 +9,13 @@ The `SHOW GRANTS` statement lists the access policies held by the current connec
 the same patterns and roles the engine matches against when it decides whether a statement
 is allowed. Use it to answer "why can't I see this table?" without leaving SQL.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
 SHOW GRANTS;
 ~~~
+
+It takes no options — there is nothing to specify beyond the statement itself.
 
 ## Result Columns
 
@@ -23,7 +25,7 @@ SHOW GRANTS;
 | `role` | `reader`, `writer` or `owner` |
 | `actions` | The actions that role permits, derived from the role |
 
-## Example
+## Examples
 
 ~~~sql
 SHOW GRANTS;
@@ -73,3 +75,9 @@ picked up by the next connection, not by a session already running.
   enforced.
 - See [Security & Permissions](/docs/core-concepts/access-and-permissions) for how
   policies are assigned.
+
+## See Also
+
+- [ALTER WORKSPACE](alter-workspace.md)
+- [DROP COLLECTION](drop-collection.md)
+- [SHOW VARIABLES](show-variables.md)

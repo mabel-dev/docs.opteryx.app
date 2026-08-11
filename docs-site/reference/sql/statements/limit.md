@@ -7,18 +7,25 @@ description: SQL LIMIT and OFFSET clause syntax and examples for pagination in O
 
 The `LIMIT` clause restricts the maximum number of rows returned. The `OFFSET` clause skips a specified number of rows before returning results. Together, they enable pagination.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT columns
-  FROM relation_name
- WHERE conditions
+SELECT <column> [, ...]
+  FROM <relation_name>
+ WHERE <condition>
  ORDER BY ...
- LIMIT count [OFFSET offset];
+ LIMIT <count> [ OFFSET <offset> ];
 ~~~
 
-## LIMIT
+## Parameters
 
+- **`<count>`** — the maximum number of rows to return.
+- **`<offset>`** — the number of rows to skip before returning results. Optional; `LIMIT`
+  without `OFFSET` returns the first `<count>` rows.
+
+## Examples
+
+### LIMIT
 Return only the first `n` rows:
 
 ~~~sql
@@ -26,8 +33,7 @@ SELECT * FROM users LIMIT 10;
 SELECT * FROM orders LIMIT 5;
 ~~~
 
-## OFFSET
-
+### OFFSET
 Skip the first `n` rows before returning results:
 
 ~~~sql
@@ -37,8 +43,7 @@ SELECT * FROM users
 -- Returns rows 21-30
 ~~~
 
-## Pagination Example
-
+### Pagination
 Fetch pages of results with consistent ordering:
 
 ~~~sql
@@ -58,8 +63,7 @@ SELECT * FROM products
  LIMIT 10 OFFSET 20;
 ~~~
 
-## With GROUP BY and ORDER BY
-
+### With GROUP BY and ORDER BY
 ~~~sql
 SELECT 
   category,
@@ -77,3 +81,9 @@ LIMIT 5;
 - Always use `ORDER BY` for predictable `LIMIT` results.
 - `OFFSET` without `LIMIT` is supported.
 - For pagination, maintain the `ORDER BY` clause across requests to ensure consistent results.
+
+## See Also
+
+- [SELECT](select.md)
+- [ORDER BY](order-by.md)
+- [WHERE](where.md)

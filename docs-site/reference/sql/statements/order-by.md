@@ -7,25 +7,32 @@ description: SQL ORDER BY clause syntax, sorting, and examples for ordering resu
 
 The `ORDER BY` clause sorts the result set by one or more columns in ascending or descending order.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT columns
-  FROM relation_name
- WHERE conditions
+SELECT <column> [, ...]
+  FROM <relation_name>
+ WHERE <condition>
  GROUP BY ...
  HAVING ...
- ORDER BY column1 [ASC | DESC], column2 [ASC | DESC], ...
+ ORDER BY { <column> | <position> | <expression> } [ ASC | DESC ] [, ...]
  LIMIT ...;
 ~~~
 
-## Sort Direction
+## Parameters
 
-- **ASC** (default) - ascending order (A to Z, smallest to largest)
-- **DESC** - descending order (Z to A, largest to smallest)
+- **`<column>`** — a column name or `SELECT` alias to sort by.
+- **`<position>`** — a 1-based index into the `SELECT` list, sorting by that column.
+- **`<expression>`** — a computed expression or function call to sort by.
+- `ASC` — ascending order (A to Z, smallest to largest). The default if omitted.
+- `DESC` — descending order (Z to A, largest to smallest).
 
-## Single Column Sorting
+Multiple sort keys, comma-separated, are evaluated left to right — the second key only breaks
+ties left by the first.
 
+## Examples
+
+### Single Column Sorting
 ~~~sql
 SELECT id, name, created_at
   FROM users
@@ -36,8 +43,7 @@ SELECT product_id, price, name
  ORDER BY price ASC;
 ~~~
 
-## Multiple Column Sorting
-
+### Multiple Column Sorting
 Sort by the first column, then by the second within groups of equal values:
 
 ~~~sql
@@ -46,8 +52,7 @@ SELECT category, name, price
  ORDER BY category ASC, price DESC;
 ~~~
 
-## Sorting by Column Position
-
+### Sorting by Column Position
 Reference columns by their position in the `SELECT` list:
 
 ~~~sql
@@ -56,8 +61,7 @@ SELECT id, name, amount
  ORDER BY 3 DESC;  -- Sort by third column (amount)
 ~~~
 
-## Sorting by Expressions
-
+### Sorting by Expressions
 Sort by computed expressions or functions:
 
 ~~~sql
@@ -69,8 +73,6 @@ SELECT id, amount, created_at
   FROM orders
  ORDER BY EXTRACT(YEAR FROM created_at), amount DESC;
 ~~~
-
-## Examples
 
 ### Sorting with Pagination
 ~~~sql
@@ -108,3 +110,10 @@ ORDER BY total DESC;
 - NULL values typically sort first (or last depending on the database).
 - Use column aliases or position numbers instead of full expressions for clarity.
 - Multiple sort keys are evaluated left to right.
+
+## See Also
+
+- [SELECT](select.md)
+- [LIMIT and OFFSET](limit.md)
+- [GROUP BY](group-by.md)
+- [HAVING](having.md)

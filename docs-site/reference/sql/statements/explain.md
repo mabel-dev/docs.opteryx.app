@@ -7,42 +7,44 @@ description: SQL EXPLAIN statement syntax and examples for query planning and an
 
 The `EXPLAIN` statement displays the logical query plan. The `EXPLAIN ANALYZE` variant executes the query and shows runtime metrics.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-EXPLAIN [ ANALYZE [ FORMAT format ] ] statement;
+EXPLAIN [ ANALYZE ] [ FORMAT { TEXT | MERMAID } ] <statement>;
 ~~~
 
-## Display Query Plan
+## Parameters
 
+- **`<statement>`** — the SQL statement to plan (typically a `SELECT`).
+- `ANALYZE` — execute the statement and include runtime metrics alongside the plan, instead of
+  just displaying the plan without running it.
+- `FORMAT { TEXT | MERMAID }` — output format, works with or without `ANALYZE`. Defaults to
+  `TEXT` (tabular output) if omitted. `TEXT` and `MERMAID` are the only supported formats —
+  `FORMAT GRAPHVIZ` and `FORMAT JSON` are rejected rather than quietly answered in a different
+  format.
+
+## Examples
+
+### Display Query Plan
 Show the logical plan for a query without executing it:
 
 ~~~sql
 EXPLAIN SELECT * FROM orders WHERE id = 1;
 ~~~
 
-## EXPLAIN ANALYZE
-
+### EXPLAIN ANALYZE
 Execute the query and display both the plan and runtime metrics:
 
 ~~~sql
 EXPLAIN ANALYZE SELECT * FROM orders WHERE id = 1;
 ~~~
 
-## Output Formats
-
-By default, `EXPLAIN` produces tabular output (equivalent to `FORMAT TEXT`). The `FORMAT` clause works with or without `ANALYZE`.
-
-`TEXT` and `MERMAID` are the only supported formats — `FORMAT GRAPHVIZ` and `FORMAT JSON` are rejected rather than quietly answered in a different format.
-
-### MERMAID
+### FORMAT MERMAID
 Generate a Mermaid diagram of the query plan:
 
 ~~~sql
 EXPLAIN ANALYZE FORMAT MERMAID SELECT * FROM orders;
 ~~~
-
-## Examples
 
 ### Analyzing a Simple Query
 ~~~sql
@@ -67,3 +69,8 @@ SELECT o.id, c.name, o.amount
 - `FORMAT MERMAID` produces diagram output suitable for visualization, with or without `ANALYZE`.
 - Output format may change across versions and is not intended for machine parsing.
 - Use `EXPLAIN` to understand query plans and identify potential optimizations.
+
+## See Also
+
+- [SELECT](select.md)
+- [Joins](joins.md)

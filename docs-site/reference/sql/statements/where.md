@@ -7,15 +7,20 @@ description: SQL WHERE clause syntax, filter conditions, and examples for filter
 
 The `WHERE` clause filters rows based on specified conditions. Only rows where the condition evaluates to `TRUE` are included in the result set.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SELECT columns
-  FROM relation_name
- WHERE condition;
+SELECT <column> [, ...]
+  FROM <relation_name>
+ WHERE <condition>;
 ~~~
 
-## Condition Types
+## Parameters
+
+- **`<condition>`** — a boolean expression. Rows are kept only where it evaluates to `TRUE`;
+  rows where it is `FALSE` or `NULL` are excluded.
+
+## Examples
 
 ### Simple Comparisons
 ~~~sql
@@ -110,8 +115,6 @@ SELECT * FROM users WHERE email IS NULL;
 SELECT * FROM orders WHERE deleted_at IS NOT NULL;
 ~~~
 
-## Examples
-
 ### Multiple Conditions
 ~~~sql
 SELECT id, name, email, created_at
@@ -144,3 +147,10 @@ SELECT name FROM users
 - The condition must evaluate to a boolean value.
 - Use parentheses to clarify the order of logical operations.
 - For filtering grouped results, use `HAVING` instead.
+
+## See Also
+
+- [SELECT](select.md)
+- [HAVING](having.md)
+- [GROUP BY](group-by.md)
+- [WITH (CTE)](with.md)
