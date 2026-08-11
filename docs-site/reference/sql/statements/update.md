@@ -25,3 +25,8 @@ This replaces the whole table with the query's output — it is not a partial, i
 ## Notes
 
 - See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.
+
+## See Also
+
+- [DELETE](delete.md)
+- [INSERT](insert.md)

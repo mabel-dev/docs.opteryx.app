@@ -7,28 +7,35 @@ description: SQL INSERT statement syntax and examples for adding data in Opteryx
 
 The `INSERT` statement adds new rows to a table.
 
-## Basic Syntax
-
 > Warning: INSERT is experimental and only works against local or limited storage backends. It is not suitable for production use.
 
+## Syntax
+
 ~~~sql
-INSERT INTO table_name [(column1, column2, ...)]
-VALUES (value1, value2, ...);
+INSERT INTO <table_name> [ ( <column> [, ...] ) ]
+{ VALUES ( <value> [, ...] ) [, ...] | <select_statement> };
 ~~~
 
-The column list is optional. Omitting it inserts into the table's columns in schema
-order. When it is given, it must name **every** column in the target table — see
-[Partial Inserts](#partial-inserts) below.
+## Parameters
 
-## Single Row Insert
+- **`<table_name>`** — the table to insert into.
+- **`<column>`** — an explicit column list. Optional; when given, it must name **every**
+  column in the target table — see [Partial Inserts](#partial-inserts) below. Omitting it
+  inserts into the table's columns in schema order.
+- **`<value>`** — literal values for one row. Give more than one parenthesized group,
+  comma-separated, to insert multiple rows in one statement.
+- `<select_statement>` — a `SELECT` query whose result rows are inserted in place of a
+  `VALUES` list.
 
+## Examples
+
+### Single Row Insert
 ~~~sql
 INSERT INTO users (id, name, email, active)
 VALUES (1, 'John Doe', 'john@example.com', TRUE);
 ~~~
 
-## Multiple Row Insert
-
+### Multiple Row Insert
 ~~~sql
 INSERT INTO users (id, name, email, active)
 VALUES 
@@ -37,8 +44,7 @@ VALUES
   (3, 'Bob Johnson', 'bob@example.com', FALSE);
 ~~~
 
-## Insert Without a Column List
-
+### Insert Without a Column List
 Values are matched to the table's columns in schema order:
 
 ~~~sql
@@ -46,8 +52,7 @@ INSERT INTO users
 VALUES (1, 'John Doe', 'john@example.com', TRUE);
 ~~~
 
-## Insert from SELECT
-
+### Insert from SELECT
 ~~~sql
 INSERT INTO users_backup (id, name, email)
 SELECT id, name, email FROM users WHERE archived = FALSE;
@@ -77,3 +82,9 @@ The list may reorder columns relative to the schema — it just cannot omit any.
   the target's schema — a mismatch is rejected before any data is written.
 - `INSERT OVERWRITE` is not supported.
 - A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+
+## See Also
+
+- [DELETE](delete.md)
+- [UPDATE](update.md)
+- [CREATE TABLE](create-table.md)

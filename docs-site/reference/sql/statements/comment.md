@@ -7,45 +7,41 @@ description: SQL COMMENT statement syntax and examples for adding comments to ob
 
 The `COMMENT` statement adds or modifies descriptive comments on tables and views. These comments provide documentation for data objects.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-COMMENT [IF EXISTS] ON TABLE [workspace].[collection].[table_name] IS '<comment_text>';
-
-COMMENT [IF EXISTS] ON VIEW [workspace].[collection].[view_name] IS '<comment_text>';
+COMMENT [ IF EXISTS ] ON { TABLE | VIEW } <object_name> IS '<comment_text>';
 ~~~
 
-## Table Comments
+## Parameters
 
-Add a comment to a table:
+- **`<object_name>`** — fully qualified as `<workspace>.<collection>.<object_name>`.
+- **`<comment_text>`** — the comment to store, as a string literal.
+- `IF EXISTS` — skip the operation without error if the object does not exist, instead of
+  refusing the statement.
 
+## Examples
+
+### Table Comments
 ~~~sql
 COMMENT ON TABLE workspace.collection.users IS 'User accounts and profile information';
 
 COMMENT ON TABLE workspace.collection.orders IS 'All customer orders including status and amounts';
 ~~~
 
-## View Comments
-
-Add a comment to a view:
-
+### View Comments
 ~~~sql
 COMMENT ON VIEW workspace.collection.active_users IS 'Users with active accounts in the last 30 days';
 
 COMMENT ON VIEW workspace.collection.order_summary IS 'Aggregated order statistics by customer';
 ~~~
 
-## Conditional Comments
-
-Use `IF EXISTS` to avoid errors if the object doesn't exist:
-
+### Only If It Exists
 ~~~sql
 COMMENT IF EXISTS ON TABLE workspace.collection.old_data IS 'Legacy data table';
 
 COMMENT IF EXISTS ON VIEW workspace.collection.temp_view IS 'Temporary analysis view';
 ~~~
-
-## Examples
 
 ### Documenting a Dataset
 ~~~sql
@@ -62,7 +58,12 @@ COMMENT ON VIEW warehouse.sales.daily_revenue IS 'Aggregated daily revenue by pr
   to store the comment — not every backend has one.
 - The comment is attributed to the session user who set it.
 - Comments are useful for documenting data lineage and business logic.
-- Use the fully qualified name: `[workspace].[collection].[object_name]`.
-- The `IF EXISTS` clause prevents errors when the object may not exist.
 - Comments are typically retrieved through metadata queries or documentation tools.
 - Comment text supports a limited subset of Markdown when rendered in the web UI. See [Markdown in Comments and Descriptions](/docs/core-concepts/markdown-in-descriptions).
+
+## See Also
+
+- [CREATE TABLE](create-table.md)
+- [CREATE VIEW](create-view.md)
+- [ALTER TABLE](alter-table.md)
+- [ALTER VIEW](alter-view.md)

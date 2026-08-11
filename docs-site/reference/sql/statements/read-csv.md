@@ -12,59 +12,56 @@ table name is expected.
 ## Syntax
 
 ~~~sql
-FROM READ_CSV(path)
+FROM READ_CSV(<path> [, separator => <char>]
+                      [, has_header_row => <boolean>]
+                      [, ignore_errors => <boolean>]
+                      [, infer_sample_size => <integer>])
 ~~~
 
-~~~sql
-FROM READ_CSV(path, separator => char, has_header_row => boolean,
-                     ignore_errors => boolean, infer_sample_size => integer)
-~~~
+## Parameters
 
-`path` must be a single string literal.
-
-## Arguments
-
-- **separator** `varchar`, default `,`
-    Single-character field separator. Use `'\t'` for TSV.
-- **has_header_row** `boolean`, default `true`
-    If `false`, the first row is treated as data, and columns are named
-    `col_0`, `col_1`, ...
-- **ignore_errors** `boolean`, default `false`
-    Column types are inferred from the first `infer_sample_size` values seen in each
-    column. If a later value in that column doesn't fit the inferred type, the default
-    (`false`) fails the query, naming the column and the offending value. Set to `true`
-    to treat that value as `NULL` instead.
-- **infer_sample_size** `integer`, default `5`
-    Number of non-null values per column sampled to infer its type. A larger value
-    reduces the chance of a later type mismatch at the cost of a larger upfront sample.
+- **`<path>`** — single string literal giving the file path (or glob pattern matching
+  multiple files) to read.
+- **`separator => <char>`**, default `','` — Single-character field separator. Use
+  `'\t'` for TSV.
+- **`has_header_row => <boolean>`**, default `true` — If `false`, the first row is
+  treated as data, and columns are named `col_0`, `col_1`, ...
+- **`ignore_errors => <boolean>`**, default `false` — Column types are inferred from
+  the first `infer_sample_size` values seen in each column. If a later value in that
+  column doesn't fit the inferred type, the default (`false`) fails the query, naming
+  the column and the offending value. Set to `true` to treat that value as `NULL`
+  instead.
+- **`infer_sample_size => <integer>`**, default `5` — Number of non-null values per
+  column sampled to infer its type. A larger value reduces the chance of a later type
+  mismatch at the cost of a larger upfront sample.
 
 ## Examples
 
-### Query a single file
+### Query a Single File
 ~~~sql
 SELECT *
   FROM READ_CSV('data/orders.csv');
 ~~~
 
-### Tab-separated file with no header row
+### Tab-Separated File with No Header Row
 ~~~sql
 SELECT *
   FROM READ_CSV('data/orders.tsv', separator => '\t', has_header_row => false);
 ~~~
 
-### Query a set of files with a glob
+### Query a Set of Files with a Glob
 ~~~sql
 SELECT *
   FROM READ_CSV('data/orders-*.csv');
 ~~~
 
-### Tolerate values that don't match the inferred column type
+### Tolerate Values That Don't Match the Inferred Column Type
 ~~~sql
 SELECT *
   FROM READ_CSV('data/orders.csv', ignore_errors => true);
 ~~~
 
-### Alias the relation
+### Alias the Relation
 ~~~sql
 SELECT o.id, o.total
   FROM READ_CSV('data/orders.csv') AS o
@@ -92,3 +89,9 @@ SELECT o.id, o.total
   patterns are not supported for `gs://` paths, because listing a bucket's contents
   needs a permission a public, unauthenticated read does not have. Use `gs://`, not
   `gcs://`.
+
+## See Also
+
+- [READ_JSONL](read-jsonl.md)
+- [READ_PARQUET](read-parquet.md)
+- [CREATE TABLE](create-table.md)

@@ -12,18 +12,19 @@ table the query reads, the platform re-runs the query and replaces the stored re
 A materialized view is queried exactly like a table — there is no query rewriting and no
 per-query overhead. What you read is the stored result of the most recent refresh.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-CREATE [OR REPLACE] MATERIALIZED VIEW [workspace].[collection].[view_name] AS
+CREATE [ OR REPLACE ] MATERIALIZED VIEW <workspace>.<collection>.<view_name> AS
 SELECT ...;
 ~~~
 
-- `OR REPLACE` replaces an existing materialized view's definition and stored result, and
+## Parameters
+
+- **`<workspace>.<collection>.<view_name>`** — fully qualified name of the materialized
+  view to create.
+- `OR REPLACE` — replaces an existing materialized view's definition and stored result, and
   rebuilds its refresh triggers to match the new query's sources.
-- `IF NOT EXISTS` is **not supported** for materialized views.
-- An explicit column list is **not supported** — the columns are always derived from the
-  query, as with [CREATE TABLE ... AS SELECT](create-table.md).
 
 ## Examples
 
@@ -90,7 +91,10 @@ Refresh is automatic and event-driven, not scheduled:
 
 ## Notes
 
-- Use fully qualified names: `[workspace].[collection].[view_name]`.
+- `IF NOT EXISTS` is **not supported** for materialized views.
+- An explicit column list is **not supported** — the columns are always derived from the
+  query, as with [CREATE TABLE ... AS SELECT](create-table.md).
+- Use fully qualified names: `<workspace>.<collection>.<view_name>`.
 - Every source the query reads must be a catalog-resident table. Virtual datasets such as
   `$planets`, `information_schema` views, and function sources like `read_parquet(...)`
   never commit data, so they cannot fire a refresh — the query must read at least one
@@ -109,3 +113,11 @@ Refresh is automatic and event-driven, not scheduled:
 - Contrast with [CREATE VIEW](create-view.md): an ordinary view stores only the query
   text and plans it afresh on every reference; a materialized view stores the query's
   result as a physical table and refreshes it automatically.
+
+## See Also
+
+- [CREATE TABLE](create-table.md)
+- [CREATE VIEW](create-view.md)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md)
+- [DROP MATERIALIZED VIEW](drop-materialized-view.md)

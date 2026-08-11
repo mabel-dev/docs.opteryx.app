@@ -9,12 +9,21 @@ The `SET` statement assigns a value to a variable for the current session. Varia
 this way live for the life of the connection and are visible to
 [SHOW VARIABLES](show-variables.md).
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SET @variable_name = value;
-SET @@system_variable = value;
+SET @<variable_name> = <value>;
+SET @@<system_variable_name> = <value>;
 ~~~
+
+## Parameters
+
+- **`<variable_name>`** — a user variable name, prefixed with `@`. Yours to define; carries
+  no meaning to the engine.
+- **`<system_variable_name>`** — a system variable name, prefixed with `@@`. Changes engine
+  behaviour; who may set it depends on the variable — see [Variable Kinds](#variable-kinds)
+  below.
+- **`<value>`** — the value to assign.
 
 ## Variable Kinds
 
@@ -52,3 +61,7 @@ SET @@sql_select_limit = 1000;
   along with each one's value, type, owner (`INTERNAL` or `USER`) and visibility.
 - Some system variables are restricted to platform administrators; setting one you do not
   hold permission for is refused rather than quietly ignored.
+
+## See Also
+
+- [SHOW VARIABLES](show-variables.md)

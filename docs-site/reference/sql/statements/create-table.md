@@ -5,26 +5,44 @@ description: SQL CREATE TABLE and CREATE TABLE AS SELECT (CTAS) statement syntax
 
 # CREATE TABLE
 
-The `CREATE TABLE` statement creates a new table, either with an explicit column list or by materializing the result of a query (`CREATE TABLE ... AS SELECT`, commonly called CTAS). `CREATE OR REPLACE TABLE ... AS SELECT` atomically replaces an existing table's contents with a new query result.
+The `CREATE TABLE` statement creates a new table. Opteryx supports two forms:
 
-## Basic Syntax
+| Form | Purpose |
+|------|---------|
+| [Explicit Columns](#explicit-columns) | Create an empty table with a hand-written column list |
+| [AS SELECT (CTAS)](#as-select-ctas) | Create a table by materializing the result of a query |
+
+`CREATE OR REPLACE TABLE ... AS SELECT` atomically replaces an existing table's contents with a new query result.
+
+## Syntax
 
 ~~~sql
-CREATE TABLE [workspace].[collection].[table_name] (
-  column1 TYPE,
-  column2 TYPE,
-  ...
+CREATE TABLE <table_name> (
+  <column_name> <type> [, ...]
 );
-~~~
 
-~~~sql
-CREATE [OR REPLACE] TABLE [workspace].[collection].[table_name] AS
+CREATE [ OR REPLACE ] TABLE [ IF NOT EXISTS ] <table_name> AS
 SELECT ...;
 ~~~
 
-## Examples
+`<table_name>` is fully qualified as `<workspace>.<collection>.<table_name>`.
 
-### Create a Table with Explicit Columns
+## Explicit Columns
+
+~~~sql
+CREATE TABLE <table_name> (
+  <column_name> <type> [, ...]
+);
+~~~
+
+### Parameters
+
+- **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`.
+- **`<column_name> <type>`** — one entry per column, comma-separated.
+
+### Examples
+
+#### Create a Table with Explicit Columns
 ~~~sql
 CREATE TABLE my_workspace.my_collection.users (
   id BIGINT,
@@ -34,7 +52,26 @@ CREATE TABLE my_workspace.my_collection.users (
 );
 ~~~
 
-### Create a Table from a Query (CTAS)
+## AS SELECT (CTAS)
+
+~~~sql
+CREATE [ OR REPLACE ] TABLE [ IF NOT EXISTS ] <table_name> AS
+SELECT ...;
+~~~
+
+Commonly called CTAS.
+
+### Parameters
+
+- **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`.
+- `OR REPLACE` — replace an existing table's contents with the query result instead of
+  failing if the table already exists.
+- `IF NOT EXISTS` — skip creation without error if the table already exists, instead of
+  failing.
+
+### Examples
+
+#### Create a Table from a Query (CTAS)
 ~~~sql
 CREATE TABLE my_workspace.my_collection.active_users AS
 SELECT id, name, email
@@ -42,14 +79,14 @@ SELECT id, name, email
  WHERE active = TRUE;
 ~~~
 
-### Create a Table from an External File
+#### Create a Table from an External File
 ~~~sql
 CREATE TABLE my_workspace.my_collection.packages AS
 SELECT *
   FROM read_parquet('https://example.com/data/packages-*.parquet');
 ~~~
 
-### Skip Creation if the Table Already Exists
+#### Skip Creation if the Table Already Exists
 ~~~sql
 CREATE TABLE IF NOT EXISTS my_workspace.my_collection.active_users AS
 SELECT id, name, email
@@ -57,7 +94,7 @@ SELECT id, name, email
  WHERE active = TRUE;
 ~~~
 
-### Replace an Existing Table's Contents
+#### Replace an Existing Table's Contents
 ~~~sql
 CREATE OR REPLACE TABLE my_workspace.my_collection.active_users AS
 SELECT id, name, email
@@ -65,14 +102,26 @@ SELECT id, name, email
  WHERE active = TRUE AND last_login > '2026-01-01';
 ~~~
 
-## Notes
+### Notes
 
-- Use fully qualified names: `[workspace].[collection].[table_name]`.
-- `CREATE TABLE ... AS SELECT` cannot be combined with an explicit column list — the target's columns are always derived from the query.
 - Every selected column must resolve to a concrete type; a column that is entirely `NULL` (with no other type information) is rejected.
 - Plain `CREATE TABLE ... AS SELECT` fails if the target table already exists. Use `CREATE TABLE IF NOT EXISTS ... AS SELECT` to skip silently, or `CREATE OR REPLACE TABLE ... AS SELECT` to replace it.
 - `CREATE OR REPLACE TABLE ... AS SELECT` creates the table if it doesn't exist yet, or atomically replaces its contents if it does. The replacement is all-or-nothing: if the query fails partway through, the existing table is left completely untouched.
 - Replacing an existing table currently requires the new query's columns to match the existing table's columns exactly. Changing the column set with `CREATE OR REPLACE` is not yet supported.
-- Creating a new table requires `writer` or `owner` access to the target. Replacing an existing table's contents requires `owner` access — the same requirement as `DROP TABLE`, since it discards the table's previous contents.
+- Replacing an existing table's contents requires `owner` access — the same requirement as `DROP TABLE`, since it discards the table's previous contents.
+
+## Notes
+
+- Use fully qualified names: `<workspace>.<collection>.<table_name>`.
+- `CREATE TABLE ... AS SELECT` cannot be combined with an explicit column list — the target's columns are always derived from the query.
+- Creating a new table requires `writer` or `owner` access to the target.
 - To keep a CTAS result up to date automatically as its sources change, use [CREATE MATERIALIZED VIEW](create-materialized-view.md) — the self-refreshing variant of `CREATE TABLE ... AS SELECT`.
 - A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+
+## See Also
+
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
+- [ALTER TABLE](alter-table.md)
+- [DROP TABLE](drop-table.md)
+- [TRUNCATE TABLE](truncate-table.md)
+- [INSERT](insert.md)

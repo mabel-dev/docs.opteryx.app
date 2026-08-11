@@ -7,20 +7,25 @@ description: SQL CREATE VIEW statement syntax and examples for creating views in
 
 The `CREATE VIEW` statement creates a new view that exposes the result of a query as a named relation.
 
-## Basic Syntax
-
-~~~sql
-CREATE [OR REPLACE] VIEW [IF NOT EXISTS] [workspace].[collection].[view_name] AS
-SELECT ...;
-~~~
-
-- `OR REPLACE` overwrites an existing view's definition.
-- `IF NOT EXISTS` leaves an existing view untouched instead of failing.
-
 A view stores only the query text and plans it afresh on every reference, so nothing is
 precomputed. If you want the result stored as a physical table and kept up to date
 automatically as its sources change, use
 [CREATE MATERIALIZED VIEW](create-materialized-view.md) instead.
+
+## Syntax
+
+~~~sql
+CREATE [ OR REPLACE ] VIEW [ IF NOT EXISTS ] <workspace>.<collection>.<view_name> AS
+SELECT ...;
+~~~
+
+## Parameters
+
+- **`<workspace>.<collection>.<view_name>`** — fully qualified name of the view to create.
+- `OR REPLACE` — overwrite an existing view's definition instead of failing if one already
+  exists under this name.
+- `IF NOT EXISTS` — leave an existing view untouched instead of failing if one already
+  exists under this name.
 
 ## Examples
 
@@ -58,6 +63,13 @@ HAVING SUM(amount) > 10000;
 ## Notes
 
 - Views are virtual relations defined by queries; they don't store data.
-- Use fully qualified names: `[workspace].[collection].[view_name]`.
+- Use fully qualified names: `<workspace>.<collection>.<view_name>`.
 - Views are read-only in most contexts.
 - View definitions are stored and can be modified with `ALTER VIEW` or removed with `DROP VIEW`.
+
+## See Also
+
+- [ALTER VIEW](alter-view.md)
+- [DROP VIEW](drop-view.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
+- [CREATE TABLE](create-table.md)

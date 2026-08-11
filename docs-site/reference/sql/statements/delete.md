@@ -33,3 +33,10 @@ SELECT * FROM workspace.collection.sessions
 ## Notes
 
 - See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.
+
+## See Also
+
+- [UPDATE](update.md)
+- [INSERT](insert.md)
+- [TRUNCATE TABLE](truncate-table.md)
+- [DROP TABLE](drop-table.md)

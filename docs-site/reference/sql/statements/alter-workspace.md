@@ -8,11 +8,14 @@ description: SQL ALTER WORKSPACE statement syntax and examples for setting works
 The `ALTER WORKSPACE` statement sets a property on a workspace itself - the top level of
 the naming hierarchy (`workspace.collection.table`), rather than anything inside it.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-ALTER WORKSPACE [workspace] SET [property] TO [value];
+ALTER WORKSPACE <workspace> SET <property> TO <value>;
 ~~~
+
+`<workspace>` names the workspace itself — not a collection or table within it; see
+[Notes](#notes) below.
 
 ## Properties
 
@@ -150,3 +153,10 @@ automatic refresh is even queued.
 - `ALTER WORKSPACE` names a workspace, not a table within one. A qualified name such as
   `workspace.collection` is rejected.
 - There is no `SHOW` form or `information_schema` table that reads these settings back.
+
+## See Also
+
+- [SHOW GRANTS](show-grants.md)
+- [ALTER TABLE](alter-table.md)
+- [ALTER VIEW](alter-view.md)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)

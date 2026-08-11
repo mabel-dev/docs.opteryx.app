@@ -7,11 +7,17 @@ description: SQL TRUNCATE TABLE statement syntax and examples for removing all r
 
 The `TRUNCATE TABLE` statement removes all rows from a table, leaving the table itself (and its schema) in place.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-TRUNCATE TABLE [IF EXISTS] [workspace].[collection].[table_name];
+TRUNCATE TABLE [ IF EXISTS ] <table_name>;
 ~~~
+
+## Parameters
+
+- **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`. Only one
+  table name is accepted per statement.
+- `IF EXISTS` — skip the operation without error if the table does not exist.
 
 ## Examples
 
@@ -28,8 +34,11 @@ TRUNCATE TABLE IF EXISTS workspace.collection.staging_data;
 ## Notes
 
 - The `TABLE` keyword is required — `TRUNCATE table_name` without it is rejected.
-- Only one table name is accepted per statement.
-- `IF EXISTS` skips the operation without error if the table does not exist.
 - Requires a connector that supports truncation — not every backend does.
 - Removing all rows this way cannot be undone.
 - A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+
+## See Also
+
+- [DELETE](delete.md)
+- [DROP TABLE](drop-table.md)

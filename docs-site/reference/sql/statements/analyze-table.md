@@ -7,11 +7,18 @@ description: SQL ANALYZE TABLE statement syntax and examples for collecting tabl
 
 The `ANALYZE TABLE` statement collects statistics for a named relation. These statistics may be used by the query optimizer to improve query plans.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-ANALYZE TABLE [workspace].[collection].[table_name] [FOR COLUMNS column [, column ...]];
+ANALYZE TABLE <table_name> [ FOR COLUMNS <column> [, ...] ];
 ~~~
+
+## Parameters
+
+- **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`.
+- `FOR COLUMNS <column> [, ...]` — narrow the work to the named columns, leaving other
+  columns' existing statistics in place. Supported for local filesystem datasets only —
+  see [Backend Support](#backend-support).
 
 The `TABLE` keyword is required — `ANALYZE table_name` without it is rejected.
 
@@ -26,10 +33,6 @@ ANALYZE TABLE workspace.collection.large_dataset;
 ~~~sql
 ANALYZE TABLE workspace.collection.large_dataset FOR COLUMNS region, created_at;
 ~~~
-
-`FOR COLUMNS` narrows the work to the named columns, leaving other columns' existing
-statistics in place. It is supported for local filesystem datasets only — see
-[Backend Support](#backend-support).
 
 ### Analyze Before Running Complex Queries
 ~~~sql
@@ -54,10 +57,14 @@ a lighter operation than compaction.
 
 ## Notes
 
-- Use the fully qualified name: `[workspace].[collection].[table_name]`.
 - Running `ANALYZE TABLE` gathers statistics that the optimizer uses for query planning.
 - **Requires the `owner` role** on the table — the same tier as `ALTER TABLE`. It rewrites
   the metadata the optimizer plans from, which a `writer` grant does not cover.
 - The cost and benefit of analyzing tables depends on the underlying data store.
 - Regular analysis is recommended for large datasets that change frequently.
-- To discard collected statistics, see [DROP STATISTICS](drop-statistics.md).
+
+## See Also
+
+- [DROP STATISTICS](drop-statistics.md)
+- [ALTER TABLE](alter-table.md)
+- [CREATE TABLE](create-table.md)

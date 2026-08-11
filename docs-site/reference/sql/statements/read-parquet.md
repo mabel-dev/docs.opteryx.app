@@ -12,41 +12,46 @@ it in a `FROM` clause wherever a table name is expected.
 ## Syntax
 
 ~~~sql
-FROM READ_PARQUET(path)
+FROM READ_PARQUET(<path>)
 ~~~
 
-`path` must be a single string literal. `READ_PARQUET` takes no other arguments —
-Parquet's schema is read straight from the file's own footer, so there is nothing to
-configure the way there is for `READ_CSV`/`READ_JSONL`.
+## Parameters
+
+- **`<path>`** — single string literal giving the file path (or glob pattern matching
+  multiple files) to read.
+
+`READ_PARQUET` takes no other arguments — Parquet's schema is read straight from the
+file's own footer, so there is nothing to configure the way there is for
+`READ_CSV`/`READ_JSONL`.
 
 ## Examples
 
-### Query a single file
+### Query a Single File
 ~~~sql
 SELECT *
   FROM READ_PARQUET('data/packages.parquet');
 ~~~
 
-### Query a remote file
+### Query a Remote File
 ~~~sql
 SELECT *
   FROM READ_PARQUET('https://example.com/data/packages.parquet');
 ~~~
 
-### Query a set of files with a glob
+### Query a Set of Files with a Glob
 ~~~sql
 SELECT *
   FROM READ_PARQUET('data/packages-*.parquet');
 ~~~
 
-### Use inside CREATE TABLE AS
+### Use Inside CREATE TABLE AS
 ~~~sql
 CREATE TABLE my_workspace.my_collection.packages AS
 SELECT *
   FROM READ_PARQUET('https://example.com/data/packages-*.parquet');
 ~~~
 
-### Alias the relation
+### Alias the Relation
 ~~~sql
 SELECT p.name
   FROM READ_PARQUET('data/packages.parquet') AS p
@@ -69,3 +74,9 @@ SELECT p.name
   patterns are not supported for `gs://` paths, because listing a bucket's contents
   needs a permission a public, unauthenticated read does not have. Use `gs://`, not
   `gcs://`.
+
+## See Also
+
+- [READ_CSV](read-csv.md)
+- [READ_JSONL](read-jsonl.md)
+- [CREATE TABLE](create-table.md)

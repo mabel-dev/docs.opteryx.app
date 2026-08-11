@@ -12,46 +12,43 @@ directly by path, without registering it as a table in a catalog first. Use it i
 ## Syntax
 
 ~~~sql
-FROM READ_JSONL(path)
+FROM READ_JSONL(<path> [, ignore_errors => <boolean>]
+                        [, infer_schema => <boolean>]
+                        [, infer_sample_size => <integer>])
 ~~~
 
-~~~sql
-FROM READ_JSONL(path, ignore_errors => boolean, infer_schema => boolean,
-                       infer_sample_size => integer)
-~~~
+## Parameters
 
-`path` must be a single string literal.
-
-## Arguments
-
-- **ignore_errors** `boolean`, default `false`
-    If `false`, a malformed JSON record fails the query. If `true`, malformed records
-    are skipped instead.
-- **infer_schema** `boolean`, default `true`
-- **infer_sample_size** `integer`, default `5`
-    Number of rows sampled to infer each column's type.
+- **`<path>`** — single string literal giving the file path (or glob pattern matching
+  multiple files) to read.
+- **`ignore_errors => <boolean>`**, default `false` — If `false`, a malformed JSON
+  record fails the query. If `true`, malformed records are skipped instead.
+- **`infer_schema => <boolean>`**, default `true` — Whether to infer each column's
+  type from the sampled values (see `infer_sample_size`).
+- **`infer_sample_size => <integer>`**, default `5` — Number of rows sampled to infer
+  each column's type.
 
 ## Examples
 
-### Query a single file
+### Query a Single File
 ~~~sql
 SELECT *
   FROM READ_JSONL('data/events.jsonl');
 ~~~
 
-### Skip malformed records instead of failing
+### Skip Malformed Records Instead of Failing
 ~~~sql
 SELECT *
   FROM READ_JSONL('data/events.jsonl', ignore_errors => true);
 ~~~
 
-### Query a set of files with a glob
+### Query a Set of Files with a Glob
 ~~~sql
 SELECT *
   FROM READ_JSONL('data/events-*.jsonl');
 ~~~
 
-### Alias the relation
+### Alias the Relation
 ~~~sql
 SELECT e.id, e.status
   FROM READ_JSONL('data/events.jsonl') AS e
@@ -78,3 +75,9 @@ SELECT e.id, e.status
   patterns are not supported for `gs://` paths, because listing a bucket's contents
   needs a permission a public, unauthenticated read does not have. Use `gs://`, not
   `gcs://`.
+
+## See Also
+
+- [READ_CSV](read-csv.md)
+- [READ_PARQUET](read-parquet.md)
+- [CREATE TABLE](create-table.md)

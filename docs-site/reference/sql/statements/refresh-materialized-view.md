@@ -8,14 +8,15 @@ description: SQL REFRESH MATERIALIZED VIEW statement syntax and examples for reb
 Rebuilds a materialized view by re-running the `SELECT` it is defined by, replacing its
 contents with the result.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-REFRESH MATERIALIZED VIEW [view];
+REFRESH MATERIALIZED VIEW <view>;
 ~~~
 
-It takes no options. There is nothing to specify: what a refresh does is entirely determined
-by the view's own definition.
+`<view>` is fully qualified as `<workspace>.<collection>.<view_name>`. It takes no options.
+There is nothing to specify: what a refresh does is entirely determined by the view's own
+definition.
 
 ## Examples
 
@@ -94,3 +95,9 @@ Reading a materialized view is unrestricted: it is queried exactly like a table.
 - Subject to [egress protection](alter-workspace.md#egress-protection) like any other write:
   if the view reads from a workspace that restricts egress, the refresh is refused.
 - Requires a connector with a catalog. Not every backend supports materialized views.
+
+## See Also
+
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [DROP MATERIALIZED VIEW](drop-materialized-view.md)
