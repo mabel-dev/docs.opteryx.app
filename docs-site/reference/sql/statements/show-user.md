@@ -7,7 +7,7 @@ description: SQL SHOW USER statement syntax and examples for inspecting the curr
 
 The `SHOW USER` statement returns identity details for the current connection — billing account and workspace memberships.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
 SHOW USER;
@@ -21,6 +21,18 @@ SHOW USER;
 | `value` | The attribute's value |
 | `type` | Value's data type |
 
+## Examples
+
+### Show the Current Connection's Identity
+~~~sql
+SHOW USER;
+~~~
+
 ## Notes
 
 - Returns one `membership` row per workspace the caller belongs to, plus one `billing_account` row.
+
+## See Also
+
+- [SHOW GRANTS](show-grants.md)
+- [SHOW VARIABLES](show-variables.md)

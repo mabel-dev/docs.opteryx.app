@@ -40,7 +40,7 @@ API_DOC_SPECS = {
         'title': 'Jobs API',
         'status': 'Published',
         'base_url': 'https://jobs.opteryx.app',
-        'summary': 'Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.',
+        'summary': 'Job submission, execution status tracking, result retrieval, recent-query listing, and edit-time statement checking.',
         'try_it_live': True,
     },
     'api-opteryx-odata.json': {

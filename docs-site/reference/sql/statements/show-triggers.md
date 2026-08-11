@@ -10,10 +10,10 @@ triggers created by [CREATE MATERIALIZED VIEW](create-materialized-view.md), sho
 which materialized views a commit to this table will refresh, and how the most recent
 firing went.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-SHOW TRIGGERS FOR [workspace].[collection].[table_name];
+SHOW TRIGGERS FOR <table_name>;
 ~~~
 
 Bare `SHOW TRIGGERS` is **not supported** — name the table with the `FOR` form, or query
@@ -24,8 +24,20 @@ for a workspace-wide listing:
 SELECT * FROM my_workspace.information_schema.triggers;
 ~~~
 
-## Example
+## Parameters
 
+- **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`.
+
+## Result Columns
+
+The columns returned are those of
+[information_schema.triggers](../advanced/adv-information-schema.md),
+including `target_view`, `last_fired_at`, and `last_fired_status` — the place to look
+when a materialized view seems stale.
+
+## Examples
+
+### List Triggers on a Table
 ~~~sql
 SHOW TRIGGERS FOR my_workspace.sales.orders;
 ~~~
@@ -33,8 +45,9 @@ SHOW TRIGGERS FOR my_workspace.sales.orders;
 ## Notes
 
 - Trigger names are auto-generated as `refresh__<collection>__<view_name>__<suffix>`.
-- The columns returned are those of
-  [information_schema.triggers](../advanced/adv-information-schema.md),
-  including `target_view`, `last_fired_at`, and `last_fired_status` — the place to look
-  when a materialized view seems stale.
 - Remove a listed trigger with [DROP TRIGGER](drop-trigger.md).
+
+## See Also
+
+- [DROP TRIGGER](drop-trigger.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)

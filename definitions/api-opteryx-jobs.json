@@ -596,10 +596,214 @@
           }
         }
       }
+    },
+    "/api/v1/check": {
+      "post": {
+        "tags": [
+          "Query Check"
+        ],
+        "summary": "Check a SQL statement without running it",
+        "description": "Resolve and type-check one statement against the catalog, as the caller, and report what was found: a positioned error to underline, the result shape, and the relations and columns in scope for completion. Reads no data and changes nothing, so it is safe to call as a statement is typed. A statement that is wrong is a 200 with `ok: false` - the error is the answer, not a failure of the request.",
+        "operationId": "check_statement_api_v1_check_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryCheckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryCheckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CheckedColumn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "nullable": {
+            "type": "boolean",
+            "title": "Nullable",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "title": "CheckedColumn",
+        "description": "One column, as the check resolved it.\n\n`type` is the canonical SQL spelling — the same text a stored schema persists and\n`SHOW COLUMNS` prints, so an editor showing it beside a completion is showing\nsomething the reader can also type."
+      },
+      "CheckedIdentity": {
+        "properties": {
+          "identity": {
+            "type": "string",
+            "title": "Identity"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "'relation' or 'column'"
+          },
+          "definition": {
+            "type": "string",
+            "title": "Definition"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "For a column, the relation qualifying it; None if computed here"
+          },
+          "data_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Type",
+            "description": "The column's SQL type; None for relations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identity",
+          "type",
+          "definition"
+        ],
+        "title": "CheckedIdentity",
+        "description": "One name the statement makes available, and what it stands for.\n\nThis is the completion vocabulary: after `FROM sales.orders AS o`, `o` is a name\nthe reader can type; after `COUNT(*) AS n`, so is `n`."
+      },
+      "CheckedRelation": {
+        "properties": {
+          "alias": {
+            "type": "string",
+            "title": "Alias"
+          },
+          "relation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relation"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/CheckedColumn"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alias"
+        ],
+        "title": "CheckedRelation",
+        "description": "A relation in scope, under the name the statement refers to it by.\n\n`alias` is what qualifies a column here (`p` in `FROM $planets AS p`); `relation`\nis what it actually is. `columns` is the FULL column list, not just the ones the\nstatement referenced — completion needs the ones it did not."
+      },
+      "ErrorPosition": {
+        "properties": {
+          "start_line": {
+            "type": "integer",
+            "title": "Start Line"
+          },
+          "start_column": {
+            "type": "integer",
+            "title": "Start Column"
+          },
+          "end_line": {
+            "type": "integer",
+            "title": "End Line"
+          },
+          "end_column": {
+            "type": "integer",
+            "title": "End Column"
+          },
+          "start_offset": {
+            "type": "integer",
+            "title": "Start Offset"
+          },
+          "end_offset": {
+            "type": "integer",
+            "title": "End Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start_line",
+          "start_column",
+          "end_line",
+          "end_column",
+          "start_offset",
+          "end_offset"
+        ],
+        "title": "ErrorPosition",
+        "description": "Where in the submitted SQL a failure is, for the editor to underline.\n\nA half-open range, in both conventions the editor might want, so the client does\nno arithmetic: 1-based `line`/`column` (what Monaco's IRange takes) and 0-based\n`offset` (what a plain string slice takes). They describe the same span.\n\nCoordinates index the SQL exactly as the caller submitted it — comments, line\nbreaks and all — not any normalised form of it."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -706,6 +910,16 @@
           "execution_id": {
             "type": "string",
             "title": "Execution Id"
+          },
+          "error_position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorPosition"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "created_at": {
             "type": "string",
@@ -910,6 +1124,16 @@
               }
             ],
             "title": "Error Message"
+          },
+          "error_position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorPosition"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -918,6 +1142,167 @@
           "status"
         ],
         "title": "JobStatusResponse"
+      },
+      "QueryCheckError": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The engine's error class, e.g. `ColumnNotFoundError`"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorPosition"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "message"
+        ],
+        "title": "QueryCheckError",
+        "description": "What the check found wrong, in the shape the editor draws.\n\n`position` is absent for a failure with nowhere in the statement to point — a\npermission refusal is about the relation, not about a place in the text — and for\none the engine recorded no span for. It is never synthesised: a made-up range\nmarks the wrong text, which is worse than marking none."
+      },
+      "QueryCheckRequest": {
+        "properties": {
+          "sql_text": {
+            "type": "string",
+            "title": "Sql Text",
+            "description": "One SQL statement to check. Not a batch."
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parameters",
+            "description": "Values for the statement's `:name` placeholders. Anything not passed is resolved from the caller's saved variables, exactly as job submission resolves them - see the Variables API."
+          }
+        },
+        "type": "object",
+        "required": [
+          "sql_text"
+        ],
+        "title": "QueryCheckRequest"
+      },
+      "QueryCheckResponse": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok",
+            "description": "Nothing was found wrong. `error` is set exactly when false"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QueryCheckError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/CheckedColumn"
+            },
+            "type": "array",
+            "title": "Columns",
+            "description": "The result shape. Empty for a statement returning no rows, and for one that did not check out"
+          },
+          "relations": {
+            "items": {
+              "$ref": "#/components/schemas/CheckedRelation"
+            },
+            "type": "array",
+            "title": "Relations",
+            "description": "Every relation read, at full width. Present as far as the binder got, even on failure"
+          },
+          "identities": {
+            "items": {
+              "$ref": "#/components/schemas/CheckedIdentity"
+            },
+            "type": "array",
+            "title": "Identities",
+            "description": "Every name the statement makes available. Also survives a failed bind, partially"
+          },
+          "query_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query Type",
+            "description": "`Query`, `Insert`, `Drop`, ..."
+          },
+          "tables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tables",
+            "description": "Every relation named, sorted"
+          },
+          "parameters": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Parameters",
+            "description": "The `:name` placeholders needed, no leading colon"
+          },
+          "is_read": {
+            "type": "boolean",
+            "title": "Is Read",
+            "default": false
+          },
+          "is_mutation": {
+            "type": "boolean",
+            "title": "Is Mutation",
+            "default": false
+          },
+          "is_ddl": {
+            "type": "boolean",
+            "title": "Is Ddl",
+            "default": false
+          },
+          "permission_required": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Permission Required",
+            "description": "`reader`, `writer`, `owner`, or `denied`"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ok"
+        ],
+        "title": "QueryCheckResponse",
+        "description": "What a check found. A statement being wrong is a 200 with `ok: false`.\n\nFields mirror `opteryx.planner.query_check.QueryCheck` one-for-one; see\n`tests/test_query_check.py`, which fails if the engine grows a field this drops."
       },
       "QueryColumn": {
         "properties": {

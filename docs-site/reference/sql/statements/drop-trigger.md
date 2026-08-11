@@ -12,15 +12,21 @@ To stop a view refreshing, prefer
 a dropped trigger is indistinguishable from one that was never created or that broke,
 whereas a suspended view records that it was switched off deliberately, when, and by whom.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-DROP TRIGGER [IF EXISTS] trigger_name ON [workspace].[collection].[table_name];
+DROP TRIGGER [ IF EXISTS ] <trigger_name> ON <table_name>;
 ~~~
 
-Trigger names are auto-generated as `refresh__<collection>__<view_name>__<suffix>` when a
-materialized view is created. Use [SHOW TRIGGERS FOR](show-triggers.md) to list the
-triggers on a table.
+## Parameters
+
+- **`<trigger_name>`** — auto-generated as `refresh__<collection>__<view_name>__<suffix>`
+  when a materialized view is created. Use [SHOW TRIGGERS FOR](show-triggers.md) to list
+  the triggers on a table.
+- **`<table_name>`** — the table the trigger is attached to, fully qualified as
+  `<workspace>.<collection>.<table_name>`.
+- `IF EXISTS` — skip the operation without error if the trigger does not exist, instead of
+  refusing the statement.
 
 ## Examples
 
@@ -36,7 +42,6 @@ DROP TRIGGER IF EXISTS refresh__analytics__daily_totals ON my_workspace.sales.or
 
 ## Notes
 
-- `IF EXISTS` skips the operation without error if the trigger does not exist.
 - Requires the `writer` role on the table the trigger is attached to — removing a
   trigger is an update to that table.
 - After the drop, the materialized view goes stale silently as its source changes. To
@@ -49,3 +54,10 @@ DROP TRIGGER IF EXISTS refresh__analytics__daily_totals ON my_workspace.sales.or
   [CREATE MATERIALIZED VIEW](create-materialized-view.md).
 - Removing a materialized view entirely, triggers and all, is
   [DROP MATERIALIZED VIEW](drop-materialized-view.md).
+
+## See Also
+
+- [SHOW TRIGGERS FOR](show-triggers.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [DROP MATERIALIZED VIEW](drop-materialized-view.md)

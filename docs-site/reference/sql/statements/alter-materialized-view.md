@@ -8,14 +8,14 @@ description: SQL ALTER MATERIALIZED VIEW statement syntax and examples for trans
 Changes a materialized view's **refresh owner**, or **suspends and resumes** its automatic
 refresh.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-ALTER MATERIALIZED VIEW [view] OWNER TO [principal];
-ALTER MATERIALIZED VIEW [view] OWNER TO CURRENT_USER;
-ALTER MATERIALIZED VIEW [view] SUSPEND;
-ALTER MATERIALIZED VIEW [view] RESUME;
+ALTER MATERIALIZED VIEW <view> OWNER TO { <principal> | CURRENT_USER };
+ALTER MATERIALIZED VIEW <view> { SUSPEND | RESUME };
 ~~~
+
+`<view>` is fully qualified as `<workspace>.<collection>.<view_name>`.
 
 These are the only properties of a view you can alter. Everything else about it — its
 columns, its contents, the tables it reads — follows from its defining `SELECT`, and changes
@@ -40,6 +40,12 @@ edits it next.
 `CURRENT_USER` resolves to the identity running the statement — the way to take ownership of
 a view yourself. Quoting it (`'CURRENT_USER'`) instead names a principal literally called
 `CURRENT_USER`, following the usual SQL distinction.
+
+### Parameters
+
+- **`<principal>`** — the identity to make the view's refresh owner. Every automatic refresh
+  runs, and is billed, as this principal from then on.
+- `CURRENT_USER` — the identity running the statement; the way to take ownership yourself.
 
 ### Why This Needs Workspace Owner
 

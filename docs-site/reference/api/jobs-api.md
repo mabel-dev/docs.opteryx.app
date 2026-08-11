@@ -4,7 +4,7 @@ Base URL: https://jobs.opteryx.app
 
 ## Overview
 
-Job submission, execution status tracking, result retrieval, cancellation, and recent-query listing.
+Job submission, execution status tracking, result retrieval, recent-query listing, and edit-time statement checking.
 
 ## Job flow
 
@@ -67,6 +67,10 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
   </thead>
   <tbody>
     <tr>
+      <td><span class="ep-name">Check a SQL statement without running it</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/check</code></td>
+      <td class="ep-doc"><a href="#check-a-sql-statement-without-running-it">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">Create and execute SQL job</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs</code></td>
       <td class="ep-doc"><a href="#create-and-execute-sql-job">View</a></td>
     </tr>
@@ -100,6 +104,70 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
     </tr>
   </tbody>
 </table>
+
+## Check a SQL statement without running it
+
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/check</code>
+
+**Tags:** Query Check
+
+Resolve and type-check one statement against the catalog, as the caller, and report what was found: a positioned error to underline, the result shape, and the relations and columns in scope for completion. Reads no data and changes nothing, so it is safe to call as a statement is typed. A statement that is wrong is a 200 with `ok: false` - the error is the answer, not a failure of the request.
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `QueryCheckRequest`
+  - **sql_text** `string` [required]
+    One SQL statement to check. Not a batch.
+  - **parameters** `object | null` [optional]
+    Values for the statement's `:name` placeholders. Anything not passed is resolved from the caller's saved variables, exactly as job submission resolves them - see the Variables API.
+
+### Responses
+
+- **200** — Successful Response (`application/json` `QueryCheckResponse`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://jobs.opteryx.app" data-path="/api/v1/check" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"><span class="t-host">https://jobs.opteryx.app</span>/api/v1/check</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · QueryCheckRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "sql_text": "",
+  "parameters": {}
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
 
 ## Create and execute SQL job
 

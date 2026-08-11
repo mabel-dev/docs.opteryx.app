@@ -8,11 +8,17 @@ description: SQL DROP COLLECTION statement syntax and examples for removing an e
 The `DROP COLLECTION` statement removes an empty collection - the layer between a
 workspace and its tables/views (`workspace.collection.table`).
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-DROP COLLECTION [IF EXISTS] [workspace].[collection];
+DROP COLLECTION [ IF EXISTS ] <workspace>.<collection>;
 ~~~
+
+## Parameters
+
+- **`<workspace>.<collection>`** — the collection to drop, fully qualified by its workspace.
+- `IF EXISTS` — skip the operation without error if the collection does not exist, instead
+  of refusing the statement.
 
 ## Examples
 
@@ -28,7 +34,6 @@ DROP COLLECTION IF EXISTS workspace.staging;
 
 ## Notes
 
-- `IF EXISTS` skips the operation without error if the collection does not exist.
 - The collection must be empty - drop every table and view in it first with
   [DROP TABLE](drop-table.md) / [DROP VIEW](drop-view.md). `DROP COLLECTION` never
   cascades and never removes tables or views on your behalf. `CASCADE` is rejected when
@@ -42,3 +47,9 @@ DROP COLLECTION IF EXISTS workspace.staging;
   You need a pattern that matches `workspace.staging` directly, such as an exact grant
   on `workspace.staging` or a workspace-wide `workspace.*`. See
   [Security & Permissions](/docs/core-concepts/access-and-permissions).
+
+## See Also
+
+- [CREATE COLLECTION](create-collection.md)
+- [DROP TABLE](drop-table.md)
+- [DROP VIEW](drop-view.md)

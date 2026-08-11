@@ -7,7 +7,7 @@ description: SQL SHOW VARIABLES statement syntax and examples for listing sessio
 
 The `SHOW VARIABLES` statement lists the session and system variables visible to the current connection.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
 SHOW VARIABLES;
@@ -23,7 +23,19 @@ SHOW VARIABLES;
 | `owner` | `INTERNAL` (engine-managed) or `USER` (set with `SET`) |
 | `visibility` | `UNRESTRICTED`, or `RESTRICTED` (shown only to platform administrators) |
 
+## Examples
+
+### List All Visible Variables
+~~~sql
+SHOW VARIABLES;
+~~~
+
 ## Notes
 
 - `SHOW VARIABLES LIKE '<pattern>'` is not supported — only the bare form.
 - Some variables are visible only to platform administrators; other callers see a shorter list.
+
+## See Also
+
+- [SET](set.md)
+- [SHOW USER](show-user.md)

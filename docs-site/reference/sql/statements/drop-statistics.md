@@ -9,14 +9,22 @@ The `DROP STATISTICS` statement discards statistics previously collected by
 [ANALYZE TABLE](analyze-table.md). The table's data is untouched; only the optimizer's
 metadata about it is removed.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-DROP STATISTICS ON [workspace].[collection].[table_name] [FOR COLUMNS column [, column ...]];
+DROP STATISTICS ON <workspace>.<collection>.<table_name>
+  [ FOR COLUMNS <column> [, ...] ];
 ~~~
 
 Note the `ON` — unlike `ANALYZE TABLE`, this statement names its target after `ON`, and
 any other form is rejected.
+
+## Parameters
+
+- **`<workspace>.<collection>.<table_name>`** — the table whose statistics should be
+  dropped, fully qualified.
+- `FOR COLUMNS <column> [, ...]` — limit the drop to the named columns, comma-separated.
+  Omitted, all statistics for the table are dropped.
 
 ## Examples
 
@@ -52,3 +60,8 @@ analyzed again.
 - Idempotent — dropping statistics that were never collected is not an error.
 - Dropping statistics never changes query results, only the plans chosen to produce them.
 - Re-run [ANALYZE TABLE](analyze-table.md) to collect them again.
+
+## See Also
+
+- [ANALYZE TABLE](analyze-table.md)
+- [DROP TABLE](drop-table.md)

@@ -9,11 +9,18 @@ The `DROP MATERIALIZED VIEW` statement removes a materialized view: the physical
 table is dropped **and** the view's refresh triggers are removed from all of its source
 tables.
 
-## Basic Syntax
+## Syntax
 
 ~~~sql
-DROP MATERIALIZED VIEW [IF EXISTS] [workspace].[collection].[view_name];
+DROP MATERIALIZED VIEW [ IF EXISTS ] <workspace>.<collection>.<view_name>;
 ~~~
+
+## Parameters
+
+- **`<workspace>.<collection>.<view_name>`** — the materialized view to drop, fully
+  qualified.
+- `IF EXISTS` — skip the operation without error if the materialized view does not exist,
+  instead of refusing the statement.
 
 ## Examples
 
@@ -29,7 +36,6 @@ DROP MATERIALIZED VIEW IF EXISTS my_workspace.analytics.daily_totals;
 
 ## Notes
 
-- `IF EXISTS` skips the operation without error if the materialized view does not exist.
 - Requires the `owner` role on the materialized view.
 - [DROP TABLE](drop-table.md) against a materialized view is rejected and points you
   here; equally, `DROP MATERIALIZED VIEW` against a plain table is rejected and points
@@ -38,3 +44,11 @@ DROP MATERIALIZED VIEW IF EXISTS my_workspace.analytics.daily_totals;
   triggers with [DROP TRIGGER](drop-trigger.md) instead — the view stays queryable but
   no longer updates.
 - Dropping a materialized view removes the stored result it holds; this cannot be undone.
+
+## See Also
+
+- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md)
+- [DROP TABLE](drop-table.md)
+- [DROP TRIGGER](drop-trigger.md)
