@@ -9,7 +9,8 @@ Opteryx is a SQL query engine designed for analyzing data across various sources
 ## Key Features
 
 - **SQL Compatibility**: Full SQL query support for data analysis
-- **Multiple Data Sources**: Query data from various sources seamlessly
+- **File-Based Data Sources**: Query data from CSV, Parquet, JSON files and more using READ_* functions
+- **Built-in Tables**: Access system tables like `$planets` in every installation
 - **High Performance**: Optimized for fast query execution
 - **Easy to Use**: Simple setup and intuitive interface
 

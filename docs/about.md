@@ -8,16 +8,17 @@ Opteryx is an open-source SQL query engine designed to provide flexible and effi
 
 The main goals of Opteryx include:
 
-- **Flexibility**: Support for querying diverse data sources
+- **Flexibility**: Support for querying diverse file formats (CSV, Parquet, JSON, etc.)
 - **Performance**: Fast query execution and optimization
-- **Simplicity**: Easy to use and integrate into existing workflows
+- **Simplicity**: Easy to use with built-in tables like `$planets` and simple READ_* functions
 - **Standards Compliance**: SQL standard compatibility where possible
 
 ## Architecture
 
 Opteryx is built with a modular architecture that allows for:
 
-- Extensible data source connectors
+- Extensible file format readers (READ_CSV, READ_PARQUET, READ_JSON, etc.)
+- Built-in system tables like `$planets`
 - Pluggable optimization strategies
 - Efficient query execution
 
