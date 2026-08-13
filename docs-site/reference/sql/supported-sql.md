@@ -16,7 +16,7 @@ This page gives a concise, practical summary of the SQL features supported by Op
 - Core query: `SELECT` … `FROM` … `WHERE` … `GROUP BY` … `HAVING` … `ORDER BY` … `LIMIT` … `OFFSET`
 - Joins: `INNER`, `LEFT` (including `SEMI` / `ANTI`), `RIGHT`, `FULL`, `CROSS`
 - CTEs: `WITH` (named subqueries)
-- Window functions: `ROW_NUMBER()`, `RANK()`, `SUM() OVER (...)`, etc.
+- Window functions: `ROW_NUMBER()`, `RANK()`, `LAG()`, `LEAD()`, `SUM() OVER (...)`, etc.
 - Aggregates: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
 - Set ops: `UNION` / `UNION ALL`, `INTERSECT`, `EXCEPT`
 - Data mod: `INSERT` (experimental, backend-dependent). `UPDATE` and `DELETE` are **not supported** — see [UPDATE](/docs/reference/sql/statements/update) and [DELETE](/docs/reference/sql/statements/delete) for the rewrite-the-table alternative.

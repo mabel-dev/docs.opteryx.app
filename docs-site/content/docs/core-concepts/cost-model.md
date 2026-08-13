@@ -21,21 +21,36 @@ All prices are shown in GBP, exclusive of VAT or other applicable taxes.
 
 ## Free allowance
 
-The Free allowance is included on every plan, applies per billing account, and is
-shared across all workspaces under that account.
+An allowance belongs to a **billing account**, not to a user or a workspace. It
+is shared across every workspace and every user under that account: ten people
+working in one billing account share one allowance between them, they do not get
+one each.
 
-| Meter | Daily allowance |
-|---|---|
-| Storage | 5 GB of storage at any time (up to 120 GB-hours per day) |
-| Queries | 100 queries per day |
-| Queried data | 0.167 GB per day (approximately 5 GB per month) |
+A user who is not attached to a billing account is their own billing account for
+this purpose, and receives a full allowance of their own. Such a user cannot
+incur charges — usage above the allowance is blocked rather than billed.
+
+A billing account with billing configured receives **five times the base
+allowance** — the base being the unbilled-user figures in the first column
+below — so that bringing several users together under one account is not
+penalised.
+
+| Meter | Unbilled user (base) | Billing account (billing configured) |
+|---|---|---|
+| Storage | 5 GB of storage at any time (up to 120 GB-hours per day) | 25 GB of storage at any time (up to 600 GB-hours per day) |
+| Queries | 100 queries per day | 500 queries per day |
+| Queried data | 0.167 GB per day (approximately 5 GB per month) | 0.835 GB per day (approximately 25 GB per month) |
+
+The five-times allowance is a flat figure. It does not scale with the number of
+users on the account: an account with fifty users receives the same allowance as
+an account with two.
 
 The storage allowance is a threshold, not a quantity you spend. Storage is
-sampled every hour, and each sample is compared against the 5 GB threshold on
-its own: you are charged for whatever that sample exceeds 5 GB by. Staying
-under 5 GB for all 24 samples costs nothing, which is where the figure of 120
-GB-hours per day comes from — but the allowance is not a pool of 120 GB-hours
-to use as you like, so storing 120 GB for a single hour is chargeable.
+sampled every hour, and each sample is compared against the threshold on its
+own: you are charged for whatever that sample exceeds the threshold by. Staying
+under it for all 24 samples costs nothing, which is where the daily GB-hour
+figures above come from — but the allowance is not a pool of GB-hours to use as
+you like, so storing 120 GB for a single hour is chargeable.
 
 Two rules follow from the allowance being daily, and both matter:
 
@@ -54,8 +69,8 @@ allowed or what you are charged.
 
 ## Plans
 
-- **Free** — the daily allowance above, at no charge.
-- **Paid** — includes the daily Free allowance (per billing account); additional usage is billed as follows:
+- **Free** — the unbilled-user daily allowance above, at no charge. Usage above it is blocked rather than billed.
+- **Paid** — includes the billing account daily allowance above, at five times the base figures; additional usage is billed as follows:
 	- Storage: £0.00003 per GB per hour (approximately £0.02 per GB per month, on a 720-hour month)
 	- Queries: £0.1 per 1,000 queries
 	- Queried data: £0.001 per GB (equivalent to £1 per TB)
@@ -70,8 +85,9 @@ allowed or what you are charged.
 - Charges accrue daily and are invoiced monthly in GBP.
 - Usage is rounded up to the next whole unit (e.g., 10.1 GB is billed as 11 GB).
 - Charges are rounded up to the nearest penny (£0.01).
-- Billing accounts can have multiple workspaces; the Free allowance is shared across all workspaces under the same billing account.
-- If a billing account is not configured, usage is capped at the Free plan limits and additional usage is blocked rather than billed.
+- Billing accounts can have multiple workspaces and multiple users; the allowance is shared across all of them and is not granted per workspace or per user.
+- A billing account with billing configured receives five times the base allowance on every meter. This is a flat multiple and does not vary with the number of users on the account.
+- If a billing account is not configured, the user is treated as their own billing account and receives the base allowance. Usage is capped at that allowance and additional usage is blocked rather than billed.
 - Queries that scan zero bytes of data still count toward query limits, as they consume compute resources even when no data is read.
 - Prices exclude VAT or other applicable taxes, which will be added where required by law.
 - Data maintenance (for example, compaction, or cleanup) can change the size or layout of stored data; as a result, the amount of data processed by queries may vary over time and may be different after maintenance.

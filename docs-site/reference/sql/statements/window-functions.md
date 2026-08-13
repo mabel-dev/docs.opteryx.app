@@ -1,20 +1,21 @@
 ---
 title: Window Functions — Opteryx Reference
-description: SQL window functions in Opteryx — ranking functions (ROW_NUMBER, RANK, DENSE_RANK) and aggregate windows (SUM, COUNT, MIN, MAX, MEDIAN and the rest of the aggregate catalog) with OVER, PARTITION BY and QUALIFY, and the rules each family follows.
+description: SQL window functions in Opteryx — ranking functions (ROW_NUMBER, RANK, DENSE_RANK), navigation functions (LAG, LEAD) and aggregate windows (SUM, COUNT, MIN, MAX, MEDIAN and the rest of the aggregate catalog) with OVER, PARTITION BY and QUALIFY, and the rules each family follows.
 ---
 
 # Window Functions
 
 Window functions compute a value for each row based on a set of rows related to that row — its "window". Unlike aggregate functions, window functions do not collapse rows; each input row retains its identity in the result.
 
-Opteryx supports two families of window function, and **they follow different rules**. Read the family you need rather than generalising from the other.
+Opteryx supports three families of window function, and **they follow different rules**. Read the family you need rather than generalising from the others.
 
 | Family | Functions | `ORDER BY` inside `OVER` |
 |:--|:--|:--|
 | [Ranking](#ranking-functions) | `ROW_NUMBER`, `RANK`, `DENSE_RANK` | **Required** |
+| [Navigation](#navigation-functions) | `LAG`, `LEAD` | **Required** |
 | [Aggregate](#aggregate-windows) | every aggregate in the [aggregate catalog](/docs/reference/sql/aggregates) | **Not supported** |
 
-Neither family supports a frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`).
+No family supports a frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`).
 
 Both families share a set of rules on **where** a window expression may appear. A window may sit inside a larger expression — `mass / SUM(mass) OVER ()` computes percent-of-total directly — but it may not appear inside an aggregate's argument or inside another window, and `SELECT *` cannot be combined with one. Read [Restrictions on Both Families](#restrictions-on-both-families) for the shapes that are refused and the remedies each refusal names.
 
@@ -22,6 +23,9 @@ Both families share a set of rules on **where** a window expression may appear. 
 
 ~~~sql
 SELECT <ranking_function>() OVER ( [ PARTITION BY <column> ] ORDER BY <column> [ ASC | DESC ] )
+  FROM <relation_name>;
+
+SELECT <navigation_function>(<column> [, <offset>]) OVER ( [ PARTITION BY <column> ] ORDER BY <column> [ ASC | DESC ] )
   FROM <relation_name>;
 
 SELECT <aggregate_function>(<column>) OVER ( [ PARTITION BY <column> ] )
@@ -94,6 +98,54 @@ SELECT p.name, ROW_NUMBER() OVER (ORDER BY p.id) AS rn
 ~~~
 
 This is **not** true of aggregate windows, which accept only a single relation — see [One Relation per Window](#one-relation-per-window).
+
+## Navigation Functions
+
+~~~sql
+SELECT <navigation_function>(<column> [, <offset>]) OVER ( [ PARTITION BY <column> ] ORDER BY <column> [ ASC | DESC ] )
+  FROM <relation_name>;
+~~~
+
+Navigation functions return a value from **another row** of the partition, in the window's `ORDER BY` order. The result's type is the argument's type — `LAG(name)` over a `VARCHAR` column is `VARCHAR`.
+
+### Parameters
+
+- **`<navigation_function>`**:
+  - `LAG(expr)` — `expr`'s value from the previous row; `LAG(expr, offset)` from the row `offset` rows earlier.
+  - `LEAD(expr)` — `expr`'s value from the next row; `LEAD(expr, offset)` from the row `offset` rows later.
+- The offset must be a non-negative integer **literal**, and defaults to 1. Offset 0 is the current row.
+- `PARTITION BY <column>` — optional. Navigation never crosses a partition edge: a row closer to the edge than the offset returns `NULL`.
+- `ORDER BY <column>` — **required**, exactly as for the ranking functions.
+
+### Examples
+
+#### Previous and Next Row
+~~~sql
+SELECT name,
+       LAG(name)  OVER (ORDER BY id) AS prev,
+       LEAD(name) OVER (ORDER BY id) AS next
+  FROM $planets;
+-- Mercury's prev is NULL; Pluto's next is NULL
+~~~
+
+#### Per-Partition, with an Explicit Offset
+~~~sql
+SELECT name, LAG(id, 2) OVER (PARTITION BY planetId ORDER BY id) AS l2
+  FROM testdata.satellites;
+-- the first two rows of each partition carry NULL
+~~~
+
+#### The Argument May Be an Expression
+~~~sql
+SELECT name, LAG(mass * 2) OVER (ORDER BY id) AS prev_double_mass
+  FROM $planets;
+~~~
+
+### Notes
+
+- The 3-argument default form — `LAG(expr, offset, default)` — is **not supported**. Wrap the result instead: `COALESCE(LAG(expr, offset), default)`.
+- `IGNORE NULLS` / `RESPECT NULLS` are not supported.
+- Rows that tie on the `ORDER BY` key sit in an unspecified order, so over a non-total `ORDER BY` the neighbouring row — and therefore the answer — is not deterministic between runs. The same caveat as `ROW_NUMBER`, for the same reason.
 
 ## Aggregate Windows
 
@@ -346,7 +398,7 @@ Every restriction on this page applies to a window inside a `QUALIFY` as well. S
 - Each row in the result retains its own values — rows are not collapsed as they are with plain aggregation.
 - Multiple window expressions with different `PARTITION BY` columns can appear in the same `SELECT`.
 - Frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`) is not supported for either family.
-- `LEAD`, `LAG`, `NTILE`, `FIRST_VALUE`, `LAST_VALUE`, and named `WINDOW` clauses are not implemented.
+- `NTILE`, `FIRST_VALUE`, `LAST_VALUE`, `NTH_VALUE`, and named `WINDOW` clauses are not implemented.
 
 ## See Also
 
