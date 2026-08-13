@@ -76,6 +76,12 @@ SOURCES = {
     "clauses.json": "clauses.json",
     "joins.json": "joins.json",
     "unary_ops.json": "unary_ops.json",
+    # The window-function surface: ranking functions, the aggregate-window
+    # form, and the plan-time restrictions. The window-functions statement page
+    # is hand-written prose, but the catalog is what tooling (and future
+    # generators) read — a window function the engine gains must land here to
+    # be visible to the docs pipeline at all.
+    "windows.json": "windows.json",
 }
 
 # The docs definitions are written with this indent; keep it stable so a sync

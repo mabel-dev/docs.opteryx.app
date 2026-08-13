@@ -18,7 +18,7 @@ The `CREATE TABLE` statement creates a new table. Opteryx supports two forms:
 
 ~~~sql
 CREATE TABLE <table_name> (
-  <column_name> <type> [, ...]
+  <column_name> <type> [ NOT NULL ] [, ...]
 );
 
 CREATE [ OR REPLACE ] TABLE [ IF NOT EXISTS ] <table_name> AS
@@ -31,7 +31,7 @@ SELECT ...;
 
 ~~~sql
 CREATE TABLE <table_name> (
-  <column_name> <type> [, ...]
+  <column_name> <type> [ NOT NULL ] [, ...]
 );
 ~~~
 
@@ -39,6 +39,34 @@ CREATE TABLE <table_name> (
 
 - **`<table_name>`** — fully qualified as `<workspace>.<collection>.<table_name>`.
 - **`<column_name> <type>`** — one entry per column, comma-separated.
+- `NOT NULL` — **recorded in the schema, not enforced.** See below.
+
+### NOT NULL Is Recorded, Not Enforced
+
+A column may be declared `NOT NULL`. The declaration is accepted and stored — the
+column's schema entry reads `nullable: false`, and [SHOW COLUMNS](show-columns.md)
+reports it — but **Opteryx does not enforce it**. An `INSERT` writing `NULL` into a
+`NOT NULL` column succeeds, and the `NULL` is stored and read back:
+
+~~~sql
+CREATE TABLE my_workspace.my_collection.readings (
+  sensor_id INT64 NOT NULL,
+  observed   VARCHAR
+);
+
+INSERT INTO my_workspace.my_collection.readings VALUES (NULL, 'x');
+-- succeeds; sensor_id reads back NULL
+~~~
+
+This is deliberate and consistent across the engine: Opteryx enforces no integrity
+constraints at all — no `PRIMARY KEY`, `FOREIGN KEY`, `CHECK` or `UNIQUE` either
+(see [SQL Conformance](../conformance.md)). `NOT NULL` is carried so a schema
+imported from, or exported to, another system keeps its shape and its intent;
+treat it as documentation of what the data *should* contain, and validate on the
+way in if you need the guarantee.
+
+For the same reason `ALTER TABLE ... ALTER COLUMN ... SET NOT NULL` is rejected
+rather than accepted and ignored — see [ALTER TABLE](alter-table.md).
 
 ### Examples
 

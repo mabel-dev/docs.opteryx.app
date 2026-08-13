@@ -16,7 +16,7 @@ Opteryx supports two families of window function, and **they follow different ru
 
 Neither family supports a frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`).
 
-Both families share a set of restrictions on **where** a window expression may appear — most importantly, it must be the whole projection column and cannot be nested inside a larger expression. Read [Restrictions on Both Families](#restrictions-on-both-families) before either family: they are what most queries hit first, and one of them returns a wrong answer rather than an error.
+Both families share a set of rules on **where** a window expression may appear. A window may sit inside a larger expression — `mass / SUM(mass) OVER ()` computes percent-of-total directly — but it may not appear inside an aggregate's argument or inside another window, and `SELECT *` cannot be combined with one. Read [Restrictions on Both Families](#restrictions-on-both-families) for the shapes that are refused and the remedies each refusal names.
 
 ## Syntax
 
@@ -265,54 +265,31 @@ Ranking functions do not have this restriction.
 
 These apply to ranking functions and aggregate windows alike.
 
-### A Window Cannot Be Nested Inside an Expression
+### A Window May Sit Inside a Larger Expression
 
-The window expression must be the **whole** projection column. It cannot be one operand of a larger expression, an argument to a function, or the target of a cast:
-
-~~~sql
-SELECT name, mass / SUM(mass) OVER () AS pct FROM $planets;             -- rejected
-SELECT name, ROW_NUMBER() OVER (ORDER BY id) + 1 AS rn FROM $planets;   -- rejected
-~~~
-
-This is the restriction most queries hit first, because it blocks percent-of-total — the single most common reason to reach for `OVER ()`.
-
-Nesting is not refused cleanly, and **one shape of it is not refused at all**. Read the case that matches your query:
-
-> **SILENT WRONG ANSWER**  
-> An **aggregate** window nested in an expression, with no base column named alongside it, is not rejected. The query is accepted, the `OVER` clause is discarded, and the statement degenerates into a plain ungrouped aggregate — one row, where the un-nested form returns one per row.
+A window function does not have to be the whole projection column — it may be one operand of a larger expression, an argument to a function, or the target of a cast, and both families may:
 
 ~~~sql
-SELECT COUNT(*) OVER (PARTITION BY gravity) FROM $planets;
--- 9 rows, each holding 1 — correct
-
-SELECT COUNT(*) OVER (PARTITION BY gravity) + 0 FROM $planets;
--- 1 row holding 9 — the PARTITION BY is gone, and so is the window
+SELECT name, mass / SUM(mass) OVER () AS pct FROM $planets;             -- percent-of-total
+SELECT name, ROW_NUMBER() OVER (ORDER BY id) + 1 AS rn FROM $planets;
+SELECT CAST(COUNT(*) OVER () AS VARCHAR) FROM $planets;
 ~~~
 
-The result column is even renamed `COUNT(*) + 0`, with no `OVER` left in it. Nothing warns you. `SUM(mass) OVER (PARTITION BY gravity) * 2` behaves the same way.
+The window is computed first and the rest of the expression is evaluated over its output, one row at a time, so the nested form answers exactly what the un-nested one does. Base columns may be named in the same expression (`mass / SUM(mass) OVER ()`), and several windows may appear in one expression, over the same spec or different ones. Placement is the `SELECT` list or `QUALIFY`.
 
-The other two shapes do fail, though not helpfully. An **aggregate** window nested in an expression that also names a base column raises:
+Two enclosing contexts remain refused, each with its own remedy:
 
-~~~
-SqlError: Column 'name' must appear in the `GROUP BY` clause or must be part of an
-aggregate function. Either add it to the `GROUP BY` list, or add an aggregation
-such as `MIN(name)`.
-~~~
+- **Inside an aggregate's argument** — `SUM(COUNT(*) OVER ())`, `MAX(ROW_NUMBER() OVER (ORDER BY id))`, or with the window only part of the argument (`SUM(mass + COUNT(*) OVER ())`). Standard SQL forbids it outright. Compute the **window** in a subquery, then aggregate its result:
 
-which names `GROUP BY` for a query that has no `GROUP BY`, and points at `name` rather than at the arithmetic that is actually the problem. Adding `name` to a `GROUP BY`, as the message suggests, will not fix it. A **ranking** window nested in an expression fails with an internal `IndexError`, regardless of what else is selected.
+  ~~~sql
+  SELECT SUM(x) FROM (SELECT COUNT(*) OVER () AS x FROM $planets) AS t;
+  ~~~
 
-All three shapes have the same real diagnosis: **the window is not the whole column**.
+- **Inside another window** — whether in its argument (`SUM(COUNT(*) OVER ()) OVER ()`) or in its `OVER` spec (`SUM(mass) OVER (PARTITION BY COUNT(*) OVER ())`). Chain the windows across a subquery boundary instead — every combination of the two families runs this way, and nests further than one level deep:
 
-The fix is the same in every case — compute the window in a subquery or CTE, and do the arithmetic in the outer query:
-
-~~~sql
-SELECT name, mass / total AS pct
-  FROM (SELECT name, mass, SUM(mass) OVER () AS total FROM $planets) AS t;
-
-WITH totals AS (SELECT name, mass, SUM(mass) OVER () AS total FROM $planets)
-SELECT name, mass / total AS pct
-  FROM totals;
-~~~
+  ~~~sql
+  SELECT SUM(r) OVER () FROM (SELECT ROW_NUMBER() OVER (ORDER BY id) AS r FROM $planets) AS t;
+  ~~~
 
 ### SELECT * Cannot Be Combined with a Window
 
