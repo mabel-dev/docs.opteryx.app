@@ -63,6 +63,19 @@ SOURCES = {
     "operators.json": "operators.json",
     "types.json": "types.json",
     "variables.json": "variables.json",
+    # The statement / join / unary-operator surface. These lagged behind the
+    # five above: the engine generates all eight catalogs and web.opteryx's
+    # query editor already consumed all eight, but the docs took only five. So
+    # a statement gaining syntax in opteryx-core — ALTER TABLE's column
+    # operations, say — reached the editor's autocomplete mechanically and
+    # reached the docs only if somebody remembered to hand-write it.
+    #
+    # Exporting them makes `definitions/` the complete mirror of the engine's
+    # SQL surface, which is what `check_statement_coverage.py` checks the
+    # statement pages against.
+    "clauses.json": "clauses.json",
+    "joins.json": "joins.json",
+    "unary_ops.json": "unary_ops.json",
 }
 
 # The docs definitions are written with this indent; keep it stable so a sync

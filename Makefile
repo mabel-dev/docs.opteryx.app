@@ -47,5 +47,14 @@ sql-definitions: ## Pull definitions/*.json from opteryx-core/reference
 check-sql-definitions: ## Fail if definitions/*.json are behind opteryx-core
 	@python3 scripts/sync_sql_definitions.py --check
 
+# Statement pages are hand-written prose, so nothing regenerates them and
+# nothing noticed when the engine grew syntax they never mentioned. This checks
+# the one thing a script can: that every supported statement has a page, and
+# that the page names the operations the clause catalog says it accepts.
+check-statement-coverage: ## Fail if a supported statement has no page, or a page omits its syntax
+	@python3 scripts/check_statement_coverage.py
+
+check-sql: check-sql-definitions check-statement-coverage ## Every SQL-surface drift check
+
 sql-docs: sql-definitions ## Sync definitions, then rebuild the reference pages
 	@python3 scripts/update_docs_from_definitions.py
