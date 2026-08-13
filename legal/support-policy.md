@@ -35,6 +35,7 @@ It forms part of the [Terms of Service](./terms-of-service.md).
 | --- | --- | --- |
 | [Documentation](https://docs.opteryx.app) | Everyone | Reference, guides, limits |
 | [Status page](https://status.opteryx.app) | Everyone | Current incidents, subscribe for updates |
+| [Issue tracker](https://github.com/mabel-dev/opteryx.app/issues/new/choose) | Everyone | Platform bugs, questions, feature requests — public |
 | [GitHub issues](https://github.com/mabel-dev/opteryx/issues) | Everyone | Open source engine bugs |
 | {{COMMUNITY_CHANNEL}} | Everyone | Questions, discussion |
 | {{SUPPORT_EMAIL}} | Paid and Enterprise | Service issues |

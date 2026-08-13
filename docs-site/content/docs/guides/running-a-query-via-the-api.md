@@ -137,21 +137,6 @@ def to_rows(data):
 
 Page through a larger result with `num_rows` and `offset` (watch the 100–10000 bound on `num_rows`), or use the download endpoint to get the full result as a single CSV or JSON-lines file — see [Jobs API](/docs/reference/api/jobs-api) for both.
 
-## Estimating Cost Before Running
-
-For a query you suspect is expensive, `POST /api/v1/jobs/estimate` returns a coarse byte estimate without executing it — useful before running something against a large dataset:
-
-```bash
-curl -X POST https://jobs.opteryx.app/api/v1/jobs/estimate \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjYwNzA3IiwidHlwIjoiSldUIn0...' \
-  -H 'Content-Type: application/json' \
-  -d '{ "sql_text": "SELECT * FROM opteryx.test.planets" }'
-```
-
-```json
-{ "bytes": 0 }
-```
-
 ## Related
 
 - [Authentication API](/docs/reference/api/authentication-api)

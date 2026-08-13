@@ -17,6 +17,9 @@
       {
         "Cloud Warehouse": [
           {
+            "When a materialized view replaces a pipeline": "guides/when-a-materialized-view-replaces-a-pipeline.md"
+          },
+          {
             "Running a query via the API": "guides/running-a-query-via-the-api.md"
           },
           {
@@ -775,6 +778,13 @@
     "Roadmap & Guarantees": [
       {
         "Compatibility": "roadmap-guarantees/compatibility.md"
+      }
+    ]
+  },
+  {
+    "Support": [
+      {
+        "Getting help": "support/getting-help.md"
       }
     ]
   }

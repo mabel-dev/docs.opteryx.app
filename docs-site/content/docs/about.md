@@ -27,12 +27,10 @@ Opteryx is developed and maintained by Mabel Dev and the open-source community.
 
 ### Contributing
 
-We welcome contributions! Please visit our [GitHub repository](https://github.com/mabel-dev/opteryx) to:
-
-- Report bugs
-- Suggest features
-- Submit pull requests
-- Improve documentation
+We welcome contributions. Bug reports, feature suggestions, pull requests and
+documentation fixes are all useful — see the
+[contribution guide](https://github.com/mabel-dev/opteryx.app/blob/main/CONTRIBUTING.md)
+for where each of those belongs.
 
 ## License
 
@@ -40,5 +38,6 @@ Please refer to the LICENSE file in the main repository for license information.
 
 ## Contact
 
-- **GitHub**: [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx)
-- **Issues**: [GitHub Issues](https://github.com/mabel-dev/opteryx/issues)
+- **Raise a bug or ask a question**: [mabel-dev/opteryx.app](https://github.com/mabel-dev/opteryx.app/issues/new/choose) — see [Getting help](support/getting-help)
+- **Open source engine**: [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx)
+- **All projects**: [github.com/mabel-dev](https://github.com/orgs/mabel-dev/repositories)

@@ -35,4 +35,4 @@ Run it from the SQL editor and the results view fills in with the returned rows.
 
 ## Need Help?
 
-If you encounter any issues, please visit our [GitHub repository](https://github.com/mabel-dev/opteryx) or check the rest of the documentation for more detail.
+If something isn't working, or a step here didn't do what you expected, [raise a bug or ask a question](https://github.com/mabel-dev/opteryx.app/issues/new/choose). [Getting help](/docs/support/getting-help) covers what to include, and where to report a security issue.

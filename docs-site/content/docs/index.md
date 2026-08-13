@@ -54,10 +54,12 @@ Opteryx is a SQL query engine designed for analyzing data across various sources
 
 ## Getting Help
 
-If you need help or have questions:
+If something isn't working, or you're stuck:
 
-- Visit our [GitHub repository](https://github.com/mabel-dev/opteryx)
-- Report issues on [GitHub Issues](https://github.com/mabel-dev/opteryx/issues)
+- [Raise a bug or ask a question](https://github.com/mabel-dev/opteryx.app/issues/new/choose) — issues for the Opteryx platform are tracked in the open at [mabel-dev/opteryx.app](https://github.com/mabel-dev/opteryx.app/issues)
+- [Getting help](support/getting-help) - what to include in a ticket, and how to report a security issue
+- [status.opteryx.app](https://status.opteryx.app) - check here first in case there is a live incident
+- Bugs in the open source engine itself go to [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx/issues)
 
 ## License
 

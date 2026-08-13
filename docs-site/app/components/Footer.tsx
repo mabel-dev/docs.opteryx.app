@@ -16,6 +16,9 @@ export default function Footer() {
           <span>Try Opteryx Now</span>
         </Link>
         <div className="docs-footer-meta">
+          <Link href="/docs/support/getting-help" className="docs-footer-link">
+            Support
+          </Link>
           <StatusLink />
           <span className="docs-footer-legal">
             © {new Date().getFullYear()} Opteryx, All Rights Reserved

@@ -69,7 +69,12 @@ If the query is dramatically slower this way, the optimiser is doing real work �
 
 Opteryx is single-node by design — it scales up on one machine, not out across many. If a query is slow because the dataset genuinely exceeds what one machine can hold in memory, no amount of query tuning fixes that; the answer is a smaller working set (more selective filters, fewer columns, pre-aggregation) or a different tool. See [When to Use Opteryx](/docs/introduction/when-to-use) and [Known Limits](/docs/roadmap-guarantees/known-limits) for where that line sits.
 
+## Still Stuck
+
+If none of this explains it, [raise a bug or ask a question](https://github.com/mabel-dev/opteryx.app/issues/new/choose). Include the query ID — it is the fastest way for us to find the execution rather than reconstruct it. [Getting help](/docs/support/getting-help) covers what else to include.
+
 ## Related
 
+- [Getting help](/docs/support/getting-help)
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [NULL Semantics](/docs/reference/sql/advanced/null-semantics)
