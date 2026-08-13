@@ -499,6 +499,9 @@
               "ORDER BY": "reference/sql/statements/order-by.md"
             },
             {
+              "QUALIFY": "reference/sql/statements/qualify.md"
+            },
+            {
               "READ_CSV": "reference/sql/statements/read-csv.md"
             },
             {
@@ -527,6 +530,9 @@
             },
             {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
+            },
+            {
+              "SHOW SNAPSHOTS FOR": "reference/sql/statements/show-snapshots.md"
             },
             {
               "SHOW TRIGGERS FOR": "reference/sql/statements/show-triggers.md"

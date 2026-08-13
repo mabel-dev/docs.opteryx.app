@@ -57,6 +57,7 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | [SHOW COLUMNS](statements/show-columns.md) | List a dataset's columns, types, and nullability |
 | [SHOW CREATE VIEW](statements/show-create.md) | Show the query a view was created from |
 | [SHOW MANIFEST FOR](statements/show-manifest.md) | Inspect a dataset's file-level manifest and per-file statistics |
+| [SHOW SNAPSHOTS FOR](statements/show-snapshots.md) | List a table's commit history, newest first |
 | [SHOW TRIGGERS FOR](statements/show-triggers.md) | List the refresh triggers attached to a table |
 | [SHOW VARIABLES](statements/show-variables.md) | List session and system variables |
 | [SHOW USER](statements/show-user.md) | Show the current connection's identity |

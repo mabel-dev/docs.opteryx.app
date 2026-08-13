@@ -3,7 +3,7 @@
 PORT ?= 3000
 
 .PHONY: serve serve-prod build install validate deploy-firebase \
-        sql-definitions sql-docs check-sql-definitions
+        sql-definitions sql-docs check-sql-definitions check-window-aggregates
 
 serve:
 	@echo "Starting docs-site dev server on http://localhost:$(PORT)"
@@ -54,7 +54,13 @@ check-sql-definitions: ## Fail if definitions/*.json are behind opteryx-core
 check-statement-coverage: ## Fail if a supported statement has no page, or a page omits its syntax
 	@python3 scripts/check_statement_coverage.py
 
-check-sql: check-sql-definitions check-statement-coverage ## Every SQL-surface drift check
+# The window functions page hand-lists which aggregates work in a window. The
+# aggregate catalog already knows — `support.grouped` is what PARTITION BY needs
+# and `support.global` is what OVER () needs — so the list is checkable.
+check-window-aggregates: ## Fail if the window functions page has drifted from the aggregate catalog
+	@python3 scripts/check_window_aggregates.py
+
+check-sql: check-sql-definitions check-statement-coverage check-window-aggregates ## Every SQL-surface drift check
 
 sql-docs: sql-definitions ## Sync definitions, then rebuild the reference pages
 	@python3 scripts/update_docs_from_definitions.py
