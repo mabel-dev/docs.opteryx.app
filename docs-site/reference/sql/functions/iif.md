@@ -20,9 +20,9 @@ IIF(condition, true_value, false_value)
 - **condition** `boolean`
     Boolean expression used to choose which result to return.
 - **true_value** `any`
-    Value returned when `condition` evaluates to true.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 - **false_value** `any`
-    Value returned when `condition` evaluates to false.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 
 ## Returns
 

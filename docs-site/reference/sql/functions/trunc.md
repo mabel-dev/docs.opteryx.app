@@ -38,4 +38,5 @@ TRUNC(value, unit)
 ## Usage Notes
 
 Truncation is performed toward zero rather than toward negative infinity.
+Truncates to the start of the specified unit. The `unit` argument must be a constant expression. This overload is reachable only for a DATE LITERAL, which is constant-folded at plan time: over a DATE COLUMN there is no native kernel and the call is refused with "outside the c-native kernel set". Cast the column to TIMESTAMP to truncate it.
 Truncates to the start of the specified unit. The `unit` argument must be a constant expression.

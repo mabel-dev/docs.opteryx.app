@@ -24,7 +24,7 @@ Aggregates combine multiple rows into single summary values and are typically us
 
 - **ARRAY_AGG** — Collects input values into an array.
   - SQL forms: `ARRAY_AGG(expr)`, `ARRAY_AGG(DISTINCT expr)`, `ARRAY_AGG(expr LIMIT n)`, `ARRAY_AGG(expr ORDER BY expr [ASC|DESC] LIMIT n)`
-  - Support: global, grouped, strict_grouped
+  - Support: grouped, strict_grouped
   - Notes: Supports DISTINCT, ORDER BY, and LIMIT forms in the aggregate surface.
 - **CIDR_AGG** — Collects IPv4 addresses into the smallest list of CIDR blocks that covers exactly those addresses.
   - SQL forms: `CIDR_AGG(ipv4_expr)`

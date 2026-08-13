@@ -20,7 +20,7 @@ ARRAY_CONTAINS_ALL(arr, items)
 - **arr** `array`
     Input array or vector value.
 - **items** `array`
-    Collection of values to compare against the array.
+    Must be an array with the same element type as `arr`.
 
 ## Returns
 

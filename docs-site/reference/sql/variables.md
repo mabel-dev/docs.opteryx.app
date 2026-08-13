@@ -5,7 +5,7 @@ description: Every Opteryx system variable, its type, and who is permitted to se
 
 # System Variables
 
-Opteryx exposes 21 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
+Opteryx exposes 23 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
 
 > Be Aware: Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all. Everything else is fixed by the server or stamped per session.
 
@@ -18,6 +18,7 @@ Opteryx exposes 21 system variables that a session can read. Use [SHOW VARIABLES
 | `like_selectivity_decay` | FLOAT64 | env `LIKE_SELECTIVITY_DECAY` |
 | `match_threshold` | FLOAT64 | env `MATCH_THRESHOLD` |
 | `trace` | BOOL | env `OPTERYX_TRACE` |
+| `write_coalesce_rows` | INT64 | env `WRITE_COALESCE_ROWS` |
 
 ## Not settable from SQL
 
@@ -27,6 +28,7 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 |---|---|---|
 | `array_agg_memory_budget_bytes` | INT64 | `536870912` |
 | `billing_account` | VARCHAR | _per session_ |
+| `build` | INT64 | `3063` |
 | `character_set_client` | VARCHAR | `utf8` |
 | `cidr_agg_emit_budget_bytes` | INT64 | `536870912` |
 | `cidr_agg_state_budget_bytes` | INT64 | `536870912` |

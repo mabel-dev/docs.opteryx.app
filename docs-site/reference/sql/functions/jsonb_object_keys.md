@@ -18,7 +18,7 @@ JSONB_OBJECT_KEYS(json)
 ## Arguments
 
 - **json** `varchar`
-    JSON object or document value to inspect.
+    Must be text that parses as a JSON object; other input is rejected at execution.
 
 ## Returns
 

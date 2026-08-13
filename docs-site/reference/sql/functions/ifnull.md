@@ -18,9 +18,9 @@ IFNULL(value, default)
 ## Arguments
 
 - **value** `any`
-    Primary input value.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 - **default** `any`
-    Fallback value returned when the primary value is null.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 
 ## Returns
 

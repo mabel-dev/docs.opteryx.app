@@ -43,6 +43,17 @@
         "default": null,
         "default_source": "session"
     },
+    "build": {
+        "name": "build",
+        "type": "INT64",
+        "owner": "INTERNAL",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": 3063,
+        "default_source": "literal"
+    },
     "character_set_client": {
         "name": "character_set_client",
         "type": "VARCHAR",
@@ -681,5 +692,17 @@
         "set_by": "not settable via SQL",
         "default": null,
         "default_source": "build"
+    },
+    "write_coalesce_rows": {
+        "name": "write_coalesce_rows",
+        "type": "INT64",
+        "owner": "USER",
+        "visibility": "UNRESTRICTED",
+        "settable": true,
+        "requires_entitlement": null,
+        "set_by": "any session",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "WRITE_COALESCE_ROWS"
     }
 }

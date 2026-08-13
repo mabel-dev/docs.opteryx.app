@@ -18,7 +18,7 @@ TO_CHAR(num)
 ## Arguments
 
 - **num** `integer`
-    Numeric input value.
+    A Unicode codepoint in 0..1114111 (U+10FFFF). The surrogate range 55296..57343 (U+D800..U+DFFF) is excluded as well — those are not Unicode scalar values.
 
 ## Returns
 

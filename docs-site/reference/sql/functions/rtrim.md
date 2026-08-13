@@ -12,13 +12,15 @@ Removes trailing whitespace from string.
 ## Syntax
 
 ```sql
-RTRIM(string)
+RTRIM(string, [characters])
 ```
 
 ## Arguments
 
 - **string** `varchar`
     String input value.
+- **characters** `varchar` [optional | constant]
+    The SET of characters to strip, not a substring to match: `TRIM(BOTH 'ab' FROM 'baXab')` is `X`. Must be constant. Omitted, ASCII whitespace is stripped. Over an NVARCHAR operand the set is matched by codepoint, so a multibyte character can never be split. Must be a constant expression. Optional.
 
 ## Returns
 

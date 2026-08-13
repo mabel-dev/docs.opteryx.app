@@ -17,13 +17,15 @@ CONCAT(str1, str2, [strs...])
 
 ## Arguments
 
-- **str1** `any`
+- **str1** `varchar`
     First input string value.
-- **str2** `any`
-    Input value of type `any`.
-- **strs** `any` [optional | variadic]
-    Input value of type `any`. Optional. Can be repeated.
+- **str2** `varchar`
+    String input value.
+- **strs** `varchar` [optional | variadic]
+    String input value. Optional. Can be repeated.
 
 ## Returns
 
 **VARCHAR** — Returns the computed result as `VARCHAR`.
+**NVARCHAR** — Returns the computed result as `NVARCHAR`.
+**VARBINARY** — Returns the computed result as `VARBINARY`.

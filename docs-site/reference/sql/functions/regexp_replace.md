@@ -22,7 +22,7 @@ REGEXP_REPLACE(string, pattern, replacement)
 - **pattern** `varchar` [constant]
     Regular expression pattern to match in the input string. Must be a constant expression.
 - **replacement** `varchar` [constant]
-    Replacement text used for matched content. Must be a constant expression.
+    Only the whole-match capture reference `'\1'` is supported. An arbitrary replacement template is refused. Must be a constant expression.
 
 ## Returns
 

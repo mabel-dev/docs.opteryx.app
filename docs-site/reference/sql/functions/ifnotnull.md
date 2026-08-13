@@ -18,9 +18,9 @@ IFNOTNULL(value, result)
 ## Arguments
 
 - **value** `any`
-    Primary input value.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 - **result** `any`
-    Value returned when the condition or null check succeeds.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 
 ## Returns
 

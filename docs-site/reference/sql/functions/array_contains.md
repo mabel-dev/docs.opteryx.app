@@ -20,7 +20,7 @@ ARRAY_CONTAINS(arr, item)
 - **arr** `array`
     Input array or vector value.
 - **item** `any`
-    Single value to compare against the array.
+    Must be of the array's element type.
 
 ## Returns
 

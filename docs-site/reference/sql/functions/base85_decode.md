@@ -18,7 +18,7 @@ BASE85_DECODE(blob)
 ## Arguments
 
 - **blob** `varchar`
-    Binary or text value to encode, decode, or transform.
+    Must be well-formed base85 text; other input is rejected at execution.
 
 ## Returns
 

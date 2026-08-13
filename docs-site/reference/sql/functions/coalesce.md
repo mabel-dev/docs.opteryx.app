@@ -18,9 +18,9 @@ COALESCE(arg0, [args...])
 ## Arguments
 
 - **arg0** `any`
-    First input value.
+    A branch value. All branches must share one blendable family — all BOOLEAN, all string, or a numeric/temporal scalar mix. DECIMAL is not blendable; CAST it to DOUBLE first.
 - **args** `any` [optional | variadic]
-    Additional input values. Optional. Can be repeated.
+    Further branch values, of the same blendable family as `arg0`. Optional. Can be repeated.
 
 ## Returns
 
