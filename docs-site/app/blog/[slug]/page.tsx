@@ -122,6 +122,26 @@ export function generateStaticParams() {
     .map((slug) => ({ slug: slug.join("/") }));
 }
 
+// A post can name another URL as the copy that should own its search ranking,
+// via a `canonical:` frontmatter key. This exists because the rugo log-analytics
+// benchmark is published on both this site and rugo.dev; without a canonical the
+// two copies compete and a search engine picks between them arbitrarily.
+// Posts without the key emit nothing, so behaviour is unchanged for all of them.
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params);
+  const normalizedSlug = normalizeSlug(resolvedParams?.slug);
+  if (!normalizedSlug) return {};
+
+  const mdPath = path.join(getContentBlogDir(), normalizedSlug + ".md");
+  if (!fs.existsSync(mdPath)) return {};
+
+  const { frontmatter } = parseFrontmatter(fs.readFileSync(mdPath, "utf8"));
+  const canonical = frontmatter.canonical as string | undefined;
+  if (!canonical) return {};
+
+  return { alternates: { canonical } };
+}
+
 export default async function Page({ params }: Props) {
   const resolvedParams = await Promise.resolve(params);
   if (

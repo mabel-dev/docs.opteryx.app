@@ -5,6 +5,7 @@ date: 2026-07-10
 author: Justin Joyce
 role: Opteryx Engineering
 image: /blog/2026-07-10-rugo.png
+canonical: https://rugo.dev/blog/jsonl-logs-grep-vs-pandas-vs-rugo.html
 tags:
       - rugo
       - performance
@@ -14,6 +15,10 @@ tags:
 ---
 
 # Monitoring opteryx.app — A Faster Way to Search Web Traffic Logs
+
+> A version of this write-up for Python developers with log files — same
+> benchmark, less Opteryx context — is on the Rugo blog as
+> [Analysing 1 GB of JSONL logs in Python: grep vs pandas vs rugo](https://rugo.dev/blog/jsonl-logs-grep-vs-pandas-vs-rugo.html).
 
 ## TL;DR
 
@@ -153,7 +158,7 @@ The more selective your query — fewer columns, fewer matching rows — the big
 
 Rugo was built as the file layer for [Opteryx](https://opteryx.app). The principle — push column projection and predicate filtering ahead of decode — makes sense inside a SQL engine and outside one too.
 
-`pip install rugo` gets you the same reader Opteryx uses, with zero runtime dependencies. 17 MB installed. 5 ms cold import. No PyArrow, no Pandas, no NumPy.
+`pip install rugo` gets you the same reader Opteryx uses, with zero runtime dependencies. 11.6 MB installed, 30 ms cold import (linux x86_64, CPython 3.12 — see the [footprint comparison](https://rugo.dev/#hero) for how that is measured and how it compares to PyArrow, DuckDB, Polars and fastparquet). No PyArrow, no Pandas, no NumPy.
 
 The [full API](https://rugo.dev) covers Parquet, CSV, and JSONL — same shape, same principle.
 
