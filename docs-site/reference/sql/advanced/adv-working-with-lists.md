@@ -17,7 +17,8 @@ Split a delimited string into an array:
 SELECT SPLIT(string_column, ',') FROM my_table;
 ```
 
-Build a relation from literal values with `UNNEST` in the `FROM` clause:
+Build a relation from literal values with `UNNEST` in the `FROM` clause — see
+[Relation Constructors](adv-temp-tables.md):
 
 ```sql
 SELECT *
@@ -29,8 +30,8 @@ being projected:
 
 ```sql
 SELECT name
-  FROM $astronauts
- WHERE ARRAY_CONTAINS_ANY(missions, ('Apollo 11', 'Apollo 12'));
+  FROM missions
+ WHERE ARRAY_CONTAINS_ANY(crew, ('Armstrong', 'Aldrin'));
 ```
 
 ## Accessing Elements
@@ -42,12 +43,23 @@ array[0]   -- first element
 array[1]   -- second element
 ```
 
-This form only works on array-typed columns — not on inline literal arrays.
+A **negative index counts back from the end**, so `array[-1]` is the last element,
+`array[-2]` the second-to-last:
+
+```sql
+array[-1]  -- last element
+array[-2]  -- second-to-last element
+```
+
+The subscript must be an integer literal. An identifier or expression is rejected when the
+query is planned — there is no computed-index form. This form only works on array-typed
+columns, not on inline literal arrays.
 
 Example:
 
 ```sql
-SELECT tags[0] AS first_tag
+SELECT tags[0]  AS first_tag,
+       tags[-1] AS last_tag
   FROM articles;
 ```
 
@@ -66,15 +78,18 @@ SELECT name, LENGTH(tags) AS tag_count
 
 ## Containment
 
+Three containment tests, each with a function form and — for the two multi-value tests — an
+operator form. The function and operator forms are equivalent; use whichever reads better.
+
+| Test | Function | Operator |
+|------|----------|----------|
+| Array contains a single value | `ARRAY_CONTAINS(array, value)` | `value = ANY (array)` |
+| Array contains **any** of several values | `ARRAY_CONTAINS_ANY(array, (v1, v2))` | `array @> (v1, v2)` |
+| Array contains **all** of several values | `ARRAY_CONTAINS_ALL(array, (v1, v2))` | `array @>> (v1, v2)` |
+
 ### ARRAY_CONTAINS
 
 Test if an array contains a specific value:
-
-```sql
-ARRAY_CONTAINS(array, value)
-```
-
-Example:
 
 ```sql
 SELECT *
@@ -82,27 +97,28 @@ SELECT *
  WHERE ARRAY_CONTAINS(tags, 'featured');
 ```
 
-### ARRAY_CONTAINS_ANY
+`ARRAY_CONTAINS` is lowered to `value = ANY (array)` when the query is planned, so the two
+spellings execute identically.
+
+### ARRAY_CONTAINS_ANY / `@>`
 
 Test if an array contains any of the specified values:
 
 ```sql
-ARRAY_CONTAINS_ANY(array, [value1, value2, ...])
+SELECT * FROM articles WHERE ARRAY_CONTAINS_ANY(tags, ('featured', 'pinned'));
+SELECT * FROM articles WHERE tags @> ('featured', 'pinned');
 ```
 
-Or using the `@>` operator:
-
-```sql
-array @> [value1, value2]
-```
-
-### ARRAY_CONTAINS_ALL
+### ARRAY_CONTAINS_ALL / `@>>`
 
 Test if an array contains all of the specified values:
 
 ```sql
-ARRAY_CONTAINS_ALL(array, [value1, value2, ...])
+SELECT * FROM articles WHERE ARRAY_CONTAINS_ALL(tags, ('featured', 'pinned'));
+SELECT * FROM articles WHERE tags @>> ('featured', 'pinned');
 ```
+
+> Be Aware: A parenthesised list with a **single** element is not an array — `('featured')` is just a parenthesised scalar, and `tags @> ('featured')` is rejected as an `ARRAY`/`VARCHAR` type mismatch. For a one-value test use `ARRAY_CONTAINS(tags, 'featured')` or `'featured' = ANY (tags)`.
 
 ## ANY
 
@@ -170,8 +186,7 @@ CAST(column AS ARRAY<element_type>)
 ## Limitations
 
 - Array literals in a `SELECT` clause require a column alias and cannot be subscripted inline — access elements via a column reference
+- Subscripts must be integer literals; there is no computed-index form
 - `LIKE ANY`, `SORT`, `GREATEST`, and `LEAST` on array values are not currently stable
 - `ALL` operator only supports `=` and `!=`; comparison operators (`>`, `<`, etc.) are not supported
 - Arrays cannot be used in `ORDER BY`
-
-> Be Aware: Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove array columns that are never read. Do not rely on specific optimizer behavior.

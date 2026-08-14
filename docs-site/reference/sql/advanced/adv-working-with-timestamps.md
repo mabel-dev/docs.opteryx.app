@@ -166,9 +166,32 @@ Both `start` and `end` must be `TIMESTAMP` (cast DATE values explicitly):
 SELECT DATEDIFF('day', '2024-01-01'::TIMESTAMP, '2024-12-31'::TIMESTAMP);
 ```
 
-> Be Aware: INTERVALs created as the result of timestamp subtraction have no month or year component and are handled internally as microseconds. This may produce unexpected results when mixed with month calculations.
+> Be Aware: An INTERVAL produced by subtracting one timestamp from another carries its whole magnitude in the sub-day component — its month and day fields are zero, and the elapsed time is a nanosecond count. Adding `INTERVAL '1' MONTH` to it sets the month field alongside that count rather than folding into it, so the two never combine into a single elapsed figure.
 
-The comparison form `WHERE death - birth > INTERVAL '100' YEAR` is not supported. Use `WHERE birth + INTERVAL '100' YEAR > death` instead.
+### Intervals cannot be compared to each other
+
+`interval > interval` is **not supported in any unit** — not just for `YEAR`. Both of these
+fail, and they fail with an internal error rather than a clean planning message:
+
+```sql
+-- unsupported
+SELECT * FROM people WHERE death - birth > INTERVAL '100' YEAR;
+SELECT * FROM people WHERE death - birth > INTERVAL '30' DAY;
+```
+
+Rearrange so the comparison is between two **timestamps**, which is supported:
+
+```sql
+-- supported
+SELECT * FROM people WHERE birth + INTERVAL '100' YEAR < death;
+SELECT * FROM people WHERE birth + INTERVAL '30' DAY  < death;
+```
+
+Or compare a `DATEDIFF` result, which is a number:
+
+```sql
+SELECT * FROM people WHERE DATEDIFF('day', birth, death) > 30;
+```
 
 The `month`, `quarter` and `year` units are day-count approximations - days divided by 30, 91 and 365 respectively - not calendar-aware differences. `month` and `quarter` are the ones that bite in practice:
 
@@ -218,10 +241,10 @@ Recognized date parts and support across functions - <img src="/images/square-ch
 ## Limitations
 
 - INTERVALs created from timestamp subtraction have no month or year component
+- Intervals cannot be compared to one another in any unit — compare timestamps or a `DATEDIFF` result instead
 - DATEDIFF `month`, `quarter` and `year` are day-count approximations, not calendar differences
 - EXTRACT does not accept `WEEK`, `DOW` or `DOY`
 - All timestamps are stored and compared in UTC
-- `death - birth > INTERVAL '100' YEAR` comparison form is not supported
 
 ## Timezones
 

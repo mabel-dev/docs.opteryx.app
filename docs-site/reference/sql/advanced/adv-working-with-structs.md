@@ -1,21 +1,29 @@
 ---
-title: Working with Structs in Opteryx - SQL JSON Operations
-description: Query and manipulate struct data types and JSON in Opteryx. Access nested data structures with SQL.
+title: Working with JSON Strings in Opteryx - SQL JSON Operations
+description: Query nested data in Opteryx with JSON strings. Extract keys with the arrow operators, list keys with JSONB_OBJECT_KEYS, and understand how Parquet struct columns are surfaced.
 ---
 
-# Working with Structs
+# Working with JSON Strings
 
-A struct is a collection of zero or more key-value pairs. Keys must be `VARCHAR`; values can be different types.
+**Opteryx has no native struct type.** Nested data is held as a **JSON string** in a
+`VARCHAR` or `NVARCHAR` column, and every operation on this page is a string operation over
+that text. There is no `STRUCT` you can declare, cast to, or see in a schema.
 
-Structs are represented as JSON-formatted strings stored in `VARCHAR` or `NVARCHAR` columns. All struct operations work on any column containing valid JSON.
+That includes data that was nested at rest: **a Parquet `STRUCT` column is surfaced as an
+`NVARCHAR` column holding the JSON encoding of each value.** `SHOW COLUMNS` and
+`information_schema.columns` report it as `NVARCHAR`, not as a struct, and the field access
+below is what reads into it.
 
-## Creating Structs
+## Creating JSON Values
 
-Structs are created as JSON-formatted string literals:
+JSON values are ordinary string literals:
 
 ```sql
 SELECT '{"name": "Alice", "age": 30}';
 ```
+
+Keys are always text; values may be of mixed types, because nothing constrains them but the
+JSON itself.
 
 ## Reading Values
 
@@ -61,42 +69,52 @@ SELECT *
  WHERE address ->> 'city' = 'London';
 ```
 
-### Key Existence (`@?`)
+### Listing Keys (`JSONB_OBJECT_KEYS`)
 
-Returns `TRUE` if the struct contains the specified key.
+Returns the document's top-level keys as an `ARRAY<VARCHAR>`, in document order:
 
 ```sql
-struct @? 'key'
+SELECT JSONB_OBJECT_KEYS(address) AS keys
+  FROM records;
+-- ['street', 'city', 'postcode']
 ```
 
-Example:
+It reads only the **top level**, in document order — a nested object contributes its own key,
+not its children's. Given `{"a":1,"b":{"c":2},"d":3}` the result is `['a', 'b', 'd']`.
+
+> Be Aware: `JSONB_OBJECT_KEYS` is usable in a **projection**, not in a `WHERE` clause. Containment tests over its result have no native kernel, so `WHERE ARRAY_CONTAINS(JSONB_OBJECT_KEYS(doc), 'k')` is refused when the query is planned. Project the keys and filter downstream, or use the key-existence form below.
+
+### Key Existence
+
+> Warning: **`@?` does not execute.** The dialect parses `@?` and the binder types it, but there is no kernel behind it — a query using it against column data fails at planning with "outside the c-native kernel set", in a filter and in a projection alike. Do not use it.
+
+Test for a key with `IS NOT NULL` on an extraction, which does execute and is the form to use
+in a `WHERE` clause:
 
 ```sql
 SELECT *
   FROM records
- WHERE address @? 'postcode';
+ WHERE address -> 'postcode' IS NOT NULL;
 ```
 
-The `@?` operator also supports JSON Path expressions:
-
-```sql
-SELECT *
-  FROM records
- WHERE address @? '$.contact.email';
-```
+An absent key extracts as `NULL`, so this distinguishes "key not present" from "key present"
+— but not from "key present with a JSON `null` value", which also extracts as `NULL`.
 
 ### Nested Access
 
-Chain `->` calls to navigate nested structures:
+Chain `->` calls to navigate nested documents:
 
 ```sql
-SELECT profile -> 'address' -> 'city'
+SELECT profile -> 'address' ->> 'city'
   FROM records;
 ```
 
+Each `->` returns the JSON encoding of the value it selected, which the next `->` parses in
+turn; finish with `->>` when you want a plain string out.
+
 ## Comparing
 
-Structs can be compared for equality against a JSON literal:
+JSON values can be compared for equality against a JSON literal:
 
 ```sql
 SELECT *
@@ -104,7 +122,7 @@ SELECT *
  WHERE config = '{"mode": "strict"}';
 ```
 
-> Warning: This is **string** equality, not structural equality — structs are stored as JSON text. The literal has to match the stored text exactly, so a difference in whitespace or key order silently returns no rows.
+> Warning: This is **string** equality, not structural equality — the value *is* JSON text. The literal has to match the stored text exactly, so a difference in whitespace or key order silently returns no rows.
 
 ```sql
 SELECT '{"mode":"strict"}' = '{"mode":"strict"}';    -- true
@@ -115,8 +133,7 @@ To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
 
 ## Limitations
 
-- Key access requires the `->` or `->>` operators; square-bracket subscript (`struct['key']`) is for integer-indexed arrays, not struct fields
-- Struct values are opaque to the query planner — predicates on struct fields cannot use row-group pruning or bloom filters
-- Projection pushdown may remove struct columns as part of optimization; do not rely on specific optimizer behavior
-
-> Be Aware: Some restrictions may be resolved by the query optimizer. For example, Projection Pushdown may remove struct columns you never read. However, you should not rely on the optimizer to take any particular action.
+- There is no native struct type — nested data is JSON text, and there is nothing to declare or cast to
+- Key access requires the `->` or `->>` operators; square-bracket subscript (`doc['key']`) is for integer-indexed arrays, not JSON keys
+- `@?` parses and binds but has no execution kernel — see [Key Existence](#key-existence)
+- JSON values are opaque to the query planner — predicates on JSON fields cannot use row-group pruning or bloom filters, so they are evaluated over every row that reaches the filter

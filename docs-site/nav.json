@@ -588,19 +588,19 @@
             "NULL semantics": "reference/sql/advanced/adv-null-semantics.md"
           },
           {
-            "Temporary tables": "reference/sql/advanced/adv-temp-tables.md"
+            "Relation constructors": "reference/sql/advanced/adv-temp-tables.md"
           },
           {
             "Time travel queries": "reference/sql/advanced/adv-time-travel.md"
           },
           {
+            "Working with arrays": "reference/sql/advanced/adv-working-with-lists.md"
+          },
+          {
             "Working with IPs": "reference/sql/advanced/adv-working-with-ips.md"
           },
           {
-            "Working with lists": "reference/sql/advanced/adv-working-with-lists.md"
-          },
-          {
-            "Working with structs": "reference/sql/advanced/adv-working-with-structs.md"
+            "Working with JSON": "reference/sql/advanced/adv-working-with-structs.md"
           },
           {
             "Working with timestamps": "reference/sql/advanced/adv-working-with-timestamps.md"

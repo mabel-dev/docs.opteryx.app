@@ -52,11 +52,52 @@ functions then count codepoints:
 
 ---
 
-## Pattern matching (`LIKE`, `REGEXP`, `REGEXP_REPLACE`)
+## Pattern matching (`LIKE`, `RLIKE`, `REGEXP_REPLACE`)
 
-Opteryx uses **RE2** for regular expression matching. Because string operations are byte-oriented by default (see above), results can differ from engines that operate over codepoints when the input contains **non-UTF-8 or multibyte characters** — the match operates correctly over bytes, but "the same logical string" may not be the same byte sequence another engine sees.
+**There is no regex engine at execution time.** A `RLIKE` / `REGEXP_LIKE` pattern is compiled
+when the query is planned into a byte-level DFA — a transition table — and matching is a
+table walk: one byte read and one array index per input byte, with no backtracking. RE2
+appears only as the plan-time *parser* that builds the pattern AST; RE2's own matcher is
+never called, and it is not linked into the execution path at all.
 
-This is not a bug in the regex engine; it is the byte-vs-codepoint model surfacing through pattern matching.
+That buys predictable, linear-time matching, and costs generality. The **supported dialect
+is a subset**, and a pattern outside it is refused when the query is planned rather than
+served by a slower fallback:
+
+| Not supported | Note |
+|---------------|------|
+| Lookaround, backreferences | No DFA equivalent |
+| Case-folding — `(?i)`, `RLIKE` with a case-insensitive flag | Refused rather than silently matched case-sensitively; use `ILIKE` |
+| Non-ASCII **pattern** content | Subject strings may be any UTF-8; the *pattern* must be ASCII |
+| `^` / `$` nested inside alternation or repetition | Anchors are recognised only at the outermost start/end — `^foo$` is fine, `(^foo|bar$)` is refused |
+| Very large bounded repeats (`{n,m}`) | Unrolled, with a size cap; over the cap the pattern is refused |
+
+`.` matches any single **byte** except newline, not a codepoint. For a yes/no match this
+agrees with codepoint-aware engines on any pattern that doesn't count exact character
+positions — `.{3}` against a multi-byte subject counts bytes.
+
+### `REGEXP_REPLACE` is capture extraction only
+
+The only supported form is whole-match capture extraction — `REGEXP_REPLACE(s, pattern, '\1')`
+where `pattern` compiles to an anchored DFA program consuming the whole input. The optimizer
+rewrites those calls to a native extraction kernel. An arbitrary replacement template, or a
+pattern outside the DFA-compilable subset, raises:
+
+~~~sql
+SELECT REGEXP_REPLACE(name, '^(M.*)$', '\1') FROM planets;   -- ok
+SELECT REGEXP_REPLACE(name, 'a', 'X')        FROM planets;   -- raises
+~~~
+
+General regex replacement is not available. Rewrite with `REPLACE`, `SUBSTRING` or
+`SPLIT` where the transformation is expressible without one.
+
+### Byte orientation still applies
+
+Because string operations are byte-oriented by default (see above), results can differ from
+engines that operate over codepoints when the input contains **non-UTF-8 or multibyte
+characters** — the match operates correctly over bytes, but "the same logical string" may not
+be the same byte sequence another engine sees. This is not a bug in the matcher; it is the
+byte-vs-codepoint model surfacing through pattern matching.
 
 ---
 
@@ -136,3 +177,4 @@ Notable differences relevant to users coming from other engines:
 - Integer division is `DIV`, not `//`.
 - `OCTET_LENGTH` / `BYTE_LENGTH` are available for explicit byte-length queries.
 - `DATE_TRUNC` is not available; use `TRUNC(value, unit)`.
+- `REGEXP_REPLACE` supports only the whole-match capture form — see [above](#regexp_replace-is-capture-extraction-only).

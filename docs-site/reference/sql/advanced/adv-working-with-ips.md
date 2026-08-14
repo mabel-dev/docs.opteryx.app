@@ -47,8 +47,6 @@ The right-hand side is CIDR notation written as a string literal. A `NULL` addre
 contained by any network and yields false. An invalid or prefix-less CIDR raises rather
 than quietly matching nothing.
 
-> Warning: `|` is **bitwise OR**, not containment. `ip | '10.0.0.0/8'` does not test membership — it is rejected as a type error, because bitwise OR takes integer operands. Use `<<=`.
-
 ## Network Addresses
 
 [`IP_TRUNC`](/docs/reference/sql/functions/ip_trunc) applies a network mask, returning the
