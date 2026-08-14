@@ -14,15 +14,22 @@ export default function BlogPostTOC() {
       const els = Array.from(document.querySelectorAll('article h2, article h3'))
       const data = els.map(el => ({ id: el.id, text: el.textContent || '', level: parseInt(el.tagName[1]) }))
       setHeadings(data)
-      if (data.length && !activeId) setActiveId(data[0].id)
+      // Unconditionally, because this runs once per post: the previous check
+      // read an activeId left over from the post navigated away from, which is
+      // never empty after the first one, so every post reached by a client-side
+      // route change opened with nothing highlighted.
+      setActiveId(data.length ? data[0].id : '')
     }
-    setTimeout(extract, 100)
+    const timer = setTimeout(extract, 100)
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) setActiveId(e.target.id) }),
       { rootMargin: '-100px 0px -66%' }
     )
     document.querySelectorAll('article h2, article h3').forEach(el => obs.observe(el))
-    return () => obs.disconnect()
+    // The timer is cleared as well as the observer: left pending across a route
+    // change it fires against the next post and overwrites the heading it has
+    // just highlighted.
+    return () => { clearTimeout(timer); obs.disconnect() }
   }, [pathname])
 
   if (!headings.length) return <div />

@@ -669,8 +669,11 @@ kbd {
     --callout-label: var(--danger);
 }
 
-/* Legacy callout blockquotes (from existing DocRenderer) */
-.docs-article blockquote[data-callout="tip"] {
+/* Legacy callout blockquotes (from existing DocRenderer).
+   Blog posts render into .post-body rather than .docs-article and pass the same
+   transformCallouts option, so both wrappers are listed on every rule. */
+.docs-article blockquote[data-callout="tip"],
+.post-body blockquote[data-callout="tip"] {
     background: rgba(255, 165, 3, 0.08);
     padding: 0.75rem 1rem;
     color: var(--text);
@@ -678,7 +681,8 @@ kbd {
     margin: 1rem 0;
     border-left: 3px solid var(--opteryx-orange);
 }
-.docs-article blockquote[data-callout="beaware"] {
+.docs-article blockquote[data-callout="beaware"],
+.post-body blockquote[data-callout="beaware"] {
     background: rgba(203, 1, 1, 0.08);
     padding: 0.75rem 1rem;
     color: var(--text);
@@ -686,7 +690,8 @@ kbd {
     margin: 1rem 0;
     border-left: 3px solid var(--danger);
 }
-.docs-article blockquote[data-callout="warning"] {
+.docs-article blockquote[data-callout="warning"],
+.post-body blockquote[data-callout="warning"] {
     background: var(--warning-soft);
     padding: 0.75rem 1rem;
     color: var(--text);
@@ -694,7 +699,8 @@ kbd {
     margin: 1rem 0;
     border-left: 3px solid var(--warning);
 }
-.docs-article blockquote[data-callout="caution"] {
+.docs-article blockquote[data-callout="caution"],
+.post-body blockquote[data-callout="caution"] {
     background: rgba(203, 1, 1, 0.08);
     padding: 0.75rem 1rem;
     color: var(--text);
@@ -702,7 +708,8 @@ kbd {
     margin: 1rem 0;
     border-left: 3px solid var(--danger);
 }
-.docs-article blockquote[data-callout] .callout-header {
+.docs-article blockquote[data-callout] .callout-header,
+.post-body blockquote[data-callout] .callout-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -710,22 +717,26 @@ kbd {
     height: 1rem;
     margin-top: 0.4rem;
 }
-.docs-article blockquote[data-callout] .callout-icon {
+.docs-article blockquote[data-callout] .callout-icon,
+.post-body blockquote[data-callout] .callout-icon {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
 }
-.docs-article blockquote[data-callout] .callout-title {
+.docs-article blockquote[data-callout] .callout-title,
+.post-body blockquote[data-callout] .callout-title {
     font-weight: 600;
     margin: 0;
     font-size: 0.95rem;
 }
-.docs-article blockquote[data-callout] .callout-content {
+.docs-article blockquote[data-callout] .callout-content,
+.post-body blockquote[data-callout] .callout-content {
     margin: 0;
 }
 
 /* Standard blockquote */
-.docs-article blockquote:not([data-callout]) {
+.docs-article blockquote:not([data-callout]),
+.post-body blockquote:not([data-callout]) {
     margin: 0 0 20px;
     padding: 4px 16px;
     border-left: 3px solid var(--border-2);
@@ -733,6 +744,12 @@ kbd {
     font-style: italic;
     font-size: 14px;
     line-height: 1.6;
+}
+/* Blog body copy is 16px where docs body copy is 14px, so the shared 14px above
+   would render a quote a step smaller than the prose around it. line-height is
+   unitless, so it scales with this on its own. */
+.post-body blockquote:not([data-callout]) {
+    font-size: 16px;
 }
 
 /* ===========================================================================
@@ -764,8 +781,12 @@ kbd {
 }
 /* Capability/support matrices mark a "yes" cell with the Tabler square-check
    icon rather than an emoji tick, so the mark renders identically on every
-   platform and picks up the brand teal. */
-.docs-article td .table-check {
+   platform and picks up the brand teal.
+
+   Tailwind's preflight sets `img { display: block }`, so the inline-block here
+   is load-bearing — without it the icons break onto their own line when used
+   in prose (e.g. the legend above a matrix), not just in a cell. */
+.docs-article .table-check {
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -4582,10 +4603,17 @@ kbd {
     color: var(--text-deep);
 }
 
+.cost-calc .cc-toggles {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+}
+
 /* Segmented control. The radios stay in the DOM and keep the keyboard and
    screen reader behaviour; only their painting is replaced. */
-.cost-calc .cc-plan {
-    margin-left: auto;
+.cost-calc .cc-group {
     display: inline-flex;
     gap: 2px;
     padding: 2px;
@@ -4625,6 +4653,13 @@ kbd {
 
 .cost-calc .cc-pill input:focus-visible + span {
     box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+/* The scale is a way of looking at the answer, not a choice about the account,
+   so it sits back from the billing toggle beside it. */
+.cost-calc .cc-scale input:checked + span {
+    background: var(--panel-2);
+    color: var(--text-deep);
 }
 
 .cost-calc .cc-body {
@@ -4677,6 +4712,9 @@ kbd {
     outline: none;
 }
 
+/* The native select arrow is drawn hard against the right edge of the control
+   with the label left of it, which reads as a gap rather than a button. Drawing
+   the chevron ourselves keeps it a fixed distance from the text. */
 .cost-calc .cc-unit {
     font-family: var(--font-body);
     font-size: var(--fs-caption);
@@ -4684,14 +4722,21 @@ kbd {
     background: transparent;
     border: 0;
     border-left: 1px solid var(--border);
-    padding: 0 8px;
+    padding: 0 26px 0 10px;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' fill='none' stroke='%235f6b78' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
 }
 
 .cost-calc .cc-unit--fixed {
     display: flex;
     align-items: center;
     cursor: default;
+    padding: 0 10px;
+    background-image: none;
 }
 
 .cost-calc .cc-unit:focus-visible {
@@ -4725,6 +4770,13 @@ kbd {
 .cost-calc .cc-table tbody th {
     font-weight: 500;
     color: var(--text-deep);
+}
+
+/* The article's own rule only clears the last row's <td>s, and the row label
+   here is a <th>, which would otherwise keep a line under it. */
+.cost-calc .cc-table tbody tr:last-child th,
+.cost-calc .cc-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .cost-calc .cc-table td:last-child,

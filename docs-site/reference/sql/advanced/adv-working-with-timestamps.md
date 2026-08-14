@@ -97,7 +97,11 @@ SELECT EXTRACT(YEAR FROM event_time),
   FROM events;
 ```
 
-Supported parts: `NANOSECOND`, `MICROSECOND`, `MILLISECOND`, `SECOND`, `MINUTE`, `HOUR`, `DATE`, `DAY`, `DAYOFWEEK`/`DOW`, `WEEK`, `ISOWEEK`, `MONTH`, `QUARTER`, `DAYOFYEAR`/`DOY`, `YEAR`, `ISOYEAR`, `DECADE`
+Supported parts: `YEAR`, `QUARTER`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`.
+
+Sub-day parts (`HOUR`, `MINUTE`, `SECOND`) require a `TIMESTAMP` operand - over a `DATE` they are refused, so a `DATE` accepts only `YEAR`, `QUARTER`, `MONTH` and `DAY`.
+
+`WEEK`, `ISOWEEK`, `DAYOFWEEK`/`DOW`, `DAYOFYEAR`/`DOY`, `EPOCH`, `ISOYEAR`, `DECADE`, `NANOSECOND`, `MILLISECOND` and `MICROSECOND` are **not** accepted by `EXTRACT` - see [Supported Date Parts](#supported-date-parts) for what to use instead.
 
 ## Formatting
 
@@ -166,7 +170,17 @@ SELECT DATEDIFF('day', '2024-01-01'::TIMESTAMP, '2024-12-31'::TIMESTAMP);
 
 The comparison form `WHERE death - birth > INTERVAL '100' YEAR` is not supported. Use `WHERE birth + INTERVAL '100' YEAR > death` instead.
 
-DATEDIFF with `month` units can be unreliable — use day-level units where precision matters.
+The `month`, `quarter` and `year` units are day-count approximations - days divided by 30, 91 and 365 respectively - not calendar-aware differences. `month` and `quarter` are the ones that bite in practice:
+
+```sql
+-- 0, not 1: February is 29 days, short of the 30-day divisor
+SELECT DATEDIFF('month', '2024-02-01'::TIMESTAMP, '2024-03-01'::TIMESTAMP);
+
+-- 0, not 1: Q1 of a non-leap year is 90 days, short of the 91-day divisor
+SELECT DATEDIFF('quarter', '2023-01-01'::TIMESTAMP, '2023-04-01'::TIMESTAMP);
+```
+
+`year` is accurate over any realistic range. Use day-level units where precision matters.
 
 ## Truncating
 
@@ -184,25 +198,28 @@ SELECT TRUNC(event_time, 'month') FROM events;
 
 ## Supported Date Parts
 
-Recognized date parts and support across functions:
+Recognized date parts and support across functions - <img src="/images/square-check.svg" alt="" class="table-check" /> supported, <img src="/images/square-x.svg" alt="" class="table-check" /> not supported, <img src="/images/alert-triangle.svg" alt="" class="table-check" /> supported but see the note:
 
-Part     | TRUNC | EXTRACT | DATEDIFF | Notes
--------- | :---: | :-----: | :------: | ----
-second   | ✓     | ✓       | ✓        |
-minute   | ✓     | ✓       | ✓        |
-hour     | ✓     | ✓       | ✓        |
-day      | ✓     | ✓       | ✓        |
-dow      | ✘     | ✓       | ✘        | day of week
-week     | ✓     | ✓       | ✓        | ISO week (starts Monday)
-month    | ✓     | ✓       | ▲        | DATEDIFF unreliable for months
-quarter  | ✓     | ✓       | ✓        |
-doy      | ✘     | ✓       | ✘        | day of year
-year     | ✓     | ✓       | ✓        |
+| Part | TRUNC | EXTRACT | DATEDIFF | Notes |
+| --- | :---: | :---: | :---: | --- |
+| microsecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| millisecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| second | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| minute | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| hour | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| day | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| dow | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of week - no function accepts it; use `FORMAT_TIMESTAMP('%u', ts)` |
+| week | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | ISO week (starts Monday); for EXTRACT use `FORMAT_TIMESTAMP('%V', ts)` |
+| month | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 30 |
+| quarter | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 91 |
+| doy | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of year - use `FORMAT_TIMESTAMP('%j', ts)` |
+| year | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
 
 ## Limitations
 
 - INTERVALs created from timestamp subtraction have no month or year component
-- DATEDIFF with month units can be unreliable
+- DATEDIFF `month`, `quarter` and `year` are day-count approximations, not calendar differences
+- EXTRACT does not accept `WEEK`, `DOW` or `DOY`
 - All timestamps are stored and compared in UTC
 - `death - birth > INTERVAL '100' YEAR` comparison form is not supported
 

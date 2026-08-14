@@ -439,9 +439,6 @@
   }
 
   function hydrate(widget) {
-    if (widget.dataset.hydrated) return;
-    widget.dataset.hydrated = "1";
-
     var tokenEl = widget.querySelector(".t-token");
 
     // One token, shared across every card on the page, for the life of the tab.
@@ -495,13 +492,65 @@
     renderURL(widget);
   }
 
+  // The card sits inside the article React hydrates from a single
+  // dangerouslySetInnerHTML string. Touching that subtree before React reaches
+  // it — and hydrate() does, it writes the URL preview — makes React compare its
+  // markup against a DOM it never rendered and log a hydration mismatch, so
+  // nothing is written until hydration has happened.
+  //
+  // React tags every node it hydrates with a `__reactFiber$…` key, which is the
+  // signal waited on here. It is a React internal, so there is a frame budget
+  // behind it: if the key never appears the card is wired up anyway, which is no
+  // worse than not gating at all.
+  function hydratedByReact(el) {
+    return Object.keys(el).some(function (key) {
+      return key.indexOf("__reactFiber$") === 0;
+    });
+  }
+
+  function whenReady(widget, fn) {
+    var host = widget.closest(".docs-article") || document.body;
+    var tries = 0;
+
+    // A timer rather than requestAnimationFrame: rAF is parked in a background
+    // tab, and a card that stays inert until the tab is looked at is worse than
+    // one that wires itself up a beat early.
+    (function check() {
+      if (hydratedByReact(host) || ++tries > 60) {
+        fn();
+        return;
+      }
+      setTimeout(check, 30);
+    })();
+  }
+
+  var scheduled = new WeakSet();
+
   function init() {
-    document.querySelectorAll(".api-tryit").forEach(hydrate);
+    document.querySelectorAll(".api-tryit").forEach(function (widget) {
+      if (scheduled.has(widget)) return;
+      scheduled.add(widget);
+      whenReady(widget, function () {
+        hydrate(widget);
+      });
+    });
+  }
+
+  // Arriving from another docs page is a client-side route change: the article
+  // is swapped in with no second load event, so the cards have to be watched for
+  // rather than waited for. The WeakSet keeps this idempotent, and a repeat call
+  // costs one query that matches nothing new.
+  function watch() {
+    init();
+    new MutationObserver(init).observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", watch);
   } else {
-    init();
+    watch();
   }
 })();

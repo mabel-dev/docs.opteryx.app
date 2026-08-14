@@ -145,17 +145,36 @@ function normalizeFenceLanguage(
 }
 
 function addHeadingIdsToHtml(html: string): string {
+  // A page may repeat a heading — the API reference pages carry a "Responses"
+  // and a "Try it live" under every endpoint. The slug alone is therefore not
+  // unique, and a repeated id makes every anchor for it point at the first one
+  // and gives the table of contents duplicate React keys. Later occurrences get
+  // a counter; the first keeps the bare slug, so links already written against
+  // it still resolve. The seen-map is per call, so it never leaks between pages.
+  const seen = new Map<string, number>();
+
   return html.replace(/<(h[23])>(.*?)<\/\1>/gi, (match, tag, content) => {
     if (!content || typeof content !== "string") {
       return match;
     }
 
-    const id = content
+    const slug = content
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
       .trim();
+
+    // The loop, rather than a bare suffix, covers a page that also has a real
+    // heading whose own slug is the one the counter is about to produce.
+    let id = slug;
+    let count = seen.get(slug) ?? 0;
+    while (seen.has(id)) {
+      count += 1;
+      id = `${slug}-${count}`;
+    }
+    seen.set(slug, count);
+    seen.set(id, 0);
 
     return `<${tag} id="${id}">${content}</${tag}>`;
   });

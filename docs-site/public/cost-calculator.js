@@ -33,7 +33,7 @@
       price: {
         storage: attr(root, "priceStorage", 0.00003), // per GB per hour
         query: attr(root, "priceQuery", 0.1), // per 1,000 queries
-        data: attr(root, "priceData", 0.001), // per GB
+        data: attr(root, "priceData", 0.004), // per GB
       },
       plans: {
         free: {
@@ -83,7 +83,7 @@
   // turn three sub-penny charges into 3p.
   function fmtMoney(value) {
     if (value <= 0) return "£0.00";
-    if (value < 0.01) return "£" + value.toFixed(4);
+    if (value < 0.01) return "£" + value.toFixed(4).replace(/0+$/, "");
     return "£" + value.toFixed(2);
   }
 
@@ -105,8 +105,14 @@
 
   /* --- the estimate --------------------------------------------------- */
 
-  function estimate(cfg, plan, usage) {
+  // `usage` is always per day, because that is how the allowance is counted and
+  // how charges accrue. The scale only decides how the answer is presented: a
+  // month is `days` identical days, so every rate — usage, allowance, billable
+  // amount and cost — is multiplied by the same figure.
+  function estimate(cfg, plan, usage, scale) {
     var allowance = cfg.plans[plan];
+    var per = scale === "month" ? cfg.days : 1;
+    var each = scale === "month" ? " a month" : " a day";
 
     var storage = ceilUnit(usage.storage - allowance.storage);
     var queries = ceilUnit(usage.queries - allowance.queries);
@@ -114,28 +120,30 @@
 
     var lines = [
       {
+        // Storage is a level, not a rate: 40 GB held is 40 GB held whether you
+        // look at a day or a month. Only its cost scales.
         label: "Storage",
         usage: fmtSize(usage.storage),
         allowance: fmtSize(allowance.storage),
-        chargeable: storage > 0 ? fmtSize(storage) : "none",
+        billable: storage > 0 ? fmtSize(storage) : "none",
         over: storage > 0,
-        cost: storage * cfg.price.storage * HOURS_PER_DAY * cfg.days,
+        cost: storage * cfg.price.storage * HOURS_PER_DAY * per,
       },
       {
         label: "Queries",
-        usage: fmtCount(usage.queries) + " a day",
-        allowance: fmtCount(allowance.queries) + " a day",
-        chargeable: queries > 0 ? fmtCount(queries) + " a day" : "none",
+        usage: fmtCount(usage.queries * per) + each,
+        allowance: fmtCount(allowance.queries * per) + each,
+        billable: queries > 0 ? fmtCount(queries * per) + each : "none",
         over: queries > 0,
-        cost: queries * (cfg.price.query / 1000) * cfg.days,
+        cost: queries * (cfg.price.query / 1000) * per,
       },
       {
         label: "Data queried",
-        usage: fmtSize(usage.data) + " a day",
-        allowance: fmtSize(allowance.data) + " a day",
-        chargeable: data > 0 ? fmtSize(data) + " a day" : "none",
+        usage: fmtSize(usage.data * per) + each,
+        allowance: fmtSize(allowance.data * per) + each,
+        billable: data > 0 ? fmtSize(data * per) + each : "none",
         over: data > 0,
-        cost: data * cfg.price.data * cfg.days,
+        cost: data * cfg.price.data * per,
       },
     ];
 
@@ -146,6 +154,10 @@
     return {
       lines: lines,
       total: total,
+      each: each,
+      // The other scale, for the second half of the headline.
+      other: scale === "month" ? total / cfg.days : total * cfg.days,
+      otherEach: scale === "month" ? " a day" : " a month",
       over: lines.filter(function (line) {
         return line.over;
       }),
@@ -156,6 +168,7 @@
 
   function markup(id, cfg) {
     var name = "cc-plan-" + id;
+    var scaleName = "cc-scale-" + id;
 
     function field(key, label, sub, value, step, units) {
       var unitControl = units
@@ -178,7 +191,7 @@
             })
             .join("") +
           "</select>"
-        : '<span class="cc-unit cc-unit--fixed">a day</span>';
+        : '<span class="cc-unit cc-unit--fixed" data-each>a day</span>';
 
       return (
         '<div class="cc-field">' +
@@ -215,13 +228,23 @@
     return (
       '<div class="cc-head">' +
       '<div class="cc-title">Your usage</div>' +
-      '<div class="cc-plan" role="radiogroup" aria-label="Billing">' +
+      '<div class="cc-toggles">' +
+      '<div class="cc-group cc-scale" role="radiogroup" aria-label="Scale">' +
+      '<label class="cc-pill"><input type="radio" name="' +
+      scaleName +
+      '" value="day" checked><span>Daily</span></label>' +
+      '<label class="cc-pill"><input type="radio" name="' +
+      scaleName +
+      '" value="month"><span>Monthly</span></label>' +
+      "</div>" +
+      '<div class="cc-group cc-plan" role="radiogroup" aria-label="Billing">' +
       '<label class="cc-pill"><input type="radio" name="' +
       name +
       '" value="free"><span>Without billing</span></label>' +
       '<label class="cc-pill"><input type="radio" name="' +
       name +
       '" value="paid" checked><span>With billing</span></label>' +
+      "</div>" +
       "</div>" +
       "</div>" +
       '<div class="cc-body">' +
@@ -238,9 +261,7 @@
       ]) +
       "</div>" +
       '<div class="cc-out" aria-live="polite"></div>' +
-      '<p class="cc-foot">Assumes the same usage every day for ' +
-      cfg.days +
-      " days, and applies the rounding in <a href=\"#billing-terms\">Billing terms</a>. Prices exclude VAT. This is a guide, not a quote.</p>" +
+      '<p class="cc-foot"></p>' +
       "</div>"
     );
   }
@@ -278,7 +299,7 @@
             '</td><td class="' +
             (line.over ? "cc-over" : "cc-under") +
             '">' +
-            line.chargeable +
+            line.billable +
             "</td>" +
             last +
             "</tr>"
@@ -289,20 +310,21 @@
     );
   }
 
-  function render(root, cfg, plan, usage) {
+  function render(root, cfg, plan, usage, scale) {
     var out = root.querySelector(".cc-out");
-    var result = estimate(cfg, plan, usage);
+    var result = estimate(cfg, plan, usage, scale);
 
     // Without billing there is nothing to pay: usage simply stops at the
     // allowance. The paid figure is shown alongside because it is the question
     // anyone hitting the limit is actually asking.
     if (plan === "free") {
-      var paid = estimate(cfg, "paid", usage);
+      var paid = estimate(cfg, "paid", usage, scale);
       var ifBilled =
         paid.total > 0
           ? "With billing set up it would cost " +
             fmtTotal(paid.total) +
-            " a month."
+            paid.each +
+            "."
           : "With billing set up, the larger allowance would cover it at no charge.";
       var verdict = result.over.length
         ? '<div class="cc-verdict cc-verdict--blocked">' +
@@ -332,9 +354,12 @@
       ? '<div class="cc-verdict">' +
         '<div class="cc-verdict-line"><strong>' +
         fmtTotal(result.total) +
-        "</strong> a month <span>·</span> about " +
-        fmtTotal(result.total / cfg.days) +
-        " a day</div>" +
+        "</strong>" +
+        result.each +
+        " <span>·</span> about " +
+        fmtTotal(result.other) +
+        result.otherEach +
+        "</div>" +
         "<p>Charged on top of the free allowance, which is applied to each day's usage first.</p>" +
         "</div>"
       : '<div class="cc-verdict"><div class="cc-verdict-line">Nothing to pay</div>' +
@@ -351,7 +376,11 @@
 
     root.innerHTML = markup(id, cfg);
 
-    function read() {
+    // Everything downstream works in per-day terms, so a month's worth of
+    // queries or data is divided back out here. Storage is a level rather than a
+    // rate, so the scale never touches it.
+    function read(scale) {
+      var over = scale === "month" ? cfg.days : 1;
       var usage = {};
 
       root.querySelectorAll(".cc-num").forEach(function (input) {
@@ -360,29 +389,75 @@
         if (!isFinite(value) || value < 0) value = 0;
 
         var unit = root.querySelector('.cc-unit[data-unit="' + key + '"]');
-        usage[key] = unit ? value * (UNITS[unit.value] || 1) : value;
+        if (unit) value *= UNITS[unit.value] || 1;
+
+        usage[key] = key === "storage" ? value : value / over;
       });
 
       return usage;
     }
 
-    function plan() {
-      var checked = root.querySelector('input[type="radio"]:checked');
-      return checked && checked.value === "free" ? "free" : "paid";
+    function choice(group, fallback) {
+      var checked = root.querySelector("." + group + " input:checked");
+      return checked ? checked.value : fallback;
+    }
+
+    // Switching scale re-expresses what is already entered rather than changing
+    // it: 2,000 queries a day becomes 60,000 a month, and the estimate below
+    // stays where it was.
+    var showing = "day";
+
+    function rescale(scale) {
+      var factor = scale === "month" ? cfg.days : 1 / cfg.days;
+
+      root.querySelectorAll(".cc-num").forEach(function (input) {
+        if (input.dataset.usage === "storage") return;
+
+        var value = parseFloat(input.value);
+        if (!isFinite(value) || value < 0) return;
+
+        // toPrecision keeps 5 → 150 → 5 rather than 4.999999999999999.
+        input.value = Number((value * factor).toPrecision(6));
+      });
+
+      showing = scale;
     }
 
     function update() {
-      var usage = read();
+      var scale = choice("cc-scale", "day");
+      var plan = choice("cc-plan", "paid");
+
+      if (scale !== showing) rescale(scale);
+
+      var usage = read(scale);
       var days = cfg.days;
 
-      // The inputs are daily because billing is daily, but almost everyone
-      // thinks in months — so both are on screen at once.
-      root.querySelector('.cc-sub[data-sub="queries"]').textContent =
-        "About " + fmtCount(usage.queries * days) + " a month.";
-      root.querySelector('.cc-sub[data-sub="data"]').textContent =
-        "About " + fmtSize(usage.data * days) + " a month.";
+      // Whichever scale is on screen, the other one is a line away — people
+      // budget in months and the allowance is counted in days.
+      root.querySelectorAll("[data-each]").forEach(function (el) {
+        el.textContent = scale === "month" ? "a month" : "a day";
+      });
 
-      render(root, cfg, plan(), usage);
+      root.querySelector('.cc-sub[data-sub="queries"]').textContent =
+        scale === "month"
+          ? "About " + fmtCount(usage.queries) + " a day."
+          : "About " + fmtCount(usage.queries * days) + " a month.";
+      root.querySelector('.cc-sub[data-sub="data"]').textContent =
+        scale === "month"
+          ? "About " + fmtSize(usage.data) + " a day."
+          : "About " + fmtSize(usage.data * days) + " a month.";
+
+      // A monthly allowance figure is the daily one multiplied out, not a pot to
+      // draw down, and that is worth saying where the monthly numbers are shown.
+      root.querySelector(".cc-foot").innerHTML =
+        (scale === "month"
+          ? "Monthly figures are " +
+            days +
+            " identical days: the allowance is counted a day at a time and never rolls over. "
+          : "Assumes the same usage every day. ") +
+        'Applies the rounding in <a href="#billing-terms">Billing terms</a>. Prices exclude VAT. This is a guide, not a quote.';
+
+      render(root, cfg, plan, usage, scale);
     }
 
     root.addEventListener("input", update);

@@ -24,12 +24,14 @@ export default function TableOfContents() {
         level: parseInt(elem.tagName[1]),
       }));
       setHeadings(headingData);
-      if (headingData.length > 0 && !activeId) {
-        setActiveId(headingData[0].id);
-      }
+      // Unconditionally, because this runs once per page: the previous check
+      // read an activeId left over from the page navigated away from, which is
+      // never empty after the first one, so every page reached by a client-side
+      // route change opened with nothing highlighted.
+      setActiveId(headingData.length > 0 ? headingData[0].id : "");
     };
 
-    setTimeout(extractHeadings, 100);
+    const timer = setTimeout(extractHeadings, 100);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -43,7 +45,13 @@ export default function TableOfContents() {
     const elements = document.querySelectorAll("article h2, article h3");
     elements.forEach((elem) => observer.observe(elem));
 
-    return () => observer.disconnect();
+    // The timer is cleared as well as the observer: left pending across a route
+    // change it fires against the next page and overwrites the heading it has
+    // just highlighted.
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [pathname]);
 
   if (headings.length === 0) return null;

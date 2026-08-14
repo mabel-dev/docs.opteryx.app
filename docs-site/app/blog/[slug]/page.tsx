@@ -145,7 +145,10 @@ export default async function Page({ params }: Props) {
 
   const { frontmatter, body } = parseFrontmatter(source);
   const postDate = frontmatter.date as string | undefined;
-  const html = await renderMarkdownToHtml(body);
+  const html = await renderMarkdownToHtml(body, {
+    addHeadingIds: true,
+    transformCallouts: true,
+  });
 
   const posts = readBlogPosts(blogDir);
   const latest = posts[0];

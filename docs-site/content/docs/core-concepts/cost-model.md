@@ -38,7 +38,7 @@ Usage beyond your free allowance is charged at:
 |---|---|
 | Storage | £0.00003 per GB per hour (about £0.02 per GB a month) |
 | Queries | £0.10 per 1,000 queries |
-| Data queried | £0.001 per GB (£1 per TB) |
+| Data queried | £0.004 per GB (£4 per TB) |
 
 Monthly figures on this page are rough guides based on a 30-day month. Billing
 is worked out day by day, so the length of a calendar month never changes what
@@ -53,7 +53,7 @@ the one in the tables above.
      data-days="30"
      data-price-storage="0.00003"
      data-price-query="0.10"
-     data-price-data="0.001"
+     data-price-data="0.004"
      data-free-storage="5"
      data-free-queries="100"
      data-free-data="0.167"
