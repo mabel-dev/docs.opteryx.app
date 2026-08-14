@@ -102,15 +102,54 @@ An absent key extracts as `NULL`, so this distinguishes "key not present" from "
 
 ### Nested Access
 
-Chain `->` calls to navigate nested documents:
+Chain `->` calls to navigate nested documents. Each `->` returns the JSON encoding of what it
+selected, which the next one parses in turn; finish with `->>` when you want a plain string.
+
+Given a `profile` column holding:
+
+```json
+{"name": "Alice", "address": {"city": "London", "postcode": "N1 7GU"}}
+```
+
+| Expression | Result |
+|------------|--------|
+| `profile -> 'address'` | `'{"city": "London", "postcode": "N1 7GU"}'` |
+| `profile -> 'address' -> 'city'` | `'"London"'` |
+| `profile -> 'address' ->> 'city'` | `'London'` |
+| `profile ->> 'address'` | `'{"city": "London", "postcode": "N1 7GU"}'` |
+| `profile -> 'missing'` | `NULL` |
+
+Only the **last** step should be `->>`. Using it earlier still returns the JSON text, but the
+result is typed as a plain string, and chaining another key access onto it is not the
+navigation you want.
+
+### JSON Arrays
+
+There is **no subscript into a JSON array**. Extracting one gives you its JSON text, and
+neither `doc -> 'items' -> 0` nor `(doc -> 'items')[0]` works — the first is an operator type
+error, the second is refused because subscripting a JSON value is ambiguous (it might hold an
+array or a string, and which it is can differ per row).
+
+Cast it to a real array first, then subscript that:
 
 ```sql
-SELECT profile -> 'address' ->> 'city'
+-- doc holds {"scores": [10, 20, 30]}
+SELECT CAST(doc ->> 'scores' AS ARRAY<INTEGER>)     AS all_scores,   -- [10, 20, 30]
+       CAST(doc ->> 'scores' AS ARRAY<INTEGER>)[0]  AS first_score   -- 10
   FROM records;
 ```
 
-Each `->` returns the JSON encoding of the value it selected, which the next `->` parses in
-turn; finish with `->>` when you want a plain string out.
+Once cast, everything on [Working with Arrays](adv-working-with-lists.md) applies —
+`= ANY`, `@>`, `UNNEST`, negative indexing.
+
+The reverse direction needs no cast: a column that is **already** an array of JSON strings
+subscripts normally, and `->` works on the element.
+
+```sql
+SELECT events[0]  ->> 'type' AS first_event,
+       events[-1] ->> 'type' AS last_event
+  FROM records;
+```
 
 ## Comparing
 
@@ -135,5 +174,7 @@ To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
 
 - There is no native struct type — nested data is JSON text, and there is nothing to declare or cast to
 - Key access requires the `->` or `->>` operators; square-bracket subscript (`doc['key']`) is for integer-indexed arrays, not JSON keys
+- A JSON array cannot be subscripted in place — cast it to `ARRAY<type>` first, see [JSON Arrays](#json-arrays)
 - `@?` parses and binds but has no execution kernel — see [Key Existence](#key-existence)
+- `JSONB_OBJECT_KEYS` is projection-only; it cannot be filtered on
 - JSON values are opaque to the query planner — predicates on JSON fields cannot use row-group pruning or bloom filters, so they are evaluated over every row that reaches the filter

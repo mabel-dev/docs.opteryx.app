@@ -31,7 +31,7 @@ being projected:
 ```sql
 SELECT name
   FROM missions
- WHERE ARRAY_CONTAINS_ANY(crew, ('Armstrong', 'Aldrin'));
+ WHERE crew @> ('Armstrong', 'Aldrin');
 ```
 
 ## Accessing Elements
@@ -63,92 +63,86 @@ SELECT tags[0]  AS first_tag,
   FROM articles;
 ```
 
-## Array Length
+## Containment
+
+Three tests, written as operators:
+
+| Test | Write |
+|------|-------|
+| Array contains a value | `value = ANY (array)` |
+| Array contains **any** of several values | `array @> (v1, v2)` |
+| Array contains **all** of several values | `array @>> (v1, v2)` |
 
 ```sql
-LENGTH(array)
+SELECT * FROM articles WHERE 'featured' = ANY (tags);
+SELECT * FROM articles WHERE tags @>  ('featured', 'pinned');   -- either
+SELECT * FROM articles WHERE tags @>> ('featured', 'pinned');   -- both
 ```
 
-Example:
+> Be Aware: A parenthesised list with a **single** element is not an array — `('featured')` is just a parenthesised scalar, and `tags @> ('featured')` is rejected as an `ARRAY`/`VARCHAR` type mismatch. For a one-value test use `= ANY`.
+
+The right-hand side of `@>` / `@>>` is a literal list. To test against another array-typed
+column, use `= ANY` per value.
+
+### Function spellings
+
+`ARRAY_CONTAINS`, `ARRAY_CONTAINS_ANY` and `ARRAY_CONTAINS_ALL` are equivalent older
+spellings of the three tests above, in that order. They still work and are not going away
+without notice, but **the operator forms are preferred** — they are what the rest of these
+docs use, and `ARRAY_CONTAINS` is rewritten to `= ANY` when the query is planned anyway.
 
 ```sql
-SELECT name, LENGTH(tags) AS tag_count
+ARRAY_CONTAINS(tags, 'featured')                --  'featured' = ANY (tags)
+ARRAY_CONTAINS_ANY(tags, ('featured', 'pinned'))  --  tags @>  ('featured', 'pinned')
+ARRAY_CONTAINS_ALL(tags, ('featured', 'pinned'))  --  tags @>> ('featured', 'pinned')
+```
+
+## ANY and ALL
+
+`ANY` and `ALL` compare a value against every element of an array column — `ANY` is true when
+at least one element satisfies the comparison, `ALL` when every element does.
+
+```sql
+value =  ANY (array_column)     value =  ALL (array_column)
+value != ANY (array_column)     value != ALL (array_column)
+value >  ANY (array_column)
+value <  ANY (array_column)
+```
+
+`ANY` supports the ordering comparisons as well as equality; **`ALL` supports only `=` and
+`!=`**. In both cases the array argument must be a column reference, not an inline literal.
+
+```sql
+-- articles where at least one score exceeds 90
+SELECT * FROM articles WHERE 90 < ANY (scores);
+
+-- articles where every tag is 'draft'
+SELECT * FROM articles WHERE 'draft' = ALL (tags);
+```
+
+## Array Functions
+
+| Function | Returns | Note |
+|----------|---------|------|
+| `LENGTH(array)` | `INTEGER` | Element count |
+| `SORT(array)` | `ARRAY` | The array sorted ascending |
+| `GREATEST(array)` | element type | The largest element |
+| `LEAST(array)` | element type | The smallest element |
+
+```sql
+SELECT LENGTH(tags)   AS tag_count,
+       SORT(tags)     AS sorted,
+       GREATEST(tags) AS last_alphabetically
   FROM articles;
 ```
 
-## Containment
+> Be Aware: `GREATEST` and `LEAST` take **one array argument** — they return the max and min *within* one array. They are not the variadic SQL forms: `GREATEST(a, b, c)` across three columns is not supported and raises an arity error.
 
-Three containment tests, each with a function form and — for the two multi-value tests — an
-operator form. The function and operator forms are equivalent; use whichever reads better.
+### There is no slicing
 
-| Test | Function | Operator |
-|------|----------|----------|
-| Array contains a single value | `ARRAY_CONTAINS(array, value)` | `value = ANY (array)` |
-| Array contains **any** of several values | `ARRAY_CONTAINS_ANY(array, (v1, v2))` | `array @> (v1, v2)` |
-| Array contains **all** of several values | `ARRAY_CONTAINS_ALL(array, (v1, v2))` | `array @>> (v1, v2)` |
-
-### ARRAY_CONTAINS
-
-Test if an array contains a specific value:
-
-```sql
-SELECT *
-  FROM articles
- WHERE ARRAY_CONTAINS(tags, 'featured');
-```
-
-`ARRAY_CONTAINS` is lowered to `value = ANY (array)` when the query is planned, so the two
-spellings execute identically.
-
-### ARRAY_CONTAINS_ANY / `@>`
-
-Test if an array contains any of the specified values:
-
-```sql
-SELECT * FROM articles WHERE ARRAY_CONTAINS_ANY(tags, ('featured', 'pinned'));
-SELECT * FROM articles WHERE tags @> ('featured', 'pinned');
-```
-
-### ARRAY_CONTAINS_ALL / `@>>`
-
-Test if an array contains all of the specified values:
-
-```sql
-SELECT * FROM articles WHERE ARRAY_CONTAINS_ALL(tags, ('featured', 'pinned'));
-SELECT * FROM articles WHERE tags @>> ('featured', 'pinned');
-```
-
-> Be Aware: A parenthesised list with a **single** element is not an array — `('featured')` is just a parenthesised scalar, and `tags @> ('featured')` is rejected as an `ARRAY`/`VARCHAR` type mismatch. For a one-value test use `ARRAY_CONTAINS(tags, 'featured')` or `'featured' = ANY (tags)`.
-
-## ANY
-
-Test if any element in an array column satisfies a condition:
-
-```sql
-value = ANY (array_column)
-value != ANY (array_column)
-value > ANY (array_column)
-value < ANY (array_column)
-```
-
-The array argument must be a column reference, not an inline literal.
-
-Example:
-
-```sql
-SELECT *
-  FROM articles
- WHERE 'featured' = ANY (tags);
-```
-
-## ALL
-
-Test if all elements in an array column satisfy a condition. Currently only `=` and `!=` are supported:
-
-```sql
-value = ALL (array_column)
-value != ALL (array_column)
-```
+Opteryx has no way to take a sub-range of an array. Range subscripts (`array[0:2]`,
+`array[1:]`) are a parse error, and there is no `SLICE` or `ARRAY_SLICE` function. Take
+individual elements by index, or `UNNEST` the array to rows and filter there.
 
 ## IN Operator
 
@@ -187,6 +181,8 @@ CAST(column AS ARRAY<element_type>)
 
 - Array literals in a `SELECT` clause require a column alias and cannot be subscripted inline — access elements via a column reference
 - Subscripts must be integer literals; there is no computed-index form
-- `LIKE ANY`, `SORT`, `GREATEST`, and `LEAST` on array values are not currently stable
-- `ALL` operator only supports `=` and `!=`; comparison operators (`>`, `<`, etc.) are not supported
+- There is no slicing — no range subscript, no `SLICE` function
+- `LIKE ANY` over an array column is not stable and can fail at execution; use `= ANY` or `@>` for membership
+- `ALL` supports only `=` and `!=`; ordering comparisons (`>`, `<`, etc.) are not supported
+- `GREATEST` / `LEAST` are single-array-argument only, not the variadic SQL forms
 - Arrays cannot be used in `ORDER BY`

@@ -9,7 +9,7 @@ Working with DATE and TIMESTAMP often involves working with INTERVALs.
 
 INTERVALs may not always act as expected, especially when working with months and years, primarily due to the complexity of accurately determining whether a number of days equals a given number of months.
 
-> Be Aware: Functions that return the current time or date (including `CURRENT_DATE` and `CURRENT_TIMESTAMP`) return the value as at the start of the query execution.
+> Be Aware: Functions that return the current time or date (including `CURRENT_DATE` and `CURRENT_TIMESTAMP`) return the value as at the start of the query execution, and it is constant for the query duration. Every reference to it within one statement returns the same instant, however long the query runs and however many rows it touches.
 
 ## Casting
 

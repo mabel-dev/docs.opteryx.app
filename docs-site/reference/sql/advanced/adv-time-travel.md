@@ -25,7 +25,7 @@ cannot reference a column.
 - If no `TIMESTAMP AS OF` clause is provided, the query reads the current snapshot.
 - `FOR SYSTEM_TIME AS OF` is not accepted; the spelling is `TIMESTAMP AS OF`.
 
-> Warning: **Snapshots are garbage collected and may be reclaimed at any time.** Time travel reaches back only as far as the retention policy has kept, which is not a guarantee you can plan against — see [Snapshot Retention](#snapshot-retention) below. A timestamp that resolved yesterday may not resolve today.
+> Warning: **Older snapshots are reclaimed, and may be reclaimed at any point.** Time travel reaches back only as far as the snapshots that still exist, which is not something to plan against — see [Snapshot Reclamation](#snapshot-reclamation) below. A timestamp that resolved yesterday may not resolve today.
 
 ## Examples
 
@@ -84,25 +84,29 @@ SELECT *
 free to run. It needs the same read access as a `SELECT` against the table, is not a subquery
 source, and always returns the whole history.
 
-**It lists only snapshots that still exist.** A snapshot retired by the retention policy
-leaves this history, so what you see is exactly the range time travel can still reach.
+**It lists only snapshots that still exist.** A reclaimed snapshot leaves this history, so
+what you see is exactly the range time travel can still reach.
 
-## Snapshot Retention
+## Snapshot Reclamation
 
-Snapshots do not accumulate forever. A maintenance process expires them on a retention
-policy, and an expired snapshot is **immediately invisible to time travel** — it drops out of
-`SHOW SNAPSHOTS FOR` and a `TIMESTAMP AS OF` landing on it no longer resolves to it. Its data
-files are then released for reclamation, passing through an orphan quarantine before deletion.
+Snapshots do not accumulate forever. A background maintenance process reclaims older ones,
+and a reclaimed snapshot is **immediately invisible to time travel** — it drops out of
+`SHOW SNAPSHOTS FOR`, and a `TIMESTAMP AS OF` that would have landed on it no longer resolves
+to it. Its data files are then released, passing through a quarantine period before deletion.
+
+Reclamation is not configurable per table, and there is no way to pin a snapshot or query how
+long one will survive. Treat reachable history as **best-effort and unbounded in neither
+direction**: it exists until maintenance runs.
 
 The practical consequences:
 
-- **Reachable history is bounded, and the bound is a maintenance setting, not a contract.** How far back you can travel depends on the table's configured retention; a table with none keeps only its current snapshot.
-- **A snapshot can disappear between two runs of the same query.** A dashboard or scheduled job pinned to a fixed old timestamp will start failing to find it. Pin to a recent relative offset, or materialize the result you need.
-- **Expiry is not undo.** Recovery after expiry is an operational restore, not something a query can reach.
+- **A snapshot can disappear between two runs of the same query.** A dashboard or scheduled job pinned to a fixed old timestamp will start returning nothing for it. Pin to a recent relative offset instead.
+- **Time travel is not a backup or an undo.** It is a read of history that still happens to be there. Recovery after reclamation is an operational restore, not something a query can reach.
+- **`SHOW SNAPSHOTS FOR` is the only honest answer** to how far back a given table reaches, and it is only true at the moment you run it.
 
-If you need a point in time to survive indefinitely, copy it out —
+If you need a point in time to survive, copy it out —
 `CREATE TABLE ... AS SELECT ... TIMESTAMP AS OF ...` — rather than relying on the snapshot
-still being there.
+still being there later.
 
 ## Temporal Self-Joins
 
@@ -116,14 +120,13 @@ SELECT current.id
     ON previous.id = current.id;
 ```
 
-Both sides are subject to retention: if the older timestamp falls outside the retained
-window, the join silently compares against whatever the oldest surviving snapshot holds
-rather than failing.
+Both sides are subject to reclamation: if the older timestamp reaches past the oldest
+surviving snapshot, the join silently compares against that snapshot rather than failing.
 
 ## Limitations
 
 - Requires a catalog-backed table with a commit log; there is no time travel over a plain object-store path.
-- Snapshots are garbage collected, so reachable history is bounded and may shrink at any time.
+- Snapshots are reclaimed, so reachable history may shrink at any point.
 - Timestamps are evaluated in UTC.
 - Backfilled data is visible: reading at a past timestamp returns the snapshot as it was committed, including any corrections that commit carried.
 - The `AS OF` expression must be resolvable before the query runs — it cannot reference a column.

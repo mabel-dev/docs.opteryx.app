@@ -54,42 +54,44 @@ functions then count codepoints:
 
 ## Pattern matching (`LIKE`, `RLIKE`, `REGEXP_REPLACE`)
 
-**There is no regex engine at execution time.** A `RLIKE` / `REGEXP_LIKE` pattern is compiled
-when the query is planned into a byte-level DFA — a transition table — and matching is a
-table walk: one byte read and one array index per input byte, with no backtracking. RE2
-appears only as the plan-time *parser* that builds the pattern AST; RE2's own matcher is
-never called, and it is not linked into the execution path at all.
+**Opteryx supports a subset of regular expression syntax.** A pattern outside that subset is
+rejected when the query is planned, with an error naming the restriction — it is never
+silently mis-matched, and there is no slower fallback that would accept it.
 
-That buys predictable, linear-time matching, and costs generality. The **supported dialect
-is a subset**, and a pattern outside it is refused when the query is planned rather than
-served by a slower fallback:
+What is not supported:
 
-| Not supported | Note |
-|---------------|------|
-| Lookaround, backreferences | No DFA equivalent |
-| Case-folding — `(?i)`, `RLIKE` with a case-insensitive flag | Refused rather than silently matched case-sensitively; use `ILIKE` |
-| Non-ASCII **pattern** content | Subject strings may be any UTF-8; the *pattern* must be ASCII |
-| `^` / `$` nested inside alternation or repetition | Anchors are recognised only at the outermost start/end — `^foo$` is fine, `(^foo|bar$)` is refused |
-| Very large bounded repeats (`{n,m}`) | Unrolled, with a size cap; over the cap the pattern is refused |
+| Not supported | What to do instead |
+|---------------|--------------------|
+| Lookaround (`(?=...)`, `(?!...)`) and backreferences | Restructure the pattern, or filter in two steps |
+| Case-insensitive matching — `(?i)` | Use `ILIKE`, or `LOWER()` both sides |
+| Non-ASCII characters **in the pattern** | Subject data may be any UTF-8; only the pattern is restricted |
+| `^` / `$` inside alternation or repetition — `(^foo|bar$)` | Anchor at the outermost start/end only: `^foo$`, `^foo`, `foo$` |
+| Very large bounded repeats — `{n,m}` | Reduce the bound |
 
-`.` matches any single **byte** except newline, not a codepoint. For a yes/no match this
-agrees with codepoint-aware engines on any pattern that doesn't count exact character
-positions — `.{3}` against a multi-byte subject counts bytes.
+Everything else — literals, character classes, alternation, `*`/`+`/`?`, grouping, small
+bounded repeats — works as you would expect.
 
-### `REGEXP_REPLACE` is capture extraction only
+`.` matches a single **byte** rather than a codepoint. This gives the same yes/no answer as
+other engines unless the pattern counts exact character positions: `.{3}` against multi-byte
+text counts three bytes, not three characters.
 
-The only supported form is whole-match capture extraction — `REGEXP_REPLACE(s, pattern, '\1')`
-where `pattern` compiles to an anchored DFA program consuming the whole input. The optimizer
-rewrites those calls to a native extraction kernel. An arbitrary replacement template, or a
-pattern outside the DFA-compilable subset, raises:
+The trade is deliberate. Patterns compile to a state machine before the query runs, so
+matching is linear in the length of the data with no backtracking — a pattern cannot make a
+query blow up in the way a backtracking engine can.
+
+### `REGEXP_REPLACE` only extracts, it does not replace
+
+The one supported form is whole-match extraction — a pattern that matches the entire value,
+with `'\1'` as the replacement, returning the captured group:
 
 ~~~sql
-SELECT REGEXP_REPLACE(name, '^(M.*)$', '\1') FROM planets;   -- ok
-SELECT REGEXP_REPLACE(name, 'a', 'X')        FROM planets;   -- raises
+SELECT REGEXP_REPLACE(sku, '^SKU-(\d+)-.*$', '\1') FROM products;   -- ok, returns the digits
+SELECT REGEXP_REPLACE(name, 'a', 'X')              FROM products;   -- raises
 ~~~
 
-General regex replacement is not available. Rewrite with `REPLACE`, `SUBSTRING` or
-`SPLIT` where the transformation is expressible without one.
+Substituting text within a value is not available at all. Use `REPLACE` for literal
+substitution, or `SPLIT` / `SUBSTRING` / `POSITION` where the edit can be expressed
+positionally.
 
 ### Byte orientation still applies
 
@@ -177,4 +179,4 @@ Notable differences relevant to users coming from other engines:
 - Integer division is `DIV`, not `//`.
 - `OCTET_LENGTH` / `BYTE_LENGTH` are available for explicit byte-length queries.
 - `DATE_TRUNC` is not available; use `TRUNC(value, unit)`.
-- `REGEXP_REPLACE` supports only the whole-match capture form — see [above](#regexp_replace-is-capture-extraction-only).
+- `REGEXP_REPLACE` extracts a capture group; it does not substitute text — see [above](#regexp_replace-only-extracts-it-does-not-replace).
