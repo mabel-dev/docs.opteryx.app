@@ -82,14 +82,35 @@ SELECT JSONB_OBJECT_KEYS(address) AS keys
 It reads only the **top level**, in document order — a nested object contributes its own key,
 not its children's. Given `{"a":1,"b":{"c":2},"d":3}` the result is `['a', 'b', 'd']`.
 
-> Be Aware: `JSONB_OBJECT_KEYS` is usable in a **projection**, not in a `WHERE` clause. Containment tests over its result have no native kernel, so `WHERE ARRAY_CONTAINS(JSONB_OBJECT_KEYS(doc), 'k')` is refused when the query is planned. Project the keys and filter downstream, or use the key-existence form below.
+> Be Aware: `JSONB_OBJECT_KEYS` is usable in a **projection**, not in a `WHERE` clause. Containment tests over its result have no native kernel, so `WHERE 'k' = ANY (JSONB_OBJECT_KEYS(doc))` is refused when the query is planned. Project the keys and filter downstream, or use the key-existence form below.
 
 ### Key Existence
 
-> Warning: **`@?` does not execute.** The dialect parses `@?` and the binder types it, but there is no kernel behind it — a query using it against column data fails at planning with "outside the c-native kernel set", in a filter and in a projection alike. Do not use it.
+`@?` tests whether a path resolves in the document. It runs in a `WHERE` clause and in a
+projection alike:
 
-Test for a key with `IS NOT NULL` on an extraction, which does execute and is the form to use
-in a `WHERE` clause:
+```sql
+SELECT *
+  FROM records
+ WHERE address @? 'postcode';
+```
+
+The path is written the way `->` writes one, and is resolved by the same code, so all three
+spellings below name the same thing — a bare key, a JSON Path, or an RFC 6901 pointer:
+
+```sql
+SELECT address @? 'postcode'         AS has_postcode,
+       address @? '$.contact.email'  AS has_email,
+       address @? '/contact/email'   AS also_has_email
+  FROM records;
+```
+
+The path must be a **literal**. It is resolved once, when the query is planned, so a path that
+varies per row is not supported — that form is refused with a message saying so, rather than
+failing later.
+
+**Existence is not extraction.** Testing a key with `IS NOT NULL` on an extraction also
+executes, and means something slightly different:
 
 ```sql
 SELECT *
@@ -97,8 +118,14 @@ SELECT *
  WHERE address -> 'postcode' IS NOT NULL;
 ```
 
-An absent key extracts as `NULL`, so this distinguishes "key not present" from "key present"
-— but not from "key present with a JSON `null` value", which also extracts as `NULL`.
+An absent key extracts as `NULL`, so the `->` form distinguishes "key not present" from "key
+present" — but not from "key present with a JSON `null` value", which also extracts as `NULL`.
+`@?` answers `TRUE` for that case, because the key is there. Where that distinction matters,
+`@?` is the form that asks the question you meant.
+
+Null and error behaviour: a row whose document is `NULL` answers `NULL`, and a row whose bytes
+are not valid JSON raises an error — never a silent `false`, which would be indistinguishable
+from "no such key".
 
 ### Nested Access
 
@@ -175,6 +202,6 @@ To compare a single field, extract it first: `config ->> 'mode' = 'strict'`.
 - There is no native struct type — nested data is JSON text, and there is nothing to declare or cast to
 - Key access requires the `->` or `->>` operators; square-bracket subscript (`doc['key']`) is for integer-indexed arrays, not JSON keys
 - A JSON array cannot be subscripted in place — cast it to `ARRAY<type>` first, see [JSON Arrays](#json-arrays)
-- `@?` parses and binds but has no execution kernel — see [Key Existence](#key-existence)
+- `@?` requires a literal path — it is resolved when the query is planned, so a per-row path is not supported, see [Key Existence](#key-existence)
 - `JSONB_OBJECT_KEYS` is projection-only; it cannot be filtered on
 - JSON values are opaque to the query planner — predicates on JSON fields cannot use row-group pruning or bloom filters, so they are evaluated over every row that reaches the filter

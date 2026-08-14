@@ -84,19 +84,6 @@ SELECT * FROM articles WHERE tags @>> ('featured', 'pinned');   -- both
 The right-hand side of `@>` / `@>>` is a literal list. To test against another array-typed
 column, use `= ANY` per value.
 
-### Function spellings
-
-`ARRAY_CONTAINS`, `ARRAY_CONTAINS_ANY` and `ARRAY_CONTAINS_ALL` are equivalent older
-spellings of the three tests above, in that order. They still work and are not going away
-without notice, but **the operator forms are preferred** — they are what the rest of these
-docs use, and `ARRAY_CONTAINS` is rewritten to `= ANY` when the query is planned anyway.
-
-```sql
-ARRAY_CONTAINS(tags, 'featured')                --  'featured' = ANY (tags)
-ARRAY_CONTAINS_ANY(tags, ('featured', 'pinned'))  --  tags @>  ('featured', 'pinned')
-ARRAY_CONTAINS_ALL(tags, ('featured', 'pinned'))  --  tags @>> ('featured', 'pinned')
-```
-
 ## ANY and ALL
 
 `ANY` and `ALL` compare a value against every element of an array column — `ANY` is true when
