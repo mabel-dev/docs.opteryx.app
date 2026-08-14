@@ -44,6 +44,9 @@ Monthly figures on this page are rough guides based on a 30-day month. Billing
 is worked out day by day, so the length of a calendar month never changes what
 you get or what you pay.
 
+These prices are reviewed from time to time. You get at least 30 days' notice
+before any of them change — see [Billing terms](#billing-terms).
+
 ## Estimate your cost
 
 Enter what you expect to use. Every price and allowance in this calculator is
@@ -104,5 +107,10 @@ stored, so the amount of data a query reads may change over time.
 - Charges accrue daily and are invoiced monthly in GBP.
 - Usage is rounded up to the next whole unit (10.1 GB is billed as 11 GB), and
   charges are rounded up to the nearest penny (£0.01).
+- Prices and allowances are reviewed from time to time. We give at least 30
+  days' notice of a change, by email to your billing contact or in the service,
+  and the change takes effect at the start of the next billing month after that
+  notice. If a change increases what you pay and you don't want to accept it,
+  you can close your account before it takes effect.
 - All prices are exclusive of VAT and any other applicable taxes, which are
   added where required by law.

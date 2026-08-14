@@ -275,7 +275,9 @@
     // inside the card rather than squeezing numbers into two lines each.
     return (
       '<div class="cc-scroll"><table class="cc-table">' +
-      "<thead><tr><th>Usage</th><th>You</th><th>Allowance</th><th>Billable</th><th>" +
+      // The corner cell stays empty, as it does in the tables above: the row
+      // labels name themselves, and "Usage" belongs to the reader's own figures.
+      "<thead><tr><th></th><th>Usage</th><th>Allowance</th><th>Billable</th><th>" +
       (billed ? "Cost" : "Status") +
       "</th></tr></thead>" +
       "<tbody>" +
