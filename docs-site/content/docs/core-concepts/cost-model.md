@@ -44,6 +44,26 @@ Monthly figures on this page are rough guides based on a 30-day month. Billing
 is worked out day by day, so the length of a calendar month never changes what
 you get or what you pay.
 
+## Estimate your cost
+
+Enter what you expect to use. Every price and allowance in this calculator is
+the one in the tables above.
+
+<div class="cost-calc"
+     data-days="30"
+     data-price-storage="0.00003"
+     data-price-query="0.10"
+     data-price-data="0.001"
+     data-free-storage="5"
+     data-free-queries="100"
+     data-free-data="0.167"
+     data-paid-storage="25"
+     data-paid-queries="500"
+     data-paid-data="0.835">
+  <noscript>The calculator needs JavaScript. The prices and allowances it works
+  from are in the tables above.</noscript>
+</div>
+
 ## Plans
 
 - **Free** — no billing set up. The smaller allowance at no charge; usage above

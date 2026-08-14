@@ -751,6 +751,26 @@ kbd {
     border-bottom: 1px solid var(--border);
     vertical-align: top;
 }
+/* Honour the per-column alignment marker from the markdown source (`:---:`).
+   marked emits it as align="center"/"right", but that's a presentational hint,
+   which loses to the author rule above — so restate it as real CSS. */
+.docs-article th[align="center"],
+.docs-article td[align="center"] {
+    text-align: center;
+}
+.docs-article th[align="right"],
+.docs-article td[align="right"] {
+    text-align: right;
+}
+/* Capability/support matrices mark a "yes" cell with the Tabler square-check
+   icon rather than an emoji tick, so the mark renders identically on every
+   platform and picks up the brand teal. */
+.docs-article td .table-check {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: -3px;
+}
 /* Long inline code (e.g. dotted dataset/table names) shouldn't force a
    table wider than its column — let it wrap instead of pushing the page
    into horizontal scroll. */
@@ -4528,4 +4548,247 @@ kbd {
 }
 .status-updates .u-quote p:last-child {
     margin-bottom: 0;
+}
+
+/* ============================================================
+   Cost calculator
+   Placeholder markup lives in content/docs/core-concepts/cost-model.md,
+   hydrated by public/cost-calculator.js.
+   ============================================================ */
+
+.cost-calc {
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    background: var(--bg);
+    box-shadow: var(--shadow-xs);
+    overflow: hidden;
+    margin: var(--sp-6) 0;
+}
+
+.cost-calc .cc-head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--header-surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.cost-calc .cc-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--text-deep);
+}
+
+/* Segmented control. The radios stay in the DOM and keep the keyboard and
+   screen reader behaviour; only their painting is replaced. */
+.cost-calc .cc-plan {
+    margin-left: auto;
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+}
+
+.cost-calc .cc-pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cost-calc .cc-pill span {
+    display: block;
+    padding: 5px 14px;
+    border-radius: var(--r-pill);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background var(--t-fast),
+        color var(--t-fast);
+}
+
+.cost-calc .cc-pill span:hover {
+    color: var(--text-deep);
+}
+
+.cost-calc .cc-pill input:checked + span {
+    background: var(--accent);
+    color: #fff;
+}
+
+.cost-calc .cc-pill input:focus-visible + span {
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.cost-calc .cc-body {
+    padding: var(--sp-5) var(--sp-4) var(--sp-4);
+}
+
+.cost-calc .cc-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--sp-4);
+}
+
+.cost-calc .cc-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--text-deep);
+    margin-bottom: var(--sp-2);
+}
+
+.cost-calc .cc-control {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    background: var(--muted-surface);
+    transition:
+        border var(--t-fast),
+        box-shadow var(--t-fast);
+}
+
+.cost-calc .cc-control:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.cost-calc .cc-num {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-s);
+    color: var(--text-deep);
+    background: transparent;
+    border: 0;
+    padding: 8px 0 8px 10px;
+}
+
+.cost-calc .cc-num:focus {
+    outline: none;
+}
+
+.cost-calc .cc-unit {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--border);
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.cost-calc .cc-unit--fixed {
+    display: flex;
+    align-items: center;
+    cursor: default;
+}
+
+.cost-calc .cc-unit:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.cost-calc .cc-sub {
+    margin: 6px 0 0;
+    font-size: var(--fs-micro);
+    color: var(--muted-2);
+    line-height: 1.4;
+}
+
+.cost-calc .cc-scroll {
+    overflow-x: auto;
+}
+
+/* The results table inherits the article's table styling, so it only needs the
+   differences: tighter, boxed, and right-aligned where the numbers are. */
+.cost-calc .cc-table {
+    margin: var(--sp-5) 0 0;
+    font-size: var(--fs-body-s);
+}
+
+.cost-calc .cc-table th,
+.cost-calc .cc-table td {
+    padding: 8px 10px;
+}
+
+.cost-calc .cc-table tbody th {
+    font-weight: 500;
+    color: var(--text-deep);
+}
+
+.cost-calc .cc-table td:last-child,
+.cost-calc .cc-table th:last-child {
+    text-align: right;
+}
+
+.cost-calc .cc-cost {
+    font-family: var(--font-mono);
+    color: var(--text-deep);
+    white-space: nowrap;
+}
+
+.cost-calc .cc-over {
+    color: var(--text);
+}
+
+.cost-calc .cc-blocked {
+    color: #b45500;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.cost-calc .cc-under {
+    color: var(--muted-2);
+}
+
+.cost-calc .cc-verdict {
+    margin-top: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--r-l);
+    background: var(--pale-accent);
+    border: 1px solid var(--accent-soft-2);
+}
+
+.cost-calc .cc-verdict--blocked {
+    background: var(--warning-soft);
+    border-color: rgba(255, 165, 3, 0.35);
+}
+
+.cost-calc .cc-verdict-line {
+    font-family: var(--font-display);
+    font-size: var(--fs-body-l);
+    color: var(--text-deep);
+}
+
+.cost-calc .cc-verdict-line strong {
+    font-weight: 600;
+}
+
+.cost-calc .cc-verdict-line span {
+    color: var(--muted-2);
+    margin: 0 4px;
+}
+
+.cost-calc .cc-verdict p {
+    margin: 4px 0 0;
+    font-size: var(--fs-body-s);
+    color: var(--muted);
+}
+
+.cost-calc .cc-foot {
+    margin: var(--sp-4) 0 0;
+    font-size: var(--fs-micro);
+    color: var(--muted-2);
+    line-height: 1.5;
 }

@@ -23,6 +23,9 @@ export default function RootLayout({
             loaded here: markdown is injected with dangerouslySetInnerHTML, and
             script tags inside that HTML are never executed by the browser. */}
         <script defer src="/api-tryit.js" />
+        {/* Hydrates the estimator on the cost model page. Same reason as above:
+            the placeholder it replaces arrives as injected HTML. */}
+        <script defer src="/cost-calculator.js" />
       </body>
     </html>
   );

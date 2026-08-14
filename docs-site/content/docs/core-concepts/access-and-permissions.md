@@ -6,18 +6,18 @@ Opteryx uses workspaces as the default permission boundary. Within a workspace, 
 
 | Action | reader | writer | owner |
 | --- | :---: | :---: | :---: |
-| Query a dataset (`SELECT`) | ✅ | ✅ | ✅ |
-| Insert / append rows | | ✅ | ✅ |
-| Create a new table or view | | ✅ | ✅ |
-| Truncate a table (remove all rows) | | ✅ | ✅ |
-| Drop a table or view | | | ✅ |
-| Drop a collection | | | ✅ |
-| `CREATE OR REPLACE` an existing table | | | ✅ |
-| `ALTER TABLE ... CLUSTER BY` | | | ✅ |
-| `ALTER TABLE ... RENAME TO` | | | ✅ |
-| `ALTER WORKSPACE ... SET` | | | ✅ |
-| View a table's manifest (`SHOW MANIFEST FOR`) | | | ✅ |
-| Grant or revoke access to other users | | | ✅ |
+| Query a dataset (`SELECT`) | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Insert / append rows | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Create a new table or view | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Truncate a table (remove all rows) | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Drop a table or view | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Drop a collection | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| `CREATE OR REPLACE` an existing table | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| `ALTER TABLE ... CLUSTER BY` | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| `ALTER TABLE ... RENAME TO` | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| `ALTER WORKSPACE ... SET` | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| View a table's manifest (`SHOW MANIFEST FOR`) | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Grant or revoke access to other users | | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 
 Each role includes everything the role below it can do - **owner** implies **writer**, which implies **reader**.
 

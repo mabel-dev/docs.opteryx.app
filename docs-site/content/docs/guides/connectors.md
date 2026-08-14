@@ -54,8 +54,8 @@ opteryx.query("SELECT * FROM warehouse.sales.orders")
 | Connector | Reaches | Writable |
 |-----------|---------|:--------:|
 | `FileSystemConnector` | Files on a local disk or in a bucket | |
-| `LocalStoreConnector` | A local directory managed as a store, with schemas and snapshots | ✅ |
-| `OpteryxConnector` | A catalog-backed workspace (the cloud warehouse) | ✅ |
+| `LocalStoreConnector` | A local directory managed as a store, with schemas and snapshots | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| `OpteryxConnector` | A catalog-backed workspace (the cloud warehouse) | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 | `MabelConnector` | Mabel-partitioned datasets | |
 
 **Writable** means the connector supports DDL and DML — `CREATE TABLE`, `INSERT`,

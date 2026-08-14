@@ -8,16 +8,16 @@ A billing account is a separate thing from a workspace, and membership of one gr
 
 | Action | member | billing admin |
 | --- | :---: | :---: |
-| See the account and which workspaces it pays for | ✅ | ✅ |
-| See the account's usage and current charges | ✅ | ✅ |
-| Add or change the payment method | ✅ | ✅ |
-| Incur charges against the account | ✅ | ✅ |
-| Edit the account record (name, tax ID, billing address) | | ✅ |
-| Invite and remove members | | ✅ |
-| Change another member's role | | ✅ |
-| Create workspaces billed to the account | | ✅ |
-| Delete workspaces billed to the account | | ✅ |
-| Close the account | | ✅ |
+| See the account and which workspaces it pays for | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| See the account's usage and current charges | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Add or change the payment method | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Incur charges against the account | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Edit the account record (name, tax ID, billing address) | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Invite and remove members | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Change another member's role | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Create workspaces billed to the account | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Delete workspaces billed to the account | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
+| Close the account | | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 
 **member** is the ordinary state: your usage is charged here, and you can see what it is costing. That is the whole of it. A member cannot change what the account says on an invoice, cannot change who else is on it, and cannot create or delete anything. If you are a member and you need something on this list changed, a billing admin has to do it.
 
