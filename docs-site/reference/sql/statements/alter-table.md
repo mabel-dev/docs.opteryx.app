@@ -22,10 +22,10 @@ Any other `ALTER TABLE` operation — `ADD CONSTRAINT`, `SET DEFAULT`, `SET NOT 
 
 ~~~sql
 ALTER TABLE [ IF EXISTS ] <table_name>
-ADD COLUMN <column_name> <data_type> [ DEFAULT <literal> ];
+ADD COLUMN [ IF NOT EXISTS ] <column_name> <data_type> [ DEFAULT <literal> ];
 
 ALTER TABLE [ IF EXISTS ] <table_name>
-DROP COLUMN <column_name>;
+DROP COLUMN [ IF EXISTS ] <column_name>;
 
 ALTER TABLE [ IF EXISTS ] <table_name>
 RENAME COLUMN <column_name> TO <new_column_name>;
@@ -53,12 +53,14 @@ under [Performance](#performance-column-operations) below. All four require the
 
 ~~~sql
 ALTER TABLE [ IF EXISTS ] <table_name>
-ADD COLUMN <column_name> <data_type> [ DEFAULT <literal> ];
+ADD COLUMN [ IF NOT EXISTS ] <column_name> <data_type> [ DEFAULT <literal> ];
 ~~~
 
 #### Parameters
 
-- **`<column_name>`** — must not already exist in the table.
+- **`IF NOT EXISTS`** — do nothing, without error, if the table already has a column of
+  this name. Omitted, an already-present name is an error.
+- **`<column_name>`** — must not already exist in the table, unless `IF NOT EXISTS` is given.
 - **`<data_type>`** — any type [CREATE TABLE](create-table.md) accepts.
 - **`DEFAULT <literal>`** — the value written into the rows that already exist. Must be a
   literal. Omitted, existing rows are filled with `NULL`.
@@ -79,6 +81,15 @@ ADD COLUMN source VARCHAR DEFAULT 'legacy';
 
 Every row already stored reads back `'legacy'`.
 
+#### Add a Column Only If It Is Missing
+~~~sql
+ALTER TABLE workspace.collection.observations
+ADD COLUMN IF NOT EXISTS source VARCHAR DEFAULT 'legacy';
+~~~
+
+Run once, this adds `source`. Run again, it does nothing and reports success — which is
+what makes a migration script re-runnable.
+
 #### Notes
 
 - **`DEFAULT` is a backfill value, not a constraint.** It answers one question — what goes
@@ -92,19 +103,37 @@ Every row already stored reads back `'legacy'`.
 - A backfilled column costs almost nothing on disk however many rows the table has: one
   repeated value encodes to a constant chunk, not to one stored value per row.
 - Columns are appended. There is no `FIRST` or `AFTER` positioning.
+- `IF NOT EXISTS` matches on the column NAME alone. A column that is already there is left
+  exactly as it is — the statement does not check, or change, its type or its default.
+- The two guards are independent. `IF EXISTS` on the `ALTER TABLE` forgives a missing
+  table; `IF NOT EXISTS` on the `ADD COLUMN` forgives a column that is already there.
+  Write both to make the statement unconditionally re-runnable.
 
 ### DROP COLUMN
 
 ~~~sql
 ALTER TABLE [ IF EXISTS ] <table_name>
-DROP COLUMN <column_name>;
+DROP COLUMN [ IF EXISTS ] <column_name>;
 ~~~
+
+#### Parameters
+
+- **`IF EXISTS`** — do nothing, without error, if the table has no column of this name.
+  Omitted, an unknown name is an error.
 
 #### Drop a Column
 ~~~sql
 ALTER TABLE workspace.collection.observations
 DROP COLUMN scratch_notes;
 ~~~
+
+#### Drop a Column Only If It Is There
+~~~sql
+ALTER TABLE workspace.collection.observations
+DROP COLUMN IF EXISTS scratch_notes;
+~~~
+
+The mirror of `ADD COLUMN IF NOT EXISTS`, and re-runnable for the same reason.
 
 #### Notes
 
