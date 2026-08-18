@@ -1232,6 +1232,7 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
         'boolean',
         'nested',
         'vector',
+        'network',
         'null',
         'other',
     ]
@@ -1245,9 +1246,18 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
         'boolean': 'Boolean types',
         'nested': 'Collection types',
         'vector': 'Vector types',
+        'network': 'Network types',
         'null': 'Null type',
         'other': 'Other types',
     }
+
+    unknown_families = sorted(set(groups) - set(family_order))
+    if unknown_families:
+        raise KeyError(
+            f"types.json declares families with no display order: {unknown_families}. "
+            f"Add them to family_order/family_titles — an unlisted family is silently "
+            f"dropped from the index, which is how IPV4 went missing."
+        )
 
     for family in family_order:
         items = groups.get(family)

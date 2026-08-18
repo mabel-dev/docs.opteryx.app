@@ -45,6 +45,10 @@ The following data types are supported by Opteryx.  Click a name for details.
 
 - [VECTOR](types/vector) — A fixed-length vector of FP16 (half-precision) floating-point values. Used for similarity search and ML embedding workloads. Declared as `VECTOR(n)` where n is the number of dimensions.
 
+## Network types
+
+- [IPV4](types/ipv4) — An IPv4 address. Stored as an unsigned 32-bit integer and displayed in dotted-decimal notation. Because the storage is numeric, ordering, grouping, joining and comparison all operate on the underlying integer — and unsigned integer order is exactly IPv4 address order.
+
 ## Null type
 
 - [NULL](types/null) — The absence of a value. NULL is not a type you declare — it appears when a column has no value or an expression produces no result.
