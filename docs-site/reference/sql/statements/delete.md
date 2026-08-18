@@ -33,17 +33,17 @@ SELECT * FROM workspace.collection.sessions
   window.
 
 - To remove every row while keeping the table and its schema, use
-  [TRUNCATE TABLE](truncate-table.md).
+  [TRUNCATE TABLE](truncate-table).
 
-- To remove the table entirely, use [DROP TABLE](drop-table.md).
+- To remove the table entirely, use [DROP TABLE](drop-table).
 
 ## Notes
 
-- See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.
+- See [CREATE TABLE](create-table) for the `OR REPLACE` form used above.
 
 ## See Also
 
-- [UPDATE](update.md)
-- [INSERT](insert.md)
-- [TRUNCATE TABLE](truncate-table.md)
-- [DROP TABLE](drop-table.md)
+- [UPDATE](update)
+- [INSERT](insert)
+- [TRUNCATE TABLE](truncate-table)
+- [DROP TABLE](drop-table)

@@ -6,7 +6,7 @@ description: SQL DROP STATISTICS statement syntax and examples for discarding co
 # DROP STATISTICS
 
 The `DROP STATISTICS` statement discards statistics previously collected by
-[ANALYZE TABLE](analyze-table.md). The table's data is untouched; only the optimizer's
+[ANALYZE TABLE](analyze-table). The table's data is untouched; only the optimizer's
 metadata about it is removed.
 
 ## Syntax
@@ -51,7 +51,7 @@ analyzed again.
 ## Notes
 
 - **Requires the `owner` role** on the table — the same tier as
-  [ANALYZE TABLE](analyze-table.md), since it destroys what that statement builds.
+  [ANALYZE TABLE](analyze-table), since it destroys what that statement builds.
 - **Local filesystem datasets only.** Catalog-backed (workspace) datasets are rejected:
   their manifest entries carry statistics from the moment each file is written, so there
   is no "statistics absent" state to drop back to — removing them would mean deleting the
@@ -59,9 +59,9 @@ analyzed again.
   `ANALYZE / DROP STATISTICS is not supported for this dataset's storage backend.`
 - Idempotent — dropping statistics that were never collected is not an error.
 - Dropping statistics never changes query results, only the plans chosen to produce them.
-- Re-run [ANALYZE TABLE](analyze-table.md) to collect them again.
+- Re-run [ANALYZE TABLE](analyze-table) to collect them again.
 
 ## See Also
 
-- [ANALYZE TABLE](analyze-table.md)
-- [DROP TABLE](drop-table.md)
+- [ANALYZE TABLE](analyze-table)
+- [DROP TABLE](drop-table)

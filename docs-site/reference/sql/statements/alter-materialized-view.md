@@ -124,7 +124,7 @@ REFRESH MATERIALIZED VIEW analytics.daily_orders;
 ~~~
 
 Resuming does not itself trigger a refresh — the view stays as it was until its next source
-write, so follow with [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md) if you need it
+write, so follow with [REFRESH MATERIALIZED VIEW](refresh-materialized-view) if you need it
 current immediately.
 
 ## Notes
@@ -138,6 +138,6 @@ current immediately.
 
 ## See Also
 
-- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
-- [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md)
-- [DROP MATERIALIZED VIEW](drop-materialized-view.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view)
+- [REFRESH MATERIALIZED VIEW](refresh-materialized-view)
+- [DROP MATERIALIZED VIEW](drop-materialized-view)

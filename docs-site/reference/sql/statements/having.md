@@ -87,12 +87,12 @@ SELECT category, COUNT(*) AS count
 - You can filter on aggregate functions directly in the condition.
 - Opteryx supports filtering by `SELECT` aliases in `HAVING`.
 - To filter on a **window function** rather than a grouped aggregate, use
-  [QUALIFY](qualify.md). Window functions cannot be combined with `GROUP BY`, so they are never
+  [QUALIFY](qualify). Window functions cannot be combined with `GROUP BY`, so they are never
   filterable with `HAVING`.
 
 ## See Also
 
-- [SELECT](select.md)
-- [GROUP BY](group-by.md)
-- [WHERE](where.md)
-- [QUALIFY](qualify.md) — the equivalent for window functions
+- [SELECT](select)
+- [GROUP BY](group-by)
+- [WHERE](where)
+- [QUALIFY](qualify) — the equivalent for window functions

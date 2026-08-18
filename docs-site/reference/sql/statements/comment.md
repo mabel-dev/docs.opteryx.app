@@ -63,7 +63,7 @@ COMMENT ON VIEW warehouse.sales.daily_revenue IS 'Aggregated daily revenue by pr
 
 ## See Also
 
-- [CREATE TABLE](create-table.md)
-- [CREATE VIEW](create-view.md)
-- [ALTER TABLE](alter-table.md)
-- [ALTER VIEW](alter-view.md)
+- [CREATE TABLE](create-table)
+- [CREATE VIEW](create-view)
+- [ALTER TABLE](alter-table)
+- [ALTER VIEW](alter-view)

@@ -44,7 +44,7 @@ A statement is permitted if **any** row's `pattern` matches the object being add
 that row's `role` permits the action. Patterns are glob-style, so `production.*` matches
 everything inside the `production` workspace — but **not** the workspace name itself, and
 not a collection's own name. That is why owning everything *in* a workspace does not let
-you [DROP COLLECTION](drop-collection.md) or [ALTER WORKSPACE](alter-workspace.md); those
+you [DROP COLLECTION](drop-collection) or [ALTER WORKSPACE](alter-workspace); those
 need a pattern matching the collection or workspace directly.
 
 The roles are cumulative in what they permit:
@@ -78,6 +78,6 @@ picked up by the next connection, not by a session already running.
 
 ## See Also
 
-- [ALTER WORKSPACE](alter-workspace.md)
-- [DROP COLLECTION](drop-collection.md)
-- [SHOW VARIABLES](show-variables.md)
+- [ALTER WORKSPACE](alter-workspace)
+- [DROP COLLECTION](drop-collection)
+- [SHOW VARIABLES](show-variables)

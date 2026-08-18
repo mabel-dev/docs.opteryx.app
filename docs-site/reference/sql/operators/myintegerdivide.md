@@ -19,12 +19,12 @@ Divides two integers and truncates the result toward zero.
 
 ## Parameters
 
-- **`<dividend>`** — The integer to divide. Accepts [`integer`](../types/integer.md).
-- **`<divisor>`** — The integer to divide by. Accepts [`integer`](../types/integer.md).
+- **`<dividend>`** — The integer to divide. Accepts [`integer`](../types/integer).
+- **`<divisor>`** — The integer to divide by. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`integer`](../types/integer.md)
+[`integer`](../types/integer)
 
 ## Examples
 
@@ -46,5 +46,5 @@ Truncation is toward zero, not toward minus infinity: `-7 DIV 2` is -3, where a 
 
 ## See Also
 
-- [Division `/`](divide.md)
-- [Modulo `%`](modulo.md)
+- [Division `/`](divide)
+- [Modulo `%`](modulo)

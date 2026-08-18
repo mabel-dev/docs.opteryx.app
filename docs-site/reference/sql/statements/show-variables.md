@@ -37,5 +37,5 @@ SHOW VARIABLES;
 
 ## See Also
 
-- [SET](set.md)
-- [SHOW USER](show-user.md)
+- [SET](set)
+- [SHOW USER](show-user)

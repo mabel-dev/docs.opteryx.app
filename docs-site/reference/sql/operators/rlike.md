@@ -19,12 +19,12 @@ Returns true when the left string matches the regular expression on the right.
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the expression. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<regex>`** — The regular expression to match. Unlike LIKE, it matches anywhere in the value unless anchored with `^` and `$`. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the expression. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<regex>`** — The regular expression to match. Unlike LIKE, it matches anywhere in the value unless anchored with `^` and `$`. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -54,6 +54,6 @@ A regular expression is more expressive than a LIKE pattern and more expensive t
 
 ## See Also
 
-- [Not regex like `NOT RLIKE`](notrlike.md)
-- [Like `LIKE`](like.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Not regex like `NOT RLIKE`](notrlike)
+- [Like `LIKE`](like)
+- [NULL semantics](../advanced/adv-null-semantics)

@@ -19,12 +19,12 @@ Returns true when the left string does not match the SQL ILIKE pattern on the ri
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<pattern>`** — A SQL LIKE pattern, matched without regard to ASCII case. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<pattern>`** — A SQL LIKE pattern, matched without regard to ASCII case. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -56,6 +56,6 @@ Case folding is ASCII-only, exactly as for ILIKE.
 
 ## See Also
 
-- [Case-insensitive like `ILIKE`](ilike.md)
-- [Not like `NOT LIKE`](notlike.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Case-insensitive like `ILIKE`](ilike)
+- [Not like `NOT LIKE`](notlike)
+- [NULL semantics](../advanced/adv-null-semantics)

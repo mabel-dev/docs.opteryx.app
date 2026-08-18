@@ -49,7 +49,7 @@ DROP VIEW IF EXISTS workspace.collection.my_view;
 
 ## See Also
 
-- [CREATE VIEW](create-view.md)
-- [ALTER VIEW](alter-view.md)
-- [DROP MATERIALIZED VIEW](drop-materialized-view.md)
-- [DROP TABLE](drop-table.md)
+- [CREATE VIEW](create-view)
+- [ALTER VIEW](alter-view)
+- [DROP MATERIALIZED VIEW](drop-materialized-view)
+- [DROP TABLE](drop-table)

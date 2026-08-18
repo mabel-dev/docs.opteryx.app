@@ -19,12 +19,12 @@ Concatenates the left and right string or blob operands.
 
 ## Parameters
 
-- **`<left>`** — The value to concatenate to. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to append. It must be the SAME string type as the left - VARCHAR with VARCHAR, VARBINARY with VARBINARY - and a number must be cast first. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<left>`** — The value to concatenate to. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to append. It must be the SAME string type as the left - VARCHAR with VARCHAR, VARBINARY with VARBINARY - and a number must be cast first. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md)
+[`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar)
 
 ## Examples
 
@@ -58,4 +58,4 @@ The operands must be the same string type; mixing VARCHAR and VARBINARY is rejec
 
 ## See Also
 
-- [Addition `+`](plus.md)
+- [Addition `+`](plus)

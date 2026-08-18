@@ -18,7 +18,7 @@ SELECT SPLIT(string_column, ',') FROM my_table;
 ```
 
 Build a relation from literal values with `UNNEST` in the `FROM` clause — see
-[Relation Constructors](adv-temp-tables.md):
+[Relation Constructors](adv-temp-tables):
 
 ```sql
 SELECT *

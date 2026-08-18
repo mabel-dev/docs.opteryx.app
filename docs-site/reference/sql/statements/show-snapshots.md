@@ -7,7 +7,7 @@ description: SQL SHOW SNAPSHOTS FOR statement syntax and examples for listing a 
 
 The `SHOW SNAPSHOTS FOR` statement lists a table's commit history — one row per snapshot, newest first, showing when each commit landed, who made it, what kind of operation it was, and how many records, files and bytes it added, deleted and left behind.
 
-Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of.md) or [VERSION AS OF](version-as-of.md), so this is the statement that tells you which points those are, and what each one changed. `TIMESTAMP AS OF` selects a snapshot by its `committed_at`; `VERSION AS OF` selects one directly by its `snapshot_id` (or reads `VERSION AS OF PREVIOUS` without looking either up). It answers from catalog metadata; no data files are read.
+Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of) or [VERSION AS OF](version-as-of), so this is the statement that tells you which points those are, and what each one changed. `TIMESTAMP AS OF` selects a snapshot by its `committed_at`; `VERSION AS OF` selects one directly by its `snapshot_id` (or reads `VERSION AS OF PREVIOUS` without looking either up). It answers from catalog metadata; no data files are read.
 
 ## Syntax
 
@@ -63,7 +63,7 @@ VERSION AS OF 1755000000000;
 ~~~
 
 If you only want the commit immediately before the current one, `VERSION AS OF PREVIOUS`
-answers it without a lookup here at all — see [VERSION AS OF](version-as-of.md).
+answers it without a lookup here at all — see [VERSION AS OF](version-as-of).
 
 `SHOW SNAPSHOTS FOR` is not a subquery source — it cannot be wrapped in
 `FROM (...)`, filtered, or joined. Filter the returned rows client-side if you
@@ -71,7 +71,7 @@ only want part of the history.
 
 ## Notes
 
-- **Requires read access.** A snapshot row is commit metadata about a table you can already read — it exposes no file paths and no storage layout — so `SHOW SNAPSHOTS FOR` needs the same access as a `SELECT` against the table. This is deliberately weaker than [SHOW MANIFEST FOR](show-manifest.md), which does expose storage layout and requires the `owner` role.
+- **Requires read access.** A snapshot row is commit metadata about a table you can already read — it exposes no file paths and no storage layout — so `SHOW SNAPSHOTS FOR` needs the same access as a `SELECT` against the table. This is deliberately weaker than [SHOW MANIFEST FOR](show-manifest), which does expose storage layout and requires the `owner` role.
 - **Catalog-backed tables only.** The history is the catalog's commit log. A table on a store that keeps no commit log reports that it has no snapshot history, rather than reporting an empty one — the two are different answers.
 - **A table with nothing committed returns no rows.** That is an empty history, not an error.
 - **Expired snapshots are not listed.** A snapshot retired by the retention policy leaves the history this statement returns, even during the window in which it may still be recoverable. What you see here is the history you can read, not every commit ever made.
@@ -80,7 +80,7 @@ only want part of the history.
 
 ## See Also
 
-- [TIMESTAMP AS OF](timestamp-as-of.md)
-- [VERSION AS OF](version-as-of.md)
-- [SHOW MANIFEST FOR](show-manifest.md)
-- [SHOW COLUMNS](show-columns.md)
+- [TIMESTAMP AS OF](timestamp-as-of)
+- [VERSION AS OF](version-as-of)
+- [SHOW MANIFEST FOR](show-manifest)
+- [SHOW COLUMNS](show-columns)

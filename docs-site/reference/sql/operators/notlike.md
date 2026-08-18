@@ -19,12 +19,12 @@ Returns true when the left string does not match the SQL LIKE pattern on the rig
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<pattern>`** — A SQL LIKE pattern: `%` matches any run of characters, `_` matches exactly one. The whole value must match for the row to be excluded. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<pattern>`** — A SQL LIKE pattern: `%` matches any run of characters, `_` matches exactly one. The whole value must match for the row to be excluded. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -56,6 +56,6 @@ Case-sensitive, like `LIKE` itself. NOT ILIKE is the case-insensitive form.
 
 ## See Also
 
-- [Like `LIKE`](like.md)
-- [Not case-insensitive like `NOT ILIKE`](notilike.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Like `LIKE`](like)
+- [Not case-insensitive like `NOT ILIKE`](notilike)
+- [NULL semantics](../advanced/adv-null-semantics)

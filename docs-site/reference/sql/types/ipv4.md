@@ -28,8 +28,8 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `ipv4`, `integer`.
 
 | Operator | Syntax | Description |
 |----------|--------|-------------|
-| [`<<=`](../operators/ipcontainedby.md) | `<address> <<= <network>` | IPv4 CIDR containment operator. |
-| [`>>=`](../operators/ipcontains.md) | `<network> >>= <address>` | IPv4 CIDR containment operator, reversed. |
+| [`<<=`](../operators/ipcontainedby) | `<address> <<= <network>` | IPv4 CIDR containment operator. |
+| [`>>=`](../operators/ipcontains) | `<network> >>= <address>` | IPv4 CIDR containment operator, reversed. |
 
 ## Notes
 
@@ -43,4 +43,4 @@ Parquet has no IP type: an address column is stored as a plain uint32 and stays 
 
 ## See Also
 
-- [Working with IPs](../advanced/adv-working-with-ips.md) — worked examples.
+- [Working with IPs](../advanced/adv-working-with-ips) — worked examples.

@@ -19,12 +19,12 @@ Returns true when the left array contains all values from the right array.
 
 ## Parameters
 
-- **`<array>`** — The array to search. Accepts [`array`](../types/array.md).
-- **`<values>`** — The array of values that must ALL be present for the result to be true. Accepts [`array`](../types/array.md).
+- **`<array>`** — The array to search. Accepts [`array`](../types/array).
+- **`<values>`** — The array of values that must ALL be present for the result to be true. Accepts [`array`](../types/array).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -54,6 +54,6 @@ false
 
 ## See Also
 
-- [Array contains any `@>`](atarrow.md)
-- [In list `IN`](inlist.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Array contains any `@>`](atarrow)
+- [In list `IN`](inlist)
+- [NULL semantics](../advanced/adv-null-semantics)

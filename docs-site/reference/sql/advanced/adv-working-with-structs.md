@@ -166,7 +166,7 @@ SELECT CAST(doc ->> 'scores' AS ARRAY<INTEGER>)     AS all_scores,   -- [10, 20,
   FROM records;
 ```
 
-Once cast, everything on [Working with Arrays](adv-working-with-lists.md) applies —
+Once cast, everything on [Working with Arrays](adv-working-with-lists) applies —
 `= ANY`, `@>`, `UNNEST`, negative indexing.
 
 The reverse direction needs no cast: a column that is **already** an array of JSON strings

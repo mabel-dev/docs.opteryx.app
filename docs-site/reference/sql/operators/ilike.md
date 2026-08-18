@@ -19,12 +19,12 @@ Returns true when the left string matches the SQL ILIKE pattern on the right wit
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<pattern>`** — A SQL LIKE pattern, matched without regard to case: `%` matches any run of characters, `_` matches exactly one. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<pattern>`** — A SQL LIKE pattern, matched without regard to case: `%` matches any run of characters, `_` matches exactly one. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -62,6 +62,6 @@ Case folding is ASCII-only: `'ABC' ILIKE 'abc'` is true, but `'ÉCOLE' ILIKE 'é
 
 ## See Also
 
-- [Like `LIKE`](like.md)
-- [Not case-insensitive like `NOT ILIKE`](notilike.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Like `LIKE`](like)
+- [Not case-insensitive like `NOT ILIKE`](notilike)
+- [NULL semantics](../advanced/adv-null-semantics)

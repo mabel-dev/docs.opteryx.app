@@ -5,9 +5,9 @@ description: SQL QUALIFY clause syntax and examples for filtering on the result 
 
 # QUALIFY
 
-The `QUALIFY` clause filters rows on the result of a **window function**. It is to [window functions](window-functions.md) what [HAVING](having.md) is to `GROUP BY`: the window is computed first, and `QUALIFY` then decides which rows survive.
+The `QUALIFY` clause filters rows on the result of a **window function**. It is to [window functions](window-functions) what [HAVING](having) is to `GROUP BY`: the window is computed first, and `QUALIFY` then decides which rows survive.
 
-It exists because neither of the other filtering clauses can do this. [WHERE](where.md) runs *before* the window is computed, so the value is not available to it; `HAVING` filters a grouped result, and window functions cannot be combined with `GROUP BY` at all.
+It exists because neither of the other filtering clauses can do this. [WHERE](where) runs *before* the window is computed, so the value is not available to it; `HAVING` filters a grouped result, and window functions cannot be combined with `GROUP BY` at all.
 
 ## Syntax
 
@@ -114,7 +114,7 @@ SELECT name
   -- filter on plain columns, or HAVING to filter a grouped result.
   ~~~
 
-- **A `SELECT` alias is not accepted**, even though [HAVING](having.md) accepts one. The window
+- **A `SELECT` alias is not accepted**, even though [HAVING](having) accepts one. The window
   function has to be written out again in the `QUALIFY` condition:
 
   ~~~sql
@@ -131,7 +131,7 @@ SELECT name
   ordinary window function and carries all of its rules — `ORDER BY` is required for ranking
   functions and rejected for aggregate windows, `GROUP BY` cannot be present anywhere in the
   query, an aggregate window reads from exactly one relation, and `ARRAY_AGG` and `ANY_VALUE`
-  cannot be used with `OVER ()`. See [Window Functions](window-functions.md).
+  cannot be used with `OVER ()`. See [Window Functions](window-functions).
 
 - **Use a qualified wildcard, not `SELECT *`.** `SELECT * ... QUALIFY <window>` runs, but leaks
   the window's internal working column (a `$win_…` name) into the result. `SELECT <alias>.*`
@@ -150,8 +150,8 @@ SELECT name
 
 ## See Also
 
-- [Window Functions](window-functions.md) — the functions `QUALIFY` filters on, and their rules
-- [HAVING](having.md) — the equivalent for `GROUP BY`
-- [WHERE](where.md) — filtering before the window is computed
-- [SELECT](select.md)
-- [ORDER BY](order-by.md)
+- [Window Functions](window-functions) — the functions `QUALIFY` filters on, and their rules
+- [HAVING](having) — the equivalent for `GROUP BY`
+- [WHERE](where) — filtering before the window is computed
+- [SELECT](select)
+- [ORDER BY](order-by)

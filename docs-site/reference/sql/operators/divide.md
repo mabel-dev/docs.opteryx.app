@@ -19,12 +19,12 @@ Returns the quotient of two numeric operands.
 
 ## Parameters
 
-- **`<dividend>`** — The value to divide. Two integers still divide to a FLOAT - use `DIV` for integer division. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
-- **`<divisor>`** — The value to divide by. Dividing by zero yields infinity rather than raising, because the result is floating point. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<dividend>`** — The value to divide. Two integers still divide to a FLOAT - use `DIV` for integer division. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
+- **`<divisor>`** — The value to divide by. Dividing by zero yields infinity rather than raising, because the result is floating point. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
 
 ## Returns
 
-[`decimal`](../types/decimal.md), [`float`](../types/float.md)
+[`decimal`](../types/decimal), [`float`](../types/float)
 
 ## Examples
 
@@ -62,6 +62,6 @@ SELECT CAST(1 AS DECIMAL(10,2)) / 3;
 
 ## See Also
 
-- [Integer division `DIV`](myintegerdivide.md)
-- [Modulo `%`](modulo.md)
-- [Multiplication `*`](multiply.md)
+- [Integer division `DIV`](myintegerdivide)
+- [Modulo `%`](modulo)
+- [Multiplication `*`](multiply)

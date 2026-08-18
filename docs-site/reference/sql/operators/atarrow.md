@@ -19,12 +19,12 @@ Returns true when the left array contains any of the values provided by the righ
 
 ## Parameters
 
-- **`<array>`** — The array to search. Accepts [`array`](../types/array.md).
-- **`<values>`** — The array of values to look for. ANY one of them being present is enough; an empty array on this side matches nothing. Accepts [`array`](../types/array.md).
+- **`<array>`** — The array to search. Accepts [`array`](../types/array).
+- **`<values>`** — The array of values to look for. ANY one of them being present is enough; an empty array on this side matches nothing. Accepts [`array`](../types/array).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -54,6 +54,6 @@ true | false
 
 ## See Also
 
-- [Array contains all `@>>`](arraycontainsall.md)
-- [In list `IN`](inlist.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Array contains all `@>>`](arraycontainsall)
+- [In list `IN`](inlist)
+- [NULL semantics](../advanced/adv-null-semantics)

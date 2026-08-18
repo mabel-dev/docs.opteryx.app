@@ -44,4 +44,4 @@ Sub-month components (days, hours, minutes, seconds, microseconds) are stored as
 
 ## See Also
 
-- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.
+- [Working with timestamps](../advanced/adv-working-with-timestamps) — worked examples.

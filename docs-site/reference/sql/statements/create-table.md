@@ -44,7 +44,7 @@ CREATE TABLE <table_name> (
 ### NOT NULL Is Recorded, Not Enforced
 
 A column may be declared `NOT NULL`. The declaration is accepted and stored — the
-column's schema entry reads `nullable: false`, and [SHOW COLUMNS](show-columns.md)
+column's schema entry reads `nullable: false`, and [SHOW COLUMNS](show-columns)
 reports it — but **Opteryx does not enforce it**. An `INSERT` writing `NULL` into a
 `NOT NULL` column succeeds, and the `NULL` is stored and read back:
 
@@ -60,13 +60,13 @@ INSERT INTO my_workspace.my_collection.readings VALUES (NULL, 'x');
 
 This is deliberate and consistent across the engine: Opteryx enforces no integrity
 constraints at all — no `PRIMARY KEY`, `FOREIGN KEY`, `CHECK` or `UNIQUE` either
-(see [SQL Conformance](../conformance.md)). `NOT NULL` is carried so a schema
+(see [SQL Conformance](../conformance)). `NOT NULL` is carried so a schema
 imported from, or exported to, another system keeps its shape and its intent;
 treat it as documentation of what the data *should* contain, and validate on the
 way in if you need the guarantee.
 
 For the same reason `ALTER TABLE ... ALTER COLUMN ... SET NOT NULL` is rejected
-rather than accepted and ignored — see [ALTER TABLE](alter-table.md).
+rather than accepted and ignored — see [ALTER TABLE](alter-table).
 
 ### Examples
 
@@ -143,13 +143,13 @@ SELECT id, name, email
 - Use fully qualified names: `<workspace>.<collection>.<table_name>`.
 - `CREATE TABLE ... AS SELECT` cannot be combined with an explicit column list — the target's columns are always derived from the query.
 - Creating a new table requires `writer` or `owner` access to the target.
-- To keep a CTAS result up to date automatically as its sources change, use [CREATE MATERIALIZED VIEW](create-materialized-view.md) — the self-refreshing variant of `CREATE TABLE ... AS SELECT`.
-- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+- To keep a CTAS result up to date automatically as its sources change, use [CREATE MATERIALIZED VIEW](create-materialized-view) — the self-refreshing variant of `CREATE TABLE ... AS SELECT`.
+- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view#a-materialized-view-is-not-a-table).
 
 ## See Also
 
-- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
-- [ALTER TABLE](alter-table.md)
-- [DROP TABLE](drop-table.md)
-- [TRUNCATE TABLE](truncate-table.md)
-- [INSERT](insert.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view)
+- [ALTER TABLE](alter-table)
+- [DROP TABLE](drop-table)
+- [TRUNCATE TABLE](truncate-table)
+- [INSERT](insert)

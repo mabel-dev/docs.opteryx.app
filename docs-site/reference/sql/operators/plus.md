@@ -19,12 +19,12 @@ Returns the sum of two numeric or interval-compatible operands.
 
 ## Parameters
 
-- **`<left>`** — The value to add to. A DATE or TIMESTAMP is accepted only with an INTERVAL on the other side - two dates cannot be added. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
-- **`<right>`** — The value to add. Mixing numeric types widens the result: INTEGER with FLOAT gives FLOAT, INTEGER with DECIMAL gives DECIMAL. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
+- **`<left>`** — The value to add to. A DATE or TIMESTAMP is accepted only with an INTERVAL on the other side - two dates cannot be added. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp).
+- **`<right>`** — The value to add. Mixing numeric types widens the result: INTEGER with FLOAT gives FLOAT, INTEGER with DECIMAL gives DECIMAL. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp).
 
 ## Returns
 
-[`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md)
+[`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp)
 
 ## Examples
 
@@ -69,6 +69,6 @@ Adding NULL gives NULL. Date arithmetic is only ever date-plus-interval, and the
 
 ## See Also
 
-- [Subtraction `-`](minus.md)
-- [Multiplication `*`](multiply.md)
-- [Division `/`](divide.md)
+- [Subtraction `-`](minus)
+- [Multiplication `*`](multiply)
+- [Division `/`](divide)

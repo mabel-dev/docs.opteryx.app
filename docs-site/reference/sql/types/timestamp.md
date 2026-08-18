@@ -62,4 +62,4 @@ All scales are stored as INT64. The 1677-09-21 to 2262-04-11 range applies only 
 
 ## See Also
 
-- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.
+- [Working with timestamps](../advanced/adv-working-with-timestamps) — worked examples.

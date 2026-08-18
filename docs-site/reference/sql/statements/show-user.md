@@ -34,5 +34,5 @@ SHOW USER;
 
 ## See Also
 
-- [SHOW GRANTS](show-grants.md)
-- [SHOW VARIABLES](show-variables.md)
+- [SHOW GRANTS](show-grants)
+- [SHOW VARIABLES](show-variables)

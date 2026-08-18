@@ -19,12 +19,12 @@ Returns true when the supplied JSON path expression matches within the left docu
 
 ## Parameters
 
-- **`<document>`** — The JSON document to test. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md), [`variant`](../types/variant.md).
-- **`<path>`** — The path to look for. It is resolved to RFC 6901 tokens once, when the query is planned. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md). Must be a literal.
+- **`<document>`** — The JSON document to test. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`variant`](../types/variant).
+- **`<path>`** — The path to look for. It is resolved to RFC 6901 tokens once, when the query is planned. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar). Must be a literal.
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -64,6 +64,6 @@ The path must be a literal — it is resolved to RFC 6901 tokens once when the q
 
 ## See Also
 
-- [JSON extract `->`](arrow.md)
-- [JSON extract text `->>`](longarrow.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [JSON extract `->`](arrow)
+- [JSON extract text `->>`](longarrow)
+- [NULL semantics](../advanced/adv-null-semantics)

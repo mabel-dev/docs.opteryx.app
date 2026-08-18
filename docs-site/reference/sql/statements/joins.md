@@ -348,8 +348,8 @@ SELECT p.name, p2.name AS match_name
 
 ## See Also
 
-- [SELECT](select.md)
-- [WHERE](where.md)
-- [WITH (CTE)](with.md)
-- [UNION, INTERSECT, and EXCEPT](union.md)
+- [SELECT](select)
+- [WHERE](where)
+- [WITH (CTE)](with)
+- [UNION, INTERSECT, and EXCEPT](union)
 - [Working with IPs](/docs/reference/sql/advanced/adv-working-with-ips)

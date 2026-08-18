@@ -77,6 +77,6 @@ SELECT p.name
 
 ## See Also
 
-- [READ_CSV](read-csv.md)
-- [READ_JSONL](read-jsonl.md)
-- [CREATE TABLE](create-table.md)
+- [READ_CSV](read-csv)
+- [READ_JSONL](read-jsonl)
+- [CREATE TABLE](create-table)

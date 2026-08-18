@@ -19,12 +19,12 @@ Shifts the bits of the left integer operand right by the number of positions in 
 
 ## Parameters
 
-- **`<value>`** — The integer whose bits are shifted. The shift is arithmetic, so the sign is preserved. Accepts [`integer`](../types/integer.md).
-- **`<count>`** — How many positions to shift by, 0..63. Accepts [`integer`](../types/integer.md).
+- **`<value>`** — The integer whose bits are shifted. The shift is arithmetic, so the sign is preserved. Accepts [`integer`](../types/integer).
+- **`<count>`** — How many positions to shift by, 0..63. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`integer`](../types/integer.md)
+[`integer`](../types/integer)
 
 ## Examples
 
@@ -46,5 +46,5 @@ Right shift is ARITHMETIC, not logical: the sign bit is copied, so `-1 >> 1` is 
 
 ## See Also
 
-- [Left shift `<<`](shiftleft.md)
-- [Bitwise AND `&`](bitwiseand.md)
+- [Left shift `<<`](shiftleft)
+- [Bitwise AND `&`](bitwiseand)

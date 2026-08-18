@@ -19,12 +19,12 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 
 ## Parameters
 
-- **`<left>`** — The value to subtract from. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
-- **`<right>`** — The value to subtract. Subtracting one TIMESTAMP from another gives an INTERVAL; subtracting an INTERVAL from a timestamp gives a timestamp. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
+- **`<left>`** — The value to subtract from. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp).
+- **`<right>`** — The value to subtract. Subtracting one TIMESTAMP from another gives an INTERVAL; subtracting an INTERVAL from a timestamp gives a timestamp. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp).
 
 ## Returns
 
-[`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md)
+[`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`timestamp`](../types/timestamp)
 
 ## Examples
 
@@ -73,6 +73,6 @@ Unlike addition, subtraction is not symmetric across types: a timestamp minus an
 
 ## See Also
 
-- [Addition `+`](plus.md)
-- [Multiplication `*`](multiply.md)
-- [Division `/`](divide.md)
+- [Addition `+`](plus)
+- [Multiplication `*`](multiply)
+- [Division `/`](divide)

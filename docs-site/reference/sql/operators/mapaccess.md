@@ -19,12 +19,12 @@ Returns the element at the requested index from an array, string, or blob-like v
 
 ## Parameters
 
-- **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array.md), [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md), [`vector`](../types/vector.md).
-- **`<index>`** — The zero-based position to read. An index past the end gives NULL rather than raising. Accepts [`integer`](../types/integer.md).
+- **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array), [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`vector`](../types/vector).
+- **`<index>`** — The zero-based position to read. An index past the end gives NULL rather than raising. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`float`](../types/float.md), [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md)
+[`float`](../types/float), [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar)
 
 Some operand combinations have no fixed result type — the result follows the value being read. See Signatures below.
 
@@ -60,4 +60,4 @@ Subcript access is zero-based, the first element is at index 0. For arrays the r
 
 ## See Also
 
-- [JSON extract `->`](arrow.md)
+- [JSON extract `->`](arrow)

@@ -61,7 +61,7 @@ ADD COLUMN [ IF NOT EXISTS ] <column_name> <data_type> [ DEFAULT <literal> ];
 - **`IF NOT EXISTS`** — do nothing, without error, if the table already has a column of
   this name. Omitted, an already-present name is an error.
 - **`<column_name>`** — must not already exist in the table, unless `IF NOT EXISTS` is given.
-- **`<data_type>`** — any type [CREATE TABLE](create-table.md) accepts.
+- **`<data_type>`** — any type [CREATE TABLE](create-table) accepts.
 - **`DEFAULT <literal>`** — the value written into the rows that already exist. Must be a
   literal. Omitted, existing rows are filled with `NULL`.
 
@@ -143,7 +143,7 @@ The mirror of `ADD COLUMN IF NOT EXISTS`, and re-runnable for the same reason.
 - `CASCADE` and `RESTRICT` are rejected; Opteryx has no dependent objects to cascade to.
 - Only one column per statement. `DROP COLUMN a, b` does not parse.
 - Older snapshots still have the column, values and all. A
-  [TIMESTAMP AS OF](timestamp-as-of.md) query pointing before the drop reads it back
+  [TIMESTAMP AS OF](timestamp-as-of) query pointing before the drop reads it back
   exactly as it was.
 
 ### RENAME COLUMN
@@ -207,7 +207,7 @@ query is planned, before any file is touched:
 - A no-op (`ALTER COLUMN c TYPE INT64` on a column already `INT64`) is rejected rather than
   reported as a successful change that changed nothing.
 - There is no `USING <expr>` clause. A conversion needing an expression is a rewrite of the
-  table, not a type change — see [UPDATE](update.md).
+  table, not a type change — see [UPDATE](update).
 
 ### Performance (Column Operations)
 
@@ -239,7 +239,7 @@ Two consequences worth planning around:
 ### Time Travel Across a Column Change
 
 Each snapshot records the schema it was written under, and schema history is kept
-indefinitely, so [TIMESTAMP AS OF](timestamp-as-of.md) resolves the shape the table had at
+indefinitely, so [TIMESTAMP AS OF](timestamp-as-of) resolves the shape the table had at
 that moment — not the shape it has now:
 
 ~~~sql
@@ -349,11 +349,11 @@ The vacated storage location is reclaimed by the same background sweep that recl
 
 ## Materialized Views
 
-`ALTER TABLE` is rejected against a materialized view — every operation, the column ones included. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view.md).
+`ALTER TABLE` is rejected against a materialized view — every operation, the column ones included. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
 
 ## See Also
 
-- [CREATE TABLE](create-table.md)
-- [DROP TABLE](drop-table.md)
-- [TRUNCATE TABLE](truncate-table.md)
-- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [CREATE TABLE](create-table)
+- [DROP TABLE](drop-table)
+- [TRUNCATE TABLE](truncate-table)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view)

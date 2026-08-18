@@ -30,7 +30,7 @@ Predicate evaluation becomes even cheaper than the memory saving suggests. To te
 
 Parquet's RLE_DICTIONARY encoding on disk maps directly to this shape in memory. There is no expansion step at read time.
 
-The values inside a string dictionary — and inside any string column — have their own fixed-width layout; see [How Draken Stores Strings](draken-german-strings.md).
+The values inside a string dictionary — and inside any string column — have their own fixed-width layout; see [How Draken Stores Strings](draken-german-strings).
 
 ### Constant
 

@@ -20,12 +20,12 @@ Returns true when the operands do not compare equal.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to compare it against. It must be type-compatible with the left. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<left>`** — The value to compare. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. It must be type-compatible with the left. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -80,6 +80,6 @@ SELECT COUNT(*) FROM $planets WHERE surface_pressure != 0;
 
 ## See Also
 
-- [Equals `=`](eq.md)
-- [Not in list `NOT IN`](notinlist.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Equals `=`](eq)
+- [Not in list `NOT IN`](notinlist)
+- [NULL semantics](../advanced/adv-null-semantics)

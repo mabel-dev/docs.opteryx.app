@@ -36,9 +36,9 @@ TRUNCATE TABLE IF EXISTS workspace.collection.staging_data;
 - The `TABLE` keyword is required — `TRUNCATE table_name` without it is rejected.
 - Requires a connector that supports truncation — not every backend does.
 - Removing all rows this way cannot be undone.
-- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view#a-materialized-view-is-not-a-table).
 
 ## See Also
 
-- [DELETE](delete.md)
-- [DROP TABLE](drop-table.md)
+- [DELETE](delete)
+- [DROP TABLE](drop-table)

@@ -18,7 +18,7 @@ WITH <cte_name> AS ( <query> ) [, ...]
 
 - **`<cte_name>`** — the name the CTE is referenced by in `<statement>` and in later CTEs.
 - **`<query>`** — the `SELECT` that defines the CTE's contents.
-- **`<statement>`** — the main query, typically a [`SELECT`](select.md), that references one or
+- **`<statement>`** — the main query, typically a [`SELECT`](select), that references one or
   more of the CTEs defined above it.
 
 ## Examples
@@ -100,7 +100,7 @@ SELECT * FROM deduped;
 
 ## See Also
 
-- [SELECT](select.md)
-- [DISTINCT](distinct.md)
-- [GROUP BY](group-by.md)
-- [WHERE](where.md)
+- [SELECT](select)
+- [DISTINCT](distinct)
+- [GROUP BY](group-by)
+- [WHERE](where)

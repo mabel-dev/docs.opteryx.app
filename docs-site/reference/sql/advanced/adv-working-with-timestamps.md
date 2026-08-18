@@ -118,7 +118,7 @@ SELECT FORMAT_TIMESTAMP('%Y-%m-%d', event_time)
   FROM events;
 ```
 
-See the [FORMAT_TIMESTAMP reference](../functions/format_timestamp.md) for the full list of supported format tokens.
+See the [FORMAT_TIMESTAMP reference](../functions/format_timestamp) for the full list of supported format tokens.
 
 ## Arithmetic
 

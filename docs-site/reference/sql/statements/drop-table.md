@@ -41,12 +41,12 @@ DROP TABLE IF EXISTS workspace.collection.staging_data;
 
 - Requires the `owner` role on the table, and a connector that supports dropping — not every backend does.
 - `CASCADE`, `RESTRICT` and `PURGE` are **not supported** and are rejected when the query is planned rather than accepted and ignored.
-- `DROP TABLE` against a materialized view is rejected and points you to [DROP MATERIALIZED VIEW](drop-materialized-view.md) — its backing table cannot be dropped out from under it.
+- `DROP TABLE` against a materialized view is rejected and points you to [DROP MATERIALIZED VIEW](drop-materialized-view) — its backing table cannot be dropped out from under it.
 - Dropping a table removes the data it holds; this cannot be undone.
 
 ## See Also
 
-- [CREATE TABLE](create-table.md)
-- [ALTER TABLE](alter-table.md)
-- [TRUNCATE TABLE](truncate-table.md)
-- [DROP MATERIALIZED VIEW](drop-materialized-view.md)
+- [CREATE TABLE](create-table)
+- [ALTER TABLE](alter-table)
+- [TRUNCATE TABLE](truncate-table)
+- [DROP MATERIALIZED VIEW](drop-materialized-view)

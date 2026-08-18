@@ -37,18 +37,18 @@ DROP MATERIALIZED VIEW IF EXISTS my_workspace.analytics.daily_totals;
 ## Notes
 
 - Requires the `owner` role on the materialized view.
-- [DROP TABLE](drop-table.md) against a materialized view is rejected and points you
+- [DROP TABLE](drop-table) against a materialized view is rejected and points you
   here; equally, `DROP MATERIALIZED VIEW` against a plain table is rejected and points
   you to `DROP TABLE`.
 - To stop a materialized view refreshing without removing it, drop one of its refresh
-  triggers with [DROP TRIGGER](drop-trigger.md) instead — the view stays queryable but
+  triggers with [DROP TRIGGER](drop-trigger) instead — the view stays queryable but
   no longer updates.
 - Dropping a materialized view removes the stored result it holds; this cannot be undone.
 
 ## See Also
 
-- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
-- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
-- [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md)
-- [DROP TABLE](drop-table.md)
-- [DROP TRIGGER](drop-trigger.md)
+- [CREATE MATERIALIZED VIEW](create-materialized-view)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view)
+- [REFRESH MATERIALIZED VIEW](refresh-materialized-view)
+- [DROP TABLE](drop-table)
+- [DROP TRIGGER](drop-trigger)

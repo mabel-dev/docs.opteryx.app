@@ -148,12 +148,12 @@ SELECT name FROM users
 - Use parentheses to clarify the order of logical operations.
 - For filtering grouped results, use `HAVING` instead.
 - `WHERE` also runs before window functions are computed, so it cannot filter on one. Use
-  [QUALIFY](qualify.md) for that.
+  [QUALIFY](qualify) for that.
 
 ## See Also
 
-- [SELECT](select.md)
-- [HAVING](having.md)
-- [GROUP BY](group-by.md)
-- [QUALIFY](qualify.md) — filtering on a window function's result
-- [WITH (CTE)](with.md)
+- [SELECT](select)
+- [HAVING](having)
+- [GROUP BY](group-by)
+- [QUALIFY](qualify) — filtering on a window function's result
+- [WITH (CTE)](with)

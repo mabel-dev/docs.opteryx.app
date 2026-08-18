@@ -19,12 +19,12 @@ Returns the selected JSON value from a document or JSON-like value.
 
 ## Parameters
 
-- **`<document>`** — The JSON document to read from. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md), [`variant`](../types/variant.md).
-- **`<path>`** — The key or path to select. A bare key (`'city'`), a JSONPath (`'$.contact.email'`) and an RFC 6901 pointer (`'/contact/email'`) all name the same thing. A path that is not present gives NULL, not an error. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<document>`** — The JSON document to read from. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`variant`](../types/variant).
+- **`<path>`** — The key or path to select. A bare key (`'city'`), a JSONPath (`'$.contact.email'`) and an RFC 6901 pointer (`'/contact/email'`) all name the same thing. A path that is not present gives NULL, not an error. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`variant`](../types/variant.md)
+[`variant`](../types/variant)
 
 ## Examples
 
@@ -64,6 +64,6 @@ NULL
 
 ## See Also
 
-- [JSON extract text `->>`](longarrow.md)
-- [JSON path exists `@?`](atquestion.md)
-- [Subscript access `[]`](mapaccess.md)
+- [JSON extract text `->>`](longarrow)
+- [JSON path exists `@?`](atquestion)
+- [Subscript access `[]`](mapaccess)

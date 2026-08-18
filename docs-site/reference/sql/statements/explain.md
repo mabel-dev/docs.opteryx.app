@@ -72,5 +72,5 @@ SELECT o.id, c.name, o.amount
 
 ## See Also
 
-- [SELECT](select.md)
-- [Joins](joins.md)
+- [SELECT](select)
+- [Joins](joins)

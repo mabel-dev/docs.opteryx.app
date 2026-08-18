@@ -35,11 +35,11 @@ DROP COLLECTION IF EXISTS workspace.staging;
 ## Notes
 
 - The collection must be empty - drop every table and view in it first with
-  [DROP TABLE](drop-table.md) / [DROP VIEW](drop-view.md). `DROP COLLECTION` never
+  [DROP TABLE](drop-table) / [DROP VIEW](drop-view). `DROP COLLECTION` never
   cascades and never removes tables or views on your behalf. `CASCADE` is rejected when
   the query is planned, rather than accepted and quietly not honoured.
 - Collections come into existence implicitly, with the first table or view created in
-  them. [CREATE COLLECTION](create-collection.md) makes one ahead of its first relation,
+  them. [CREATE COLLECTION](create-collection) makes one ahead of its first relation,
   but is never required.
 - Requires the `owner` role on the collection *itself*, not just on the tables inside
   it - a grant like `workspace.staging.*` covers everything *in* the collection but
@@ -50,6 +50,6 @@ DROP COLLECTION IF EXISTS workspace.staging;
 
 ## See Also
 
-- [CREATE COLLECTION](create-collection.md)
-- [DROP TABLE](drop-table.md)
-- [DROP VIEW](drop-view.md)
+- [CREATE COLLECTION](create-collection)
+- [DROP TABLE](drop-table)
+- [DROP VIEW](drop-view)

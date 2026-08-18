@@ -19,12 +19,12 @@ Returns true when the left operand is less than or equal to the right operand.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<left>`** — The value to compare. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -70,7 +70,7 @@ NULL on either side gives NULL, so ordering comparisons never match an absent va
 
 ## See Also
 
-- [Less than `<`](lt.md)
-- [Greater than `>`](gt.md)
-- [Greater than or equal `>=`](gteq.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Less than `<`](lt)
+- [Greater than `>`](gt)
+- [Greater than or equal `>=`](gteq)
+- [NULL semantics](../advanced/adv-null-semantics)

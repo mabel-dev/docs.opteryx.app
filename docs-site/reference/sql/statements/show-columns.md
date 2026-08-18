@@ -46,5 +46,5 @@ SHOW COLUMNS FROM $planets;
 
 ## See Also
 
-- [SHOW CREATE VIEW](show-create.md)
-- [SHOW MANIFEST FOR](show-manifest.md)
+- [SHOW CREATE VIEW](show-create)
+- [SHOW MANIFEST FOR](show-manifest)

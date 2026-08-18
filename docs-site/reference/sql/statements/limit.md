@@ -84,6 +84,6 @@ LIMIT 5;
 
 ## See Also
 
-- [SELECT](select.md)
-- [ORDER BY](order-by.md)
-- [WHERE](where.md)
+- [SELECT](select)
+- [ORDER BY](order-by)
+- [WHERE](where)

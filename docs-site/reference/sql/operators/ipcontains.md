@@ -19,12 +19,12 @@ Returns true when the network on the left, in CIDR notation, contains the IPv4 a
 
 ## Parameters
 
-- **`<network>`** — The network to test against, in CIDR notation, with its prefix length. Accepts [`varchar`](../types/varchar.md).
-- **`<address>`** — An IPv4 address. It is held as its 32-bit integer value, which is why the signature below reads INTEGER. Accepts [`integer`](../types/integer.md).
+- **`<network>`** — The network to test against, in CIDR notation, with its prefix length. Accepts [`varchar`](../types/varchar).
+- **`<address>`** — An IPv4 address. It is held as its 32-bit integer value, which is why the signature below reads INTEGER. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -46,5 +46,5 @@ Spelling follows PostgreSQL, CockroachDB and DuckDB's inet extension.
 
 ## See Also
 
-- [IP contained by `<<=`](ipcontainedby.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [IP contained by `<<=`](ipcontainedby)
+- [NULL semantics](../advanced/adv-null-semantics)

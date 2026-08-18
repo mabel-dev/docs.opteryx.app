@@ -98,6 +98,6 @@ SELECT DISTINCT ON (customer_id)
 
 ## See Also
 
-- [SELECT](select.md)
-- [GROUP BY](group-by.md)
-- [ORDER BY](order-by.md)
+- [SELECT](select)
+- [GROUP BY](group-by)
+- [ORDER BY](order-by)

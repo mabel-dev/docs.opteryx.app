@@ -19,12 +19,12 @@ Returns the product of two numeric operands.
 
 ## Parameters
 
-- **`<left>`** — A numeric value. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
-- **`<right>`** — A numeric value. The result takes the wider of the two types - see Signatures. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<left>`** — A numeric value. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
+- **`<right>`** — A numeric value. The result takes the wider of the two types - see Signatures. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
 
 ## Returns
 
-[`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md)
+[`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer)
 
 ## Examples
 
@@ -52,6 +52,6 @@ Earth | 25512
 
 ## See Also
 
-- [Division `/`](divide.md)
-- [Addition `+`](plus.md)
-- [Subtraction `-`](minus.md)
+- [Division `/`](divide)
+- [Addition `+`](plus)
+- [Subtraction `-`](minus)

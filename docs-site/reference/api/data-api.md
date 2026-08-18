@@ -1,6 +1,6 @@
 # Data API (deprecated)
 
-This page has been renamed to **Jobs API**. See [Jobs API](jobs-api.md).
+This page has been renamed to **Jobs API**. See [Jobs API](jobs-api).
 
 Base URL: https://jobs.opteryx.app
 

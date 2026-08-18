@@ -19,12 +19,12 @@ Returns true only when both boolean operands evaluate to true.
 
 ## Parameters
 
-- **`<left>`** — A boolean expression. A comparison that produced NULL counts as unknown here, not as false. Accepts [`boolean`](../types/boolean.md).
-- **`<right>`** — A boolean expression, evaluated under the same rules. Accepts [`boolean`](../types/boolean.md).
+- **`<left>`** — A boolean expression. A comparison that produced NULL counts as unknown here, not as false. Accepts [`boolean`](../types/boolean).
+- **`<right>`** — A boolean expression, evaluated under the same rules. Accepts [`boolean`](../types/boolean).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -54,6 +54,6 @@ AND is three-valued. FALSE wins over an unknown - `FALSE AND NULL` is FALSE, bec
 
 ## See Also
 
-- [Logical OR `OR`](or.md)
-- [Logical XOR `XOR`](xor.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Logical OR `OR`](or)
+- [Logical XOR `XOR`](xor)
+- [NULL semantics](../advanced/adv-null-semantics)

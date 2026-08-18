@@ -1,8 +1,8 @@
 # Skene — the file format
 
-Skene is Opteryx's own columnar file format. One `.skene` file holds **one row group of [Draken](draken.md) vectors, stored losslessly** — including the things Parquet cannot express. It is C++17 with no dependencies, it imports Draken's headers directly, and there is no Python anywhere on its read path.
+Skene is Opteryx's own columnar file format. One `.skene` file holds **one row group of [Draken](draken) vectors, stored losslessly** — including the things Parquet cannot express. It is C++17 with no dependencies, it imports Draken's headers directly, and there is no Python anywhere on its read path.
 
-Parquet remains the default. It is the interchange format, and it is what stored datasets are written as; [Rugo](rugo.md) reads and writes it. Skene is for the narrower set of cases where a Draken-native round trip is what matters: query results, sort spill, and datasets we want optimised rather than interoperable. Nothing outside the engine reads `.skene`, and no foreign reader is promised.
+Parquet remains the default. It is the interchange format, and it is what stored datasets are written as; [Rugo](rugo) reads and writes it. Skene is for the narrower set of cases where a Draken-native round trip is what matters: query results, sort spill, and datasets we want optimised rather than interoperable. Nothing outside the engine reads `.skene`, and no foreign reader is promised.
 
 ---
 

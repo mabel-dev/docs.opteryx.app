@@ -48,6 +48,6 @@ SELECT order_id, customer_id, amount, created_at
 
 ## See Also
 
-- [CREATE VIEW](create-view.md)
-- [DROP VIEW](drop-view.md)
-- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [CREATE VIEW](create-view)
+- [DROP VIEW](drop-view)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view)

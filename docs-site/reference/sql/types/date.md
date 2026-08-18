@@ -51,4 +51,4 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `DATE`, `TIMESTAMP`.
 
 ## See Also
 
-- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.
+- [Working with timestamps](../advanced/adv-working-with-timestamps) — worked examples.

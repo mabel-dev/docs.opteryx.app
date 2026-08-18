@@ -98,8 +98,8 @@ SELECT category, COUNT(*) AS count
 
 ## See Also
 
-- [SELECT](select.md)
-- [HAVING](having.md)
-- [WHERE](where.md)
-- [ORDER BY](order-by.md)
-- [Window Functions](window-functions.md)
+- [SELECT](select)
+- [HAVING](having)
+- [WHERE](where)
+- [ORDER BY](order-by)
+- [Window Functions](window-functions)

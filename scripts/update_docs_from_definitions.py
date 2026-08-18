@@ -1003,10 +1003,15 @@ def build_functions_docs(functions_def: Dict[str, Any]):
 
 
 def _type_link(type_name: str) -> str:
-    """`varchar` -> a link to its data-type page, if that page exists."""
+    """`varchar` -> a link to its data-type page, if that page exists.
+
+    Hrefs are written WITHOUT the .md extension. The site is a static export and
+    Firebase `cleanUrls` resolves `/page` -> `/page.html`; there is no .md in
+    `out/` and no rewrite for it, so an href ending in .md 404s in production.
+    """
     slug = slugify(type_name)
     if (REF_SQL_DIR / 'types' / f'{slug}.md').exists():
-        return f'[`{type_name}`](../types/{slug}.md)'
+        return f'[`{type_name}`](../types/{slug})'
     return f'`{type_name}`'
 
 
@@ -1176,7 +1181,7 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             lines.append('## See Also\n')
             for related in see_also:
                 if related == '@null-semantics':
-                    lines.append('- [NULL semantics](../advanced/adv-null-semantics.md)')
+                    lines.append('- [NULL semantics](../advanced/adv-null-semantics)')
                     continue
                 related_info = ops_def.get(related) or {}
                 related_display = related_info.get('friendly_name') or related
@@ -1184,7 +1189,7 @@ def build_operators_docs(ops_def: Dict[str, Any]):
                 label = (
                     f'{related_display} `{related_symbol}`' if related_symbol else related_display
                 )
-                lines.append(f'- [{label}]({slugify(related)}.md)')
+                lines.append(f'- [{label}]({slugify(related)})')
             lines.append('')
 
         write_md(path, lines)
@@ -1388,7 +1393,7 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
                 op_forms = ' <br> '.join(f'`{f}`' for f in op_info.get('syntax_forms') or [])
                 op_desc = (op_info.get('description') or op_info.get('friendly_name') or '').strip()
                 lines.append(
-                    f'| [`{op_symbol}`](../operators/{op_slug}.md) | {op_forms} | {op_desc} |'
+                    f'| [`{op_symbol}`](../operators/{op_slug}) | {op_forms} | {op_desc} |'
                 )
             lines.append('')
 
@@ -1411,7 +1416,7 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
         if guide:
             guide_title, guide_path = guide
             lines.append('## See Also\n')
-            lines.append(f'- [{guide_title}](../{guide_path}.md) — worked examples.')
+            lines.append(f'- [{guide_title}](../{guide_path}) — worked examples.')
             lines.append('')
 
         write_md(path, lines)

@@ -14,7 +14,7 @@ SELECT *
   FROM $planets;
 ```
 
-`$planets` is temporal — using [Time Travel](adv-time-travel.md) returns different results depending on the date. Uranus was discovered in 1781 and Pluto in 1930, so querying before those dates returns fewer rows:
+`$planets` is temporal — using [Time Travel](adv-time-travel) returns different results depending on the date. Uranus was discovered in 1781 and Pluto in 1930, so querying before those dates returns fewer rows:
 
 ```sql
 SELECT name

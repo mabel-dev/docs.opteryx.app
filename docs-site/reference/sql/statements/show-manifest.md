@@ -58,5 +58,5 @@ you only need part of the manifest.
 
 ## See Also
 
-- [SHOW COLUMNS](show-columns.md)
-- [SHOW GRANTS](show-grants.md)
+- [SHOW COLUMNS](show-columns)
+- [SHOW GRANTS](show-grants)

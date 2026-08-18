@@ -19,12 +19,12 @@ Returns true when exactly one boolean operand evaluates to true.
 
 ## Parameters
 
-- **`<left>`** — A boolean expression. Accepts [`boolean`](../types/boolean.md).
-- **`<right>`** — A boolean expression. Accepts [`boolean`](../types/boolean.md).
+- **`<left>`** — A boolean expression. Accepts [`boolean`](../types/boolean).
+- **`<right>`** — A boolean expression. Accepts [`boolean`](../types/boolean).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -55,6 +55,6 @@ Unlike AND and OR, XOR has no dominant value: the answer always depends on both 
 
 ## See Also
 
-- [Logical AND `AND`](and.md)
-- [Logical OR `OR`](or.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Logical AND `AND`](and)
+- [Logical OR `OR`](or)
+- [NULL semantics](../advanced/adv-null-semantics)

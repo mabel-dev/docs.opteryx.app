@@ -23,4 +23,4 @@ VARIANT is NOT produced by reading JSON files/columns directly — file connecto
 
 ## See Also
 
-- [Working with structs](../advanced/adv-working-with-structs.md) — worked examples.
+- [Working with structs](../advanced/adv-working-with-structs) — worked examples.

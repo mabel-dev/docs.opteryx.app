@@ -10,7 +10,7 @@ The `CREATE VIEW` statement creates a new view that exposes the result of a quer
 A view stores only the query text and plans it afresh on every reference, so nothing is
 precomputed. If you want the result stored as a physical table and kept up to date
 automatically as its sources change, use
-[CREATE MATERIALIZED VIEW](create-materialized-view.md) instead.
+[CREATE MATERIALIZED VIEW](create-materialized-view) instead.
 
 ## Syntax
 
@@ -69,7 +69,7 @@ HAVING SUM(amount) > 10000;
 
 ## See Also
 
-- [ALTER VIEW](alter-view.md)
-- [DROP VIEW](drop-view.md)
-- [CREATE MATERIALIZED VIEW](create-materialized-view.md)
-- [CREATE TABLE](create-table.md)
+- [ALTER VIEW](alter-view)
+- [DROP VIEW](drop-view)
+- [CREATE MATERIALIZED VIEW](create-materialized-view)
+- [CREATE TABLE](create-table)

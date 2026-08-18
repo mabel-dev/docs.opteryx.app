@@ -20,12 +20,12 @@ Returns true when the left operand does not match any element in the right-hand 
 
 ## Parameters
 
-- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. Accepts [`array`](../types/array.md).
+- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. Accepts [`array`](../types/array).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -57,6 +57,6 @@ Like `!=`, a row whose value is NULL answers NULL rather than true, so it does n
 
 ## See Also
 
-- [In list `IN`](inlist.md)
-- [Not equals `!=`](noteq.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [In list `IN`](inlist)
+- [Not equals `!=`](noteq)
+- [NULL semantics](../advanced/adv-null-semantics)

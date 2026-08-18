@@ -20,12 +20,12 @@ Returns true when the left operand matches any element in the right-hand list or
 
 ## Parameters
 
-- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<list>`** — The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list, NULL included, is rejected at plan time rather than being silently skipped. Accepts [`array`](../types/array.md).
+- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<list>`** — The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list, NULL included, is rejected at plan time rather than being silently skipped. Accepts [`array`](../types/array).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -64,6 +64,6 @@ IN is a shorthand for a chain of `=`, and inherits its rules: the comparison is 
 
 ## See Also
 
-- [Not in list `NOT IN`](notinlist.md)
-- [Equals `=`](eq.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Not in list `NOT IN`](notinlist)
+- [Equals `=`](eq)
+- [NULL semantics](../advanced/adv-null-semantics)

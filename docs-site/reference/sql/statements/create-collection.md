@@ -10,7 +10,7 @@ and its tables/views (`workspace.collection.table`).
 
 Creating a collection is **optional**. A collection comes into existence anyway with the
 first table or view placed in it. This statement exists so a collection can be made ahead
-of its first relation, and so [DROP COLLECTION](drop-collection.md) has a counterpart.
+of its first relation, and so [DROP COLLECTION](drop-collection) has a counterpart.
 
 ## Syntax
 
@@ -41,7 +41,7 @@ CREATE COLLECTION IF NOT EXISTS workspace.staging;
 ## Notes
 
 - Requires `writer` or `owner` on the collection. This is deliberately a lower tier than
-  [DROP COLLECTION](drop-collection.md), which requires `owner`: creating a collection
+  [DROP COLLECTION](drop-collection), which requires `owner`: creating a collection
   destroys nothing, dropping one does.
 - Without `IF NOT EXISTS`, creating a collection that already exists is an error.
 - A collection owns no storage of its own, so creating one writes no data — it registers a
@@ -52,6 +52,6 @@ CREATE COLLECTION IF NOT EXISTS workspace.staging;
 
 ## See Also
 
-- [DROP COLLECTION](drop-collection.md)
-- [CREATE TABLE](create-table.md)
-- [CREATE VIEW](create-view.md)
+- [DROP COLLECTION](drop-collection)
+- [CREATE TABLE](create-table)
+- [CREATE VIEW](create-view)

@@ -382,7 +382,7 @@ Alias them, and the ambiguity goes away.
 
 ## Filtering on a Window
 
-`WHERE` runs before the window is computed, so it cannot filter on a window function's output — a window function in a `WHERE` clause fails with an internal error rather than a diagnosable one. [QUALIFY](qualify.md) is the clause that can; it is to window functions what `HAVING` is to `GROUP BY`:
+`WHERE` runs before the window is computed, so it cannot filter on a window function's output — a window function in a `WHERE` clause fails with an internal error rather than a diagnosable one. [QUALIFY](qualify) is the clause that can; it is to window functions what `HAVING` is to `GROUP BY`:
 
 ~~~sql
 SELECT name FROM $planets QUALIFY COUNT(*) OVER () > 5;
@@ -390,7 +390,7 @@ SELECT name FROM $planets QUALIFY COUNT(*) OVER () > 5;
 SELECT name FROM $planets QUALIFY ROW_NUMBER() OVER (ORDER BY id) <= 3;
 ~~~
 
-Every restriction on this page applies to a window inside a `QUALIFY` as well. See [QUALIFY](qualify.md) for its own rules — chiefly that the condition must contain a window function, and that a `SELECT` alias for one is not accepted.
+Every restriction on this page applies to a window inside a `QUALIFY` as well. See [QUALIFY](qualify) for its own rules — chiefly that the condition must contain a window function, and that a `SELECT` alias for one is not accepted.
 
 ## Notes
 
@@ -404,8 +404,8 @@ Every restriction on this page applies to a window inside a `QUALIFY` as well. S
 
 - [SQL Conformance](/docs/reference/sql/conformance) — how this compares to the standard
 - [Aggregates](/docs/reference/sql/aggregates) — the same functions used with `GROUP BY`, and the `support` flags this page derives its list from
-- [QUALIFY](qualify.md) — filtering on a window function's result
-- [GROUP BY](group-by.md)
-- [HAVING](having.md)
-- [SELECT](select.md)
-- [ORDER BY](order-by.md)
+- [QUALIFY](qualify) — filtering on a window function's result
+- [GROUP BY](group-by)
+- [HAVING](having)
+- [SELECT](select)
+- [ORDER BY](order-by)

@@ -65,6 +65,6 @@ a lighter operation than compaction.
 
 ## See Also
 
-- [DROP STATISTICS](drop-statistics.md)
-- [ALTER TABLE](alter-table.md)
-- [CREATE TABLE](create-table.md)
+- [DROP STATISTICS](drop-statistics)
+- [ALTER TABLE](alter-table)
+- [CREATE TABLE](create-table)

@@ -2,7 +2,7 @@
 
 [Rugo](https://rugo.dev) is the part of Opteryx that turns files on disk (or in object storage) into columns the engine can compute over. It reads and writes **Parquet, CSV, and JSONL**, and it does so without PyArrow, without NumPy, and without any heavy runtime dependency — the compression codecs it needs are vendored into the source tree, so a built Rugo has nothing else to install.
 
-Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL I/O without the SQL engine on top. Both packagings bundle [Draken](draken.md), the columnar vector library Rugo emits into.
+Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL I/O without the SQL engine on top. Both packagings bundle [Draken](draken), the columnar vector library Rugo emits into.
 
 ---
 
@@ -34,7 +34,7 @@ A naive reader decodes the whole file and lets the engine throw most of it away.
 
 Rugo doesn't just decode to a flat array and move on; it preserves the structure already present in the file, because that structure is exactly what makes downstream work cheap.
 
-A Parquet column that is dictionary-encoded on disk maps directly onto Draken's dictionary shape — the dictionary stays a dictionary, with no expansion to a flat array at read time. A column whose values are all identical can arrive as a constant. Everything else decodes dense. (These are the three encoding shapes described in [Draken vector encoding](draken-vector-encoding.md).)
+A Parquet column that is dictionary-encoded on disk maps directly onto Draken's dictionary shape — the dictionary stays a dictionary, with no expansion to a flat array at read time. A column whose values are all identical can arrive as a constant. Everything else decodes dense. (These are the three encoding shapes described in [Draken vector encoding](draken-vector-encoding).)
 
 Run-length encoding is resolved at this boundary and never propagates further. For a non-nullable dictionary column, Rugo resolves one dictionary lookup per *run* rather than per row, and merges runs that span page boundaries — so a long stretch of a repeated value costs work proportional to the number of runs, not the number of rows. By the time data leaves Rugo it is always one of Draken's three shapes; the operators above never deal with RLE.
 
@@ -52,7 +52,7 @@ The CSV and JSONL readers are built for throughput too: each uses a SIMD structu
 
 Rugo is a full round-trip engine, not just a reader. It writes all three formats natively from Draken morsels — Parquet (with optional bloom filters and the usual compression codecs), RFC 4180 CSV, and one-JSON-object-per-row JSONL — without Arrow anywhere in the path. The same vendored codecs that decompress on the way in compress on the way out.
 
-Those three are the *interchange* formats, and what a Parquet round trip cannot preserve is Draken's own refinements — logical types, vector flags, the dictionary as written. Where the engine is writing vectors for itself rather than for anyone else, it uses [Skene](skene.md) instead. The two are deliberately parallel and disjoint: neither imports the other, and both sit directly on Draken.
+Those three are the *interchange* formats, and what a Parquet round trip cannot preserve is Draken's own refinements — logical types, vector flags, the dictionary as written. Where the engine is writing vectors for itself rather than for anyone else, it uses [Skene](skene) instead. The two are deliberately parallel and disjoint: neither imports the other, and both sit directly on Draken.
 
 ---
 

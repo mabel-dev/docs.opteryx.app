@@ -19,12 +19,12 @@ Combines integer operands using a bitwise exclusive OR operation.
 
 ## Parameters
 
-- **`<left>`** — An integer value. Accepts [`integer`](../types/integer.md).
-- **`<right>`** — An integer value. Accepts [`integer`](../types/integer.md).
+- **`<left>`** — An integer value. Accepts [`integer`](../types/integer).
+- **`<right>`** — An integer value. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`integer`](../types/integer.md)
+[`integer`](../types/integer)
 
 ## Examples
 
@@ -46,5 +46,5 @@ SELECT 12 ^ 10;
 
 ## See Also
 
-- [Bitwise AND `&`](bitwiseand.md)
-- [Bitwise OR `|`](bitwiseor.md)
+- [Bitwise AND `&`](bitwiseand)
+- [Bitwise OR `|`](bitwiseor)

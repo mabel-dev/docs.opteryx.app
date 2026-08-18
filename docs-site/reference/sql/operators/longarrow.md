@@ -19,12 +19,12 @@ Returns the selected JSON value encoded as a blob or text-like binary value.
 
 ## Parameters
 
-- **`<document>`** — The JSON document to read from. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md), [`variant`](../types/variant.md).
-- **`<path>`** — The key or path to select, in the same spellings `->` accepts. A path that is not present gives NULL. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<document>`** — The JSON document to read from. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`variant`](../types/variant).
+- **`<path>`** — The key or path to select, in the same spellings `->` accepts. A path that is not present gives NULL. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`nvarchar`](../types/nvarchar.md)
+[`nvarchar`](../types/nvarchar)
 
 ## Examples
 
@@ -56,5 +56,5 @@ Use `->>` when the value is going to be compared with a string literal: `->` wou
 
 ## See Also
 
-- [JSON extract `->`](arrow.md)
-- [JSON path exists `@?`](atquestion.md)
+- [JSON extract `->`](arrow)
+- [JSON path exists `@?`](atquestion)

@@ -26,17 +26,17 @@ SELECT * [ EXCEPT ( <column> [, ...] ) ]
 
 - **`<column>`** — a column name, expression, or `*`, comma-separated for multiple.
 - **`<relation_name>`** — a table, view, subquery, or CTE to read from. See
-  [Joins](joins.md) for combining rows from more than one relation.
-- `DISTINCT` — remove duplicate rows from the result. See [DISTINCT](distinct.md).
+  [Joins](joins) for combining rows from more than one relation.
+- `DISTINCT` — remove duplicate rows from the result. See [DISTINCT](distinct).
 - `DISTINCT ON (<column> [, ...])` — keep only the first row for each unique combination of
-  the given columns. See [DISTINCT](distinct.md).
+  the given columns. See [DISTINCT](distinct).
 - `* EXCEPT (<column> [, ...])` — expand `*` to all columns except those listed.
-- `WHERE <condition>` — filter rows before grouping. See [WHERE](where.md).
-- `GROUP BY <column> [, ...]` — group rows for aggregation. See [GROUP BY](group-by.md).
-- `HAVING <condition>` — filter groups after aggregation. See [HAVING](having.md).
-- `ORDER BY <column> [, ...]` — sort the result. See [ORDER BY](order-by.md).
+- `WHERE <condition>` — filter rows before grouping. See [WHERE](where).
+- `GROUP BY <column> [, ...]` — group rows for aggregation. See [GROUP BY](group-by).
+- `HAVING <condition>` — filter groups after aggregation. See [HAVING](having).
+- `ORDER BY <column> [, ...]` — sort the result. See [ORDER BY](order-by).
 - `LIMIT <count>` — restrict the number of rows returned. See
-  [LIMIT and OFFSET](limit.md).
+  [LIMIT and OFFSET](limit).
 
 ## Examples
 
@@ -59,7 +59,7 @@ SELECT DISTINCT customer_id
   FROM orders;
 ~~~
 
-See [DISTINCT](distinct.md) for the full set of forms, including `DISTINCT ON`.
+See [DISTINCT](distinct) for the full set of forms, including `DISTINCT ON`.
 
 ### DISTINCT ON
 Return distinct results based on specified columns while keeping the first occurrence:
@@ -108,7 +108,7 @@ SELECT p.id, p.name, p.price
  WHERE p.price > (SELECT AVG(price) FROM products);
 ~~~
 
-For named, reusable subqueries instead of inline ones, see [WITH (CTE)](with.md).
+For named, reusable subqueries instead of inline ones, see [WITH (CTE)](with).
 
 ## Notes
 
@@ -119,13 +119,13 @@ For named, reusable subqueries instead of inline ones, see [WITH (CTE)](with.md)
 
 ## See Also
 
-- [DISTINCT](distinct.md)
-- [WHERE](where.md)
-- [GROUP BY](group-by.md)
-- [HAVING](having.md)
-- [ORDER BY](order-by.md)
-- [LIMIT and OFFSET](limit.md)
-- [WITH (CTE)](with.md)
-- [Joins](joins.md)
-- [Window Functions](window-functions.md)
-- [UNION, INTERSECT, and EXCEPT](union.md)
+- [DISTINCT](distinct)
+- [WHERE](where)
+- [GROUP BY](group-by)
+- [HAVING](having)
+- [ORDER BY](order-by)
+- [LIMIT and OFFSET](limit)
+- [WITH (CTE)](with)
+- [Joins](joins)
+- [Window Functions](window-functions)
+- [UNION, INTERSECT, and EXCEPT](union)

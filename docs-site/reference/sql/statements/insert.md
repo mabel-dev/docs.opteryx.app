@@ -81,10 +81,10 @@ The list may reorder columns relative to the schema — it just cannot omit any.
 - The number of values per row, and each value's type, are checked at plan time against
   the target's schema — a mismatch is rejected before any data is written.
 - `INSERT OVERWRITE` is not supported.
-- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table).
+- A materialized view is **not** a table: this statement is rejected against one. Its contents come from its defining `SELECT` — see [REFRESH MATERIALIZED VIEW](refresh-materialized-view#a-materialized-view-is-not-a-table).
 
 ## See Also
 
-- [DELETE](delete.md)
-- [UPDATE](update.md)
-- [CREATE TABLE](create-table.md)
+- [DELETE](delete)
+- [UPDATE](update)
+- [CREATE TABLE](create-table)

@@ -54,11 +54,11 @@ SELECT * FROM my_workspace.analytics.daily_totals;
 Refresh is automatic and event-driven, not scheduled:
 
 - When the materialized view is created, a refresh trigger is created on **every** catalog
-  table the query reads. Use [SHOW TRIGGERS FOR](show-triggers.md) to see them; trigger
+  table the query reads. Use [SHOW TRIGGERS FOR](show-triggers) to see them; trigger
   names are generated as `refresh__<collection>__<view_name>__<suffix>`, the suffix
   distinguishing views whose collection and name would otherwise collide.
 - Any user data commit to a source table fires the trigger, and the platform's worker runs
-  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md), which re-runs the defining
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view), which re-runs the defining
   query and atomically replaces the stored result. You can run that statement yourself to
   rebuild a view on demand.
 - Rapid successive commits within roughly 60 seconds coalesce into a single refresh
@@ -68,13 +68,13 @@ Refresh is automatic and event-driven, not scheduled:
   incidental: an ingest account with rights on a source table but none where the view lives
   would otherwise make the view permanently unrefreshable, and which principal happened to
   write last would decide whether a refresh worked. Ownership is pinned at creation and moves
-  only with [ALTER MATERIALIZED VIEW ... OWNER TO](alter-materialized-view.md).
+  only with [ALTER MATERIALIZED VIEW ... OWNER TO](alter-materialized-view).
 - If the owner loses the permissions the refresh needs, it is denied and the view goes stale —
   visibly so: check `last_fired_status` in
-  [information_schema.triggers](../advanced/adv-information-schema.md)
+  [information_schema.triggers](../advanced/adv-information-schema)
   and the view's refresh metadata.
 - Automatic refresh can be stopped and restarted with
-  [ALTER MATERIALIZED VIEW ... SUSPEND](alter-materialized-view.md#suspend-and-resume).
+  [ALTER MATERIALIZED VIEW ... SUSPEND](alter-materialized-view#suspend-and-resume).
 
 ## Permissions
 
@@ -87,13 +87,13 @@ Refresh is automatic and event-driven, not scheduled:
   re-checked on every redefinition, against whoever is redefining, so a view can never be
   repointed at sources its editor could not have read themselves.
 - Refreshing is writer-tier too — see
-  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md).
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view).
 
 ## Notes
 
 - `IF NOT EXISTS` is **not supported** for materialized views.
 - An explicit column list is **not supported** — the columns are always derived from the
-  query, as with [CREATE TABLE ... AS SELECT](create-table.md).
+  query, as with [CREATE TABLE ... AS SELECT](create-table).
 - Use fully qualified names: `<workspace>.<collection>.<view_name>`.
 - Every source the query reads must be a catalog-resident table. Virtual datasets such as
   `$planets`, `information_schema` views, and function sources like `read_parquet(...)`
@@ -105,19 +105,19 @@ Refresh is automatic and event-driven, not scheduled:
   permanently a refresh behind the inner one, and a failed inner refresh would silently pin
   everything above it. Cycles are rejected at creation too, as the backstop behind that rule.
 - **A materialized view is not a table.** Every table modifier — `CREATE TABLE ... AS
-  SELECT`, [INSERT](insert.md), [TRUNCATE TABLE](truncate-table.md),
-  [ALTER TABLE](alter-table.md), [DROP TABLE](drop-table.md) — is rejected against one, and
+  SELECT`, [INSERT](insert), [TRUNCATE TABLE](truncate-table),
+  [ALTER TABLE](alter-table), [DROP TABLE](drop-table) — is rejected against one, and
   the error names the statement that does apply. See
-  [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md#a-materialized-view-is-not-a-table)
+  [REFRESH MATERIALIZED VIEW](refresh-materialized-view#a-materialized-view-is-not-a-table)
   for the full list.
-- Contrast with [CREATE VIEW](create-view.md): an ordinary view stores only the query
+- Contrast with [CREATE VIEW](create-view): an ordinary view stores only the query
   text and plans it afresh on every reference; a materialized view stores the query's
   result as a physical table and refreshes it automatically.
 
 ## See Also
 
-- [CREATE TABLE](create-table.md)
-- [CREATE VIEW](create-view.md)
-- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
-- [REFRESH MATERIALIZED VIEW](refresh-materialized-view.md)
-- [DROP MATERIALIZED VIEW](drop-materialized-view.md)
+- [CREATE TABLE](create-table)
+- [CREATE VIEW](create-view)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view)
+- [REFRESH MATERIALIZED VIEW](refresh-materialized-view)
+- [DROP MATERIALIZED VIEW](drop-materialized-view)

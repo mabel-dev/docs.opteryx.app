@@ -50,4 +50,4 @@ Because the whole program is known at compile time, the executor can pick a path
 
 ## In short
 
-The bytecode engine is the expression-evaluation core: it compiles each expression into a flat, postfix program once at bind time — materialising literals and binding kernels to function pointers up front — then executes that program over [Draken](draken.md) vectors morsel by morsel, with the GIL released wherever the whole expression is native. The planner does the thinking once; the data path just runs.
+The bytecode engine is the expression-evaluation core: it compiles each expression into a flat, postfix program once at bind time — materialising literals and binding kernels to function pointers up front — then executes that program over [Draken](draken) vectors morsel by morsel, with the GIL released wherever the whole expression is native. The planner does the thinking once; the data path just runs.

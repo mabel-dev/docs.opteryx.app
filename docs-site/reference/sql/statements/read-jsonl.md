@@ -78,6 +78,6 @@ SELECT e.id, e.status
 
 ## See Also
 
-- [READ_CSV](read-csv.md)
-- [READ_PARQUET](read-parquet.md)
-- [CREATE TABLE](create-table.md)
+- [READ_CSV](read-csv)
+- [READ_PARQUET](read-parquet)
+- [CREATE TABLE](create-table)

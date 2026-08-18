@@ -15,11 +15,11 @@ This type does not support direct comparisons with `=`, `<`, or `>`. Extract or 
 
 | Operator | Syntax | Description |
 |----------|--------|-------------|
-| [`@>`](../operators/atarrow.md) | `<array> @> <values>` | Array containment operator. |
-| [`@>>`](../operators/arraycontainsall.md) | `<array> @>> <values>` | Array contains-all operator. |
-| [`IN`](../operators/inlist.md) | `<value> IN (<item> [, ...])` <br> `<value> IN <array>` | Membership comparison. |
-| [`NOT IN`](../operators/notinlist.md) | `<value> NOT IN (<item> [, ...])` <br> `<value> NOT IN <array>` | Negated membership comparison. |
-| [`[]`](../operators/mapaccess.md) | `<value>[<index>]` | Subscript access operator. |
+| [`@>`](../operators/atarrow) | `<array> @> <values>` | Array containment operator. |
+| [`@>>`](../operators/arraycontainsall) | `<array> @>> <values>` | Array contains-all operator. |
+| [`IN`](../operators/inlist) | `<value> IN (<item> [, ...])` <br> `<value> IN <array>` | Membership comparison. |
+| [`NOT IN`](../operators/notinlist) | `<value> NOT IN (<item> [, ...])` <br> `<value> NOT IN <array>` | Negated membership comparison. |
+| [`[]`](../operators/mapaccess) | `<value>[<index>]` | Subscript access operator. |
 
 ## Notes
 
@@ -35,4 +35,4 @@ Individual elements are accessed with subscript notation: `arr[0]` returns the f
 
 ## See Also
 
-- [Working with arrays](../advanced/adv-working-with-lists.md) — worked examples.
+- [Working with arrays](../advanced/adv-working-with-lists) — worked examples.

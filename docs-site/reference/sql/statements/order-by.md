@@ -113,7 +113,7 @@ ORDER BY total DESC;
 
 ## See Also
 
-- [SELECT](select.md)
-- [LIMIT and OFFSET](limit.md)
-- [GROUP BY](group-by.md)
-- [HAVING](having.md)
+- [SELECT](select)
+- [LIMIT and OFFSET](limit)
+- [GROUP BY](group-by)
+- [HAVING](having)

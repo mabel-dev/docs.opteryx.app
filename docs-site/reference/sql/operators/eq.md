@@ -19,12 +19,12 @@ Returns true when both operands compare equal.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Numeric types compare across the family, so `1 = 1.0` is true. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to compare it against. It must be type-compatible with the left - a number and a string are rejected rather than coerced. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<left>`** — The value to compare. Numeric types compare across the family, so `1 = 1.0` is true. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. It must be type-compatible with the left - a number and a string are rejected rather than coerced. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -77,6 +77,6 @@ Comparison is three-valued: NULL on either side gives NULL, never true or false,
 
 ## See Also
 
-- [Not equals `!=`](noteq.md)
-- [In list `IN`](inlist.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Not equals `!=`](noteq)
+- [In list `IN`](inlist)
+- [NULL semantics](../advanced/adv-null-semantics)

@@ -19,12 +19,12 @@ Returns true when the left string does not match the regular expression on the r
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the expression. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<regex>`** — The regular expression that must not match. It matches anywhere in the value unless anchored. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the expression. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<regex>`** — The regular expression that must not match. It matches anywhere in the value unless anchored. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -52,6 +52,6 @@ Jupiter
 
 ## See Also
 
-- [Regex like `RLIKE`](rlike.md)
-- [Not like `NOT LIKE`](notlike.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Regex like `RLIKE`](rlike)
+- [Not like `NOT LIKE`](notlike)
+- [NULL semantics](../advanced/adv-null-semantics)

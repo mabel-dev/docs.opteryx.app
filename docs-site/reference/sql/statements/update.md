@@ -26,9 +26,9 @@ Because it reads and rewrites every row, this is **not recommended for tables wi
 
 ## Notes
 
-- See [CREATE TABLE](create-table.md) for the `OR REPLACE` form used above.
+- See [CREATE TABLE](create-table) for the `OR REPLACE` form used above.
 
 ## See Also
 
-- [DELETE](delete.md)
-- [INSERT](insert.md)
+- [DELETE](delete)
+- [INSERT](insert)

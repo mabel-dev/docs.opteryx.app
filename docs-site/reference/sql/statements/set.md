@@ -7,7 +7,7 @@ description: SQL SET statement syntax and examples for assigning session variabl
 
 The `SET` statement assigns a value to a variable for the current session. Variables set
 this way live for the life of the connection and are visible to
-[SHOW VARIABLES](show-variables.md).
+[SHOW VARIABLES](show-variables).
 
 ## Syntax
 
@@ -57,11 +57,11 @@ SET @@sql_select_limit = 1000;
 
 - Variables are per-session. A new connection starts from the engine defaults, and nothing
   set this way persists beyond the session.
-- Use [SHOW VARIABLES](show-variables.md) to list the variables visible to the session,
+- Use [SHOW VARIABLES](show-variables) to list the variables visible to the session,
   along with each one's value, type, owner (`INTERNAL` or `USER`) and visibility.
 - Some system variables are restricted to platform administrators; setting one you do not
   hold permission for is refused rather than quietly ignored.
 
 ## See Also
 
-- [SHOW VARIABLES](show-variables.md)
+- [SHOW VARIABLES](show-variables)

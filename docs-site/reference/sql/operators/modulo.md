@@ -19,12 +19,12 @@ Returns the remainder after division of the left numeric operand by the right nu
 
 ## Parameters
 
-- **`<dividend>`** — The value to divide. Its sign is the sign of the result. Accepts [`float`](../types/float.md), [`integer`](../types/integer.md).
-- **`<divisor>`** — The value to divide by. Accepts [`integer`](../types/integer.md).
+- **`<dividend>`** — The value to divide. Its sign is the sign of the result. Accepts [`float`](../types/float), [`integer`](../types/integer).
+- **`<divisor>`** — The value to divide by. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`float`](../types/float.md), [`integer`](../types/integer.md)
+[`float`](../types/float), [`integer`](../types/integer)
 
 ## Examples
 
@@ -47,5 +47,5 @@ The remainder takes the sign of the DIVIDEND, not the divisor: `-7 % 2` is -1 an
 
 ## See Also
 
-- [Division `/`](divide.md)
-- [Integer division `DIV`](myintegerdivide.md)
+- [Division `/`](divide)
+- [Integer division `DIV`](myintegerdivide)

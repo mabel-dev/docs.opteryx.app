@@ -92,6 +92,6 @@ SELECT o.id, o.total
 
 ## See Also
 
-- [READ_JSONL](read-jsonl.md)
-- [READ_PARQUET](read-parquet.md)
-- [CREATE TABLE](create-table.md)
+- [READ_JSONL](read-jsonl)
+- [READ_PARQUET](read-parquet)
+- [CREATE TABLE](create-table)

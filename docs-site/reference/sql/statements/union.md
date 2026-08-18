@@ -164,6 +164,6 @@ SELECT *
 
 ## See Also
 
-- [SELECT](select.md)
-- [WITH (CTE)](with.md)
-- [ORDER BY](order-by.md)
+- [SELECT](select)
+- [WITH (CTE)](with)
+- [ORDER BY](order-by)

@@ -73,10 +73,10 @@ ALTER WORKSPACE production SET deletion_protection TO OFF;
 Deletion protection has no effect on anything *inside* the workspace. All of these work
 normally in a protected workspace:
 
-- [DROP TABLE](drop-table.md), [DROP VIEW](drop-view.md), [DROP COLLECTION](drop-collection.md)
-- [TRUNCATE TABLE](truncate-table.md)
-- [ALTER TABLE ... RENAME TO](alter-table.md#rename-to)
-- [INSERT](insert.md), or `CREATE TABLE ... AS SELECT` with `OR REPLACE`
+- [DROP TABLE](drop-table), [DROP VIEW](drop-view), [DROP COLLECTION](drop-collection)
+- [TRUNCATE TABLE](truncate-table)
+- [ALTER TABLE ... RENAME TO](alter-table#rename-to)
+- [INSERT](insert), or `CREATE TABLE ... AS SELECT` with `OR REPLACE`
 
 `deletion_protection` is not a workspace-wide drop freeze, and there is no per-table or
 per-collection equivalent — restricting who can drop an individual relation is done with
@@ -132,7 +132,7 @@ never understood to include.
 
 A refresh of an existing materialized view that is blocked by this setting fails visibly —
 the view stops updating and records why — rather than silently continuing to copy.
-[REFRESH MATERIALIZED VIEW](refresh-materialized-view.md) is a write like any other, so it
+[REFRESH MATERIALIZED VIEW](refresh-materialized-view) is a write like any other, so it
 meets this check when it is planned, and it meets it again in the catalog before an
 automatic refresh is even queued.
 
@@ -156,7 +156,7 @@ automatic refresh is even queued.
 
 ## See Also
 
-- [SHOW GRANTS](show-grants.md)
-- [ALTER TABLE](alter-table.md)
-- [ALTER VIEW](alter-view.md)
-- [ALTER MATERIALIZED VIEW](alter-materialized-view.md)
+- [SHOW GRANTS](show-grants)
+- [ALTER TABLE](alter-table)
+- [ALTER VIEW](alter-view)
+- [ALTER MATERIALIZED VIEW](alter-materialized-view)

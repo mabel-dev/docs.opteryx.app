@@ -2,7 +2,7 @@
 
 Draken is the columnar vector library at the centre of Opteryx. Every column of data in the engine — whether freshly read from a file, produced by a join, or returned from an expression — is a Draken vector. It is the common currency that lets the scan, the operators, and the expression engine all speak the same language, across the Python, Cython, and C++ boundaries.
 
-Draken has **zero external dependencies**, and it ships inside both the Opteryx SQL engine and the standalone [Rugo](rugo.md) file engine. It is never published on its own; it travels as part of whatever uses it.
+Draken has **zero external dependencies**, and it ships inside both the Opteryx SQL engine and the standalone [Rugo](rugo) file engine. It is never published on its own; it travels as part of whatever uses it.
 
 ---
 
@@ -10,7 +10,7 @@ Draken has **zero external dependencies**, and it ships inside both the Opteryx 
 
 The core idea is that all columnar data is represented by a single struct, the **DrakenVector**, and every consumer reads it the same way. A vector pairs a buffer of values with a *selection* — a list of indices — and the value of logical row `i` is always `data[selection[i]]`. That one access pattern is the correctness contract: any kernel written against it produces the right answer for every vector it is handed.
 
-This uniform access is what lets the same vector quietly carry three very different physical layouts — a fully materialised *dense* column, a *constant* broadcast of one value, or a *dictionary* of distinct values plus per-row codes — without operators needing to branch on which is which. That layout story is told in full in [Draken vector encoding](draken-vector-encoding.md), and the way strings in particular are stored has its own page in [Draken string storage](draken-german-strings.md).
+This uniform access is what lets the same vector quietly carry three very different physical layouts — a fully materialised *dense* column, a *constant* broadcast of one value, or a *dictionary* of distinct values plus per-row codes — without operators needing to branch on which is which. That layout story is told in full in [Draken vector encoding](draken-vector-encoding), and the way strings in particular are stored has its own page in [Draken string storage](draken-german-strings).
 
 The struct's memory layout is **frozen**: a large number of compiled call sites bind its field offsets at compile time, so the engine pins the layout with compile-time assertions. A silent reordering of its fields would not fail the build — it would corrupt data — so the layout is guarded rather than trusted.
 
@@ -51,4 +51,4 @@ Code that consumes Draken does so through a typed Cython surface and a small C++
 
 ## In short
 
-Draken is the substrate everything else stands on: one frozen vector struct, one access pattern, one type vocabulary, and a native kernel library that computes over all of it. Rugo fills vectors from files; the [bytecode engine](bytecode-engine.md) evaluates expressions over them; the operators join, group, and sort them — but they all agree, because they all speak Draken.
+Draken is the substrate everything else stands on: one frozen vector struct, one access pattern, one type vocabulary, and a native kernel library that computes over all of it. Rugo fills vectors from files; the [bytecode engine](bytecode-engine) evaluates expressions over them; the operators join, group, and sort them — but they all agree, because they all speak Draken.

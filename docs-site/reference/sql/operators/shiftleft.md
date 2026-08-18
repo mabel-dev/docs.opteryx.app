@@ -19,12 +19,12 @@ Shifts the bits of the left integer operand left by the number of positions in t
 
 ## Parameters
 
-- **`<value>`** — The integer whose bits are shifted. Accepts [`integer`](../types/integer.md).
-- **`<count>`** — How many positions to shift by, 0..63. Accepts [`integer`](../types/integer.md).
+- **`<value>`** — The integer whose bits are shifted. Accepts [`integer`](../types/integer).
+- **`<count>`** — How many positions to shift by, 0..63. Accepts [`integer`](../types/integer).
 
 ## Returns
 
-[`integer`](../types/integer.md)
+[`integer`](../types/integer)
 
 ## Examples
 
@@ -46,5 +46,5 @@ The shift count must be 0..63 - the operands are 64-bit integers, and a count ou
 
 ## See Also
 
-- [Right shift `>>`](shiftright.md)
-- [Bitwise AND `&`](bitwiseand.md)
+- [Right shift `>>`](shiftright)
+- [Bitwise AND `&`](bitwiseand)

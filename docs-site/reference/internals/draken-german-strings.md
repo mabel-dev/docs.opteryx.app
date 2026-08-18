@@ -4,7 +4,7 @@ Strings are the awkward case for a columnar engine. Numbers are fixed-width — 
 
 Draken sidesteps most of that cost with a layout commonly called the *German string* (popularised by the Umbra and DuckDB teams). The idea: make every string occupy a fixed-width slot, and pack enough information into that slot that the most common operations — equality, ordering, length — usually finish without ever touching the variable-length bytes at all.
 
-This document explains that layout. For how strings (and every other column) are wrapped for execution, see [How Draken Stores Column Data](draken-vector-encoding.md).
+This document explains that layout. For how strings (and every other column) are wrapped for execution, see [How Draken Stores Column Data](draken-vector-encoding).
 
 ---
 
@@ -92,7 +92,7 @@ Operations like aggregation accumulate group keys by copying string slots from o
 
 That means **no re-derivation of the prefix** and no work proportional to the string's length beyond the byte copy itself. Re-homing a string key is essentially a 16-byte copy plus an arena append.
 
-Because a long slot holds an *offset* rather than a pointer, slots and arena are also byte-for-byte relocatable as a pair — which is what lets a string column be written to disk and read back without rebuilding anything (see [Skene](skene.md)).
+Because a long slot holds an *offset* rather than a pointer, slots and arena are also byte-for-byte relocatable as a pair — which is what lets a string column be written to disk and read back without rebuilding anything (see [Skene](skene)).
 
 ---
 

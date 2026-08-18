@@ -19,12 +19,12 @@ Returns true when the left string matches the SQL LIKE pattern on the right.
 
 ## Parameters
 
-- **`<haystack>`** — The value tested against the pattern. VARBINARY is accepted as well as text, and is matched as bytes. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<pattern>`** — A SQL LIKE pattern: `%` matches any run of characters including none, `_` matches exactly one, and every other character matches itself. The whole value must match, not part of it - `'abcd' LIKE 'a_c'` is false. A column is accepted here, not only a literal; a literal is what lets the planner fuse the match into the scan. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<haystack>`** — The value tested against the pattern. VARBINARY is accepted as well as text, and is matched as bytes. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<pattern>`** — A SQL LIKE pattern: `%` matches any run of characters including none, `_` matches exactly one, and every other character matches itself. The whole value must match, not part of it - `'abcd' LIKE 'a_c'` is false. A column is accepted here, not only a literal; a literal is what lets the planner fuse the match into the scan. Accepts [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
-[`boolean`](../types/boolean.md)
+[`boolean`](../types/boolean)
 
 ## Examples
 
@@ -62,7 +62,7 @@ Matching is case-sensitive; ILIKE is the case-insensitive form. A NULL on either
 
 ## See Also
 
-- [Not like `NOT LIKE`](notlike.md)
-- [Case-insensitive like `ILIKE`](ilike.md)
-- [Regex like `RLIKE`](rlike.md)
-- [NULL semantics](../advanced/adv-null-semantics.md)
+- [Not like `NOT LIKE`](notlike)
+- [Case-insensitive like `ILIKE`](ilike)
+- [Regex like `RLIKE`](rlike)
+- [NULL semantics](../advanced/adv-null-semantics)
