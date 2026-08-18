@@ -556,6 +556,9 @@
               "UPDATE": "reference/sql/statements/update.md"
             },
             {
+              "VERSION AS OF": "reference/sql/statements/version-as-of.md"
+            },
+            {
               "WHERE": "reference/sql/statements/where.md"
             },
             {

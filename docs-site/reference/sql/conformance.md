@@ -71,7 +71,7 @@ certified conformance at that feature level.
 | Boolean type | T031 | **yes** | `BOOLEAN` is a first-class type. |
 | Window functions | T611 | **partial** | Two families with different rules: ranking (`ROW_NUMBER`, `RANK`, `DENSE_RANK`) **requires** `ORDER BY` inside `OVER`; aggregate windows (`SUM` / `COUNT` / `AVG` `OVER (PARTITION BY ...)`) **reject** it. Window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, and `LEAD` / `LAG` are **not** implemented, so running totals and moving averages are unavailable. See [Window Functions](statements/window-functions). |
 | `information_schema` | — | **partial** | Three views — `tables`, `columns`, `triggers` — read live from the catalog. Addressed as `<workspace>.information_schema.<view>`. See [Information schema](advanced/adv-information-schema). |
-| Temporal query | — | **extension** | `FOR TIMESTAMP AS OF` reads a table as at a point in time. Not a standard feature; see [TIMESTAMP AS OF](statements/timestamp-as-of). |
+| Temporal query | — | **extension** | `TIMESTAMP AS OF` reads a table as at a point in time; `VERSION AS OF` reads it as at a specific snapshot id, or `VERSION AS OF PREVIOUS` for the one before current. Not a standard feature; see [TIMESTAMP AS OF](statements/timestamp-as-of) and [VERSION AS OF](statements/version-as-of). |
 | Semi-structured types | — | **extension** | `ARRAY`, `VARIANT`, `VECTOR`, and `IPV4`, with JSON path operators (`->`, `->>`, `@?`). Outside the standard entirely. |
 
 ## What Opteryx is validated against

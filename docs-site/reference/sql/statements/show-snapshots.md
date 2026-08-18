@@ -7,7 +7,7 @@ description: SQL SHOW SNAPSHOTS FOR statement syntax and examples for listing a 
 
 The `SHOW SNAPSHOTS FOR` statement lists a table's commit history — one row per snapshot, newest first, showing when each commit landed, who made it, what kind of operation it was, and how many records, files and bytes it added, deleted and left behind.
 
-Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of.md), so this is the statement that tells you which points those are, and what each one changed. Time travel selects a snapshot by its `committed_at` — it reads the table as of the most recent commit at or before the timestamp you give. It answers from catalog metadata; no data files are read.
+Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of.md) or [VERSION AS OF](version-as-of.md), so this is the statement that tells you which points those are, and what each one changed. `TIMESTAMP AS OF` selects a snapshot by its `committed_at`; `VERSION AS OF` selects one directly by its `snapshot_id` (or reads `VERSION AS OF PREVIOUS` without looking either up). It answers from catalog metadata; no data files are read.
 
 ## Syntax
 
@@ -49,14 +49,21 @@ SHOW SNAPSHOTS FOR my_workspace.sales.orders;
 ~~~
 
 ### Find a Point to Read At
-Look up the commit you want, then read the table as it was then:
+Look up the commit you want, then read the table as it was then — by timestamp, or
+directly by the `snapshot_id` this statement reports:
 
 ~~~sql
 SHOW SNAPSHOTS FOR my_workspace.sales.orders;
 
 SELECT * FROM my_workspace.sales.orders
 TIMESTAMP AS OF '2026-08-10 04:14:51';
+
+SELECT * FROM my_workspace.sales.orders
+VERSION AS OF 1755000000000;
 ~~~
+
+If you only want the commit immediately before the current one, `VERSION AS OF PREVIOUS`
+answers it without a lookup here at all — see [VERSION AS OF](version-as-of.md).
 
 `SHOW SNAPSHOTS FOR` is not a subquery source — it cannot be wrapped in
 `FROM (...)`, filtered, or joined. Filter the returned rows client-side if you
@@ -74,5 +81,6 @@ only want part of the history.
 ## See Also
 
 - [TIMESTAMP AS OF](timestamp-as-of.md)
+- [VERSION AS OF](version-as-of.md)
 - [SHOW MANIFEST FOR](show-manifest.md)
 - [SHOW COLUMNS](show-columns.md)

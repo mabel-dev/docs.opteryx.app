@@ -60,5 +60,7 @@ Common timestamp formats accepted:
 ## See Also
 
 - [SELECT](select.md)
+- [VERSION AS OF](version-as-of.md) — read a specific snapshot id, or the one before the
+  current, without a timestamp.
 - [Time Travel Queries](../advanced/adv-time-travel.md) — advanced topic with more detail
   on partitioning requirements and temporal self-joins.

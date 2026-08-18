@@ -1,6 +1,6 @@
 ---
 title: Time Travel Queries in Opteryx - Query Historical Data
-description: Use Opteryx time travel to query data as it existed at a specific point in time using TIMESTAMP AS OF.
+description: Use Opteryx time travel to query data as it existed at a specific point in time using TIMESTAMP AS OF, or a specific snapshot using VERSION AS OF.
 ---
 
 # Time Travel
@@ -8,6 +8,8 @@ description: Use Opteryx time travel to query data as it existed at a specific p
 Opteryx can query a catalog-backed table as it existed at a specific point in time. Each
 commit to a table writes a **snapshot**; `TIMESTAMP AS OF` selects the most recent snapshot
 committed at or before the timestamp you give, and reads the table as of that commit.
+[`VERSION AS OF`](#version-as-of) selects a snapshot directly, by id or by its relation to
+the current one, and is covered further down this page.
 
 ```sql
 SELECT *
@@ -87,12 +89,52 @@ source, and always returns the whole history.
 **It lists only snapshots that still exist.** A reclaimed snapshot leaves this history, so
 what you see is exactly the range time travel can still reach.
 
+## VERSION AS OF
+
+`VERSION AS OF` reads a snapshot directly, by `snapshot_id`, instead of by timestamp:
+
+```sql
+SELECT *
+  FROM my_workspace.sales.orders
+   VERSION AS OF 1755000000000;
+```
+
+The id is whatever [`SHOW SNAPSHOTS FOR`](/docs/reference/sql/statements/show-snapshots)
+reports in its `snapshot_id` column for the commit you want.
+
+For the common case of "the version before this one", `VERSION AS OF PREVIOUS` resolves it
+without a `SHOW SNAPSHOTS FOR` lookup at all:
+
+```sql
+SELECT *
+  FROM my_workspace.sales.orders
+   VERSION AS OF PREVIOUS;
+```
+
+This walks the catalog's `parent_snapshot_id` chain — it reads the current snapshot and the
+one immediately behind it, never the table's whole history, so it costs the same as an
+ordinary read plus one extra snapshot lookup.
+
+**Notes:**
+
+- `0` is not a usable snapshot id — it is reserved so `PREVIOUS` has an unambiguous internal
+  form, and `VERSION AS OF 0` is refused even if a real snapshot happened to have that id.
+- `PREVIOUS` is exactly one snapshot back; there is no `PREVIOUS 2` or similar.
+- `PREVIOUS` errors, rather than returning something unexpected, if the current snapshot has
+  no parent (the table's first snapshot) or the parent has been reclaimed — see
+  [Snapshot Reclamation](#snapshot-reclamation).
+- Requires the same catalog-backed table with a commit log that `TIMESTAMP AS OF` requires.
+
+See [VERSION AS OF](/docs/reference/sql/statements/version-as-of) for full syntax.
+
 ## Snapshot Reclamation
 
 Snapshots do not accumulate forever. A background maintenance process reclaims older ones,
 and a reclaimed snapshot is **immediately invisible to time travel** — it drops out of
-`SHOW SNAPSHOTS FOR`, and a `TIMESTAMP AS OF` that would have landed on it no longer resolves
-to it. Its data files are then released, passing through a quarantine period before deletion.
+`SHOW SNAPSHOTS FOR`, a `TIMESTAMP AS OF` that would have landed on it no longer resolves to
+it, and a `VERSION AS OF` naming it directly (including `PREVIOUS`, if the reclaimed snapshot
+was the parent) errors instead. Its data files are then released, passing through a
+quarantine period before deletion.
 
 Reclamation is not configurable per table, and there is no way to pin a snapshot or query how
 long one will survive. Treat reachable history as **best-effort and unbounded in neither
@@ -129,4 +171,5 @@ surviving snapshot, the join silently compares against that snapshot rather than
 - Snapshots are reclaimed, so reachable history may shrink at any point.
 - Timestamps are evaluated in UTC.
 - Backfilled data is visible: reading at a past timestamp returns the snapshot as it was committed, including any corrections that commit carried.
-- The `AS OF` expression must be resolvable before the query runs — it cannot reference a column.
+- The `TIMESTAMP AS OF` expression must be resolvable before the query runs — it cannot reference a column.
+- `VERSION AS OF` takes a bare snapshot id (or `PREVIOUS`) — no expressions, and no *n*-back offset beyond one.
