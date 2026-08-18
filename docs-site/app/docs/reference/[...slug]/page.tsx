@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'path'
 import { notFound } from 'next/navigation'
 import DocRenderer from '@/app/components/DocRenderer'
@@ -41,9 +42,29 @@ export function generateStaticParams() {
     }
   }
 
+  // `content/docs/reference/` holds the few reference pages that are written by
+  // hand rather than generated (the api and python section landing pages). A file
+  // here that ALSO exists in the generated tree is a shadow: whichever one loses
+  // is never served, and nothing says so. That is not hypothetical — three copies
+  // dated 27 June sat on top of data-types, functions and aggregates, so the docs
+  // shipped stale SQL while `make sql-docs` rewrote pages nobody could reach.
+  // Generated wins (see the candidate order below) and a collision fails the build.
   const contentReferenceDir = path.join(getContentDocsDir(), 'reference')
+  const shadowed: string[] = []
   for (const slugParts of listMarkdownSlugs(contentReferenceDir)) {
-    slugs.add(slugParts.join('/'))
+    const slug = slugParts.join('/')
+    slugs.add(slug)
+    if (fs.existsSync(path.join(getReferenceDir(), ...slugParts) + '.md')) {
+      shadowed.push(slug)
+    }
+  }
+
+  if (shadowed.length > 0) {
+    throw new Error(
+      `content/docs/reference/ shadows generated reference pages: ${shadowed.join(', ')}. ` +
+        'Both files claim the same URL and only one can be served. Delete the ' +
+        'content/docs/reference/ copy, or move the page out of the generated tree.'
+    )
   }
 
   return [...slugs]
@@ -67,15 +88,17 @@ export default async function Page({ params }: Props) {
   const docsPath = `/docs/reference/${normalizedSlug.join('/')}`
   const mappedRelativePath = getReferenceMdPathForDocsPath(docsPath)
 
+  // Generated pages first. `content/docs/reference/` is the fallback for the
+  // hand-written pages that have no generated counterpart; it must never take
+  // precedence, or a stale hand-written copy silently buries the real page.
   const candidates: string[] = []
-
-  candidates.push(path.join(getContentDocsDir(), 'reference', ...normalizedSlug) + '.md')
 
   if (mappedRelativePath) {
     candidates.push(path.join(getReferenceDir(), mappedRelativePath))
   }
 
   candidates.push(path.join(getReferenceDir(), ...normalizedSlug) + '.md')
+  candidates.push(path.join(getContentDocsDir(), 'reference', ...normalizedSlug) + '.md')
 
   for (const candidatePath of candidates) {
     const source = readMarkdownFile(candidatePath)

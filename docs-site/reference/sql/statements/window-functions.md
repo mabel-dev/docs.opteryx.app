@@ -172,7 +172,7 @@ reads only `grouped` works with `PARTITION BY` and is refused with `OVER ()`.
 At present **every** aggregate Opteryx implements has `grouped: true`, so any of them may be used
 with `PARTITION BY`:
 
-`ANY_VALUE`, `APPROX_COUNT_DISTINCT`, `APPROX_PERCENTILE`, `ARRAY_AGG`, `AVG`, `CIDR_AGG`, `CORR`, `COUNT`, `COUNT_DISTINCT`, `MAX`, `MEDIAN`, `MIN`, `STDDEV`, `SUM`
+`ANY_VALUE`, `APPROX_COUNT_DISTINCT`, `APPROX_PERCENTILE`, `ARRAY_AGG`, `AVG`, `CIDR_AGG`, `CORR`, `COUNT`, `COUNT_DISTINCT`, `MAX`, `MEDIAN`, `MIN`, `STDDEV`, `STDDEV_POP`, `STDDEV_SAMP`, `SUM`, `VAR_POP`, `VAR_SAMP`
 
 Two of them — `ANY_VALUE` and `ARRAY_AGG` — have `global: false`, and are refused with `OVER ()`. See [ARRAY_AGG and ANY_VALUE Need a Partition](#array_agg-and-any_value-need-a-partition).
 
