@@ -28,7 +28,7 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 |---|---|---|
 | `array_agg_memory_budget_bytes` | INT64 | `536870912` |
 | `billing_account` | VARCHAR | _per session_ |
-| `build` | INT64 | `3099` |
+| `build` | INT64 | `3141` |
 | `character_set_client` | VARCHAR | `utf8` |
 | `cidr_agg_emit_budget_bytes` | INT64 | `536870912` |
 | `cidr_agg_state_budget_bytes` | INT64 | `536870912` |
@@ -37,7 +37,7 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 | `job_retention_days` | INT64 | `14` |
 | `max_execution_time` | INT64 | `1200` |
 | `max_sql_length` | INT64 | `256000` |
-| `median_memory_budget_bytes` | INT64 | `536870912` |
+| `median_memory_budget_bytes` | INT64 | `2147483648` |
 | `result_retention_days` | INT64 | `7` |
 | `sql_mode` | VARCHAR | `opteryx` |
 | `sql_select_limit` | INT64 | `1073741824` |

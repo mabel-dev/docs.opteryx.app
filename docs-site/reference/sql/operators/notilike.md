@@ -10,3 +10,41 @@ Returns true when the left string does not match the SQL ILIKE pattern on the ri
 **Category:** comparison
 
 **SQL symbol:** `NOT ILIKE`
+
+## Syntax
+
+```sql
+<haystack> NOT ILIKE <pattern>
+```
+
+## Parameters
+
+- **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<pattern>`** — A SQL LIKE pattern, matched without regard to case: `%` matches any run of characters, `_` matches exactly one. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+
+## Returns
+
+[`boolean`](../types/boolean.md)
+
+## Examples
+
+```sql
+SELECT name FROM $planets WHERE name NOT ILIKE 'ma%';
+```
+
+## Signatures
+
+- `nvarchar NOT ILIKE nvarchar` → boolean
+- `nvarchar NOT ILIKE varbinary` → boolean
+- `nvarchar NOT ILIKE varchar` → boolean
+- `varbinary NOT ILIKE nvarchar` → boolean
+- `varbinary NOT ILIKE varbinary` → boolean
+- `varbinary NOT ILIKE varchar` → boolean
+- `varchar NOT ILIKE nvarchar` → boolean
+- `varchar NOT ILIKE varbinary` → boolean
+- `varchar NOT ILIKE varchar` → boolean
+
+## See Also
+
+- [Case-insensitive like `ILIKE`](ilike.md)
+- [Not like `NOT LIKE`](notlike.md)

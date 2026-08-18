@@ -165,15 +165,6 @@
               "ABS": "reference/sql/functions/abs.md"
             },
             {
-              "ARRAY_CONTAINS": "reference/sql/functions/array_contains.md"
-            },
-            {
-              "ARRAY_CONTAINS_ALL": "reference/sql/functions/array_contains_all.md"
-            },
-            {
-              "ARRAY_CONTAINS_ANY": "reference/sql/functions/array_contains_any.md"
-            },
-            {
               "BASE64_DECODE": "reference/sql/functions/base64_decode.md"
             },
             {

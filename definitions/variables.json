@@ -51,7 +51,7 @@
         "settable": false,
         "requires_entitlement": null,
         "set_by": "not settable via SQL",
-        "default": 3099,
+        "default": 3141,
         "default_source": "literal"
     },
     "character_set_client": {
@@ -425,7 +425,7 @@
         "settable": false,
         "requires_entitlement": null,
         "set_by": "not settable via SQL",
-        "default": 536870912,
+        "default": 2147483648,
         "default_source": "literal"
     },
     "memory_limit_bytes": {

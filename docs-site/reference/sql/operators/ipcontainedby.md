@@ -11,6 +11,35 @@ Returns true when the left IPv4 address falls inside the network given on the ri
 
 **SQL symbol:** `<<=`
 
+## Syntax
+
+```sql
+<address> <<= <network>
+```
+
+## Parameters
+
+- **`<address>`** — An IPv4 address. It is held as its 32-bit integer value, which is why the signature below reads INTEGER. Accepts [`integer`](../types/integer.md).
+- **`<network>`** — The network to test against, in CIDR notation. Accepts [`varchar`](../types/varchar.md).
+
+## Returns
+
+[`boolean`](../types/boolean.md)
+
+## Examples
+
+```sql
+SELECT CAST('10.0.0.1' AS IPV4) <<= '10.0.0.0/8';
+```
+
+## Signatures
+
+- `integer <<= varchar` → boolean
+
 ## Notes
 
 Spelling follows PostgreSQL, CockroachDB and DuckDB's inet extension. A NULL address is not contained by any network and yields false. An invalid or prefix-less CIDR raises rather than matching nothing.
+
+## See Also
+
+- [IP contains `>>=`](ipcontains.md)

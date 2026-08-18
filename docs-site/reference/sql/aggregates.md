@@ -71,10 +71,26 @@ Aggregates combine multiple rows into single summary values and are typically us
   - SQL forms: `STDDEV(expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Population standard deviation (N denominator, not N-1/sample). Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
+- **STDDEV_POP** — Computes the population standard deviation of the input values.
+  - SQL forms: `STDDEV_POP(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Population standard deviation (N denominator). Identical to STDDEV — an alternate SQL spelling of the same function. Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
+- **STDDEV_SAMP** — Computes the sample standard deviation of the input values.
+  - SQL forms: `STDDEV_SAMP(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Sample standard deviation (N-1 denominator, Bessel's correction). Ignores nulls. NULL for a group with fewer than 2 non-null values (N-1 == 0 is undefined). DECIMAL inputs must be CAST to DOUBLE first.
 - **SUM** — Sums the input values.
   - SQL forms: `SUM(expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Nulls are ignored; non-null values are accumulated.
+- **VAR_POP** — Computes the population variance of the input values.
+  - SQL forms: `VAR_POP(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Population variance (N denominator) — STDDEV_POP without the final square root. Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
+- **VAR_SAMP** — Computes the sample variance of the input values.
+  - SQL forms: `VAR_SAMP(expr)`
+  - Support: global, grouped, strict_grouped
+  - Notes: Sample variance (N-1 denominator, Bessel's correction) — STDDEV_SAMP without the final square root. Ignores nulls. NULL for a group with fewer than 2 non-null values. DECIMAL inputs must be CAST to DOUBLE first.
 
 ### Selection
 

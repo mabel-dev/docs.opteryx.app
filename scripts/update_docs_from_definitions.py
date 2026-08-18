@@ -1002,138 +1002,21 @@ def build_functions_docs(functions_def: Dict[str, Any]):
         write_md(path, lines)
 
 
-def _literal_for_type(type_name: str):
-    """Return a (literal_sql, python_value) tuple for a given type.
-
-    python_value may be None if evaluation is not supported.
-    """
-    t = type_name.lower()
-    if t in ('integer', 'int'):
-        return '1', 1
-    if t in ('double', 'float', 'real'):
-        return '1.5', 1.5
-    if t == 'decimal':
-        return '1.5', 1.5
-    if t in ('varchar', 'string', 'text', 'nvarchar'):
-        return "'a'", 'a'
-    if t == 'boolean':
-        return 'TRUE', True
-    if t == 'date':
-        return "'2024-01-01'::DATE", None
-    if t == 'timestamp':
-        return "'2024-01-01 00:00:00'::TIMESTAMP", None
-    if t == 'time':
-        return "'00:00:00'::TIME", None
-    if t == 'interval':
-        return "INTERVAL '1' DAY", None
-    if t == 'array':
-        return None, None
-    if t in ('jsonb', 'nvarchar', 'variant'):
-        return "'{\"index\": 1}'", {'index': 1}
-    if t in ('blob', 'varbinary'):
-        return "b'0102'", None
-    if t == 'null':
-        return 'NULL', None
-    # fallback
-    return 'NULL', None
+def _type_link(type_name: str) -> str:
+    """`varchar` -> a link to its data-type page, if that page exists."""
+    slug = slugify(type_name)
+    if (REF_SQL_DIR / 'types' / f'{slug}.md').exists():
+        return f'[`{type_name}`](../types/{slug}.md)'
+    return f'`{type_name}`'
 
 
-def _format_expected_result(val):
-    """Return an SQL-friendly string for an expected result."""
-    if val is None:
-        return 'NULL'
-    if isinstance(val, bool):
-        return 'TRUE' if val else 'FALSE'
-    if isinstance(val, str):
-        return f"'{val}'"
-    if isinstance(val, (int, float)):
-        return str(val)
-    if isinstance(val, list):
-        return 'ARRAY[' + ', '.join(str(x) for x in val) + ']'
-    if isinstance(val, dict):
-        # Represent JSON-like dicts as JSON string
-        return f"'{json.dumps(val)}'"
-    return str(val)
+# The example each operator page shows is now the curated, executable one carried
+# in the catalog (opteryx-core runs every one of them in its test suite), so the
+# machinery that used to SYNTHESIZE an example here - picking a plausible
+# signature, inventing literals for it and evaluating the operator in Python to
+# guess the answer - is gone. A second implementation of SQL semantics living in
+# the docs generator could only ever agree with the engine by luck.
 
-
-def _pick_example_signature(sql_symbol: str, signatures: list[dict]):
-    """Pick the most sensible signature to use for an example.
-
-    Prefer common scalar types (integer, boolean, varchar, double) over
-    more exotic ones (blob, array, struct).
-
-    Special-case JSON accessors so examples use a JSON object and a string key/path."""
-
-    if sql_symbol in ('->', '->>'):
-        for sig in signatures:
-            if sig.get('left_type') in ('jsonb', 'struct') and sig.get('right_type') == 'varchar':
-                return sig
-        for sig in signatures:
-            if sig.get('left_type') in ('jsonb', 'struct'):
-                return sig
-
-    if sql_symbol == '@?':
-        for sig in signatures:
-            if sig.get('left_type') in ('jsonb', 'struct') and sig.get('right_type') == 'varchar':
-                return sig
-        for sig in signatures:
-            if sig.get('left_type') in ('jsonb', 'struct'):
-                return sig
-
-    preferred = {'integer', 'boolean', 'varchar', 'double', 'decimal', 'date', 'timestamp'}
-    for sig in signatures:
-        lt = sig.get('left_type')
-        rt = sig.get('right_type')
-        if lt in preferred and rt in preferred:
-            return sig
-
-    # fallback: first signature
-    return signatures[0] if signatures else None
-
-
-def _compute_expected_result(sql_symbol: str, left_val, right_val):
-    """Try to compute an expected result for common SQL operators."""
-    if left_val is None or right_val is None:
-        return None
-
-    try:
-        sym = sql_symbol.strip().upper()
-        if sym in ('+', '-', '*', '/', '%'):
-            return eval(f'{left_val}{sym}{right_val}')
-        if sym in ('=', '=='):
-            return left_val == right_val
-        if sym in ('<>', '!='):
-            return left_val != right_val
-        if sym == '<':
-            return left_val < right_val
-        if sym == '<=':
-            return left_val <= right_val
-        if sym == '>':
-            return left_val > right_val
-        if sym == '>=':
-            return left_val >= right_val
-        if sym == 'AND':
-            return bool(left_val and right_val)
-        if sym == 'OR':
-            return bool(left_val or right_val)
-        if sym == '||':
-            return str(left_val) + str(right_val)
-        if sym == '@>':
-            # array contains all
-            return all(x in left_val for x in right_val)
-        if sym == '<@':
-            # array contained by
-            return all(x in right_val for x in left_val)
-        if sym == '->':
-            # simple json extract by key
-            if isinstance(left_val, dict) and isinstance(right_val, str):
-                return left_val.get(right_val)
-        if sym == 'IN':
-            return left_val in right_val
-    except Exception:
-        return None
-
-    return None
 
 def build_operators_docs(ops_def: Dict[str, Any]):
     # index grouped by category
@@ -1168,16 +1051,17 @@ def build_operators_docs(ops_def: Dict[str, Any]):
         path = REF_SQL_DIR / 'operators' / f'{slug}.md'
         display = info.get('friendly_name') or info.get('display_name') or name
         sql_symbol = info.get('sql_symbol') or info.get('token')
-        ast_symbol = info.get('ast_symbol')
         # node_kind is not surfaced in docs (too internal)
         category = info.get('category')
         description = info.get('description')
         documentation = info.get('documentation')
         has_dynamic_result = info.get('has_dynamic_result')
-        left = info.get('left_types', [])
-        right = info.get('right_types', [])
         result = info.get('result_types', [])
         signatures = info.get('signatures', [])
+        syntax_forms = info.get('syntax_forms', [])
+        operands = info.get('operands', [])
+        examples = info.get('examples', [])
+        see_also = info.get('see_also', [])
 
         lines = []
         lines.append('---')
@@ -1199,46 +1083,52 @@ def build_operators_docs(ops_def: Dict[str, Any]):
         if sql_symbol:
             lines.append(f'**SQL symbol:** `{sql_symbol}`\n')
 
-        # Example usage
-        if sql_symbol and signatures:
-            sig = _pick_example_signature(sql_symbol, signatures)
-            if sig:
-                lt = sig.get('left_type')
-                rt = sig.get('right_type')
-                if lt and rt:
-                    left_sql, left_val = _literal_for_type(lt)
-                    right_sql, right_val = _literal_for_type(rt)
+        # Syntax / Parameters / Returns / Examples / Notes / See Also, in the order
+        # and notation the statement style guide sets out: UPPERCASE is a literal
+        # keyword, `<lowercase>` is a placeholder the reader fills in.
+        if syntax_forms:
+            lines.append('## Syntax\n')
+            lines.append('```sql')
+            for form in syntax_forms:
+                lines.append(form)
+            lines.append('```\n')
 
-                    if left_sql is not None and right_sql is not None:
-                        # For JSON extraction, use a realistic key string rather than a generic varchar.
-                        if sql_symbol in ('->', '->>') and rt == 'varchar':
-                            right_sql, right_val = "'index'", 'index'
+        if operands:
+            lines.append('## Parameters\n')
+            for operand in operands:
+                types = ', '.join(_type_link(t) for t in operand.get('types', []))
+                entry = f"- **`<{operand['name']}>`** — {operand.get('documentation', '').strip()}"
+                if types:
+                    entry += f' Accepts {types}.'
+                if operand.get('constant_only'):
+                    entry += ' Must be a literal.'
+                lines.append(entry)
+            lines.append('')
 
-                        # For JSON path existence, use a simple JSONPath expression.
-                        if sql_symbol == '@?' and rt == 'varchar':
-                            right_sql, right_val = "'$.index'", '$.index'
+        if result or has_dynamic_result:
+            lines.append('## Returns\n')
+            if result:
+                lines.append(', '.join(_type_link(t) for t in result) + '\n')
+            if has_dynamic_result:
+                # Some combinations have no fixed result type - `ARRAY<T>[i]` is T,
+                # resolved per expression - so the list above is not the whole answer.
+                lines.append(
+                    'Some operand combinations have no fixed result type — the result '
+                    'follows the value being read. See Signatures below.\n'
+                )
 
-                        expected = _compute_expected_result(sql_symbol, left_val, right_val)
-                        expected_comment = ''
-                        if expected is not None:
-                            expected_comment = f' -- expected: {_format_expected_result(expected)}'
-
-                        # Special-case non-infix operators (like map/array indexing)
-                        if sql_symbol == '[]':
-                            example_expr = f'{left_sql}[{right_sql}]'
-                        else:
-                            example_expr = f'{left_sql} {sql_symbol} {right_sql}'
-
-                        lines.append('## Example\n')
-                        lines.append('```sql')
-                        lines.append(f'SELECT {example_expr};{expected_comment}')
-                        lines.append('```\n')
-
-        # Dynamic result explanation
-        if has_dynamic_result:
-            lines.append('**Dynamic result:** yes\n')
+        if examples:
+            lines.append('## Examples\n')
+            for example in examples:
+                lines.append('```sql')
+                lines.append(example)
+                lines.append('```\n')
 
         if signatures:
+            # The full type matrix the binder accepts. The Parameters section above
+            # lists each side's types independently, which cannot say which pairings
+            # are legal — for `-` that is the difference between date minus interval
+            # (allowed) and interval minus date (not).
             lines.append('## Signatures\n')
             for sig in signatures:
                 lt = sig.get('left_type')
@@ -1262,20 +1152,22 @@ def build_operators_docs(ops_def: Dict[str, Any]):
                 lines.append(f'- {sig_line}')
             lines.append('')
 
-        if left or right or result:
-            lines.append('## Types\n')
-            if left:
-                lines.append(f'- **Left:** {", ".join(left)}')
-            if right:
-                lines.append(f'- **Right:** {", ".join(right)}')
-            if result:
-                lines.append(f'- **Result:** {", ".join(result)}')
-            lines.append('')
-
         notes = info.get('notes')
         if notes:
             lines.append('## Notes\n')
             lines.append(notes)
+            lines.append('')
+
+        if see_also:
+            lines.append('## See Also\n')
+            for related in see_also:
+                related_info = ops_def.get(related) or {}
+                related_display = related_info.get('friendly_name') or related
+                related_symbol = related_info.get('sql_symbol')
+                label = (
+                    f'{related_display} `{related_symbol}`' if related_symbol else related_display
+                )
+                lines.append(f'- [{label}]({slugify(related)}.md)')
             lines.append('')
 
         write_md(path, lines)

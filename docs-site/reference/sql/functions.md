@@ -9,9 +9,6 @@ The following functions are supported by Opteryx.  Click a name for details.
 
 ## Array Functions
 
-- [ARRAY_CONTAINS](functions/array_contains) — Test if array contains item.
-- [ARRAY_CONTAINS_ALL](functions/array_contains_all) — Test if array contains all items from set.
-- [ARRAY_CONTAINS_ANY](functions/array_contains_any) — Test if array contains any item from set.
 - [GREATEST](functions/greatest) — Return maximum element of an array.
 - [LEAST](functions/least) — Return minimum element of an array.
 - [SORT](functions/sort) — Sort an array.
