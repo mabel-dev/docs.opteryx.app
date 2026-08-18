@@ -24,6 +24,13 @@ SELECT CAST('192.168.1.1' AS IPV4);
 
 Can be compared (using `=`, `<`, `>`, etc.) with: `ipv4`, `integer`.
 
+## Operators
+
+| Operator | Syntax | Description |
+|----------|--------|-------------|
+| [`<<=`](../operators/ipcontainedby.md) | `<address> <<= <network>` | IPv4 CIDR containment operator. |
+| [`>>=`](../operators/ipcontains.md) | `<network> >>= <address>` | IPv4 CIDR containment operator, reversed. |
+
 ## Notes
 
 Parquet has no IP type: an address column is stored as a plain uint32 and stays readable by tools that do not know about IPv4. The IPv4 typing comes from the Opteryx catalog, which records the column as IPV4 over that uint32.
@@ -33,3 +40,7 @@ Parquet has no IP type: an address column is stored as a plain uint32 and stays 
 - IPv4 only. There is no IPv6 type.
 - Address text is parsed strictly: no shorthand forms such as `10.1` for `10.0.0.1`, and no leading zeros such as `010.0.0.1`. Both are rejected rather than guessed, because a parser and an access rule disagreeing about what an address means is a security bug.
 - An address does not carry a prefix length (unlike a PostgreSQL `inet`). The prefix is always an operand of the operation that needs it — `ip <<= '10.0.0.0/8'`.
+
+## See Also
+
+- [Working with IPs](../advanced/adv-working-with-ips.md) — worked examples.

@@ -56,4 +56,4 @@ AND is three-valued. FALSE wins over an unknown - `FALSE AND NULL` is FALSE, bec
 
 - [Logical OR `OR`](or.md)
 - [Logical XOR `XOR`](xor.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

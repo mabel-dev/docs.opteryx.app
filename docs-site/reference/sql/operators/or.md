@@ -57,4 +57,4 @@ OR is three-valued, and the mirror of AND: TRUE wins over an unknown - `TRUE OR 
 
 - [Logical AND `AND`](and.md)
 - [Logical XOR `XOR`](xor.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

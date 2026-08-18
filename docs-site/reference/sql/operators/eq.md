@@ -79,4 +79,4 @@ Comparison is three-valued: NULL on either side gives NULL, never true or false,
 
 - [Not equals `!=`](noteq.md)
 - [In list `IN`](inlist.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

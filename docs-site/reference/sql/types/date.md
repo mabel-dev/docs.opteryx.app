@@ -48,3 +48,7 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `DATE`, `TIMESTAMP`.
 - You cannot cast an integer COLUMN to DATE directly (only integer literals are accepted). To convert an epoch column, cast to TIMESTAMP first then to DATE: `FROM_UNIXTIME(n)::DATE`.
 - MM/DD/YYYY or DD-MM-YYYY string formats fail against the default parser — use `CAST(... AS DATE FORMAT 'MM/DD/YYYY')` (or the matching pattern) instead.
 - CAST ... FORMAT is not yet supported combined with TRY_CAST/SAFE_CAST.
+
+## See Also
+
+- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.

@@ -65,4 +65,4 @@ Matching is case-sensitive; ILIKE is the case-insensitive form. A NULL on either
 - [Not like `NOT LIKE`](notlike.md)
 - [Case-insensitive like `ILIKE`](ilike.md)
 - [Regex like `RLIKE`](rlike.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

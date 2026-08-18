@@ -47,4 +47,4 @@ Spelling follows PostgreSQL, CockroachDB and DuckDB's inet extension. A NULL add
 ## See Also
 
 - [IP contains `>>=`](ipcontains.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

@@ -66,4 +66,4 @@ The path must be a literal — it is resolved to RFC 6901 tokens once when the q
 
 - [JSON extract `->`](arrow.md)
 - [JSON extract text `->>`](longarrow.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

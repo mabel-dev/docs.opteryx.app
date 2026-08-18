@@ -64,4 +64,4 @@ Case folding is ASCII-only: `'ABC' ILIKE 'abc'` is true, but `'ÉCOLE' ILIKE 'é
 
 - [Like `LIKE`](like.md)
 - [Not case-insensitive like `NOT ILIKE`](notilike.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

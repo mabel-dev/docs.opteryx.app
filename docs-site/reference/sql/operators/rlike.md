@@ -56,4 +56,4 @@ A regular expression is more expressive than a LIKE pattern and more expensive t
 
 - [Not regex like `NOT RLIKE`](notrlike.md)
 - [Like `LIKE`](like.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

@@ -1176,7 +1176,7 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             lines.append('## See Also\n')
             for related in see_also:
                 if related == '@null-semantics':
-                    lines.append('- [NULL semantics](../null-semantics.md)')
+                    lines.append('- [NULL semantics](../advanced/adv-null-semantics.md)')
                     continue
                 related_info = ops_def.get(related) or {}
                 related_display = related_info.get('friendly_name') or related
@@ -1190,7 +1190,22 @@ def build_operators_docs(ops_def: Dict[str, Any]):
         write_md(path, lines)
 
 
-def build_types_docs(types_def: Dict[str, Any]):
+# A type page states what the type IS; the advanced guides show how to work with
+# it. Which guide belongs to which type is docs-site layout, not engine surface,
+# so the mapping lives here rather than in the opteryx-core catalog — the same
+# place the operator pages' link to the null-semantics page lives.
+TYPE_GUIDES: Dict[str, Tuple[str, str]] = {
+    'ipv4':      ('Working with IPs',        'advanced/adv-working-with-ips'),
+    'array':     ('Working with arrays',     'advanced/adv-working-with-lists'),
+    'variant':   ('Working with structs',    'advanced/adv-working-with-structs'),
+    'date':      ('Working with timestamps', 'advanced/adv-working-with-timestamps'),
+    'time':      ('Working with timestamps', 'advanced/adv-working-with-timestamps'),
+    'timestamp': ('Working with timestamps', 'advanced/adv-working-with-timestamps'),
+    'interval':  ('Working with timestamps', 'advanced/adv-working-with-timestamps'),
+}
+
+
+def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
     # Categorize types by family so the generated page has a structured TOC.
     lines = [
         '---',
@@ -1342,6 +1357,31 @@ def build_types_docs(types_def: Dict[str, Any]):
             else:
                 lines.append('This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.\n')
 
+        # Operators whose page is worth reading beside this type. The catalog
+        # carries names only, so the symbol and the summary come from the
+        # operator catalog here — an unknown name is a broken link, not a
+        # missing section, so it fails rather than being skipped.
+        operators = metadata.get('operators') or []
+        if operators:
+            lines.append('## Operators\n')
+            lines.append('| Operator | Syntax | Description |')
+            lines.append('|----------|--------|-------------|')
+            for op_name in operators:
+                op_info = ops_def.get(op_name)
+                if op_info is None:
+                    raise KeyError(
+                        f"type '{name}' lists operator '{op_name}', which is not in "
+                        f"operators.json — fix the name in opteryx-core's type catalog"
+                    )
+                op_slug = slugify(op_name)
+                op_symbol = op_info.get('sql_symbol') or op_info.get('token') or op_name
+                op_forms = ' <br> '.join(f'`{f}`' for f in op_info.get('syntax_forms') or [])
+                op_desc = (op_info.get('description') or op_info.get('friendly_name') or '').strip()
+                lines.append(
+                    f'| [`{op_symbol}`](../operators/{op_slug}.md) | {op_forms} | {op_desc} |'
+                )
+            lines.append('')
+
         # Notes
         notes = metadata.get('notes')
         if notes:
@@ -1354,6 +1394,14 @@ def build_types_docs(types_def: Dict[str, Any]):
             lines.append('## Limitations\n')
             for lim in limitations:
                 lines.append(f'- {lim}')
+            lines.append('')
+
+        # The guide that shows this type in use.
+        guide = TYPE_GUIDES.get(name)
+        if guide:
+            guide_title, guide_path = guide
+            lines.append('## See Also\n')
+            lines.append(f'- [{guide_title}](../{guide_path}.md) — worked examples.')
             lines.append('')
 
         write_md(path, lines)
@@ -1605,7 +1653,7 @@ def main():
 
     build_functions_docs(functions_def)
     build_operators_docs(operators_def)
-    build_types_docs(types_def)
+    build_types_docs(types_def, operators_def)
     build_aggregates_docs(aggregates_def)
     build_variables_docs(variables_def)
     build_api_docs()

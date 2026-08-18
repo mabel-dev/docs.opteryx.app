@@ -82,4 +82,4 @@ SELECT COUNT(*) FROM $planets WHERE surface_pressure != 0;
 
 - [Equals `=`](eq.md)
 - [Not in list `NOT IN`](notinlist.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

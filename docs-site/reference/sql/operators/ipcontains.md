@@ -47,4 +47,4 @@ Spelling follows PostgreSQL, CockroachDB and DuckDB's inet extension.
 ## See Also
 
 - [IP contained by `<<=`](ipcontainedby.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

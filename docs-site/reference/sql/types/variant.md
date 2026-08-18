@@ -20,3 +20,7 @@ VARIANT is NOT produced by reading JSON files/columns directly — file connecto
 - You cannot CAST any value to VARIANT — it is read-only at the SQL level.
 - VARIANT values cannot be compared with = or <. Extract a field first.
 - VARIANT columns cannot be used in GROUP BY, ORDER BY, or JOIN conditions directly — extract and cast first.
+
+## See Also
+
+- [Working with structs](../advanced/adv-working-with-structs.md) — worked examples.

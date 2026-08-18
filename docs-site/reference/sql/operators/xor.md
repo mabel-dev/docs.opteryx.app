@@ -57,4 +57,4 @@ Unlike AND and OR, XOR has no dominant value: the answer always depends on both 
 
 - [Logical AND `AND`](and.md)
 - [Logical OR `OR`](or.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

@@ -41,3 +41,7 @@ Sub-month components (days, hours, minutes, seconds, microseconds) are stored as
 - There is no INTERVAL literal that combines months and days in one expression (e.g. '1 month 3 days' is not supported). Use separate additions.
 - CAST(literal AS INTERVAL) is rejected. INTERVAL can only be cast TO VARCHAR (see cast_to above); it cannot be cast FROM another type.
 - CAST ... FORMAT is not yet supported combined with TRY_CAST/SAFE_CAST.
+
+## See Also
+
+- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.

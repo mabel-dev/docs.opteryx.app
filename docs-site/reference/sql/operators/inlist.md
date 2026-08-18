@@ -66,4 +66,4 @@ IN is a shorthand for a chain of `=`, and inherits its rules: the comparison is 
 
 - [Not in list `NOT IN`](notinlist.md)
 - [Equals `=`](eq.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

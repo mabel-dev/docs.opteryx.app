@@ -56,4 +56,4 @@ true | false
 
 - [Array contains all `@>>`](arraycontainsall.md)
 - [In list `IN`](inlist.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

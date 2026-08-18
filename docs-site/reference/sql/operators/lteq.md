@@ -73,4 +73,4 @@ NULL on either side gives NULL, so ordering comparisons never match an absent va
 - [Less than `<`](lt.md)
 - [Greater than `>`](gt.md)
 - [Greater than or equal `>=`](gteq.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

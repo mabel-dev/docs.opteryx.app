@@ -38,3 +38,7 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `TIME`.
 - TIME cannot be compared to DATE or TIMESTAMP.
 - No timezone support — TIME is always local/naive.
 - There is no CAST from TIMESTAMP, DATE, or INTEGER to TIME yet — only VARCHAR sources are supported.
+
+## See Also
+
+- [Working with timestamps](../advanced/adv-working-with-timestamps.md) — worked examples.

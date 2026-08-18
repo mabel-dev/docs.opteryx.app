@@ -56,4 +56,4 @@ false
 
 - [Array contains any `@>`](atarrow.md)
 - [In list `IN`](inlist.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

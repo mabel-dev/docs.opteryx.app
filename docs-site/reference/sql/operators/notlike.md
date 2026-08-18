@@ -58,4 +58,4 @@ Case-sensitive, like `LIKE` itself. NOT ILIKE is the case-insensitive form.
 
 - [Like `LIKE`](like.md)
 - [Not case-insensitive like `NOT ILIKE`](notilike.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)

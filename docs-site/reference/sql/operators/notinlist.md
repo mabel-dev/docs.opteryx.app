@@ -59,4 +59,4 @@ Like `!=`, a row whose value is NULL answers NULL rather than true, so it does n
 
 - [In list `IN`](inlist.md)
 - [Not equals `!=`](noteq.md)
-- [NULL semantics](../null-semantics.md)
+- [NULL semantics](../advanced/adv-null-semantics.md)
