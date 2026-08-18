@@ -20,7 +20,7 @@ Combines integer operands using a bitwise OR operation.
 ## Parameters
 
 - **`<left>`** — An integer value. Accepts [`integer`](../types/integer.md).
-- **`<right>`** — An integer value. Accepts [`integer`](../types/integer.md).
+- **`<right>`** — An integer value. The result keeps the operands' integer width rather than widening to 64-bit. Accepts [`integer`](../types/integer.md).
 
 ## Returns
 
@@ -30,6 +30,10 @@ Combines integer operands using a bitwise OR operation.
 
 ```sql
 SELECT 12 | 10;
+```
+
+```
+14
 ```
 
 ## Signatures

@@ -32,6 +32,10 @@ Shifts the bits of the left integer operand left by the number of positions in t
 SELECT 1 << 4;
 ```
 
+```
+16
+```
+
 ## Signatures
 
 - `integer << integer` → integer

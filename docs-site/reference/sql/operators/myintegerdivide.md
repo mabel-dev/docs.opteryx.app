@@ -29,12 +29,20 @@ Divides two integers and truncates the result toward zero.
 ## Examples
 
 ```sql
-SELECT 7 DIV 2;
+SELECT 7 DIV 2, -7 DIV 2;
+```
+
+```
+3 | -3
 ```
 
 ## Signatures
 
 - `integer DIV integer` → integer
+
+## Notes
+
+Truncation is toward zero, not toward minus infinity: `-7 DIV 2` is -3, where a floor division would give -4.
 
 ## See Also
 

@@ -32,11 +32,29 @@ Returns true when exactly one boolean operand evaluates to true.
 SELECT name FROM $planets WHERE (gravity > 5) XOR (number_of_moons > 10);
 ```
 
+```
+Venus
+Earth
+```
+
+```sql
+SELECT TRUE XOR NULL;
+```
+
+```
+NULL
+```
+
 ## Signatures
 
 - `boolean XOR boolean` → boolean
+
+## Notes
+
+Unlike AND and OR, XOR has no dominant value: the answer always depends on both sides, so NULL on either side gives NULL.
 
 ## See Also
 
 - [Logical AND `AND`](and.md)
 - [Logical OR `OR`](or.md)
+- [NULL semantics](../null-semantics.md)

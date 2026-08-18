@@ -20,7 +20,7 @@ Returns true when the left string does not match the SQL ILIKE pattern on the ri
 ## Parameters
 
 - **`<haystack>`** — The value tested against the pattern. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<pattern>`** — A SQL LIKE pattern, matched without regard to case: `%` matches any run of characters, `_` matches exactly one. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<pattern>`** — A SQL LIKE pattern, matched without regard to ASCII case. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 
 ## Returns
 
@@ -29,7 +29,13 @@ Returns true when the left string does not match the SQL ILIKE pattern on the ri
 ## Examples
 
 ```sql
-SELECT name FROM $planets WHERE name NOT ILIKE 'ma%';
+SELECT name FROM $planets WHERE name NOT ILIKE 'ma%' LIMIT 3;
+```
+
+```
+Mercury
+Venus
+Earth
 ```
 
 ## Signatures
@@ -44,7 +50,12 @@ SELECT name FROM $planets WHERE name NOT ILIKE 'ma%';
 - `varchar NOT ILIKE varbinary` → boolean
 - `varchar NOT ILIKE varchar` → boolean
 
+## Notes
+
+Case folding is ASCII-only, exactly as for ILIKE.
+
 ## See Also
 
 - [Case-insensitive like `ILIKE`](ilike.md)
 - [Not like `NOT LIKE`](notlike.md)
+- [NULL semantics](../null-semantics.md)

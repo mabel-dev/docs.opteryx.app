@@ -20,7 +20,7 @@ Returns true when the left IPv4 address falls inside the network given on the ri
 ## Parameters
 
 - **`<address>`** — An IPv4 address. It is held as its 32-bit integer value, which is why the signature below reads INTEGER. Accepts [`integer`](../types/integer.md).
-- **`<network>`** — The network to test against, in CIDR notation. Accepts [`varchar`](../types/varchar.md).
+- **`<network>`** — The network to test against, in CIDR notation. The prefix length is required: an address without one is rejected. Accepts [`varchar`](../types/varchar.md).
 
 ## Returns
 
@@ -30,6 +30,10 @@ Returns true when the left IPv4 address falls inside the network given on the ri
 
 ```sql
 SELECT CAST('10.0.0.1' AS IPV4) <<= '10.0.0.0/8';
+```
+
+```
+true
 ```
 
 ## Signatures
@@ -43,3 +47,4 @@ Spelling follows PostgreSQL, CockroachDB and DuckDB's inet extension. A NULL add
 ## See Also
 
 - [IP contains `>>=`](ipcontains.md)
+- [NULL semantics](../null-semantics.md)

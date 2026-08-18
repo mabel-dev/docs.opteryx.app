@@ -20,7 +20,7 @@ Concatenates the left and right string or blob operands.
 ## Parameters
 
 - **`<left>`** — The value to concatenate to. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to append. It must be the same type as the left operand. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<right>`** — The value to append. It must be the SAME string type as the left - VARCHAR with VARCHAR, VARBINARY with VARBINARY - and a number must be cast first. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 
 ## Returns
 
@@ -29,7 +29,21 @@ Concatenates the left and right string or blob operands.
 ## Examples
 
 ```sql
-SELECT name || ' (planet)' FROM $planets;
+SELECT name || ' (planet)' FROM $planets LIMIT 3;
+```
+
+```
+Mercury (planet)
+Venus (planet)
+Earth (planet)
+```
+
+```sql
+SELECT 'a' || NULL;
+```
+
+```
+NULL
 ```
 
 ## Signatures
@@ -40,7 +54,7 @@ SELECT name || ' (planet)' FROM $planets;
 
 ## Notes
 
-The operands must be the same string type - VARCHAR with VARCHAR, VARBINARY with VARBINARY. Mixing them is rejected rather than silently coerced. `x || NULL` is NULL for every row, but the expression still carries the string operand's type.
+The operands must be the same string type; mixing VARCHAR and VARBINARY is rejected rather than silently coerced. `x || NULL` is NULL for every row - it is not treated as an empty string - but the expression still carries the string operand's type.
 
 ## See Also
 

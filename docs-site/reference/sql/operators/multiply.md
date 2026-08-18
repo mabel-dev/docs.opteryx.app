@@ -20,7 +20,7 @@ Returns the product of two numeric operands.
 ## Parameters
 
 - **`<left>`** — A numeric value. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
-- **`<right>`** — A numeric value. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<right>`** — A numeric value. The result takes the wider of the two types - see Signatures. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
 
 ## Returns
 
@@ -29,7 +29,13 @@ Returns the product of two numeric operands.
 ## Examples
 
 ```sql
-SELECT name, diameter * 2 FROM $planets;
+SELECT name, diameter * 2 FROM $planets LIMIT 3;
+```
+
+```
+Mercury | 9758
+Venus | 24208
+Earth | 25512
 ```
 
 ## Signatures

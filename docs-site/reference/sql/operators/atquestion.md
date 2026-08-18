@@ -32,6 +32,18 @@ Returns true when the supplied JSON path expression matches within the left docu
 SELECT '{"contact": {"email": "a@b.c"}}' @? '$.contact.email';
 ```
 
+```
+true
+```
+
+```sql
+SELECT '{"a": null}' @? '$.a', '{"a": 1}' @? '$.b';
+```
+
+```
+true | false
+```
+
 ## Signatures
 
 - `nvarchar @? nvarchar` → boolean
@@ -54,3 +66,4 @@ The path must be a literal — it is resolved to RFC 6901 tokens once when the q
 
 - [JSON extract `->`](arrow.md)
 - [JSON extract text `->>`](longarrow.md)
+- [NULL semantics](../null-semantics.md)

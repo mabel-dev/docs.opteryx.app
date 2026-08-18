@@ -19,8 +19,8 @@ Returns the quotient of two numeric operands.
 
 ## Parameters
 
-- **`<dividend>`** — The value to divide. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
-- **`<divisor>`** — The value to divide by. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<dividend>`** — The value to divide. Two integers still divide to a FLOAT - use `DIV` for integer division. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<divisor>`** — The value to divide by. Dividing by zero yields infinity rather than raising, because the result is floating point. Accepts [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md).
 
 ## Returns
 
@@ -29,7 +29,19 @@ Returns the quotient of two numeric operands.
 ## Examples
 
 ```sql
-SELECT name, mass / diameter FROM $planets;
+SELECT 5 / 2;
+```
+
+```
+2.5
+```
+
+```sql
+SELECT CAST(1 AS DECIMAL(10,2)) / 3;
+```
+
+```
+0.33333333
 ```
 
 ## Signatures
@@ -43,6 +55,10 @@ SELECT name, mass / diameter FROM $planets;
 - `integer / decimal` → decimal
 - `integer / float` → float
 - `integer / integer` → float
+
+## Notes
+
+`/` is true division: `5 / 2` is 2.5, never 2. A DECIMAL operand keeps the result DECIMAL; every other combination gives FLOAT, and `1 / 0` is therefore `inf` rather than an error.
 
 ## See Also
 

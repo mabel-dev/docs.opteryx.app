@@ -19,7 +19,7 @@ Returns the remainder after division of the left numeric operand by the right nu
 
 ## Parameters
 
-- **`<dividend>`** — The value to divide. Accepts [`float`](../types/float.md), [`integer`](../types/integer.md).
+- **`<dividend>`** — The value to divide. Its sign is the sign of the result. Accepts [`float`](../types/float.md), [`integer`](../types/integer.md).
 - **`<divisor>`** — The value to divide by. Accepts [`integer`](../types/integer.md).
 
 ## Returns
@@ -29,13 +29,21 @@ Returns the remainder after division of the left numeric operand by the right nu
 ## Examples
 
 ```sql
-SELECT 7 % 2;
+SELECT 7 % 2, -7 % 2, 7 % -2;
+```
+
+```
+1 | -1 | 1
 ```
 
 ## Signatures
 
 - `float % integer` → float
 - `integer % integer` → integer
+
+## Notes
+
+The remainder takes the sign of the DIVIDEND, not the divisor: `-7 % 2` is -1 and `7 % -2` is 1. That is C and Go's rule, not Python's, where `-7 % 2` is 1.
 
 ## See Also
 

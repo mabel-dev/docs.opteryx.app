@@ -20,7 +20,7 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 ## Parameters
 
 - **`<left>`** — The value to subtract from. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
-- **`<right>`** — The value to subtract. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
+- **`<right>`** — The value to subtract. Subtracting one TIMESTAMP from another gives an INTERVAL; subtracting an INTERVAL from a timestamp gives a timestamp. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
 
 ## Returns
 
@@ -29,7 +29,21 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 ## Examples
 
 ```sql
-SELECT name, aphelion - perihelion FROM $planets;
+SELECT name, aphelion - perihelion FROM $planets LIMIT 3;
+```
+
+```
+Mercury | 23.800003051757812
+Venus | 1.4000015258789062
+Earth | 5.0
+```
+
+```sql
+SELECT CAST('2026-03-01' AS TIMESTAMP) - INTERVAL '1' MONTH;
+```
+
+```
+2026-02-01 00:00:00+00:00
 ```
 
 ## Signatures
@@ -52,6 +66,10 @@ SELECT name, aphelion - perihelion FROM $planets;
 - `timestamp - date` → interval
 - `timestamp - interval` → timestamp
 - `timestamp - timestamp` → interval
+
+## Notes
+
+Unlike addition, subtraction is not symmetric across types: a timestamp minus an interval is a timestamp, but an interval minus a timestamp is not accepted.
 
 ## See Also
 

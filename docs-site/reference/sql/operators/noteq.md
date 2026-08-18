@@ -21,7 +21,7 @@ Returns true when the operands do not compare equal.
 ## Parameters
 
 - **`<left>`** — The value to compare. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<right>`** — The value to compare it against. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<right>`** — The value to compare it against. It must be type-compatible with the left. Accepts [`boolean`](../types/boolean.md), [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 
 ## Returns
 
@@ -30,7 +30,21 @@ Returns true when the operands do not compare equal.
 ## Examples
 
 ```sql
-SELECT name FROM $planets WHERE name != 'Earth';
+SELECT name FROM $planets WHERE name != 'Earth' LIMIT 3;
+```
+
+```
+Mercury
+Venus
+Mars
+```
+
+```sql
+SELECT COUNT(*) FROM $planets WHERE surface_pressure != 0;
+```
+
+```
+4
 ```
 
 ## Signatures
@@ -60,7 +74,12 @@ SELECT name FROM $planets WHERE name != 'Earth';
 - `varchar != varbinary` → boolean
 - `varchar != varchar` → boolean
 
+## Notes
+
+`!=` does not mean "everything else": a row whose value is NULL answers NULL, not true, so it is dropped by the WHERE clause. Of the nine planets one has a surface pressure of 0 and four have none recorded, so `surface_pressure != 0` returns four rows, not eight - `OR surface_pressure IS NULL` is how the unknown rows are kept.
+
 ## See Also
 
 - [Equals `=`](eq.md)
 - [Not in list `NOT IN`](notinlist.md)
+- [NULL semantics](../null-semantics.md)

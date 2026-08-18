@@ -32,9 +32,17 @@ Combines integer operands using a bitwise exclusive OR operation.
 SELECT 12 ^ 10;
 ```
 
+```
+6
+```
+
 ## Signatures
 
 - `integer ^ integer` → integer
+
+## Notes
+
+`^` is exclusive OR, not exponentiation - a habit worth checking when porting SQL from systems where it raises to a power.
 
 ## See Also
 

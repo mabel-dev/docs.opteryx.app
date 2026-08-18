@@ -19,7 +19,7 @@ Returns true when the left operand is less than the right operand.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<left>`** — The value to compare. Strings order byte-by-byte, so uppercase sorts before lowercase. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 - **`<right>`** — The value to compare it against. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`nvarchar`](../types/nvarchar.md), [`timestamp`](../types/timestamp.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 
 ## Returns
@@ -30,6 +30,12 @@ Returns true when the left operand is less than the right operand.
 
 ```sql
 SELECT name FROM $planets WHERE gravity < 5;
+```
+
+```
+Mercury
+Mars
+Pluto
 ```
 
 ## Signatures
@@ -58,8 +64,13 @@ SELECT name FROM $planets WHERE gravity < 5;
 - `varchar < varbinary` → boolean
 - `varchar < varchar` → boolean
 
+## Notes
+
+NULL on either side gives NULL, so ordering comparisons never match an absent value.
+
 ## See Also
 
 - [Less than or equal `<=`](lteq.md)
 - [Greater than `>`](gt.md)
 - [Greater than or equal `>=`](gteq.md)
+- [NULL semantics](../null-semantics.md)

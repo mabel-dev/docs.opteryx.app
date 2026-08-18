@@ -20,7 +20,7 @@ Returns true when the left string does not match the regular expression on the r
 ## Parameters
 
 - **`<haystack>`** — The value tested against the expression. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
-- **`<regex>`** — The regular expression to match. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
+- **`<regex>`** — The regular expression that must not match. It matches anywhere in the value unless anchored. Accepts [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md).
 
 ## Returns
 
@@ -29,7 +29,13 @@ Returns true when the left string does not match the regular expression on the r
 ## Examples
 
 ```sql
-SELECT name FROM $planets WHERE name NOT RLIKE '^M';
+SELECT name FROM $planets WHERE name NOT RLIKE '^M' LIMIT 3;
+```
+
+```
+Venus
+Earth
+Jupiter
 ```
 
 ## Signatures
@@ -48,3 +54,4 @@ SELECT name FROM $planets WHERE name NOT RLIKE '^M';
 
 - [Regex like `RLIKE`](rlike.md)
 - [Not like `NOT LIKE`](notlike.md)
+- [NULL semantics](../null-semantics.md)

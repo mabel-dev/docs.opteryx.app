@@ -32,6 +32,18 @@ Returns true when the left string matches the SQL ILIKE pattern on the right wit
 SELECT name FROM $planets WHERE name ILIKE 'ma%';
 ```
 
+```
+Mars
+```
+
+```sql
+SELECT 'ABC' ILIKE 'abc', 'ÉCOLE' ILIKE 'école';
+```
+
+```
+true | false
+```
+
 ## Signatures
 
 - `nvarchar ILIKE nvarchar` → boolean
@@ -44,7 +56,12 @@ SELECT name FROM $planets WHERE name ILIKE 'ma%';
 - `varchar ILIKE varbinary` → boolean
 - `varchar ILIKE varchar` → boolean
 
+## Notes
+
+Case folding is ASCII-only: `'ABC' ILIKE 'abc'` is true, but `'ÉCOLE' ILIKE 'école'` is FALSE - accented and other non-ASCII letters are compared as written. Where that matters, fold explicitly with a function instead.
+
 ## See Also
 
 - [Like `LIKE`](like.md)
 - [Not case-insensitive like `NOT ILIKE`](notilike.md)
+- [NULL semantics](../null-semantics.md)

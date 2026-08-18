@@ -1121,8 +1121,17 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             lines.append('## Examples\n')
             for example in examples:
                 lines.append('```sql')
-                lines.append(example)
+                lines.append(example['sql'])
                 lines.append('```\n')
+                # The result is what the ENGINE answered when the catalog was written -
+                # opteryx-core re-runs every example and fails if it has changed. It is
+                # never computed here; a docs generator guessing at SQL semantics is how
+                # a page ends up confidently wrong.
+                result = example.get('result') or []
+                if result:
+                    lines.append('```')
+                    lines.extend(result)
+                    lines.append('```\n')
 
         if signatures:
             # The full type matrix the binder accepts. The Parameters section above
@@ -1158,9 +1167,17 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             lines.append(notes)
             lines.append('')
 
+        # Three-valued logic is where these operators surprise people, and the
+        # null-semantics page is the one place it is explained in full.
+        if category in ('comparison', 'logical'):
+            see_also = list(see_also) + ['@null-semantics']
+
         if see_also:
             lines.append('## See Also\n')
             for related in see_also:
+                if related == '@null-semantics':
+                    lines.append('- [NULL semantics](../null-semantics.md)')
+                    continue
                 related_info = ops_def.get(related) or {}
                 related_display = related_info.get('friendly_name') or related
                 related_symbol = related_info.get('sql_symbol')

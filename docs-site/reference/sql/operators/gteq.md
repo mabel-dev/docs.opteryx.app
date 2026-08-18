@@ -32,6 +32,13 @@ Returns true when the left operand is greater than or equal to the right operand
 SELECT name FROM $planets WHERE number_of_moons >= 10;
 ```
 
+```
+Jupiter
+Saturn
+Uranus
+Neptune
+```
+
 ## Signatures
 
 - `date >= date` → boolean
@@ -58,8 +65,13 @@ SELECT name FROM $planets WHERE number_of_moons >= 10;
 - `varchar >= varbinary` → boolean
 - `varchar >= varchar` → boolean
 
+## Notes
+
+NULL on either side gives NULL, so ordering comparisons never match an absent value.
+
 ## See Also
 
 - [Greater than `>`](gt.md)
 - [Less than `<`](lt.md)
 - [Less than or equal `<=`](lteq.md)
+- [NULL semantics](../null-semantics.md)

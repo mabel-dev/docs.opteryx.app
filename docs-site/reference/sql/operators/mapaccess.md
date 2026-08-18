@@ -20,7 +20,7 @@ Returns the element at the requested index from an array, string, or blob-like v
 ## Parameters
 
 - **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array.md), [`nvarchar`](../types/nvarchar.md), [`varbinary`](../types/varbinary.md), [`varchar`](../types/varchar.md), [`vector`](../types/vector.md).
-- **`<index>`** — The zero-based position to read. Accepts [`integer`](../types/integer.md).
+- **`<index>`** — The zero-based position to read. An index past the end gives NULL rather than raising. Accepts [`integer`](../types/integer.md).
 
 ## Returns
 
@@ -34,8 +34,16 @@ Some operand combinations have no fixed result type — the result follows the v
 SELECT ARRAY['a','b','c'][0];
 ```
 
+```
+a
+```
+
 ```sql
-SELECT name[0] FROM $planets;
+SELECT ARRAY['a','b'][9];
+```
+
+```
+NULL
 ```
 
 ## Signatures

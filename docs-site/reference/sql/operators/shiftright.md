@@ -19,7 +19,7 @@ Shifts the bits of the left integer operand right by the number of positions in 
 
 ## Parameters
 
-- **`<value>`** — The integer whose bits are shifted. Accepts [`integer`](../types/integer.md).
+- **`<value>`** — The integer whose bits are shifted. The shift is arithmetic, so the sign is preserved. Accepts [`integer`](../types/integer.md).
 - **`<count>`** — How many positions to shift by, 0..63. Accepts [`integer`](../types/integer.md).
 
 ## Returns
@@ -29,7 +29,11 @@ Shifts the bits of the left integer operand right by the number of positions in 
 ## Examples
 
 ```sql
-SELECT 256 >> 4;
+SELECT 256 >> 4, -1 >> 1;
+```
+
+```
+16 | -1
 ```
 
 ## Signatures
@@ -38,7 +42,7 @@ SELECT 256 >> 4;
 
 ## Notes
 
-The shift count must be 0..63 - the operands are 64-bit integers, and a count outside that range fails loud ('bitwise_shr: shift count out of range') rather than wrapping or saturating.
+Right shift is ARITHMETIC, not logical: the sign bit is copied, so `-1 >> 1` is -1 and a negative value never becomes positive by shifting. The shift count must be 0..63 - the operands are 64-bit integers, and a count outside that range fails loud ('bitwise_shr: shift count out of range') rather than wrapping or saturating.
 
 ## See Also
 

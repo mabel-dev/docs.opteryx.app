@@ -32,6 +32,12 @@ Returns true when the left operand is less than or equal to the right operand.
 SELECT name FROM $planets WHERE gravity <= 5;
 ```
 
+```
+Mercury
+Mars
+Pluto
+```
+
 ## Signatures
 
 - `date <= date` → boolean
@@ -58,8 +64,13 @@ SELECT name FROM $planets WHERE gravity <= 5;
 - `varchar <= varbinary` → boolean
 - `varchar <= varchar` → boolean
 
+## Notes
+
+NULL on either side gives NULL, so ordering comparisons never match an absent value.
+
 ## See Also
 
 - [Less than `<`](lt.md)
 - [Greater than `>`](gt.md)
 - [Greater than or equal `>=`](gteq.md)
+- [NULL semantics](../null-semantics.md)

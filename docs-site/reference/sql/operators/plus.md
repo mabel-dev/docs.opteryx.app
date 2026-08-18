@@ -19,8 +19,8 @@ Returns the sum of two numeric or interval-compatible operands.
 
 ## Parameters
 
-- **`<left>`** — The value to add to. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
-- **`<right>`** — The value to add. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
+- **`<left>`** — The value to add to. A DATE or TIMESTAMP is accepted only with an INTERVAL on the other side - two dates cannot be added. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
+- **`<right>`** — The value to add. Mixing numeric types widens the result: INTEGER with FLOAT gives FLOAT, INTEGER with DECIMAL gives DECIMAL. Accepts [`date`](../types/date.md), [`decimal`](../types/decimal.md), [`float`](../types/float.md), [`integer`](../types/integer.md), [`interval`](../types/interval.md), [`timestamp`](../types/timestamp.md).
 
 ## Returns
 
@@ -29,11 +29,21 @@ Returns the sum of two numeric or interval-compatible operands.
 ## Examples
 
 ```sql
-SELECT name, number_of_moons + 1 FROM $planets;
+SELECT name, number_of_moons + 1 FROM $planets LIMIT 3;
+```
+
+```
+Mercury | 1
+Venus | 1
+Earth | 2
 ```
 
 ```sql
 SELECT CAST('2026-01-01' AS DATE) + INTERVAL '1' MONTH;
+```
+
+```
+2026-02-01 00:00:00+00:00
 ```
 
 ## Signatures
@@ -52,6 +62,10 @@ SELECT CAST('2026-01-01' AS DATE) + INTERVAL '1' MONTH;
 - `interval + interval` → interval
 - `interval + timestamp` → timestamp
 - `timestamp + interval` → timestamp
+
+## Notes
+
+Adding NULL gives NULL. Date arithmetic is only ever date-plus-interval, and the result is a TIMESTAMP even when the operand was a DATE - see Signatures.
 
 ## See Also
 

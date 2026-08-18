@@ -14,7 +14,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "A boolean expression.",
+                "documentation": "A boolean expression. A comparison that produced NULL counts as unknown here, not as false.",
                 "constant_only": false,
                 "types": [
                     "boolean"
@@ -22,7 +22,7 @@
             },
             {
                 "name": "right",
-                "documentation": "A boolean expression.",
+                "documentation": "A boolean expression, evaluated under the same rules.",
                 "constant_only": false,
                 "types": [
                     "boolean"
@@ -30,7 +30,18 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE gravity > 5 AND number_of_moons = 0;"
+            {
+                "sql": "SELECT name FROM $planets WHERE gravity > 5 AND number_of_moons = 0;",
+                "result": [
+                    "Venus"
+                ]
+            },
+            {
+                "sql": "SELECT FALSE AND NULL, TRUE AND NULL;",
+                "result": [
+                    "false | NULL"
+                ]
+            }
         ],
         "see_also": [
             "Or",
@@ -55,7 +66,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "AND is three-valued. FALSE wins over an unknown - `FALSE AND NULL` is FALSE, because no value of the unknown side could make the pair true - while `TRUE AND NULL` is NULL. Only a TRUE result passes a WHERE clause, so a row whose condition is NULL is dropped exactly as a false one is."
     },
     "ArrayContainsAll": {
         "ast_symbol": "ArrayContainsAll",
@@ -80,7 +92,7 @@
             },
             {
                 "name": "values",
-                "documentation": "The array of values that must all be present.",
+                "documentation": "The array of values that must ALL be present for the result to be true.",
                 "constant_only": false,
                 "types": [
                     "array"
@@ -88,7 +100,18 @@
             }
         ],
         "examples": [
-            "SELECT ['a','b'] @>> ['a','b'];"
+            {
+                "sql": "SELECT ['a','b'] @>> ['a','b'];",
+                "result": [
+                    "true"
+                ]
+            },
+            {
+                "sql": "SELECT ['a','b'] @>> ['a','z'];",
+                "result": [
+                    "false"
+                ]
+            }
         ],
         "see_also": [
             "AtArrow",
@@ -113,7 +136,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "`@>>` is ALL, `@>` is ANY."
     },
     "Arrow": {
         "ast_symbol": "Arrow",
@@ -141,7 +165,7 @@
             },
             {
                 "name": "path",
-                "documentation": "The key or path to select. A bare key (`'city'`), a JSONPath (`'$.contact.email'`) and an RFC 6901 pointer (`'/contact/email'`) all name the same thing.",
+                "documentation": "The key or path to select. A bare key (`'city'`), a JSONPath (`'$.contact.email'`) and an RFC 6901 pointer (`'/contact/email'`) all name the same thing. A path that is not present gives NULL, not an error.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -151,7 +175,18 @@
             }
         ],
         "examples": [
-            "SELECT '{\"name\": \"Earth\", \"moons\": 1}' -> 'name';"
+            {
+                "sql": "SELECT '{\"name\": \"Earth\", \"moons\": 1}' -> 'name';",
+                "result": [
+                    "\"Earth\""
+                ]
+            },
+            {
+                "sql": "SELECT '{\"a\": 1}' -> 'missing';",
+                "result": [
+                    "NULL"
+                ]
+            }
         ],
         "see_also": [
             "LongArrow",
@@ -253,7 +288,7 @@
                 "cost_estimate": 100.0
             }
         ],
-        "notes": "The result type is dynamic because the selected JSON value may be scalar, object, array, or null."
+        "notes": "`->` keeps the value as JSON, so a selected string arrives still quoted (`\"Earth\"`); `->>` is the form that gives the text itself (`Earth`). That is the difference between the two, and the usual cause of a comparison against a string literal not matching. The result type is dynamic because the selected JSON value may be scalar, object, array, or null."
     },
     "AtArrow": {
         "ast_symbol": "AtArrow",
@@ -278,7 +313,7 @@
             },
             {
                 "name": "values",
-                "documentation": "The array of values to look for.",
+                "documentation": "The array of values to look for. ANY one of them being present is enough; an empty array on this side matches nothing.",
                 "constant_only": false,
                 "types": [
                     "array"
@@ -286,7 +321,18 @@
             }
         ],
         "examples": [
-            "SELECT ['a','b'] @> ['a'];"
+            {
+                "sql": "SELECT ['a','b'] @> ['a'];",
+                "result": [
+                    "true"
+                ]
+            },
+            {
+                "sql": "SELECT ['a','b'] @> ['a','z'], ['a'] @> [];",
+                "result": [
+                    "true | false"
+                ]
+            }
         ],
         "see_also": [
             "ArrayContainsAll",
@@ -311,7 +357,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "`@>` is ANY, `@>>` is ALL - the pair is easy to mix up. `['a','b'] @> ['a','z']` is TRUE because one value matched; the same operands under `@>>` are FALSE."
     },
     "AtQuestion": {
         "ast_symbol": "AtQuestion",
@@ -349,7 +396,18 @@
             }
         ],
         "examples": [
-            "SELECT '{\"contact\": {\"email\": \"a@b.c\"}}' @? '$.contact.email';"
+            {
+                "sql": "SELECT '{\"contact\": {\"email\": \"a@b.c\"}}' @? '$.contact.email';",
+                "result": [
+                    "true"
+                ]
+            },
+            {
+                "sql": "SELECT '{\"a\": null}' @? '$.a', '{\"a\": 1}' @? '$.b';",
+                "result": [
+                    "true | false"
+                ]
+            }
         ],
         "see_also": [
             "Arrow",
@@ -475,7 +533,7 @@
             },
             {
                 "name": "right",
-                "documentation": "An integer value.",
+                "documentation": "An integer value. The result keeps the operands' integer width rather than widening to 64-bit.",
                 "constant_only": false,
                 "types": [
                     "integer"
@@ -483,7 +541,12 @@
             }
         ],
         "examples": [
-            "SELECT 12 & 10;"
+            {
+                "sql": "SELECT 12 & 10;",
+                "result": [
+                    "8"
+                ]
+            }
         ],
         "see_also": [
             "BitwiseOr",
@@ -533,7 +596,7 @@
             },
             {
                 "name": "right",
-                "documentation": "An integer value.",
+                "documentation": "An integer value. The result keeps the operands' integer width rather than widening to 64-bit.",
                 "constant_only": false,
                 "types": [
                     "integer"
@@ -541,7 +604,12 @@
             }
         ],
         "examples": [
-            "SELECT 12 | 10;"
+            {
+                "sql": "SELECT 12 | 10;",
+                "result": [
+                    "14"
+                ]
+            }
         ],
         "see_also": [
             "BitwiseAnd",
@@ -599,7 +667,12 @@
             }
         ],
         "examples": [
-            "SELECT 12 ^ 10;"
+            {
+                "sql": "SELECT 12 ^ 10;",
+                "result": [
+                    "6"
+                ]
+            }
         ],
         "see_also": [
             "BitwiseAnd",
@@ -624,7 +697,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "`^` is exclusive OR, not exponentiation - a habit worth checking when porting SQL from systems where it raises to a power."
     },
     "Divide": {
         "ast_symbol": "Divide",
@@ -641,7 +715,7 @@
         "operands": [
             {
                 "name": "dividend",
-                "documentation": "The value to divide.",
+                "documentation": "The value to divide. Two integers still divide to a FLOAT - use `DIV` for integer division.",
                 "constant_only": false,
                 "types": [
                     "decimal",
@@ -651,7 +725,7 @@
             },
             {
                 "name": "divisor",
-                "documentation": "The value to divide by.",
+                "documentation": "The value to divide by. Dividing by zero yields infinity rather than raising, because the result is floating point.",
                 "constant_only": false,
                 "types": [
                     "decimal",
@@ -661,7 +735,18 @@
             }
         ],
         "examples": [
-            "SELECT name, mass / diameter FROM $planets;"
+            {
+                "sql": "SELECT 5 / 2;",
+                "result": [
+                    "2.5"
+                ]
+            },
+            {
+                "sql": "SELECT CAST(1 AS DECIMAL(10,2)) / 3;",
+                "result": [
+                    "0.33333333"
+                ]
+            }
         ],
         "see_also": [
             "MyIntegerDivide",
@@ -748,7 +833,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "`/` is true division: `5 / 2` is 2.5, never 2. A DECIMAL operand keeps the result DECIMAL; every other combination gives FLOAT, and `1 / 0` is therefore `inf` rather than an error."
     },
     "Eq": {
         "ast_symbol": "Eq",
@@ -765,7 +851,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "The value to compare.",
+                "documentation": "The value to compare. Numeric types compare across the family, so `1 = 1.0` is true.",
                 "constant_only": false,
                 "types": [
                     "boolean",
@@ -782,7 +868,7 @@
             },
             {
                 "name": "right",
-                "documentation": "The value to compare it against.",
+                "documentation": "The value to compare it against. It must be type-compatible with the left - a number and a string are rejected rather than coerced.",
                 "constant_only": false,
                 "types": [
                     "boolean",
@@ -799,7 +885,18 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name = 'Earth';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name = 'Earth';",
+                "result": [
+                    "Earth"
+                ]
+            },
+            {
+                "sql": "SELECT 'Mars' = 'mars', 1 = 1.0, 1 = NULL;",
+                "result": [
+                    "false | true | NULL"
+                ]
+            }
         ],
         "see_also": [
             "NotEq",
@@ -1003,7 +1100,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Comparison is three-valued: NULL on either side gives NULL, never true or false, and `NULL = NULL` is NULL too - `IS NULL` is the test for absence. String comparison is case-sensitive (`'Mars' = 'mars'` is false), unlike column NAMES, which are not."
     },
     "Gt": {
         "ast_symbol": "Gt",
@@ -1020,7 +1118,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "The value to compare.",
+                "documentation": "The value to compare. Strings order byte-by-byte, so uppercase sorts before lowercase.",
                 "constant_only": false,
                 "types": [
                     "date",
@@ -1052,7 +1150,15 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE number_of_moons > 10;"
+            {
+                "sql": "SELECT name FROM $planets WHERE number_of_moons > 10;",
+                "result": [
+                    "Jupiter",
+                    "Saturn",
+                    "Uranus",
+                    "Neptune"
+                ]
+            }
         ],
         "see_also": [
             "GtEq",
@@ -1248,7 +1354,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "NULL on either side gives NULL, so ordering comparisons never match an absent value."
     },
     "GtEq": {
         "ast_symbol": "GtEq",
@@ -1297,7 +1404,15 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE number_of_moons >= 10;"
+            {
+                "sql": "SELECT name FROM $planets WHERE number_of_moons >= 10;",
+                "result": [
+                    "Jupiter",
+                    "Saturn",
+                    "Uranus",
+                    "Neptune"
+                ]
+            }
         ],
         "see_also": [
             "Gt",
@@ -1493,7 +1608,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "NULL on either side gives NULL, so ordering comparisons never match an absent value."
     },
     "ILike": {
         "ast_symbol": "ILike",
@@ -1530,7 +1646,18 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name ILIKE 'ma%';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name ILIKE 'ma%';",
+                "result": [
+                    "Mars"
+                ]
+            },
+            {
+                "sql": "SELECT 'ABC' ILIKE 'abc', '\u00c9COLE' ILIKE '\u00e9cole';",
+                "result": [
+                    "true | false"
+                ]
+            }
         ],
         "see_also": [
             "Like",
@@ -1615,7 +1742,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Case folding is ASCII-only: `'ABC' ILIKE 'abc'` is true, but `'\u00c9COLE' ILIKE '\u00e9cole'` is FALSE - accented and other non-ASCII letters are compared as written. Where that matters, fold explicitly with a function instead."
     },
     "IPContainedBy": {
         "ast_symbol": "IPContainedBy",
@@ -1640,7 +1768,7 @@
             },
             {
                 "name": "network",
-                "documentation": "The network to test against, in CIDR notation.",
+                "documentation": "The network to test against, in CIDR notation. The prefix length is required: an address without one is rejected.",
                 "constant_only": false,
                 "types": [
                     "varchar"
@@ -1648,7 +1776,12 @@
             }
         ],
         "examples": [
-            "SELECT CAST('10.0.0.1' AS IPV4) <<= '10.0.0.0/8';"
+            {
+                "sql": "SELECT CAST('10.0.0.1' AS IPV4) <<= '10.0.0.0/8';",
+                "result": [
+                    "true"
+                ]
+            }
         ],
         "see_also": [
             "IPContains"
@@ -1690,7 +1823,7 @@
         "operands": [
             {
                 "name": "network",
-                "documentation": "The network to test against, in CIDR notation.",
+                "documentation": "The network to test against, in CIDR notation, with its prefix length.",
                 "constant_only": false,
                 "types": [
                     "varchar"
@@ -1706,7 +1839,12 @@
             }
         ],
         "examples": [
-            "SELECT '10.0.0.0/8' >>= CAST('10.0.0.1' AS IPV4);"
+            {
+                "sql": "SELECT '10.0.0.0/8' >>= CAST('10.0.0.1' AS IPV4);",
+                "result": [
+                    "true"
+                ]
+            }
         ],
         "see_also": [
             "IPContainedBy"
@@ -1765,7 +1903,7 @@
             },
             {
                 "name": "list",
-                "documentation": "The values to look in - a parenthesised list, or an array-valued expression.",
+                "documentation": "The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list, NULL included, is rejected at plan time rather than being silently skipped.",
                 "constant_only": false,
                 "types": [
                     "array"
@@ -1773,7 +1911,19 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name IN ('Earth', 'Mars');"
+            {
+                "sql": "SELECT name FROM $planets WHERE name IN ('Earth', 'Mars');",
+                "result": [
+                    "Earth",
+                    "Mars"
+                ]
+            },
+            {
+                "sql": "SELECT 2 IN (1, 2, 3), 9 IN (1, 2, 3);",
+                "result": [
+                    "true | false"
+                ]
+            }
         ],
         "see_also": [
             "NotInList",
@@ -1862,7 +2012,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "IN is a shorthand for a chain of `=`, and inherits its rules: the comparison is exact and case-sensitive. A list mixing types - `IN (NULL, 2)` among them - is an error, not a match against the elements that do share a type."
     },
     "Like": {
         "ast_symbol": "Like",
@@ -1879,7 +2030,7 @@
         "operands": [
             {
                 "name": "haystack",
-                "documentation": "The value tested against the pattern.",
+                "documentation": "The value tested against the pattern. VARBINARY is accepted as well as text, and is matched as bytes.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -1889,7 +2040,7 @@
             },
             {
                 "name": "pattern",
-                "documentation": "A SQL LIKE pattern: `%` matches any run of characters, `_` matches exactly one, and every other character matches itself. A column is accepted here, not only a literal - a literal pattern is what lets the planner fuse the match into the scan.",
+                "documentation": "A SQL LIKE pattern: `%` matches any run of characters including none, `_` matches exactly one, and every other character matches itself. The whole value must match, not part of it - `'abcd' LIKE 'a_c'` is false. A column is accepted here, not only a literal; a literal is what lets the planner fuse the match into the scan.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -1899,8 +2050,18 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name LIKE 'Ma%';",
-            "SELECT name FROM $planets WHERE name LIKE '%art%';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name LIKE 'Ma%';",
+                "result": [
+                    "Mars"
+                ]
+            },
+            {
+                "sql": "SELECT 'abc' LIKE 'a_c', 'abcd' LIKE 'a_c';",
+                "result": [
+                    "true | false"
+                ]
+            }
         ],
         "see_also": [
             "NotLike",
@@ -1986,7 +2147,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Matching is case-sensitive; ILIKE is the case-insensitive form. A NULL on either side is not matched."
     },
     "LongArrow": {
         "ast_symbol": "LongArrow",
@@ -2014,7 +2176,7 @@
             },
             {
                 "name": "path",
-                "documentation": "The key or path to select, in the same spellings `->` accepts.",
+                "documentation": "The key or path to select, in the same spellings `->` accepts. A path that is not present gives NULL.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -2024,7 +2186,12 @@
             }
         ],
         "examples": [
-            "SELECT '{\"name\": \"Earth\", \"moons\": 1}' ->> 'name';"
+            {
+                "sql": "SELECT '{\"name\": \"Earth\", \"moons\": 1}' ->> 'name';",
+                "result": [
+                    "Earth"
+                ]
+            }
         ],
         "see_also": [
             "Arrow",
@@ -2124,7 +2291,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Use `->>` when the value is going to be compared with a string literal: `->` would leave it JSON-quoted and the comparison would not match."
     },
     "Lt": {
         "ast_symbol": "Lt",
@@ -2141,7 +2309,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "The value to compare.",
+                "documentation": "The value to compare. Strings order byte-by-byte, so uppercase sorts before lowercase.",
                 "constant_only": false,
                 "types": [
                     "date",
@@ -2173,7 +2341,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE gravity < 5;"
+            {
+                "sql": "SELECT name FROM $planets WHERE gravity < 5;",
+                "result": [
+                    "Mercury",
+                    "Mars",
+                    "Pluto"
+                ]
+            }
         ],
         "see_also": [
             "LtEq",
@@ -2369,7 +2544,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "NULL on either side gives NULL, so ordering comparisons never match an absent value."
     },
     "LtEq": {
         "ast_symbol": "LtEq",
@@ -2418,7 +2594,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE gravity <= 5;"
+            {
+                "sql": "SELECT name FROM $planets WHERE gravity <= 5;",
+                "result": [
+                    "Mercury",
+                    "Mars",
+                    "Pluto"
+                ]
+            }
         ],
         "see_also": [
             "Lt",
@@ -2614,7 +2797,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "NULL on either side gives NULL, so ordering comparisons never match an absent value."
     },
     "MapAccess": {
         "ast_symbol": "MapAccess",
@@ -2643,7 +2827,7 @@
             },
             {
                 "name": "index",
-                "documentation": "The zero-based position to read.",
+                "documentation": "The zero-based position to read. An index past the end gives NULL rather than raising.",
                 "constant_only": false,
                 "types": [
                     "integer"
@@ -2651,8 +2835,18 @@
             }
         ],
         "examples": [
-            "SELECT ARRAY['a','b','c'][0];",
-            "SELECT name[0] FROM $planets;"
+            {
+                "sql": "SELECT ARRAY['a','b','c'][0];",
+                "result": [
+                    "a"
+                ]
+            },
+            {
+                "sql": "SELECT ARRAY['a','b'][9];",
+                "result": [
+                    "NULL"
+                ]
+            }
         ],
         "see_also": [
             "Arrow"
@@ -2742,7 +2936,7 @@
             },
             {
                 "name": "right",
-                "documentation": "The value to subtract.",
+                "documentation": "The value to subtract. Subtracting one TIMESTAMP from another gives an INTERVAL; subtracting an INTERVAL from a timestamp gives a timestamp.",
                 "constant_only": false,
                 "types": [
                     "date",
@@ -2755,7 +2949,20 @@
             }
         ],
         "examples": [
-            "SELECT name, aphelion - perihelion FROM $planets;"
+            {
+                "sql": "SELECT name, aphelion - perihelion FROM $planets LIMIT 3;",
+                "result": [
+                    "Mercury | 23.800003051757812",
+                    "Venus | 1.4000015258789062",
+                    "Earth | 5.0"
+                ]
+            },
+            {
+                "sql": "SELECT CAST('2026-03-01' AS TIMESTAMP) - INTERVAL '1' MONTH;",
+                "result": [
+                    "2026-02-01 00:00:00+00:00"
+                ]
+            }
         ],
         "see_also": [
             "Plus",
@@ -2914,7 +3121,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Unlike addition, subtraction is not symmetric across types: a timestamp minus an interval is a timestamp, but an interval minus a timestamp is not accepted."
     },
     "Modulo": {
         "ast_symbol": "Modulo",
@@ -2931,7 +3139,7 @@
         "operands": [
             {
                 "name": "dividend",
-                "documentation": "The value to divide.",
+                "documentation": "The value to divide. Its sign is the sign of the result.",
                 "constant_only": false,
                 "types": [
                     "float",
@@ -2948,7 +3156,12 @@
             }
         ],
         "examples": [
-            "SELECT 7 % 2;"
+            {
+                "sql": "SELECT 7 % 2, -7 % 2, 7 % -2;",
+                "result": [
+                    "1 | -1 | 1"
+                ]
+            }
         ],
         "see_also": [
             "Divide",
@@ -2982,7 +3195,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "The remainder takes the sign of the DIVIDEND, not the divisor: `-7 % 2` is -1 and `7 % -2` is 1. That is C and Go's rule, not Python's, where `-7 % 2` is 1."
     },
     "Multiply": {
         "ast_symbol": "Multiply",
@@ -3009,7 +3223,7 @@
             },
             {
                 "name": "right",
-                "documentation": "A numeric value.",
+                "documentation": "A numeric value. The result takes the wider of the two types - see Signatures.",
                 "constant_only": false,
                 "types": [
                     "decimal",
@@ -3019,7 +3233,14 @@
             }
         ],
         "examples": [
-            "SELECT name, diameter * 2 FROM $planets;"
+            {
+                "sql": "SELECT name, diameter * 2 FROM $planets LIMIT 3;",
+                "result": [
+                    "Mercury | 9758",
+                    "Venus | 24208",
+                    "Earth | 25512"
+                ]
+            }
         ],
         "see_also": [
             "Divide",
@@ -3140,7 +3361,12 @@
             }
         ],
         "examples": [
-            "SELECT 7 DIV 2;"
+            {
+                "sql": "SELECT 7 DIV 2, -7 DIV 2;",
+                "result": [
+                    "3 | -3"
+                ]
+            }
         ],
         "see_also": [
             "Divide",
@@ -3165,7 +3391,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Truncation is toward zero, not toward minus infinity: `-7 DIV 2` is -3, where a floor division would give -4."
     },
     "NotEq": {
         "ast_symbol": "NotEq",
@@ -3200,7 +3427,7 @@
             },
             {
                 "name": "right",
-                "documentation": "The value to compare it against.",
+                "documentation": "The value to compare it against. It must be type-compatible with the left.",
                 "constant_only": false,
                 "types": [
                     "boolean",
@@ -3217,7 +3444,20 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name != 'Earth';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name != 'Earth' LIMIT 3;",
+                "result": [
+                    "Mercury",
+                    "Venus",
+                    "Mars"
+                ]
+            },
+            {
+                "sql": "SELECT COUNT(*) FROM $planets WHERE surface_pressure != 0;",
+                "result": [
+                    "4"
+                ]
+            }
         ],
         "see_also": [
             "Eq",
@@ -3421,7 +3661,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "`!=` does not mean \"everything else\": a row whose value is NULL answers NULL, not true, so it is dropped by the WHERE clause. Of the nine planets one has a surface pressure of 0 and four have none recorded, so `surface_pressure != 0` returns four rows, not eight - `OR surface_pressure IS NULL` is how the unknown rows are kept."
     },
     "NotILike": {
         "ast_symbol": "NotILike",
@@ -3448,7 +3689,7 @@
             },
             {
                 "name": "pattern",
-                "documentation": "A SQL LIKE pattern, matched without regard to case: `%` matches any run of characters, `_` matches exactly one.",
+                "documentation": "A SQL LIKE pattern, matched without regard to ASCII case.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -3458,7 +3699,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name NOT ILIKE 'ma%';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name NOT ILIKE 'ma%' LIMIT 3;",
+                "result": [
+                    "Mercury",
+                    "Venus",
+                    "Earth"
+                ]
+            }
         ],
         "see_also": [
             "ILike",
@@ -3543,7 +3791,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Case folding is ASCII-only, exactly as for ILIKE."
     },
     "NotInList": {
         "ast_symbol": "NotInList",
@@ -3577,7 +3826,7 @@
             },
             {
                 "name": "list",
-                "documentation": "The values to look in - a parenthesised list, or an array-valued expression.",
+                "documentation": "The values to look in. Every element must share one type; a mixed list is rejected at plan time.",
                 "constant_only": false,
                 "types": [
                     "array"
@@ -3585,7 +3834,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name NOT IN ('Earth', 'Mars');"
+            {
+                "sql": "SELECT name FROM $planets WHERE name NOT IN ('Earth', 'Mars') LIMIT 3;",
+                "result": [
+                    "Mercury",
+                    "Venus",
+                    "Jupiter"
+                ]
+            }
         ],
         "see_also": [
             "InList",
@@ -3674,7 +3930,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Like `!=`, a row whose value is NULL answers NULL rather than true, so it does not survive a WHERE clause."
     },
     "NotLike": {
         "ast_symbol": "NotLike",
@@ -3701,7 +3958,7 @@
             },
             {
                 "name": "pattern",
-                "documentation": "A SQL LIKE pattern: `%` matches any run of characters, `_` matches exactly one, and every other character matches itself.",
+                "documentation": "A SQL LIKE pattern: `%` matches any run of characters, `_` matches exactly one. The whole value must match for the row to be excluded.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -3711,7 +3968,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name NOT LIKE 'Ma%';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name NOT LIKE 'Ma%' LIMIT 3;",
+                "result": [
+                    "Mercury",
+                    "Venus",
+                    "Earth"
+                ]
+            }
         ],
         "see_also": [
             "Like",
@@ -3796,7 +4060,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Case-sensitive, like `LIKE` itself. NOT ILIKE is the case-insensitive form."
     },
     "NotRLike": {
         "ast_symbol": "NotRLike",
@@ -3823,7 +4088,7 @@
             },
             {
                 "name": "regex",
-                "documentation": "The regular expression to match.",
+                "documentation": "The regular expression that must not match. It matches anywhere in the value unless anchored.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -3833,7 +4098,14 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name NOT RLIKE '^M';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name NOT RLIKE '^M' LIMIT 3;",
+                "result": [
+                    "Venus",
+                    "Earth",
+                    "Jupiter"
+                ]
+            }
         ],
         "see_also": [
             "RLike",
@@ -3935,7 +4207,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "A boolean expression.",
+                "documentation": "A boolean expression. A comparison that produced NULL counts as unknown here, not as false.",
                 "constant_only": false,
                 "types": [
                     "boolean"
@@ -3943,7 +4215,7 @@
             },
             {
                 "name": "right",
-                "documentation": "A boolean expression.",
+                "documentation": "A boolean expression, evaluated under the same rules.",
                 "constant_only": false,
                 "types": [
                     "boolean"
@@ -3951,7 +4223,19 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name = 'Earth' OR name = 'Mars';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name = 'Earth' OR name = 'Mars';",
+                "result": [
+                    "Earth",
+                    "Mars"
+                ]
+            },
+            {
+                "sql": "SELECT TRUE OR NULL, FALSE OR NULL;",
+                "result": [
+                    "true | NULL"
+                ]
+            }
         ],
         "see_also": [
             "And",
@@ -3976,7 +4260,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "OR is three-valued, and the mirror of AND: TRUE wins over an unknown - `TRUE OR NULL` is TRUE - while `FALSE OR NULL` is NULL, not FALSE."
     },
     "Plus": {
         "ast_symbol": "Plus",
@@ -3993,7 +4278,7 @@
         "operands": [
             {
                 "name": "left",
-                "documentation": "The value to add to.",
+                "documentation": "The value to add to. A DATE or TIMESTAMP is accepted only with an INTERVAL on the other side - two dates cannot be added.",
                 "constant_only": false,
                 "types": [
                     "date",
@@ -4006,7 +4291,7 @@
             },
             {
                 "name": "right",
-                "documentation": "The value to add.",
+                "documentation": "The value to add. Mixing numeric types widens the result: INTEGER with FLOAT gives FLOAT, INTEGER with DECIMAL gives DECIMAL.",
                 "constant_only": false,
                 "types": [
                     "date",
@@ -4019,8 +4304,20 @@
             }
         ],
         "examples": [
-            "SELECT name, number_of_moons + 1 FROM $planets;",
-            "SELECT CAST('2026-01-01' AS DATE) + INTERVAL '1' MONTH;"
+            {
+                "sql": "SELECT name, number_of_moons + 1 FROM $planets LIMIT 3;",
+                "result": [
+                    "Mercury | 1",
+                    "Venus | 1",
+                    "Earth | 2"
+                ]
+            },
+            {
+                "sql": "SELECT CAST('2026-01-01' AS DATE) + INTERVAL '1' MONTH;",
+                "result": [
+                    "2026-02-01 00:00:00+00:00"
+                ]
+            }
         ],
         "see_also": [
             "Minus",
@@ -4151,7 +4448,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Adding NULL gives NULL. Date arithmetic is only ever date-plus-interval, and the result is a TIMESTAMP even when the operand was a DATE - see Signatures."
     },
     "RLike": {
         "ast_symbol": "RLike",
@@ -4178,7 +4476,7 @@
             },
             {
                 "name": "regex",
-                "documentation": "The regular expression to match.",
+                "documentation": "The regular expression to match. Unlike LIKE, it matches anywhere in the value unless anchored with `^` and `$`.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -4188,7 +4486,12 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE name RLIKE '^M.*s$';"
+            {
+                "sql": "SELECT name FROM $planets WHERE name RLIKE '^M.*s$';",
+                "result": [
+                    "Mars"
+                ]
+            }
         ],
         "see_also": [
             "NotRLike",
@@ -4273,7 +4576,8 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "A regular expression is more expressive than a LIKE pattern and more expensive to run; prefer LIKE when a prefix or suffix match is all that is needed."
     },
     "ShiftLeft": {
         "ast_symbol": "ShiftLeft",
@@ -4306,7 +4610,12 @@
             }
         ],
         "examples": [
-            "SELECT 1 << 4;"
+            {
+                "sql": "SELECT 1 << 4;",
+                "result": [
+                    "16"
+                ]
+            }
         ],
         "see_also": [
             "ShiftRight",
@@ -4349,7 +4658,7 @@
         "operands": [
             {
                 "name": "value",
-                "documentation": "The integer whose bits are shifted.",
+                "documentation": "The integer whose bits are shifted. The shift is arithmetic, so the sign is preserved.",
                 "constant_only": false,
                 "types": [
                     "integer"
@@ -4365,7 +4674,12 @@
             }
         ],
         "examples": [
-            "SELECT 256 >> 4;"
+            {
+                "sql": "SELECT 256 >> 4, -1 >> 1;",
+                "result": [
+                    "16 | -1"
+                ]
+            }
         ],
         "see_also": [
             "ShiftLeft",
@@ -4391,7 +4705,7 @@
                 "cost_estimate": 100.0
             }
         ],
-        "notes": "The shift count must be 0..63 - the operands are 64-bit integers, and a count outside that range fails loud ('bitwise_shr: shift count out of range') rather than wrapping or saturating."
+        "notes": "Right shift is ARITHMETIC, not logical: the sign bit is copied, so `-1 >> 1` is -1 and a negative value never becomes positive by shifting. The shift count must be 0..63 - the operands are 64-bit integers, and a count outside that range fails loud ('bitwise_shr: shift count out of range') rather than wrapping or saturating."
     },
     "StringConcat": {
         "ast_symbol": "StringConcat",
@@ -4418,7 +4732,7 @@
             },
             {
                 "name": "right",
-                "documentation": "The value to append. It must be the same type as the left operand.",
+                "documentation": "The value to append. It must be the SAME string type as the left - VARCHAR with VARCHAR, VARBINARY with VARBINARY - and a number must be cast first.",
                 "constant_only": false,
                 "types": [
                     "nvarchar",
@@ -4428,7 +4742,20 @@
             }
         ],
         "examples": [
-            "SELECT name || ' (planet)' FROM $planets;"
+            {
+                "sql": "SELECT name || ' (planet)' FROM $planets LIMIT 3;",
+                "result": [
+                    "Mercury (planet)",
+                    "Venus (planet)",
+                    "Earth (planet)"
+                ]
+            },
+            {
+                "sql": "SELECT 'a' || NULL;",
+                "result": [
+                    "NULL"
+                ]
+            }
         ],
         "see_also": [
             "Plus"
@@ -4473,7 +4800,7 @@
                 "cost_estimate": 100.0
             }
         ],
-        "notes": "The operands must be the same string type - VARCHAR with VARCHAR, VARBINARY with VARBINARY. Mixing them is rejected rather than silently coerced. `x || NULL` is NULL for every row, but the expression still carries the string operand's type."
+        "notes": "The operands must be the same string type; mixing VARCHAR and VARBINARY is rejected rather than silently coerced. `x || NULL` is NULL for every row - it is not treated as an empty string - but the expression still carries the string operand's type."
     },
     "Xor": {
         "ast_symbol": "Xor",
@@ -4506,7 +4833,19 @@
             }
         ],
         "examples": [
-            "SELECT name FROM $planets WHERE (gravity > 5) XOR (number_of_moons > 10);"
+            {
+                "sql": "SELECT name FROM $planets WHERE (gravity > 5) XOR (number_of_moons > 10);",
+                "result": [
+                    "Venus",
+                    "Earth"
+                ]
+            },
+            {
+                "sql": "SELECT TRUE XOR NULL;",
+                "result": [
+                    "NULL"
+                ]
+            }
         ],
         "see_also": [
             "And",
@@ -4531,6 +4870,7 @@
                 "result_type_is_dynamic": false,
                 "cost_estimate": 100.0
             }
-        ]
+        ],
+        "notes": "Unlike AND and OR, XOR has no dominant value: the answer always depends on both sides, so NULL on either side gives NULL."
     }
 }
