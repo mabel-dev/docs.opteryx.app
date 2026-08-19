@@ -131,29 +131,10 @@ contract.commit(message="retry", idempotency_key="nightly-2026-08-19")
 
 Commit is idempotent on `idempotency_key`: a retry after a lost response returns the original snapshot instead of writing a second one. `contract.abandon()` gives up — nothing written was ever readable, so there is nothing to undo.
 
-## Sessions
+## Formats
 
-`UploadClient` is the earlier interface and still works: open a session, stage parts, inspect them, then commit. It infers types from the data and reports what it found at inspect, which is after the upload rather than before it.
+Files are typed from their extension: `.parquet`/`.pq`, `.csv`, `.ndjson`/`.jsonl`. Anything else is refused by name rather than guessed at. Parquet is sampled from its footer and text from its front, so negotiating costs the same few megabytes either way.
 
-~~~python
-from opteryx_upload import ConflictResolution, Target, UploadClient
-
-client = UploadClient(token="<jwt>")
-
-session = client.create_session()
-session.upload_file("findings.parquet")
-
-result = session.inspect()
-if result.has_issues:
-    raise SystemExit(result.issues)
-
-commit = session.commit(
-    Target("acme", "security", "findings"),
-    snapshot_message="Initial load",
-    conflict_resolution=ConflictResolution.APPEND,
-)
-~~~
-
-Files are typed from their extension (`.parquet`/`.pq`, `.csv`, `.ndjson`/`.jsonl`). CSV and NDJSON files larger than the part-size limit are split automatically and compressed before upload — the limit applies to the compressed bytes, so a part carries far more rows than its raw size suggests. Parquet is binary and cannot be split by byte offset; write multiple smaller files upstream if a single export is too large.
+`UploadClient` and the `/v1/upload` session endpoints still work for existing callers, but they are no longer documented and no longer where new work should start: they infer types from the data and report what they found after the upload rather than before it.
 
 For the full source, see [github.com/mabel-dev/opteryx-upload](https://github.com/mabel-dev/opteryx-upload).

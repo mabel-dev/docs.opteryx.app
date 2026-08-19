@@ -6,90 +6,142 @@
   },
   "x-flow": {
     "title": "Upload flow",
-    "intro": "Ingesting a dataset is a short conversation, not a single call: open a session, upload one or more parts into it, optionally inspect what's there and drop parts that don't belong, then commit.",
+    "intro": "An upload is an agreement, not a transfer. You send a sample of each file and the service answers with what the data will become; you read that, accept it, and only then does any data move. Everything that can refuse an upload — a type that will not cast, two files that disagree, a column the dataset does not declare, a permission you do not have — is decided while the cost is a few megabytes rather than the whole export.",
     "actors": [
       "Client",
       "Upload API"
     ],
     "steps": [
       {
-        "request": "POST /v1/upload/session"
+        "request": "POST /v2/contracts",
+        "sends": "`target`, `schema.mode`, and one sample part per file"
       },
       {
         "response": "201",
-        "returns": "`session_id`, `url`, `expires_at`"
+        "returns": "`contract_id`, `state`, resolved `mode`, `plan[]`, `issues[]`, `values`"
+      },
+      {
+        "group": "While the schema is only proposed",
+        "steps": [
+          {
+            "request": "PATCH /v2/contracts/{contract_id}",
+            "sends": "`columns` to retype, `ignore` to decline"
+          },
+          {
+            "response": "200",
+            "returns": "the whole contract, re-planned"
+          },
+          {
+            "request": "PUT /v2/contracts/{contract_id}/accept",
+            "sends": "`schema_fingerprint` — the proposal you were shown"
+          },
+          {
+            "response": "200",
+            "returns": "`state: accepted`"
+          }
+        ],
+        "note": "Only inference proposes. A declared schema, or an existing dataset's, arrives accepted"
       },
       {
         "group": "Loop — for each file",
         "steps": [
           {
-            "request": "PUT /v1/upload/{session_id}?part=N"
+            "request": "POST /v2/contracts/{contract_id}/data"
           },
           {
-            "response": "201",
-            "returns": "part accepted"
+            "response": "200",
+            "returns": "`written[]` — what the file turned out to be"
+          },
+          {
+            "response": "409",
+            "returns": "a value that cannot be stored as the column it was promised to, with its row"
           }
         ]
       },
       {
-        "request": "GET /v1/upload/{session_id}/inspect"
+        "request": "POST /v2/contracts/{contract_id}/commit"
       },
       {
         "response": "200",
-        "returns": "schema, row estimate, `issues[]`"
-      },
-      {
-        "group": "If inspect reports issues",
-        "steps": [
-          {
-            "request": "DELETE /v1/upload/{session_id}/part/{part}"
-          },
-          {
-            "response": "200",
-            "returns": "part removed"
-          }
-        ],
-        "note": "Upload a replacement part, then inspect again"
-      },
-      {
-        "request": "POST /v1/upload/{session_id}/commit"
-      },
-      {
-        "response": "200",
-        "returns": "`commit_id`, `rows_written`"
+        "returns": "`snapshot`, `rows_written`"
       }
     ],
     "notes": [
-      "**Inspecting is optional but advisory** — it doesn't gate the commit. `GET .../inspect` returns `issues[]` referencing part numbers so you know what to replace with `DELETE .../part/{part}` before re-uploading.",
-      "**Commit is a single decision point.** `POST .../commit` takes a `target` (workspace/collection/dataset) and a `conflict_resolution` (`fail` | `overwrite` | `append`, default `fail`) — there's no separate \"submit after validation passes\" step; committing with unresolved issues just writes what's there.",
-      "**Sessions expire.** `expires_at` from the session-open response is how long you have to finish uploading and commit before the session is discarded."
+      "**Negotiating uploads nothing.** `POST /v2/contracts` carries a sample per file and no data — a prefix for text, the footer for parquet, which is where its schema lives. So agreeing costs a few megabytes whatever the files weigh, and a caller who is going to be refused finds out now rather than after four gigabytes. Every file is sampled, not just the first: one contract covers all of them, so two files that disagree are caught here.",
+      "**There is no default schema source.** `schema.mode` is `declared` (you name every column), `infer` (read them from the data and show me first), `dataset` (use the types the dataset already declares) or `auto`. `auto` is not a fourth source — it resolves to one of the three from the destination before a contract exists, and the response says which. A dataset that declares its columns has nothing to infer; one that does not exist has nothing to read.",
+      "**An inferred schema is proposed, not agreed.** It comes back `state: proposed` and refuses writes until `PUT .../accept`, so nothing is catalogued that nobody looked at. Accepting echoes the `schema_fingerprint` you were shown, so a proposal that moved between being read and being accepted is refused rather than confirmed blind. A `declared` or `dataset` schema arrives `accepted` — you already said what you meant, in the request.",
+      "**`plan[]` says what happens to every column** before it happens: `keep`, `retag` (relabelled, no value changes), `widen` (nothing is lost), `cast` (values are rewritten), `ignored`, `undeclared` or `unsupported`. `values` carries one real sampled value per column, which is what makes a mistyped column obvious at a glance. `issues[]` carries the service's own severity — `blocking` stops the upload, `warning` does not.",
+      "**A value that will not cast is a 409 on the write that carried it**, naming the column, the row and the value — not a failure at commit after everything has been sent. The file is not staged, and nothing else is affected.",
+      "**Nothing is visible until commit.** Files are written under a prefix the catalog has never named, so an upload that is abandoned, expires or fails is unreachable rather than mess somebody has to clean up. `DELETE /v2/contracts/{contract_id}` gives up; `expires_at` says how long you have.",
+      "**Commit is idempotent** on an `Idempotency-Key` header: a retry after a lost response returns the original snapshot instead of writing a second one.",
+      "**A contract is checked against the catalog before every write.** If the target's definition moved after the contract was agreed, the contract goes `stale` and is refused — rows already written were cast to a definition that no longer exists. Nothing was published, so the cost is work rather than a dataset somebody has read. Re-negotiating against the new definition is the fix."
     ]
   },
   "paths": {
-    "/v1/upload/{session_id}/part/{part}": {
-      "delete": {
+    "/v2/contracts": {
+      "post": {
         "tags": [
-          "upload"
+          "contracts"
         ],
-        "summary": "Delete Part",
-        "operationId": "delete_part_v1_upload__session_id__part__part__delete",
+        "summary": "Negotiate a Contract",
+        "description": "Negotiate. Carries schema and samples; no upload happens here.\n\n`multipart/form-data` with a `contract` part and one `sample` part per file,\nbecause a contract covers every file and two files that disagree have to be\ncaught before anything is sent.",
+        "operationId": "create_contract_v2_contracts_post",
         "parameters": [
           {
-            "name": "session_id",
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contracts/{contract_id}": {
+      "patch": {
+        "tags": [
+          "contracts"
+        ],
+        "summary": "Amend a Proposal",
+        "description": "Retype or decline columns. Returns the whole re-planned contract.",
+        "operationId": "amend_contract_v2_contracts__contract_id__patch",
+        "parameters": [
+          {
+            "name": "contract_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Session Id"
-            }
-          },
-          {
-            "name": "part",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Part"
+              "title": "Contract Id"
             }
           },
           {
@@ -129,153 +181,22 @@
             }
           }
         }
-      }
-    },
-    "/v1/upload/session": {
-      "post": {
-        "tags": [
-          "upload"
-        ],
-        "summary": "Start Upload Session",
-        "operationId": "start_upload_session_v1_upload_session_post",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StartSessionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/upload/{session_id}": {
-      "put": {
-        "tags": [
-          "upload"
-        ],
-        "summary": "Upload Part",
-        "operationId": "upload_part_v1_upload__session_id__put",
-        "parameters": [
-          {
-            "name": "session_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Session Id"
-            }
-          },
-          {
-            "name": "part",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Part"
-            }
-          },
-          {
-            "name": "content_type",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Content Type"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/upload/{session_id}/inspect": {
+      },
       "get": {
         "tags": [
-          "upload"
+          "contracts"
         ],
-        "summary": "Inspect Session",
-        "operationId": "inspect_session_v1_upload__session_id__inspect_get",
+        "summary": "Read a Contract",
+        "description": "The whole contract: plan, issues, every write, running totals.\n\nOne document read. Nothing is listed, downloaded or re-parsed to answer it,\nwhich is what `/inspect` does today for every call.",
+        "operationId": "read_contract_v2_contracts__contract_id__get",
         "parameters": [
           {
-            "name": "session_id",
+            "name": "contract_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Session Id"
+              "title": "Contract Id"
             }
           },
           {
@@ -300,9 +221,114 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InspectResponse"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "contracts"
+        ],
+        "summary": "Abandon a Contract",
+        "description": "Give up. Nothing written was ever reachable, so nothing has to be undone.",
+        "operationId": "abandon_contract_v2_contracts__contract_id__delete",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Contract Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contracts/{contract_id}/accept": {
+      "put": {
+        "tags": [
+          "contracts"
+        ],
+        "summary": "Accept a Proposal",
+        "description": "Confirm a proposed schema, echoing the fingerprint you were shown.",
+        "operationId": "accept_contract_v2_contracts__contract_id__accept_put",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Contract Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           },
@@ -319,21 +345,54 @@
         }
       }
     },
-    "/v1/upload/{session_id}/commit": {
+    "/v2/contracts/{contract_id}/data": {
       "post": {
         "tags": [
-          "upload"
+          "contracts"
         ],
-        "summary": "Commit Session",
-        "operationId": "commit_session_v1_upload__session_id__commit_post",
+        "summary": "Write a File",
+        "description": "Stream one file in. Answered with what it turned out to be, or refused.",
+        "operationId": "write_data_v2_contracts__contract_id__data_post",
         "parameters": [
           {
-            "name": "session_id",
+            "name": "contract_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Session Id"
+              "title": "Contract Id"
+            }
+          },
+          {
+            "name": "x-file-name",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-File-Name"
+            }
+          },
+          {
+            "name": "content-type",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Content-Type"
             }
           },
           {
@@ -353,24 +412,84 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommitRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommitResponse"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contracts/{contract_id}/commit": {
+      "post": {
+        "tags": [
+          "contracts"
+        ],
+        "summary": "Commit a Contract",
+        "operationId": "commit_contract_v2_contracts__contract_id__commit_post",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Contract Id"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           },
@@ -390,77 +509,6 @@
   },
   "components": {
     "schemas": {
-      "CommitRequest": {
-        "properties": {
-          "target": {
-            "$ref": "#/components/schemas/Target"
-          },
-          "snapshot_message": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Snapshot Message"
-          },
-          "conflict_resolution": {
-            "$ref": "#/components/schemas/ConflictResolution",
-            "default": "fail"
-          }
-        },
-        "type": "object",
-        "required": [
-          "target"
-        ],
-        "title": "CommitRequest"
-      },
-      "CommitResponse": {
-        "properties": {
-          "table": {
-            "type": "string",
-            "title": "Table"
-          },
-          "commit_id": {
-            "type": "string",
-            "title": "Commit Id"
-          },
-          "rows_written": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rows Written"
-          },
-          "files_created": {
-            "type": "integer",
-            "title": "Files Created"
-          }
-        },
-        "type": "object",
-        "required": [
-          "table",
-          "commit_id",
-          "rows_written",
-          "files_created"
-        ],
-        "title": "CommitResponse"
-      },
-      "ConflictResolution": {
-        "type": "string",
-        "enum": [
-          "fail",
-          "overwrite",
-          "append"
-        ],
-        "title": "ConflictResolution"
-      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -473,193 +521,6 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
-      },
-      "InspectResponse": {
-        "properties": {
-          "rows_estimate": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rows Estimate"
-          },
-          "schema": {
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Schema"
-          },
-          "parts": {
-            "items": {
-              "$ref": "#/components/schemas/Part"
-            },
-            "type": "array",
-            "title": "Parts",
-            "default": []
-          },
-          "issues": {
-            "items": {
-              "$ref": "#/components/schemas/Issue"
-            },
-            "type": "array",
-            "title": "Issues",
-            "default": []
-          }
-        },
-        "type": "object",
-        "required": [
-          "rows_estimate",
-          "schema"
-        ],
-        "title": "InspectResponse"
-      },
-      "Issue": {
-        "properties": {
-          "issue": {
-            "type": "string",
-            "title": "Issue"
-          },
-          "part": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Part"
-          }
-        },
-        "type": "object",
-        "required": [
-          "issue"
-        ],
-        "title": "Issue"
-      },
-      "Part": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id"
-          },
-          "rows": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rows"
-          },
-          "bytes": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Bytes"
-          },
-          "kind": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Kind"
-          },
-          "blob": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Blob"
-          },
-          "uploaded_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Uploaded At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "Part"
-      },
-      "StartSessionResponse": {
-        "properties": {
-          "session_id": {
-            "type": "string",
-            "title": "Session Id"
-          },
-          "url": {
-            "type": "string",
-            "title": "Url"
-          },
-          "expires_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Expires At"
-          },
-          "parts": {
-            "type": "boolean",
-            "title": "Parts",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "session_id",
-          "url",
-          "expires_at"
-        ],
-        "title": "StartSessionResponse"
-      },
-      "Target": {
-        "properties": {
-          "workspace": {
-            "type": "string",
-            "title": "Workspace"
-          },
-          "collection": {
-            "type": "string",
-            "title": "Collection"
-          },
-          "dataset": {
-            "type": "string",
-            "title": "Dataset"
-          }
-        },
-        "type": "object",
-        "required": [
-          "workspace",
-          "collection",
-          "dataset"
-        ],
-        "title": "Target"
       },
       "ValidationError": {
         "properties": {

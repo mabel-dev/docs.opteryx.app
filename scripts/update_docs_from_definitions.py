@@ -64,7 +64,7 @@ API_DOC_SPECS = {
         'title': 'Upload API',
         'status': 'Published',
         'base_url': 'https://upload.opteryx.app',
-        'summary': 'Multipart upload sessions, part upload and deletion, session inspection, and commit flows for ingesting files into Opteryx.',
+        'summary': 'Agree the column types before any data is sent, then upload files against that agreement and commit them as one snapshot.',
         'try_it_live': True,
     },
 }
