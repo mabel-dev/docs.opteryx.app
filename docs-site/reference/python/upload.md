@@ -1,6 +1,6 @@
 # Upload
 
-A Python client SDK for the [Upload API](/docs/reference/api/upload-api), the hosted service for ingesting Parquet, CSV, and NDJSON files into Opteryx tables.
+The Python client for the [Upload API](/docs/reference/api/upload-api), the hosted service for ingesting Parquet, CSV and NDJSON files into Opteryx tables. It ships a library, a command line and a full-screen terminal app; for the last two see [The Upload Command Line](/docs/guides/upload-cli).
 
 ## Install
 
@@ -10,51 +10,150 @@ pip install opteryx-upload
 
 ## Authentication
 
-Pass a JWT directly, or exchange a Personal Access Token (client ID + client secret, from the [Authentication API](/docs/reference/api/authentication-api)) using `PATAuthenticator`, which caches the resulting access token and refreshes it automatically before it expires:
+Pass an access token — a client ID and client secret from the [Authentication API](/docs/reference/api/authentication-api) — through `PATAuthenticator`. It exchanges them for a short-lived assertion, caches it, and re-authenticates before it expires:
 
 ~~~python
-from opteryx_upload import UploadClient, PATAuthenticator
+from opteryx_upload import ContractClient, PATAuthenticator
 
-client = UploadClient(
+client = ContractClient(
     token=PATAuthenticator(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET"),
 )
 ~~~
 
-## Usage
+`token` also takes a plain JWT, or any zero-argument callable, and is resolved per request. A bearer assertion lives about five minutes and an upload can take longer than that, so prefer the access token for anything substantial.
 
-A session is created, one or more files are staged as parts, the staged parts are inspected, and then committed into a table:
+## Agreeing before uploading
+
+An upload is a short conversation: negotiate what the data will become, read the plan, accept it, then send the files and commit.
 
 ~~~python
-from opteryx_upload import UploadClient, Target, ConflictResolution
+from opteryx_upload import ContractClient, Schema, Target
+
+client = ContractClient(token="<jwt>")
+
+contract = client.negotiate(
+    Target("acme", "security", "findings"),
+    ["findings.parquet", "more_findings.parquet"],
+    Schema.auto(),
+)
+
+for entry in contract.plan:
+    print(entry)          # source_ip: VARCHAR -> IPV4 (cast)
+
+if contract.blocking:
+    raise SystemExit(contract.issues)
+
+if contract.state == "proposed":
+    contract.accept()
+
+contract.write_all(["findings.parquet", "more_findings.parquet"])
+result = contract.commit(message="nightly load")
+print(result.table, result.commit_id, result.rows_written)
+~~~
+
+`negotiate` uploads no data. Each file is sampled locally — a prefix for text, the *footer* for Parquet, which is where its schema lives — so agreeing costs a few megabytes whatever the files weigh, and an upload that was going to be refused is refused before it starts. Every file is sampled, not just the first: one contract covers all of them, so two files that disagree are caught here rather than at commit.
+
+## Where the schema comes from
+
+There is no default. Omitting it raises a `TypeError` at the call site rather than quietly inferring — a schema chosen because nobody said otherwise is how a column of dotted quads is catalogued as `VARCHAR` forever, and once it is, reading the data back cannot tell you it was a mistake.
+
+~~~python
+Schema.auto()                  # work it out from the destination
+Schema.inferred()              # read the types from the data, and show me first
+Schema.of_dataset("append")    # use the types the dataset already declares
+Schema.declared({"source_ip": "IPV4", "published": "TIMESTAMP[us]"})
+~~~
+
+`Schema.auto()` is not a fourth source of types — it asks the service to look up something it already knows. A dataset that declares its columns supplies them; one that does not exist has them inferred. The contract that comes back names the mode it resolved to, so nothing downstream has to know `auto` existed.
+
+`Schema.of_dataset("overwrite")` replaces the rows the dataset resolves to and leaves its definition exactly as the catalog holds it — a dataset defined as `IPV4` is still `IPV4` afterwards.
+
+## Reading the plan
+
+A contract whose types were inferred arrives `proposed` and refuses writes until it is accepted, so a script that never looks at what was inferred fails loudly instead of cataloguing a guess.
+
+~~~python
+contract.values          # {"source_ip": "10.4.19.7"} - one real value per column
+contract.plan            # PlanEntry(column, from_, to, action)
+contract.issues          # Issue(code, column, detail, severity)
+contract.blocking        # True when something must be resolved first
+
+contract.retype(source_ip="IPV4", published="TIMESTAMP[us]")
+contract.ignore("score")     # read it, do not write it
+contract.accept()
+~~~
+
+`PlanEntry.action` is one of `keep`, `retag`, `widen`, `cast`, `unsupported`, `undeclared` or `ignored`, and `entry.changes_values` is the distinction worth reading for: relabelling a column `IPV4` and multiplying every value in it by a thousand are both one line of a table, and only one of them is worth stopping for.
+
+Amending an inference is a declaration — you looked at it and said what you wanted — so the contract returns to `proposed` and has to be accepted again. `accept()` echoes back the fingerprint you were shown, so a proposal that moved between being read and being accepted is refused rather than confirmed blind.
+
+Without `ignore`, a column your files carry that the target does not declare is refused rather than included on your behalf. That is the right default: quietly discarding data nobody mentioned is how a column goes missing for a quarter.
+
+## Everything in one call
+
+~~~python
+client.load(
+    ["findings.parquet"],
+    Target("acme", "security", "findings"),
+    Schema.declared({"cve_id": "VARCHAR", "source_ip": "IPV4"}),
+    message="nightly load",
+)
+~~~
+
+`schema` is required here too. A load that chose its own types because nobody said otherwise is the thing this design exists to prevent, and making the convenience wrapper the exception would defeat it.
+
+## Errors
+
+One exception per error code, each carrying its fields, so a caller branches on a field rather than matching English in a message.
+
+~~~python
+from opteryx_upload import ContractStale, ValueNotCastable
+
+try:
+    contract.write("findings.parquet")
+except ValueNotCastable as error:
+    print(error.column, error.row, error.value, error.declared)
+except ContractStale as error:
+    print(error.diff, error.written_rows)   # re-negotiate; retrying works
+~~~
+
+`ValueNotCastable` is raised on the write carrying the bad value, naming the row — not at commit after everything has been sent. `ContractStale` means the target's definition moved after the contract was agreed; nothing was published, so the cost is work rather than a dataset somebody has already read. `InternalError` carries a `reference`, the id the service logged its traceback against.
+
+The rest: `SchemaSourceRequired`, `ColumnUndeclared`, `ColumnMissing`, `SourcesDisagree`, `ContractNotAccepted`, `ProposalChanged`, `ContractExpired`, `AlreadyCommitted`, `DatasetExists`, `FormatUnreadable`, `NotAuthorized`, `ContractNotFound`.
+
+## Reattaching and retrying
+
+~~~python
+contract = client.contract("ct_20260819180247_b47d7241786f")
+contract.write("big.parquet", progress=lambda sent, total: print(sent, total))
+contract.commit(message="retry", idempotency_key="nightly-2026-08-19")
+~~~
+
+Commit is idempotent on `idempotency_key`: a retry after a lost response returns the original snapshot instead of writing a second one. `contract.abandon()` gives up — nothing written was ever readable, so there is nothing to undo.
+
+## Sessions
+
+`UploadClient` is the earlier interface and still works: open a session, stage parts, inspect them, then commit. It infers types from the data and reports what it found at inspect, which is after the upload rather than before it.
+
+~~~python
+from opteryx_upload import ConflictResolution, Target, UploadClient
 
 client = UploadClient(token="<jwt>")
 
 session = client.create_session()
 session.upload_file("findings.parquet")
-session.upload_file("more_findings.csv")  # split into multiple parts automatically if needed
 
 result = session.inspect()
 if result.has_issues:
     raise SystemExit(result.issues)
 
 commit = session.commit(
-    Target(workspace="acme", collection="security", dataset="findings"),
+    Target("acme", "security", "findings"),
     snapshot_message="Initial load",
     conflict_resolution=ConflictResolution.APPEND,
 )
-print(commit.table, commit.commit_id, commit.rows_written)
 ~~~
 
-Or, for simple jobs, in one call:
+Files are typed from their extension (`.parquet`/`.pq`, `.csv`, `.ndjson`/`.jsonl`). CSV and NDJSON files larger than the part-size limit are split automatically and compressed before upload — the limit applies to the compressed bytes, so a part carries far more rows than its raw size suggests. Parquet is binary and cannot be split by byte offset; write multiple smaller files upstream if a single export is too large.
 
-~~~python
-client.upload_and_commit(
-    ["findings.parquet"],
-    Target("acme", "security", "findings"),
-    snapshot_message="Initial load",
-)
-~~~
-
-Files are typed from their extension (`.parquet`, `.csv`, `.ndjson`/`.jsonl`). CSV and NDJSON files larger than the service's part-size limit are split automatically; Parquet files should be written as multiple smaller files upstream if a single export is too large, since the binary format cannot be split by byte offset.
-
-For the full source and API reference, see [github.com/mabel-dev/opteryx-upload](https://github.com/mabel-dev/opteryx-upload).
+For the full source, see [github.com/mabel-dev/opteryx-upload](https://github.com/mabel-dev/opteryx-upload).

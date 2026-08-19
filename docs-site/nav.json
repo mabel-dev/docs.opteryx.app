@@ -80,6 +80,9 @@
           },
           {
             "Rugo": "guides/rugo-cli.md"
+          },
+          {
+            "Upload": "guides/upload-cli.md"
           }
         ]
       }
