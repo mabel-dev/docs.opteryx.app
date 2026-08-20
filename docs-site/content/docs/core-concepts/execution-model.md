@@ -24,7 +24,7 @@ Scans aren't a separate phase bolted onto the front of execution — they're ope
 
 ## Getting results out
 
-Results stream back to the caller as they're produced rather than materialising all at once. In the Python API this surfaces as morsels from `session.execute_to_morsels(...)`, or a single collected Arrow table from `session.execute_to_arrow(...)` for results you know are small — see [Querying Local Data](/docs/guides/querying-local-data).
+Results stream back to the caller as they're produced rather than materialising all at once. In the Python API this surfaces as morsels from `session.execute_to_morsels(...)`, which you can concatenate into a single Arrow table for results you know are small — see [Querying Local Data](/docs/guides/querying-local-data).
 
 ## Why native, why Python
 

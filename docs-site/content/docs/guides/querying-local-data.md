@@ -61,18 +61,14 @@ for morsel in session.execute_to_morsels("SELECT * FROM $planets"):
     table = morsel.to_arrow()
 ```
 
-For a result you know is small — a single summary row, a short lookup — `execute_to_arrow` collects the whole result into one Arrow table in one call:
+For a result you know is small — a single summary row, a short lookup — concatenate the morsels into one Arrow table in the same call:
 
 ```python
-table = session.execute_to_arrow("SELECT COUNT(*) FROM $planets")
-```
+import pyarrow
 
-The session also works as a DB-API cursor, if that shape fits your code better:
-
-```python
-session.execute("SELECT name, mass FROM $planets WHERE id < 5")
-for row in session.fetchall():
-    print(row)
+table = pyarrow.concat_tables(
+    morsel.to_arrow() for morsel in session.execute_to_morsels("SELECT COUNT(*) FROM $planets")
+)
 ```
 
 ## Checking Your Setup Works
@@ -94,7 +90,7 @@ Never build SQL by concatenating input. Bind parameters instead — Opteryx acce
 
 ```python
 session = opteryx.session()
-session.execute(
+session.execute_to_morsels(
     "SELECT name FROM $planets WHERE id = :id",
     params={"id": 3},
 )

@@ -68,17 +68,20 @@ SELECT status, COUNT(*) AS n
 
 ## Straight to a Chart
 
-For a result you know is small, `execute_to_arrow` collects it into a single Arrow table in one call, which converts to pandas directly:
+For a result you know is small, concatenate the morsels into a single Arrow table, which converts to pandas directly:
 
 ```python
-monthly = session.execute_to_arrow("""
+import pyarrow
+
+morsels = session.execute_to_morsels("""
     SELECT
         DATE_FORMAT(ordered_at, '%Y-%m') AS month,
         SUM(amount)                      AS revenue
       FROM data.transactions
      GROUP BY month
      ORDER BY month
-""").to_pandas()
+""")
+monthly = pyarrow.concat_tables(morsel.to_arrow() for morsel in morsels).to_pandas()
 
 monthly.plot(x='month', y='revenue')
 ```

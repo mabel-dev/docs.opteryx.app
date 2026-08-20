@@ -46,7 +46,9 @@ from opteryx.connectors.local_store_connector import LocalStoreConnector
 
 register_workspace("warehouse", LocalStoreConnector, store_root="/srv/opteryx")
 
-opteryx.query("SELECT * FROM warehouse.sales.orders")
+session = opteryx.session()
+for morsel in session.execute_to_morsels("SELECT * FROM warehouse.sales.orders"):
+    print(morsel)
 ```
 
 ## Available connectors

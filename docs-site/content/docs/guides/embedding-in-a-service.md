@@ -23,12 +23,15 @@ def create_app():
 A `session`, by contrast, is cheap and scoped to a unit of work — create one per request:
 
 ```python
+import pyarrow
+
 def handle_request(customer_id: int):
     session = opteryx.session()
-    table = session.execute_to_arrow(
+    morsels = session.execute_to_morsels(
         "SELECT order_id, amount FROM data.orders WHERE customer_id = :customer_id",
         params={"customer_id": customer_id},
     )
+    table = pyarrow.concat_tables(morsel.to_arrow() for morsel in morsels)
     return table.to_pandas().to_dict(orient="records")
 ```
 
@@ -37,7 +40,7 @@ def handle_request(customer_id: int):
 Never build SQL by concatenating request input — that is how you get SQL injection. Bind parameters instead: named placeholders (`:name`) with a dict, or positional placeholders (`?`) with a list. The value is treated as data, never as SQL:
 
 ```python
-session.execute(
+session.execute_to_morsels(
     "SELECT name FROM data.planets WHERE mass > :min_mass",
     params={"min_mass": request_mass},
 )
@@ -47,10 +50,10 @@ session.execute(
 
 ## Choosing a Result Shape
 
-For a request handler, decide up front whether you need the whole result at once or can stream it:
+For a request handler, decide up front whether you need the whole result at once or can stream it. Both go through **`execute_to_morsels`**, which streams the result as it's produced:
 
-- **`execute_to_arrow`** collects the result into one Arrow table — simplest, right for small-to-moderate responses like a filtered lookup or a summary.
-- **`execute_to_morsels`** streams the result as it's produced — better for a large export, where you want to start writing the response before the whole query has finished.
+- Collect it into one Arrow table with `pyarrow.concat_tables` — simplest, right for small-to-moderate responses like a filtered lookup or a summary, as in `handle_request` above.
+- Consume the morsels as they arrive, without collecting — better for a large export, where you want to start writing the response before the whole query has finished.
 
 ```python
 def stream_export():
