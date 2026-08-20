@@ -1,6 +1,6 @@
 # Policy API
 
-Base URL: https://policy.opteryx.app
+Base URL: https://control.opteryx.app
 
 ## Overview
 
@@ -68,10 +68,10 @@ Get all access policies for a workspace. Requires owner or admin access.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -128,10 +128,10 @@ Export a CSV of who has access to every dataset and view in the workspace, resol
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/effective-permissions.csv" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/effective-permissions.csv" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/effective-permissions.csv</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/effective-permissions.csv</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -195,10 +195,10 @@ Create the initial set of access policies for a brand-new workspace, one policy 
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/genesis" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/genesis" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/genesis</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/genesis</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -273,10 +273,10 @@ Create a new access policy for a user in the workspace.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/policies</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -343,10 +343,10 @@ Get detailed information about a specific policy.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -417,10 +417,10 @@ Update an existing access policy.
 
 ### Try it live
 
-<details class="api-tryit" data-method="PUT" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="PUT" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--put">put</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -488,10 +488,10 @@ Remove an access policy from the workspace.
 
 ### Try it live
 
-<details class="api-tryit" data-method="DELETE" data-base="https://policy.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/policies/{policy_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://policy.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/policies/{policy_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">

@@ -18,7 +18,7 @@ API_DOC_SPECS = {
         'slug': 'policy-api',
         'title': 'Policy API',
         'status': 'Published',
-        'base_url': 'https://policy.opteryx.app',
+        'base_url': 'https://control.opteryx.app',
         'summary': 'Workspace policy listing, inspection, creation, updates, and deletion for access-control management.',
     },
     'api-opteryx-upload.json': {

@@ -1,6 +1,6 @@
 # Billing API
 
-Base URL: https://billing.opteryx.app
+Base URL: https://control.opteryx.app
 
 ## Overview
 
@@ -117,10 +117,10 @@ collapsed to a single object.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/accounts" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -173,10 +173,10 @@ immediately as an active member (not a pending invite) - see
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/accounts" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -233,10 +233,10 @@ happens to know or guess an account id.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -300,10 +300,10 @@ billing_admins of the account may update it.
 
 ### Try it live
 
-<details class="api-tryit" data-method="PATCH" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="PATCH" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--patch">patch</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -370,10 +370,10 @@ members" state should exist afterward.
 
 ### Try it live
 
-<details class="api-tryit" data-method="DELETE" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -431,10 +431,10 @@ separate sweep job, per api-v2.md.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/members" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/members" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/members</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/members</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -502,10 +502,10 @@ account* resets the 7-day clock instead of erroring - a fresh
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/members" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/members" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/members</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/members</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -574,10 +574,10 @@ account* resets the 7-day clock instead of erroring - a fresh
 
 ### Try it live
 
-<details class="api-tryit" data-method="PATCH" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="PATCH" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--patch">patch</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -646,10 +646,10 @@ always be able to leave their own account).
 
 ### Try it live
 
-<details class="api-tryit" data-method="DELETE" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -712,10 +712,10 @@ invite for this identity on this account.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}/accept" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/members/{identity}/accept" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}/accept</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/members/{identity}/accept</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -776,10 +776,10 @@ free-tier state elsewhere in this design.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -845,10 +845,10 @@ Stripe's side so it isn't left orphaned there.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -911,10 +911,10 @@ when nothing is attached is a no-op 204, not an error.
 
 ### Try it live
 
-<details class="api-tryit" data-method="DELETE" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/payment-methods" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/payment-methods</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -982,10 +982,10 @@ successful response; a Stripe failure surfaces as 402.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/payments" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/payments" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/payments</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/payments</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1056,10 +1056,10 @@ workspace's own `members` list.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/accounts/{account_id}/workspaces" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/workspaces" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/accounts/{account_id}/workspaces</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/workspaces</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1109,10 +1109,10 @@ Placeholder: return an empty invoices list.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/invoices" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/invoices" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/invoices</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/invoices</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1159,10 +1159,10 @@ Placeholder: return a minimal invoice representation.
 
 ### Try it live
 
-<details class="api-tryit" data-method="GET" data-base="https://billing.opteryx.app" data-path="/v1/invoices/{invoice_id}" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/invoices/{invoice_id}" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/invoices/{invoice_id}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/invoices/{invoice_id}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1236,10 +1236,10 @@ than erroring. If the doc exists with *different* `billing_account`/
 
 ### Try it live
 
-<details class="api-tryit" data-method="PUT" data-base="https://billing.opteryx.app" data-path="/v1/workspaces/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="PUT" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--put">put</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1316,10 +1316,10 @@ intent").
 
 ### Try it live
 
-<details class="api-tryit" data-method="DELETE" data-base="https://billing.opteryx.app" data-path="/v1/workspaces/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--delete">delete</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -1376,10 +1376,10 @@ deleted workspace requires reaching it in the first place.
 
 ### Try it live
 
-<details class="api-tryit" data-method="POST" data-base="https://billing.opteryx.app" data-path="/v1/workspaces/{name}/restore" data-auth-docs="/docs/reference/api/authentication-api">
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}/restore" data-auth-docs="/docs/reference/api/authentication-api">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://billing.opteryx.app</span>/v1/workspaces/{name}/restore</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}/restore</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
