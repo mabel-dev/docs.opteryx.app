@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import SearchBox from './SearchBox'
 
 export default function SiteHeader() {
   const pathname = usePathname()
@@ -36,12 +37,7 @@ export default function SiteHeader() {
           ))}
         </nav>
         <span className="header-spacer" />
-        <div className="docs-search">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <circle cx="11" cy="11" r="6" /><path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input aria-label="Search" placeholder="Search" />
-        </div>
+        <SearchBox />
         <a href="https://opteryx.app" className="blog-cta">Try Opteryx</a>
       </div>
     </header>

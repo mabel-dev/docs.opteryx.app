@@ -122,13 +122,7 @@ Run it with no SQL argument and you get a REPL:
 python -m opteryx
 ```
 
-```
-Opteryx version 0.9.55
-  Enter '.help' for usage hints
-  Enter '.exit' to exit this program
-
-opteryx>
-```
+<img src="/images/cli/opteryx-repl.gif" alt="Starting the Opteryx REPL, running a query against $planets, and exiting with .exit" width="900">
 
 Each statement runs as you enter it, with a row count and elapsed time printed underneath. Two dot commands are recognised — `.help` for the usage hints and `.exit` (or `.quit`) to leave. Errors are reported and the session continues, so a typo doesn't cost you the session.
 
