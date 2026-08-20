@@ -6,7 +6,7 @@ Set Shell "bash"
 Set FontSize 15
 Set FontFamily "Menlo"
 Set Width 1040
-Set Height 640
+Set Height 480
 Set Padding 20
 Set Theme "Dracula"
 Set TypingSpeed 45ms

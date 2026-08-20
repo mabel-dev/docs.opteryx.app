@@ -160,30 +160,7 @@ Same flow, same calls. What it adds is that the plan stays on screen: at a
 scrolling prompt the table goes past once and correcting a type means retyping
 the whole command, and here the cursor moves down it.
 
-```
- opteryx upload                                        https://upload.opteryx.app
-
- FILES
-   part-0000.parquet  412.9 MB
-   part-0001.parquet  398.1 MB
-
- ACCOUNT
-   acme-etl
-
- TO
-   acme.security.findings
-
- PLAN   a new dataset; these types were read from your data
-   column     sample                type
-   cve_id     CVE-2026-00001        VARCHAR
-   published  2026-08-02T04:22:07Z  TIMESTAMP[us]   was VARCHAR, converted
- › source_ip  10.1.7.13             IPV4            was VARCHAR, converted
-   hosts      1                     INT64
-   score      0.5                   FLOAT64         read and not written
-
- these types were read from your data - nothing is written until you accept
- ↑↓ column  e retype  x ignore  ⏎ accept  u upload  h keys  q quit
-```
+<img src="/images/cli/upload-tui.gif" alt="The opteryx-upload TUI: negotiating a contract for findings.csv against acme.security.findings, reviewing the plan (published cast to TIMESTAMP[us], source_ip cast to IPV4, score read and not written), then uploading and committing" width="1040">
 
 `h` lists every key. `c` signs in, `a` browses for files, `t` sets the
 destination, `n` negotiates, `e` changes the type under the cursor, `x` drops a

@@ -3,7 +3,8 @@
 PORT ?= 3000
 
 .PHONY: serve serve-prod build install validate deploy-firebase \
-        sql-definitions sql-docs check-sql-definitions check-window-aggregates
+        sql-definitions sql-docs check-sql-definitions check-window-aggregates \
+        recordings
 
 serve:
 	@echo "Starting docs-site dev server on http://localhost:$(PORT)"
@@ -29,6 +30,14 @@ install:
 
 validate:
 	@cd docs-site && npm run validate:docs
+
+# Terminal GIFs used for REPL/TUI walkthroughs (opteryx-cli.md, upload-cli.md).
+# Each .tape is a VHS script driving the real, installed CLI - see
+# docs-site/scripts/recordings/README.md. Requires `brew install vhs`.
+recordings: ## Regenerate every terminal recording GIF from its .tape script
+	@cd docs-site/scripts/recordings && for tape in *.tape; do \
+		echo "-- $$tape"; vhs "$$tape" || exit 1; \
+	done
 
 # --- SQL reference generation ------------------------------------------------
 # The chain, first link to last. Nothing in it is hand-edited; to change what the

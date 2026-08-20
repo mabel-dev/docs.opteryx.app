@@ -10,7 +10,7 @@ This document walks the path a query takes from SQL text to results.
 
 The engine is a loop. SQL goes down one side, is progressively refined into a runnable plan, executes, and results come back up the other side.
 
-![How Opteryx plans and runs a query: SQL is refined into a plan down the left and across the bottom, then the plan is refined until it runs going up the right, before results return to the user. Python stages are blue, native stages (Parser, Executor) are rust, and the Catalogue is green. The Physical Planner's handover to the Executor is the one boundary the engine crosses without calling back into Python.](/images/engine-overview.svg)
+![How Opteryx plans and runs a query: SQL is refined into a plan down the left and across the bottom, then the plan is refined until it runs going up the right, before results return to the user. Python stages are blue, native stages (Parser, Executor) are rust, and the Catalogue is green.](/images/engine-overview.svg)
 
 The left column transforms *text*; the bottom row transforms a *plan*; the right column refines that plan until it can run. Each stage has a single, narrow responsibility.
 
