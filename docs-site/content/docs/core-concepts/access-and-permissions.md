@@ -40,7 +40,7 @@ Two schemas are handled specially and can't be targeted by a policy:
 - **`public.*`** is read-only for everyone, regardless of any grant - you can't be given `writer` or `owner` there.
 - **`personal.<username>.*`** is fully owned by that user - no grant is needed, and no one else can be granted access to it.
 
-## Policy API
+## Managing grants
 
 Grants are managed via the [Control API](/docs/reference/api/control-api), which accepts JSON policy documents identifying a principal, a role, and a resource pattern.
 
