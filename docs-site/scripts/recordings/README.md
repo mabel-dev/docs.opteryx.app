@@ -5,8 +5,9 @@ text for one-shot commands; these are for interactive sessions where seeing
 input and output appear over time is the point).
 
 Each `.tape` file is a [VHS](https://github.com/charmbracelet/vhs) script — the
-literal keystrokes and timing for one recording. They run the real, installed
-CLI; nothing in the GIFs is mocked up.
+literal keystrokes and timing for one recording. They run the real CLI,
+installed fresh from PyPI — see "Why a venv" below before assuming your
+personal dev environment is close enough to skip it.
 
 ## Regenerating
 
@@ -15,7 +16,8 @@ brew install vhs  # if you don't have it
 make recordings   # from the repo root — regenerates every .tape here
 ```
 
-Or one at a time:
+Or one at a time (the venv has to exist first — `make recordings` once is the
+easiest way to get it):
 
 ```bash
 cd docs-site/scripts/recordings
@@ -24,17 +26,25 @@ vhs opteryx-repl.tape
 
 This overwrites the corresponding GIF under `docs-site/public/images/cli/`.
 Re-run whenever the CLI's output, banner, or version changes enough that the
-recording looks stale.
+recording looks stale — or after a release, via `make recordings-refresh`
+(below), since `make recordings` on its own reuses whatever venv is already
+there rather than checking PyPI for something newer.
 
-Run from a directory outside `/tmp` — pyenv-shimmed `python -m <module>`
-invocations have been seen to fail there with an unrelated
-`No module named 'compression'` error caused by something in this machine's
-`/tmp`, not by Opteryx. `~` or the repo itself are fine. `make recordings`
-already runs from the repo root, so this only matters if you run `vhs` by hand.
+### Why a venv
 
-If you use pyenv and `python -m opteryx` isn't on the version that has
-`opteryx-core` installed, set `PYENV_VERSION` before running `vhs`, e.g.
-`PYENV_VERSION=3.13.12 vhs opteryx-repl.tape`.
+Every tape activates `venv/` (created by `make recordings`, gitignored) rather
+than whatever `opteryx`/`opteryx-upload` is on your PATH. On an engine
+developer's machine that's rarely the same thing: it's easy to have a local
+editable install of `opteryx-core` or `opteryx-upload` shadowing the PyPI
+package under the same command name, with a different version and different
+bugs (or missing ones) than what `pip install opteryx-core` actually gives a
+reader following the docs. The first recordings here were made that way by
+mistake — the REPL GIF showed a version number and a duplicate stats-line bug
+that only existed in a local dev build, not in anything ever published. The
+venv is the fix: `make recordings` (or `make recordings-refresh` to force a
+rebuild) installs the real, current PyPI releases of `opteryx-core` and
+`opteryx-upload` into `docs-site/scripts/recordings/venv`, and every tape runs
+against that and nothing else.
 
 `upload-tui.tape` records against `mock_upload_server.py`, a small stand-in for
 the real upload service (see that file's docstring) — the tape starts and stops

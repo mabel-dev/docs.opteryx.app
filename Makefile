@@ -4,7 +4,7 @@ PORT ?= 3000
 
 .PHONY: serve serve-prod build install validate deploy-firebase \
         sql-definitions sql-docs check-sql-definitions check-window-aggregates \
-        recordings
+        recordings recordings-refresh
 
 serve:
 	@echo "Starting docs-site dev server on http://localhost:$(PORT)"
@@ -32,12 +32,29 @@ validate:
 	@cd docs-site && npm run validate:docs
 
 # Terminal GIFs used for REPL/TUI walkthroughs (opteryx-cli.md, upload-cli.md).
-# Each .tape is a VHS script driving the real, installed CLI - see
-# docs-site/scripts/recordings/README.md. Requires `brew install vhs`.
-recordings: ## Regenerate every terminal recording GIF from its .tape script
+# Each .tape is a VHS script driving the real published packages, installed
+# fresh from PyPI into their own venv - not whatever happens to be on this
+# machine's PATH, which for engine developers is usually a local dev build
+# with a different version and different bugs than what a user actually gets
+# from `pip install`. See docs-site/scripts/recordings/README.md. Requires
+# `brew install vhs`.
+recordings:
+	@cd docs-site/scripts/recordings && \
+		[ -x venv/bin/opteryx-upload ] || { \
+			echo "-- setting up venv (opteryx-core, opteryx-upload from PyPI)"; \
+			python3 -m venv venv && \
+			venv/bin/pip install -q --upgrade pip opteryx-core opteryx-upload; \
+		}
 	@cd docs-site/scripts/recordings && for tape in *.tape; do \
 		echo "-- $$tape"; vhs "$$tape" || exit 1; \
 	done
+
+# Force a fresh venv even if one already exists - use this after a release to
+# make sure the recordings reflect what's actually on PyPI today, not
+# whatever was latest the last time `make recordings` ran.
+recordings-refresh: ## Rebuild the recording venv from scratch, then regenerate every GIF
+	@rm -rf docs-site/scripts/recordings/venv
+	@$(MAKE) recordings
 
 # --- SQL reference generation ------------------------------------------------
 # The chain, first link to last. Nothing in it is hand-edited; to change what the

@@ -12,18 +12,18 @@ Set Theme "Dracula"
 Set TypingSpeed 45ms
 
 Hide
-Type "clear" Enter
+Type "source venv/bin/activate && clear" Enter
 Sleep 500ms
 Show
 
 Type "python -m opteryx"
 Enter
-Sleep 1.5s
+Sleep 3.5s
 
 Type "SELECT name, gravity FROM $planets ORDER BY mass DESC;"
 Sleep 500ms
 Enter
-Sleep 2.5s
+Sleep 5s
 
 Type ".exit"
 Enter

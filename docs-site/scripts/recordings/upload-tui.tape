@@ -12,7 +12,9 @@ Set Theme "Dracula"
 Set TypingSpeed 45ms
 
 Hide
-Type "pkill -f mock_upload_server.py 2>/dev/null; python3 mock_upload_server.py 8756 >/tmp/mock-upload-server.log 2>&1 & disown" Enter
+Type "source venv/bin/activate" Enter
+Sleep 300ms
+Type "pkill -f mock_upload_server.py 2>/dev/null; python mock_upload_server.py 8756 >/tmp/mock-upload-server.log 2>&1 & disown" Enter
 Sleep 500ms
 Type "export OPTERYX_TOKEN=demo OPTERYX_UPLOAD_URL=http://127.0.0.1:8756 && clear" Enter
 Sleep 500ms
