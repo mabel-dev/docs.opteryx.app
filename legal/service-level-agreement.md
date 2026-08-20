@@ -35,8 +35,7 @@ following components:
 | Authentication API | `authenticate.opteryx.app` |
 | OData API | `odata.opteryx.app` |
 | Upload API | `upload.opteryx.app` |
-| Policy API | `policy.opteryx.app` |
-| Billing API | `billing.opteryx.app` |
+| Control API (accounts, membership, access policies) | `control.opteryx.app` |
 | Opteryx Studio | `opteryx.app` |
 
 Components not listed — including the documentation site, the status page, and
