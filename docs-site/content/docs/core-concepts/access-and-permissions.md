@@ -29,7 +29,7 @@ A couple of things that surprise people:
 - **`DROP COLLECTION` checks the grant against the collection's own name, not a pattern over its contents.** An `owner` grant on `workspace.staging.*` covers every table and view *inside* the `staging` collection but does not match `workspace.staging` itself, so it does not permit dropping the collection. You need a grant that matches `workspace.staging` directly - an exact grant on it, or a workspace-wide `workspace.*`.
 - **`ALTER WORKSPACE` needs ownership of the workspace itself, and owning its contents is not enough.** This goes one level further than the `DROP COLLECTION` rule above: even a workspace-wide `workspace.*` grant does not permit it, because that pattern covers everything *in* the workspace without matching the workspace's own name. You need a grant matching `workspace` directly, or a global `*`. Workspace properties govern the whole workspace, so the grant has to be scoped to it.
 - **`ALTER TABLE ... RENAME TO` is checked at both ends.** It needs `owner` on the source (the table stops existing under that name) *and* create permission at the target, so owning a table does not let you move it into a collection you have no grant on.
-- **There's also an `admin` role**, but it only applies to the [Policy API](/docs/reference/api/policy-api) - an admin can view and manage other users' grants on a pattern they administer. It does **not** grant any query access on its own; an admin who also needs to run queries needs a separate `reader`/`writer`/`owner` grant.
+- **There's also an `admin` role**, but it only applies to the [Control API](/docs/reference/api/control-api) - an admin can view and manage other users' grants on a pattern they administer. It does **not** grant any query access on its own; an admin who also needs to run queries needs a separate `reader`/`writer`/`owner` grant.
 
 ## Workspace boundaries
 
@@ -42,7 +42,7 @@ Two schemas are handled specially and can't be targeted by a policy:
 
 ## Policy API
 
-Grants are managed via the [Policy API](/docs/reference/api/policy-api), which accepts JSON policy documents identifying a principal, a role, and a resource pattern.
+Grants are managed via the [Control API](/docs/reference/api/control-api), which accepts JSON policy documents identifying a principal, a role, and a resource pattern.
 
 Example - granting `writer` on every dataset in the `sales` collection:
 

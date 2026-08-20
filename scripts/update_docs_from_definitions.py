@@ -17,12 +17,12 @@ REF_API_DIR = DOCS / 'reference' / 'api'
 API_INDEX_PATH = DOCS / 'reference' / 'sql' / 'api.md'
 
 API_DOC_SPECS = {
-    'api-opteryx-billing.json': {
-        'slug': 'billing-api',
-        'title': 'Billing API',
+    'api-opteryx-control.json': {
+        'slug': 'control-api',
+        'title': 'Control API',
         'status': 'Published',
         'base_url': 'https://control.opteryx.app',
-        'summary': 'Billing account and membership management, payment methods and charges, and workspace lifecycle (creation, deletion, locking).',
+        'summary': 'Billing accounts and membership, payment methods and invoices, workspace lifecycle, and the access policies that govern who can reach what.',
         'try_it_live': True,
     },
     'api-opteryx-authenticate.json': {
@@ -49,14 +49,6 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://odata.opteryx.app',
         'summary': 'OData service discovery, metadata, and dataset query endpoints for compatible clients and BI tools.',
-    },
-    'api-opteryx-policy.json': {
-        'slug': 'policy-api',
-        'title': 'Policy API',
-        'status': 'Published',
-        'base_url': 'https://control.opteryx.app',
-        'summary': 'Workspace policy listing, inspection, creation, updates, and deletion for access-control management.',
-        'try_it_live': True,
     },
     'api-opteryx-upload.json': {
         'has_flow': True,
