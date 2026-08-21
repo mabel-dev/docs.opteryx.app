@@ -14,6 +14,8 @@ Once you're signed in, Studio gives you:
 - **Query history**, so you can find and re-run queries you've written before
 - **Settings**, where API tokens for programmatic access are created and managed (see [Logging In](registration))
 
+<img src="/images/studio/catalog.png" alt="The Studio catalog panel, expanded to show the astronomy schema's tables (exoplanets, moon_orbits, moons, planets, stars) with the planets table selected and its details — 9 rows, 4.5 KB, 20 columns — shown below" width="800">
+
 ## Run your first query
 
 You don't need to load any data to try Studio out. A handful of datasets under the `public` schema are readable by anyone signed in, with no upload required:
@@ -24,7 +26,11 @@ SELECT *
  LIMIT 10;
 ```
 
-Run it from the SQL editor and the results view fills in with the returned rows. See [Load and Query Data](reading-data) for the full list of public sample datasets, and for what else `public` includes (geopolitical, security, and sales reference tables).
+Run it from the SQL editor and the results view fills in with the returned rows.
+
+<img src="/images/studio/query-results.png" alt="Opteryx Studio after running SELECT * FROM public.astronomy.planets LIMIT 10, showing the SQL editor above and a nine-row results table below with columns for id, name, mass, diameter, density, gravity, and escape_velocity" width="800">
+
+See [Load and Query Data](reading-data) for the full list of public sample datasets, and for what else `public` includes (geopolitical, security, and sales reference tables).
 
 ## Next steps
 
