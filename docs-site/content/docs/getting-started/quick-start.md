@@ -1,6 +1,6 @@
 # Quick Start: Site Tour
 
-This page is a short tour of Opteryx Studio, the web app for [opteryx.app](https://opteryx.app), the hosted Opteryx service. It gets you running your first SQL query without loading any data of your own. If you haven't signed in yet, start with [Logging In](registration).
+This page is a short tour of Opteryx Studio, the web app for [opteryx.app](https://opteryx.app), the hosted Opteryx service — what each part of the workspace is for and how to use it. If you haven't signed in yet, start with [Logging In](registration); Studio drops you straight into an example query, pre-loaded and ready to run, so there's no setup before you see it working.
 
 If you're looking to embed the Opteryx engine directly in a Python process instead of using the hosted service, see [Querying Local Data](/docs/guides/querying-local-data).
 
@@ -18,26 +18,7 @@ Working across the screenshot above:
 - **Reference panel** (right, toggled with the graduation-cap icon) — SQL basics and a searchable function list, handy while you're still learning the dialect.
 - Along the bottom, **Datasets** and **Recent queries** toggle the catalog and query-history panels. **Settings** — including the API tokens for programmatic access — live under your avatar in the top-right corner (see [Logging In](registration)).
 
-## Run your first query
-
-You don't need to load any data to try this yourself. A handful of datasets under the `public` schema are readable by anyone signed in, with no upload required — including `astronomy.moons`, the one behind the screenshot above:
-
-```sql
-SELECT
-  planet,
-  COUNT(*) AS moons
-FROM
-  public.astronomy.moons
-GROUP BY ALL
-ORDER BY
-  moons DESC
-LIMIT
-  10;
-```
-
-That's the exact query shown running above — group the rows in `public.astronomy.moons` by planet, most moons first. Paste it into the editor and press **Run**; the results table fills in below, with the row count and bytes scanned in the status bar underneath it.
-
-See [Load and Query Data](reading-data) for the full list of public sample datasets, and for what else `public` includes (geopolitical, security, and sales reference tables).
+A handful of datasets under the `public` schema — including `astronomy.moons`, queried in the screenshot above — are readable by anyone signed in, with no upload required. See [Load and Query Data](reading-data) for the full list, and for what else `public` includes (geopolitical, security, and sales reference tables).
 
 ## Next steps
 
