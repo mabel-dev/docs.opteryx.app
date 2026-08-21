@@ -6,29 +6,36 @@ If you're looking to embed the Opteryx engine directly in a Python process inste
 
 ## The Studio workspace
 
-Once you're signed in, Studio gives you:
+Once you're signed in, Studio opens as a single screen — everything below happens in one place, with nothing else to navigate to:
 
-- A **SQL editor**, where you write and run queries
-- A **results view**, where returned rows are displayed once a query finishes
-- A **catalog** of the datasets available to you — your own tables plus a handful of public sample datasets
-- **Query history**, so you can find and re-run queries you've written before
-- **Settings**, where API tokens for programmatic access are created and managed (see [Logging In](registration))
+<img src="/images/studio/workspace.png" alt="The Opteryx Studio workspace. On the left, a catalog panel lists personal and public datasets, with astronomy.exoplanets selected and its details (row count, size, columns) shown underneath. In the center, the SQL editor holds a query grouping public.astronomy.moons by planet, with a results table below showing Saturn (16 moons), Jupiter (9), and Neptune (8). On the right, a reference panel lists SQL basics and searchable functions." width="900">
 
-<img src="/images/studio/catalog.png" alt="The Studio catalog panel, expanded to show the astronomy schema's tables (exoplanets, moon_orbits, moons, planets, stars) with the planets table selected and its details — 9 rows, 4.5 KB, 20 columns — shown below" width="800">
+Working across the screenshot above:
+
+- **Catalog** (left) — everything you can query, split into `personal` (your own uploads) and `public` (shared sample data), grouped by schema. Click a table, like `astronomy.exoplanets` here, and its row count, size, and columns appear in the **Details** panel underneath.
+- **SQL editor** (top center) — write your query here. **Format** cleans up whitespace, **Run** (⌘↵ / Ctrl+Enter) executes.
+- **Results** (below the editor) — rows land here once the query finishes. **Details**, **Chart**, and **Execution plan** sit alongside it, showing timing and bytes scanned, a plot of any numeric columns, and how Opteryx executed the query.
+- **Reference panel** (right, toggled with the graduation-cap icon) — SQL basics and a searchable function list, handy while you're still learning the dialect.
+- Along the bottom, **Datasets** and **Recent queries** toggle the catalog and query-history panels. **Settings** — including the API tokens for programmatic access — live under your avatar in the top-right corner (see [Logging In](registration)).
 
 ## Run your first query
 
-You don't need to load any data to try Studio out. A handful of datasets under the `public` schema are readable by anyone signed in, with no upload required:
+You don't need to load any data to try this yourself. A handful of datasets under the `public` schema are readable by anyone signed in, with no upload required — including `astronomy.moons`, the one behind the screenshot above:
 
 ```sql
-SELECT *
-  FROM public.astronomy.planets
- LIMIT 10;
+SELECT
+  planet,
+  COUNT(*) AS moons
+FROM
+  public.astronomy.moons
+GROUP BY ALL
+ORDER BY
+  moons DESC
+LIMIT
+  10;
 ```
 
-Run it from the SQL editor and the results view fills in with the returned rows.
-
-<img src="/images/studio/query-results.png" alt="Opteryx Studio after running SELECT * FROM public.astronomy.planets LIMIT 10, showing the SQL editor above and a nine-row results table below with columns for id, name, mass, diameter, density, gravity, and escape_velocity" width="800">
+That's the exact query shown running above — group the rows in `public.astronomy.moons` by planet, most moons first. Paste it into the editor and press **Run**; the results table fills in below, with the row count and bytes scanned in the status bar underneath it.
 
 See [Load and Query Data](reading-data) for the full list of public sample datasets, and for what else `public` includes (geopolitical, security, and sales reference tables).
 
