@@ -22,6 +22,33 @@ client = ContractClient(
 
 `token` also takes a plain JWT, or any zero-argument callable, and is resolved per request. A bearer assertion lives about five minutes and an upload can take longer than that, so prefer the access token for anything substantial.
 
+### In CI, with no secret at all
+
+In a GitHub Actions job, or on GCP running as a service account, there is nothing to store: the platform mints a signed token saying which workload this is, and the authenticate service exchanges it for the same assertion a client secret would have bought. Both are drop-in replacements for `PATAuthenticator` — callable, cached, same `invalidate()`.
+
+~~~python
+from opteryx_upload import ContractClient, GitHubOIDCAuthenticator
+
+client = ContractClient(token=GitHubOIDCAuthenticator())
+~~~
+
+The job needs `permissions: id-token: write`, which is what puts `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN` in its environment; without it the authenticator raises `AuthenticationError` saying so. `GoogleWorkloadAuthenticator()` is the GCP counterpart, fetching its token from the metadata server instead.
+
+For a script that runs both in CI and on a laptop, ask before committing to one:
+
+~~~python
+from opteryx_upload import ContractClient, GitHubOIDCAuthenticator, PATAuthenticator
+
+if GitHubOIDCAuthenticator.is_available():
+    token = GitHubOIDCAuthenticator()
+else:
+    token = PATAuthenticator(client_id=..., client_secret=...)
+
+client = ContractClient(token=token)
+~~~
+
+The repository or service account has to be registered against a client first, and which client it is — and what it may write — is decided there, not here. See [Credential-less authentication (OIDC)](/docs/guides/oidc-authentication).
+
 ## Agreeing before uploading
 
 An upload is a short conversation: negotiate what the data will become, read the plan, accept it, then send the files and commit.

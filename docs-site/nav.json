@@ -41,6 +41,12 @@
             "Sample data": "reference/sql/advanced/adv-sample-data.md"
           },
           {
+            "Credential-less authentication (OIDC)": "guides/oidc-authentication.md"
+          },
+          {
+            "Connecting an Iceberg catalog": "guides/connecting-an-iceberg-catalog.md"
+          },
+          {
             "Access and permissions": "core-concepts/access-and-permissions.md"
           },
           {
