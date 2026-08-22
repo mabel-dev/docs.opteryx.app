@@ -58,7 +58,6 @@ All scales are stored as INT64. The 1677-09-21 to 2262-04-11 range applies only 
 - `1::TIMESTAMP` is not valid — you must specify the scale: `1::TIMESTAMP[s]`.
 - Timestamps outside 1677–2262 are not representable at `TIMESTAMP[ns]` scale (nanosecond storage overflows outside that range); the default microsecond scale does not have this restriction.
 - No scale represents a year outside 1..9999. This bounds the RESULT of temporal arithmetic too, not just literals and casts: an expression whose value falls outside the window raises rather than saturating.
-- CAST ... FORMAT is not yet supported combined with TRY_CAST/SAFE_CAST.
 
 ## See Also
 

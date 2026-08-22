@@ -44,6 +44,90 @@ SELECT * FROM events WHERE event_time >= '2024-01-01'::TIMESTAMP;
 SELECT * FROM events WHERE event_time >= '2024-01-01';
 ```
 
+### Parsing and rendering with an explicit format
+
+A plain cast to `DATE` or `TIMESTAMP` reads ISO-8601 input only. When the string is in another layout, state the pattern with `FORMAT`:
+
+```sql
+SELECT CAST('15-01-2024' AS DATE FORMAT 'DD-MM-YYYY');
+SELECT CAST('01/15/2024 09:30' AS TIMESTAMP FORMAT 'MM/DD/YYYY HH24:MI');
+```
+
+The same clause works in the other direction. With a `VARCHAR` target the pattern describes the string to produce rather than the string to read:
+
+```sql
+SELECT CAST(event_time AS VARCHAR FORMAT 'DD/MM/YYYY HH24:MI') FROM events;
+```
+
+`FORMAT` is accepted on `DATE`, `TIMESTAMP` and `VARCHAR` targets, and on `INTERVAL` to `VARCHAR` - where the elements are read as duration magnitudes rather than calendar fields, so `DD` is a count of days:
+
+```sql
+SELECT CAST(INTERVAL '1' DAY AS VARCHAR FORMAT 'DD HH24:MI:SS');
+-- 01 00:00:00
+```
+
+Any other target is refused - there is no numeric picture format.
+
+`FORMAT` is part of the `CAST()` syntax only; the `::` shorthand does not take it.
+
+`TRY_CAST` and `SAFE_CAST` combine with `FORMAT`. Input the pattern cannot parse becomes `NULL` instead of raising:
+
+```sql
+SELECT TRY_CAST('not a date' AS DATE FORMAT 'DD-MM-YYYY');
+-- NULL
+```
+
+#### Format elements
+
+Elements are uppercase keywords. Every other character is literal text, so separators need no escaping and lowercase text always passes through unchanged.
+
+| Element | Meaning |
+| --- | --- |
+| `YYYY` | 4-digit year |
+| `YY` | 2-digit year (`24` reads as 2024) |
+| `MM` | month, 01-12 |
+| `DD` | day, 01-31 |
+| `HH24` | hour, 00-23 |
+| `HH12` | hour, 01-12 |
+| `HH` | alias for `HH12` |
+| `MI` | minute, 00-59 |
+| `SS` | second, 00-59 |
+| `FF` | fractional seconds, 6 digits (microseconds) |
+
+Every element is fixed-width and zero-padded in both directions, so `DD` reads and writes exactly two digits:
+
+```sql
+-- Error: '5-1-2024' does not match, the day and month are one digit each
+SELECT CAST('5-1-2024' AS DATE FORMAT 'DD-MM-YYYY');
+```
+
+When parsing, the pattern must consume the whole input - trailing text is an error rather than a silent prefix match:
+
+```sql
+-- Error: the time component is not covered by the pattern
+SELECT CAST('2024-01-15 10:20:30' AS TIMESTAMP FORMAT 'YYYY-MM-DD');
+```
+
+Fields the pattern does not mention take their value from the epoch:
+
+```sql
+SELECT CAST('09:30' AS TIMESTAMP FORMAT 'HH24:MI');
+-- 1970-01-01 09:30:00
+```
+
+A run of the reserved letters `Y M D H I S F` that is not exactly one of the elements above is an error, not literal text, so a typo is reported rather than emitted verbatim:
+
+```sql
+-- Error: unrecognized format token 'Y'
+SELECT CAST('2024-01-15' AS DATE FORMAT 'YYY-MM-DD');
+```
+
+Month and day names (`MON`, `MONTH`, `DAY`), `AM`/`PM` and timezone elements are not supported.
+
+> Be Aware: `CAST ... FORMAT` and `FORMAT_TIMESTAMP` use different vocabularies. `CAST` takes the SQL format elements above (`YYYY-MM-DD`); `FORMAT_TIMESTAMP` and `FORMAT_DATE` take strftime codes (`%Y-%m-%d`). They are not interchangeable.
+
+There is no function form of the parse direction - no `TO_DATE`, `STRPTIME` or `PARSE_DATE`. `CAST ... FORMAT` is how a string that is not ISO-8601 is read.
+
 ## Creating Temporal Values
 
 ### Date and Timestamp Literals
@@ -119,6 +203,8 @@ SELECT FORMAT_TIMESTAMP('%Y-%m-%d', event_time)
 ```
 
 See the [FORMAT_TIMESTAMP reference](../functions/format_timestamp) for the full list of supported format tokens.
+
+`FORMAT_TIMESTAMP` takes strftime codes. To render with the SQL format elements instead (`YYYY-MM-DD`), or to read a string with an explicit pattern, see [Parsing and rendering with an explicit format](#parsing-and-rendering-with-an-explicit-format).
 
 ## Arithmetic
 
@@ -244,6 +330,7 @@ Recognized date parts and support across functions - <img src="/images/square-ch
 - Intervals cannot be compared to one another in any unit — compare timestamps or a `DATEDIFF` result instead
 - DATEDIFF `month`, `quarter` and `year` are day-count approximations, not calendar differences
 - EXTRACT does not accept `WEEK`, `DOW` or `DOY`
+- `CAST ... FORMAT` has numeric elements only - no month or day names, no `AM`/`PM`, no timezone
 - All timestamps are stored and compared in UTC
 
 ## Timezones
