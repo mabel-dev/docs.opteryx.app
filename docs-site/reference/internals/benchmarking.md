@@ -1,6 +1,6 @@
 ---
 title: Benchmarking — Opteryx Internals
-description: The correctness and performance suites Opteryx runs against itself — sqllogictest, TPC-H, ClickBench, JOB, H2O and others — how each run is measured, and how to read the results.
+description: The correctness and performance suites Opteryx runs against itself — sqllogictest, TPC-H, TPC-DS, ClickBench, JOB, H2O and others — how each run is measured, and how to read the results.
 ---
 
 # Benchmarking
@@ -64,12 +64,13 @@ tolerated.
 
 ## Performance suites
 
-Each suite is a `make` target in the engine repository. All of them except
-`signals` compare against a stored DuckDB baseline.
+Each suite is a `make` target in the engine repository. Most compare against a
+stored DuckDB baseline; `tpcds` and `signals` do not.
 
 | Suite | Command | Shape | What it stresses |
 |:--|:--|:--|:--|
-| [TPC-H](https://www.tpc.org/tpch/) | `make tpch` | 22 queries, SF1 by default | Join planning, predicate handling, subqueries, plan stability. Small data, demanding query shapes. |
+| [TPC-H](https://www.tpc.org/tpch/) | `make tpch` | 22 queries, SF10 by default | Join planning, predicate handling, subqueries, plan stability. Demanding query shapes over enough data that a bad plan cannot be hidden by a fast scan. |
+| [TPC-DS](https://www.tpc.org/tpcds/) | `make tpcds` | 99 queries, SF1 by default | Snowflake-schema joins, window functions, `ROLLUP`/`GROUPING SETS`, and correlated subqueries. The broadest SQL-surface suite Opteryx runs — as much a coverage test as a timing one. No DuckDB baseline. |
 | [ClickBench](https://benchmark.clickhouse.com/) | `make clickbench` | 43 queries over the `hits` web-analytics dataset | Single-table scan, filter, and aggregation at scale. Where performance cliffs show up first. |
 | [JOB](https://github.com/gregrahn/join-order-benchmark) | `make job` | 113 queries over 21 IMDB tables | Join enumeration, cardinality estimation, statistics coverage. The suite that punishes a bad cost model. |
 | [H2O db-benchmark](https://github.com/duckdblabs/db-benchmark) | `make h2o` | 10 group-by + 5 join queries | Aggregation and join throughput on the suite other engines publish against. |
@@ -85,10 +86,43 @@ optimise for scans and let the optimizer rot. The
 [benchmarks blog post](/blog/2026-05-08-benchmarks) covers the reasoning and what
 each suite found when it was first run.
 
+### Published results
+
+Summary results for several of these suites are published at
+[mabel-dev.github.io/wrenchy-bench](https://mabel-dev.github.io/wrenchy-bench/),
+generated from the runner's own output rather than transcribed by hand. That is
+where to look for current numbers — with the caveats in
+[Method](#method) below, and remembering that a figure is tied to the machine and
+the build it was measured on.
+
+### TPC-DS
+
+TPC-DS is the awkward one, and it is on the list for that reason. Where TPC-H is
+22 queries over a clean star schema, TPC-DS is 99 queries over a snowflake schema
+with 24 tables, and its query set reaches into parts of the SQL surface the other
+suites never touch — window frames, `ROLLUP` and `GROUPING SETS`, correlated
+subqueries in the `SELECT` list, and multi-branch `UNION ALL` over shared scans.
+
+That makes it two tests at once. A query that fails to *parse or plan* is a
+conformance gap, not a performance result, and TPC-DS finds those before any
+timing is taken. Queries that do not currently plan are recorded as unsupported
+rather than being deleted from the suite, so the count of supported queries is
+itself a tracked number — it goes up as the engine's SQL coverage does.
+
+Unlike TPC-H and the other timed suites, TPC-DS is not compared against a DuckDB
+baseline. A ratio computed over a shifting subset of queries would not mean much:
+as coverage grows the newly-supported queries change the denominator, so this
+run's ratio and last month's would not be measuring the same thing. What is
+tracked instead is how many of the 99 plan and run, and how each supported query
+moves against its own previous times.
+
+The data generator is `dsdgen` from the TPC's own toolkit, so the tables are
+regenerated locally rather than shipped in the repository.
+
 ### RISC-V
 
 [RISC-V Support](riscv-support) carries the one set of published pass/fail
-results and indicative timings on this site — a point-in-time bring-up snapshot
+results and indicative timings on this documentation site — a point-in-time bring-up snapshot
 on a specific single-board computer, explicitly not a benchmark claim.
 
 ---
@@ -138,6 +172,8 @@ millisecond figures from one developer's laptop say nothing about anyone else's.
 
 ## Reproducing results
 
+Summary results are published at
+[mabel-dev.github.io/wrenchy-bench](https://mabel-dev.github.io/wrenchy-bench/).
 Opteryx's ClickBench configuration is published in the [ClickBench
 repository](https://github.com/ClickHouse/ClickBench/tree/main/opteryx), so the
 run can be reproduced independently rather than taken on trust. The suites
@@ -147,6 +183,7 @@ per-suite `fetch_data.py` scripts.
 
 ## Related
 
+- [Wrenchy Bench results](https://mabel-dev.github.io/wrenchy-bench/) — published summary results
 - [Engine overview](engine-overview) — what the numbers are measuring
 - [RISC-V support](riscv-support) — published pass/fail results on one platform
 - [SQL Conformance](/docs/reference/sql/conformance) — what the engine implements
@@ -157,5 +194,5 @@ per-suite `fetch_data.py` scripts.
 
 ---
 
-TPC, TPC Benchmark, and TPC-H are trademarks of the Transaction Processing
-Performance Council. ClickHouse is a registered trademark of ClickHouse, Inc.
+TPC, TPC Benchmark, TPC-H, and TPC-DS are trademarks of the Transaction
+Processing Performance Council. ClickHouse is a registered trademark of ClickHouse, Inc.
