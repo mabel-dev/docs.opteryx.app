@@ -181,11 +181,20 @@ SELECT EXTRACT(YEAR FROM event_time),
   FROM events;
 ```
 
-Supported parts: `YEAR`, `QUARTER`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`.
+Supported parts: `YEAR`, `QUARTER`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `EPOCH`.
 
-Sub-day parts (`HOUR`, `MINUTE`, `SECOND`) require a `TIMESTAMP` operand - over a `DATE` they are refused, so a `DATE` accepts only `YEAR`, `QUARTER`, `MONTH` and `DAY`.
+Sub-day parts (`HOUR`, `MINUTE`, `SECOND`) require a `TIMESTAMP` operand - over a `DATE` they are refused, so a `DATE` accepts only `YEAR`, `QUARTER`, `MONTH`, `DAY` and `EPOCH`.
 
-`WEEK`, `ISOWEEK`, `DAYOFWEEK`/`DOW`, `DAYOFYEAR`/`DOY`, `EPOCH`, `ISOYEAR`, `DECADE`, `NANOSECOND`, `MILLISECOND` and `MICROSECOND` are **not** accepted by `EXTRACT` - see [Supported Date Parts](#supported-date-parts) for what to use instead.
+`EPOCH` is the odd one out: rather than a calendar field it returns the whole number of Unix epoch seconds, the same value as [`UNIXTIME(ts)`](../functions/unixtime), and is planned as that call:
+
+```sql
+SELECT EXTRACT(EPOCH FROM '2024-02-14 10:30:00'::TIMESTAMP);
+-- 1707906600
+```
+
+Sub-second detail is discarded rather than rounded - the result is whole seconds, and it is negative for instants before 1970. See [Unix Epoch Time](#unix-epoch-time) for converting in the other direction.
+
+`WEEK`, `ISOWEEK`, `DAYOFWEEK`/`DOW`, `DAYOFYEAR`/`DOY`, `ISOYEAR`, `DECADE`, `NANOSECOND`, `MILLISECOND` and `MICROSECOND` are **not** accepted by `EXTRACT` - see [Supported Date Parts](#supported-date-parts) for what to use instead.
 
 ## Formatting
 
@@ -205,6 +214,47 @@ SELECT FORMAT_TIMESTAMP('%Y-%m-%d', event_time)
 See the [FORMAT_TIMESTAMP reference](../functions/format_timestamp) for the full list of supported format tokens.
 
 `FORMAT_TIMESTAMP` takes strftime codes. To render with the SQL format elements instead (`YYYY-MM-DD`), or to read a string with an explicit pattern, see [Parsing and rendering with an explicit format](#parsing-and-rendering-with-an-explicit-format).
+
+## Unix Epoch Time
+
+Epoch seconds are how timestamps usually arrive from logs, APIs and event streams. Three
+spellings cover the round trip:
+
+```sql
+UNIXTIME(timestamp)            -- timestamp → whole epoch seconds
+EXTRACT(EPOCH FROM timestamp)  -- the same value, SQL-standard spelling
+FROM_UNIXTIME(seconds)         -- epoch seconds → TIMESTAMP[us]
+```
+
+Example:
+
+```sql
+SELECT UNIXTIME(event_time)  AS epoch_seconds,
+       FROM_UNIXTIME(1707906600) AS as_timestamp
+  FROM events;
+```
+
+An epoch column read straight from storage is a number, not a temporal value, so it has to be
+converted before any temporal function or comparison will accept it:
+
+```sql
+-- Correct
+SELECT * FROM events WHERE FROM_UNIXTIME(epoch_col) >= '2024-01-01'::TIMESTAMP;
+
+-- Error: IncorrectTypeError - epoch_col is an INTEGER
+SELECT * FROM events WHERE epoch_col >= '2024-01-01'::TIMESTAMP;
+```
+
+`FROM_UNIXTIME` reads **seconds**, and a fractional value keeps its sub-second part. Milliseconds
+are a common source of dates far in the future - divide first, and note that a value beyond year
+9999 fails with `ValueError: year must be in 1..9999` rather than saturating:
+
+```sql
+SELECT FROM_UNIXTIME(epoch_millis / 1000) FROM events;
+```
+
+Both directions are lossy in the same way: `UNIXTIME` and `EXTRACT(EPOCH ...)` truncate to whole
+seconds, so a microsecond-precision timestamp does not survive a round trip unchanged.
 
 ## Arithmetic
 
@@ -305,24 +355,109 @@ Example:
 SELECT TRUNC(event_time, 'month') FROM events;
 ```
 
+## Bucketing
+
+`TRUNC` snaps a timestamp to the start of a calendar unit. `TIME_BUCKET` does the same for
+*multiples* of a unit - 15 minutes, 6 hours, 2 weeks - which is what most time-series grouping
+actually needs:
+
+```sql
+TIME_BUCKET(magnitude, units, timestamp)
+```
+
+The magnitude comes first and the value last - a common mistake is to write the timestamp first,
+which fails with an `IncompatibleTypesError` naming each mismatched argument.
+
+```sql
+SELECT TIME_BUCKET(15, 'minute', event_time) AS bucket,
+       COUNT(*) AS events
+  FROM events
+ GROUP BY bucket
+ ORDER BY bucket;
+```
+
+Supported units are `second`, `minute`, `hour`, `day`, `week`, `month`, `quarter` and `year`. The
+unit is case-insensitive and must be a literal. The magnitude must be a positive integer literal
+too - `0`, a negative number, a fraction and a column reference are all refused.
+
+> Be Aware: `GROUP BY` the **alias**, as above. Repeating the `TIME_BUCKET(...)` expression in the
+> `GROUP BY` clause fails with an internal binding error rather than grouping.
+
+### Bucket alignment
+
+Buckets are aligned to a fixed origin, not to the earliest row in the data, so the same instant
+always lands in the same bucket regardless of what else the query selects:
+
+| Unit | Anchored at |
+| --- | --- |
+| `second`, `minute`, `hour`, `day` | the Unix epoch, `1970-01-01 00:00:00` |
+| `week` | Monday, `1969-12-29` - so every bucket boundary is a Monday |
+| `month`, `quarter`, `year` | January 1970 |
+
+The consequence worth remembering is that a multi-unit bucket is not aligned to the calendar
+period you might expect it to be:
+
+```sql
+-- 2024-02-08, not 2024-02-12: 7-day buckets count days from the epoch, they are not weeks
+SELECT TIME_BUCKET(7, 'day', '2024-02-14 10:37:00'::TIMESTAMP);
+
+-- 2024-02-12 - use the week unit when Monday alignment is what is wanted
+SELECT TIME_BUCKET(1, 'week', '2024-02-14 10:37:00'::TIMESTAMP);
+
+-- 2023-10-01: 5-month buckets are counted from January 1970, not from January 2024
+SELECT TIME_BUCKET(5, 'month', '2024-02-14 10:37:00'::TIMESTAMP);
+```
+
+`TIME_BUCKET` returns `TIMESTAMP[us]` - the start of the bucket - for both `DATE` and `TIMESTAMP`
+input, and returns `NULL` for `NULL` input, so empty timestamps collect in their own group rather
+than being dropped.
+
+Where the bucket is exactly one unit wide, `TRUNC(value, unit)` and `TIME_BUCKET(1, unit, value)`
+agree.
+
+## Aligning Two Time Series
+
+Timestamps from two sources rarely line up exactly, so an equality join between them matches
+almost nothing. `ASOF JOIN` matches each left row to the nearest right row by an inequality
+instead - the price that was current when the trade happened, the config that was live when the
+error was logged:
+
+```sql
+SELECT e.event_time, p.price
+  FROM events AS e
+  ASOF JOIN prices AS p
+    MATCH_CONDITION(e.event_time >= p.priced_at);
+```
+
+`MATCH_CONDITION` takes exactly one inequality between a plain column from each relation. Every
+left row is kept; where nothing satisfies the condition the right columns come back `NULL`.
+
+There is no partitioning key, so the nearest match is taken across the whole right relation. When
+the series are per-symbol, per-device or per-tenant, filter both sides to one key first - joining
+first and filtering in `WHERE` afterwards discards rows rather than matching within each key.
+
+See [ASOF JOIN](/docs/reference/sql/statements/joins#asof-join) for the full semantics, including tie handling and
+the operators accepted.
+
 ## Supported Date Parts
 
 Recognized date parts and support across functions - <img src="/images/square-check.svg" alt="" class="table-check" /> supported, <img src="/images/square-x.svg" alt="" class="table-check" /> not supported, <img src="/images/alert-triangle.svg" alt="" class="table-check" /> supported but see the note:
 
-| Part | TRUNC | EXTRACT | DATEDIFF | Notes |
-| --- | :---: | :---: | :---: | --- |
-| microsecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| millisecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| second | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| minute | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| hour | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| day | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
-| dow | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of week - no function accepts it; use `FORMAT_TIMESTAMP('%u', ts)` |
-| week | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | ISO week (starts Monday); for EXTRACT use `FORMAT_TIMESTAMP('%V', ts)` |
-| month | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 30 |
-| quarter | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 91 |
-| doy | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of year - use `FORMAT_TIMESTAMP('%j', ts)` |
-| year | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| Part | TRUNC | TIME_BUCKET | EXTRACT | DATEDIFF | Notes |
+| --- | :---: | :---: | :---: | :---: | --- |
+| microsecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| millisecond | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| second | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| minute | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| hour | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| day | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| dow | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of week - no function accepts it; use `FORMAT_TIMESTAMP('%u', ts)` |
+| week | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | ISO week (starts Monday); for EXTRACT use `FORMAT_TIMESTAMP('%V', ts)` |
+| month | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 30 |
+| quarter | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/alert-triangle.svg" alt="Supported with caveats" class="table-check" /> | DATEDIFF approximates as days / 91 |
+| doy | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | day of year - use `FORMAT_TIMESTAMP('%j', ts)` |
+| year | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> |  |
+| epoch | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | <img src="/images/square-check.svg" alt="Supported" class="table-check" /> | <img src="/images/square-x.svg" alt="Not supported" class="table-check" /> | whole Unix epoch seconds; equivalent to `UNIXTIME(ts)`, see [Unix Epoch Time](#unix-epoch-time) |
 
 ## Limitations
 
@@ -330,6 +465,9 @@ Recognized date parts and support across functions - <img src="/images/square-ch
 - Intervals cannot be compared to one another in any unit — compare timestamps or a `DATEDIFF` result instead
 - DATEDIFF `month`, `quarter` and `year` are day-count approximations, not calendar differences
 - EXTRACT does not accept `WEEK`, `DOW` or `DOY`
+- TIME_BUCKET takes a literal positive integer magnitude - a column or an expression is refused
+- TIME_BUCKET buckets are anchored to a fixed origin, so multi-unit buckets do not align to the calendar period of the same size
+- ASOF JOIN matches on a single inequality and has no partitioning key
 - `CAST ... FORMAT` has numeric elements only - no month or day names, no `AM`/`PM`, no timezone
 - All timestamps are stored and compared in UTC
 

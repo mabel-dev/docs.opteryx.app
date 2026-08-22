@@ -315,8 +315,37 @@ An `ASOF JOIN` matches each row from the left relation to the closest row in the
 ### Parameters
 
 - **`MATCH_CONDITION( <condition> )`** — used instead of `ON`. The condition must be a single
-  inequality comparing one column from each relation. Only `>=` and `<=` are supported;
+  inequality comparing one column from each relation. `>`, `>=`, `<` and `<=` are supported;
   equality (`=`) and not-equal (`!=`) are not.
+
+Both sides of the condition must be plain columns carried by their relation — an expression
+(`e.ts >= p.ts + INTERVAL '1' MINUTE`) or a constant is not supported. Compute the value in a
+subquery first if the match needs an offset.
+
+`ASOF JOIN` keeps every row from the left relation. Where no right row satisfies the condition —
+including where the left value is `NULL` — the right columns are null-extended, as they would be
+in a `LEFT JOIN`. `LEFT ASOF JOIN` is not accepted as syntax; the join is already outer in this
+sense.
+
+Where several right rows tie on the match column, one of them is chosen arbitrarily. If ties
+matter, deduplicate the right relation in a subquery before joining.
+
+### No partitioning key
+
+`ASOF JOIN` has no `PARTITION BY`, and `ON` or `USING` cannot be combined with
+`MATCH_CONDITION`. The nearest match is taken across the whole right relation, so a per-key
+series — per symbol, per device, per tenant — needs both sides filtered to one key first:
+
+~~~sql
+SELECT e.event_time, p.price
+  FROM (SELECT * FROM events WHERE symbol = 'AAA') AS e
+  ASOF JOIN (SELECT * FROM prices WHERE symbol = 'AAA') AS p
+    MATCH_CONDITION(e.event_time >= p.priced_at);
+~~~
+
+Joining first and filtering with `WHERE e.symbol = p.symbol` afterwards does **not** give the same
+answer. The nearest match is chosen ignoring the key, so a left row whose nearest match belongs to
+another key is discarded by the filter rather than matched against its own series.
 
 ### Examples
 
@@ -327,6 +356,20 @@ SELECT p.name, p2.name AS match_name
   ASOF JOIN $planets AS p2
     MATCH_CONDITION(p.gravity >= p2.gravity);
 ~~~
+
+#### Value in Effect at the Time of an Event
+The typical time-series shape — each event carries the most recent price at or before it, and an
+event earlier than every price row returns `NULL`:
+
+~~~sql
+SELECT e.event_time, e.symbol, p.price
+  FROM events AS e
+  ASOF JOIN prices AS p
+    MATCH_CONDITION(e.event_time >= p.priced_at);
+~~~
+
+Use `>` instead of `>=` to exclude an exactly-equal timestamp, or `<=` / `<` to match forward in
+time — the next price rather than the last one.
 
 #### Right Relation as a Subquery
 The right relation can be a subquery:
@@ -348,6 +391,7 @@ SELECT p.name, p2.name AS match_name
 
 ## See Also
 
+- [Working with Timestamps](/docs/reference/sql/advanced/adv-working-with-timestamps)
 - [SELECT](select)
 - [WHERE](where)
 - [WITH (CTE)](with)
