@@ -82,6 +82,14 @@ SOURCES = {
     # generators) read — a window function the engine gains must land here to
     # be visible to the docs pipeline at all.
     "windows.json": "windows.json",
+    # Expression SYNTAX — CAST, CASE WHEN, BETWEEN, EXISTS, IN (subquery),
+    # IS DISTINCT FROM, SIMILAR TO, INTERVAL literals. The catalogs above
+    # partition SQL by clause, operator, function, type, join, window and
+    # variable, and expression syntax falls through every one of them: before
+    # the engine gained this catalog there was no entry anywhere for CAST or
+    # CASE, so anything reading `definitions/` as the complete SQL surface
+    # concluded the dialect has neither.
+    "expressions.json": "expressions.json",
 }
 
 # The docs definitions are written with this indent; keep it stable so a sync

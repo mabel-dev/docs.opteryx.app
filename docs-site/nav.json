@@ -240,6 +240,9 @@
               "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"
             },
             {
+              "GENERATE_SERIES": "reference/sql/functions/generate_series.md"
+            },
+            {
               "GREATEST": "reference/sql/functions/greatest.md"
             },
             {

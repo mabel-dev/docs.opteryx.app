@@ -47,6 +47,8 @@ Operator     | Description
 `NOT RLIKE`  | Negation of `RLIKE` (aliases: `!~`, `NOT SIMILAR TO`)
 `~*`         | Case-insensitive regular expression matching
 `IS`         | Special comparison for `true`, `false`, and `null`
+`IS DISTINCT FROM`     | Null-safe inequality; never returns `null`
+`IS NOT DISTINCT FROM` | Null-safe equality; never returns `null`
 `|`          | Bitwise OR
 `&`          | Bitwise AND
 `^`          | Bitwise XOR
@@ -118,6 +120,117 @@ SELECT name,
   FROM $planets;
 ~~~
 
+### IS DISTINCT FROM
+
+`IS DISTINCT FROM` compares two values without SQL's three-valued logic. It is **total** — it always returns `true` or `false`, never `null`, which is the reason to reach for it over `<>`.
+
+Predicate                    | `a` = 1, `b` = 2 | `a` = 1, `b` = 1 | `a` = `null`, `b` = 1 | both `null`
+---------------------------- | :--------------: | :--------------: | :-------------------: | :---------:
+a `<>` b                     | true             | false            | _null_                | _null_
+a `IS DISTINCT FROM` b       | true             | false            | true                  | false
+a `IS NOT DISTINCT FROM` b   | false            | true             | false                 | true
+
+~~~sql
+SELECT * FROM $planets WHERE name IS DISTINCT FROM 'Earth';
+~~~
+
+### IN
+
+`IN` tests membership. The right-hand side may be a constant list, a subquery, or an array expression.
+
+~~~sql
+-- a constant list
+SELECT * FROM $planets WHERE id IN (1, 2, 3);
+
+-- a subquery
+SELECT * FROM $planets WHERE id IN (SELECT id FROM $planets WHERE numberOfMoons > 0);
+
+-- the elements of an array
+SELECT * FROM $planets WHERE name IN UNNEST(['Earth', 'Mars']);
+~~~
+
+Each form negates with `NOT IN`.
+
+Every element of a constant list must be a constant and they must all share one type. Arithmetic is allowed and folded before the query runs — `d_year IN (1999, 1999 + 1)` is accepted — but an element that does not reduce to a constant is rejected.
+
+> Be Aware: `NOT IN UNNEST(...)` is not currently executable. It lowers to a universally-quantified comparison, which has no kernel; see Quantified Comparisons below.
+
+### EXISTS
+
+`EXISTS` tests whether a subquery returns any row at all, and negates with `NOT EXISTS`. It may be used as a predicate or projected as a value.
+
+~~~sql
+SELECT name
+  FROM $planets AS p
+ WHERE EXISTS (SELECT 1 FROM $planets AS q WHERE q.id = p.id AND q.numberOfMoons > 0);
+~~~
+
+The subquery is usually correlated, as above. Opteryx decorrelates it during planning rather than evaluating it once per row.
+
+### Quantified Comparisons
+
+A comparison may be quantified over an array with `ANY`, which holds when the comparison is true for at least one element.
+
+~~~sql
+SELECT * FROM $planets WHERE id = ANY(ARRAY[1, 2]);
+SELECT * FROM $planets WHERE name LIKE ANY ('E%', 'M%');
+~~~
+
+The pattern operators (`LIKE`, `ILIKE`, `RLIKE`) take the quantifier too. The patterns must be bracketed.
+
+> Warning: `ALL` — `= ALL(...)`, `<> ALL(...)`, `> ALL(...)` — parses but does not execute. No universally-quantified comparison has an implementation, so a query using one fails at execution rather than at planning. `NOT IN UNNEST(...)` lowers to this form and is affected too.
+
+### MATCH ... AGAINST
+
+`MATCH` scores a column against a query string by embedding cosine similarity — it is not MySQL-style full-text search.
+
+~~~sql
+SELECT * FROM $planets WHERE MATCH (name) AGAINST ('Earth');
+~~~
+
+Exactly one column may be matched at a time. The threshold is set with `SET match_threshold`. MySQL's search modifiers (`IN NATURAL LANGUAGE MODE` and friends) are rejected rather than accepted and ignored.
+
+## Literals
+
+Literal            | Example                  | Notes
+:----------------- | :----------------------- | :----
+String             | `'text'`                 | Double quotes also delimit a string, not an identifier
+Number             | `1`, `1.5`, `-1`         | An exact integer takes the narrowest type that holds it
+Boolean            | `TRUE`, `FALSE`          |
+Null               | `NULL`                   |
+Hexadecimal        | `0x1F`                   | An integer, not a binary string
+Array              | `['a', 'b']`, `(1, 2)`   | All elements must share one type
+Interval           | `INTERVAL '1' DAY`       | See below
+
+### Array literals
+
+Both the bracket form `['a', 'b']` and the parenthesised form `(1, 2)` build an array, and every element must share one type.
+
+An array literal is an **operand**, not a projectable value: it can appear on the right of `IN UNNEST`, `= ANY` or the array containment operators, but `SELECT ['a', 'b']` is rejected.
+
+### INTERVAL
+
+`INTERVAL` is the one type-prefixed string literal the dialect accepts. The value must be quoted, and a unit is required.
+
+~~~sql
+SELECT NOW() - INTERVAL '1' DAY;
+SELECT INTERVAL '1 3' YEAR TO MONTH;
+~~~
+
+Units are `YEAR`, `MONTH`, `DAY`, `HOUR`, `MINUTE` and `SECOND`. The compound form spans a contiguous run of them starting at the leading unit.
+
+Intervals are carried as a months-and-microseconds pair — the two components that cannot be converted into one another without a calendar.
+
+## Subscripts
+
+An array element is read positionally with a subscript. The subscript must be an integer literal.
+
+~~~sql
+SELECT name[0] FROM $planets;
+~~~
+
+Struct fields are read with the arrow operators (`->`, `->>`) instead, not with a subscript.
+
 ## Type Casting
 
 Opteryx supports two equivalent syntaxes for casting values between types.
@@ -135,6 +248,17 @@ value::type
 ~~~
 
 Both forms are interchangeable. The `::` shorthand is more concise and common in practice.
+
+### TRY_CAST
+
+`TRY_CAST` (and its alias `SAFE_CAST`) is the non-raising form: where `CAST` raises on a value it cannot convert, `TRY_CAST` yields `null` for that value.
+
+~~~sql
+SELECT TRY_CAST('not a number' AS INTEGER);  -- null
+SELECT CAST('not a number' AS INTEGER);      -- error
+~~~
+
+There is no `::` shorthand for the try form.
 
 ### Temporal types
 

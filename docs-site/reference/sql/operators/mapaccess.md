@@ -20,7 +20,7 @@ Returns the element at the requested index from an array, string, or blob-like v
 ## Parameters
 
 - **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array), [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`vector`](../types/vector).
-- **`<index>`** — The zero-based position to read. An index past the end gives NULL rather than raising. Accepts [`integer`](../types/integer).
+- **`<index>`** — The zero-based position to read: 0 is the first element. A negative index counts back from the end, so -1 is the last. An index past either end gives NULL rather than raising. Accepts [`integer`](../types/integer).
 
 ## Returns
 
@@ -36,6 +36,14 @@ SELECT ARRAY['a','b','c'][0];
 
 ```
 a
+```
+
+```sql
+SELECT ARRAY['a','b','c'][-1];
+```
+
+```
+c
 ```
 
 ```sql
@@ -56,7 +64,7 @@ NULL
 
 ## Notes
 
-Subcript access is zero-based, the first element is at index 0. For arrays the result type depends on the array element type, so the exported result type may be dynamic.
+Subscript access is ZERO-based and accepts negative indexes, which count back from the end: `[0]` is the first element and `[-1]` the last. Most SQL dialects index arrays from 1, so a query ported from one of those reads the WRONG element rather than erroring - an out-of-range index gives NULL, so nothing signals the mistake. For arrays the result type depends on the array element type, so the exported result type may be dynamic.
 
 ## See Also
 

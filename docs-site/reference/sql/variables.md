@@ -28,7 +28,7 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 |---|---|---|
 | `array_agg_memory_budget_bytes` | INT64 | `536870912` |
 | `billing_account` | VARCHAR | _per session_ |
-| `build` | INT64 | `3251` |
+| `build` | INT64 | `3302` |
 | `character_set_client` | VARCHAR | `utf8` |
 | `cidr_agg_emit_budget_bytes` | INT64 | `536870912` |
 | `cidr_agg_state_budget_bytes` | INT64 | `536870912` |
