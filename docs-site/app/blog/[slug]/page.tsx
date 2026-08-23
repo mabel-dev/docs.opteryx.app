@@ -163,9 +163,11 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
-  const { frontmatter, body } = parseFrontmatter(source);
+  // readMarkdownFile has already stripped the frontmatter, so parse the raw file
+  // for the metadata and use `source` as the body.
+  const { frontmatter } = parseFrontmatter(fs.readFileSync(mdPath, "utf8"));
   const postDate = frontmatter.date as string | undefined;
-  const html = await renderMarkdownToHtml(body, {
+  const html = await renderMarkdownToHtml(source, {
     addHeadingIds: true,
     transformCallouts: true,
   });
@@ -204,6 +206,11 @@ export default async function Page({ params }: Props) {
         <article className="post-body">
           <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
           <div className="post-footer">
+            <p className="post-disclaimer">
+              {`This post was accurate at the time of publication${
+                postDate ? ` (${postDate})` : ""
+              }. Later releases may have changed the behaviour described here.`}
+            </p>
             <div className="post-author-card">
               <span className="author-avatar">JJ</span>
               <div className="who">

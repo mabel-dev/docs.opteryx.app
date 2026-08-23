@@ -4913,3 +4913,12 @@ kbd {
     color: var(--muted-2);
     line-height: 1.5;
 }
+
+/* Publication-date note at the top of the post footer — deliberately quiet. */
+.post-disclaimer {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+}
