@@ -73,6 +73,19 @@ Refresh after you create, rename, or drop tables — or whenever you want the tr
 
 If your catalog cannot be reached, the refresh fails and the stored list is left exactly as it was.
 
+## Grants Take Time to Reach Opteryx
+
+A grant you make is not visible to Opteryx immediately, and the delay is longer than IAM's own. Opteryx authenticates with a token that carries its group memberships **as they were when the token was issued**, so a newly granted identity is not seen until that token expires and a new one is issued — up to an hour.
+
+Underneath that, IAM takes its own few minutes, and permissions do not all become active together. In testing, one query failed on four different permissions in turn, minutes apart, as each landed: the auth scope, then `serviceusage.services.use`, then `biglake.tables.get`, then `storage.objects.get` on the data files.
+
+So after granting, expect the first queries to fail, and read the errors rather than changing settings:
+
+- **The error changes between attempts** — grants are still landing. Wait.
+- **The error is identical for an hour** — something is genuinely missing. Use the table below.
+
+If you have granted everything and only the data-file read still fails (`Parquet pipeline error: HTTP 403`), the grants are correct and Opteryx is holding a token issued before them. That clears on its own.
+
 ## Querying
 
 Nothing special. The workspace name is the first identifier, your Iceberg namespace and table follow:
@@ -121,29 +134,54 @@ Grant the principal read-only access. Opteryx never writes.
 
 ## Example: Google BigLake
 
-BigLake's Iceberg REST catalog authenticates with Google credentials, so this is the ambient case — no secret is stored at all. Grant the identity shown in the connection form read access to the catalog and to the underlying bucket.
+BigLake's Iceberg REST catalog authenticates with Google credentials, so this is the ambient case — no secret is stored at all.
 
 ```json
 {
   "catalog_type": "rest",
   "uri": "https://biglake.googleapis.com/iceberg/v1/restcatalog",
-  "warehouse": "bl://projects/PROJECT/catalogs/CATALOG",
+  "warehouse": "gs://YOUR-WAREHOUSE-BUCKET",
   "auth": { "type": "google", "google": { "scopes": ["https://www.googleapis.com/auth/cloud-platform"] } },
   "header.x-goog-user-project": "PROJECT"
 }
 ```
 
+The `warehouse` takes one of two forms, depending on how your catalog was created. A single-bucket catalog (`CATALOG_TYPE_GCS_BUCKET`, whose name *is* the bucket name) uses `gs://BUCKET`. A multi-bucket catalog (`CATALOG_TYPE_BIGLAKE`) uses `bl://projects/PROJECT/catalogs/CATALOG`.
+
+`auth.google.scopes` is not optional in practice. The field is labelled optional and shows the value below as grey placeholder text — that grey is an example, not a value. Leave it empty and the connection fails at authentication with `invalid_scope`.
+
 `header.x-goog-user-project` sets the project billed for the catalog requests.
+
+### Grants
+
+Three roles, and all three are needed. Replace `OPTERYX_IDENTITY` with the identity shown in the connection form:
+
+```bash
+gcloud projects add-iam-policy-binding PROJECT \
+  --member="OPTERYX_IDENTITY" --role="roles/biglake.viewer"
+
+gcloud projects add-iam-policy-binding PROJECT \
+  --member="OPTERYX_IDENTITY" --role="roles/serviceusage.serviceUsageConsumer"
+
+gcloud storage buckets add-iam-policy-binding gs://YOUR-WAREHOUSE-BUCKET \
+  --member="OPTERYX_IDENTITY" --role="roles/storage.objectViewer"
+```
+
+`serviceusage.serviceUsageConsumer` is the one people miss, and it is invisible until you try. The BigLake API attributes each call to a project, and a caller from outside that project must be permitted to use it. Anyone testing from inside their own project never sees this, because a project's own members can always use it — it appears only once the caller is genuinely external, which Opteryx always is.
+
+The bucket grant is on the one bucket holding your warehouse, not on the project. Opteryx can see nothing else.
+
+If your organization enforces `iam.allowedPolicyMemberDomains`, these grants are refused before IAM evaluates them, because the identity is outside your organization. Add Opteryx's customer ID to the allowed values first.
 
 ## AWS S3 Tables and AWS Glue
 
 **Not supported today.** Both are worth stating plainly rather than leaving to a failed connection test.
 
-Amazon S3 Tables does expose an Iceberg REST endpoint, so it looks like it should drop into the settings above. It doesn't, for three separate reasons, each of which is on its own sufficient:
+Amazon S3 Tables does expose an Iceberg REST endpoint, so it looks like it should drop into the settings above. It doesn't, for two reasons, each of which is on its own sufficient:
 
 1. **It authenticates with AWS SigV4**, which signs every request with an access key ID *and* a secret access key. A binding stores exactly one secret. There is no shape of the current credential store that carries an AWS key pair.
 2. **Ambient mode is a Google identity.** Opteryx's engine runs on Google Cloud and its ambient credential is a Google service account — there is nothing for an AWS account to grant it.
-3. **The engine has no S3 reader.** Even with catalog access solved, the scan path reads data files from Google Cloud Storage, HTTPS, or local disk. An `s3://` data file has nowhere to go.
+The engine *can* now read `s3://` data files — a scan resolves an S3 path and reads it with the same range-read path it uses for Google Cloud Storage, so that is no longer one of the reasons. The two above are each still sufficient on their own.
 
 AWS Glue is a different protocol again — not a REST-spec catalog — and is not one of the catalog types Opteryx offers.
 
@@ -152,6 +190,8 @@ What *does* work today is any Iceberg REST catalog that authenticates with a bea
 ## Rotating a Credential
 
 Publish the new secret through the Catalog settings panel, or `PUT` the binding again. Every write bumps the binding's version, and every worker rebuilds its connection on the next query that touches the workspace — no restart, no redeploy, no window where queries fail.
+
+That applies to the binding's own settings and to a **stored** secret. It does not apply to **ambient** mode, where there is no secret to rotate: changing what the ambient identity is allowed to do is a change in *your* IAM, not a binding write, so nothing here notices it and the previous section's timing applies instead.
 
 Rotate at your catalog first if the old secret must stop working immediately: a revoked client secret stops new tokens being issued, but an already-issued bearer token stays valid until it expires. That is how OAuth2 is specified, not a gap in Opteryx.
 
@@ -240,6 +280,17 @@ There is no SQL for any of this. There is no `ALTER WORKSPACE … SET CATALOG`, 
 Query and processing charges are the same as for any workspace — see the [Cost Model](/docs/core-concepts/cost-model). Storage never appears on your bill for a connected workspace, because Opteryx stores nothing. Your catalog provider bills you for what Opteryx asks of them, which is one reason the dataset-list refresh is yours to trigger.
 
 ## Troubleshooting
+
+**A permission error, and you have granted everything.** Match the message — each one names a different missing piece, and they surface in this order:
+
+| Message contains | What it means |
+|---|---|
+| `invalid_scope` | Google auth scopes is empty. Set it to `https://www.googleapis.com/auth/cloud-platform`. |
+| `Caller does not have required permission to use project` | `roles/serviceusage.serviceUsageConsumer` on the project. |
+| `biglake.catalogs.get denied` | `roles/biglake.viewer` on the project. |
+| `biglake.tables.get denied` | `roles/biglake.viewer` again — the grant is right, it has not reached Opteryx yet. |
+| `storage.objects.get denied` | `roles/storage.objectViewer` on the warehouse bucket. |
+| `Parquet pipeline error: HTTP 403` | The data files, read after the catalog. The last to clear, and usually a token that predates your grant. |
 
 **"Dataset not found" on a table you know exists.** The dataset list is stale, or the table is outside the namespaces your credential can list. Refresh the dataset list; the error tells you how old it is.
 
