@@ -64,7 +64,7 @@ table's files outright rather than marking every row in them.
 where it sits, and readers skip it from that point on. The cost of the statement scales
 with how many rows are removed, not with the size of the table, and a `DELETE` writes no
 new data at all. Files whose every row has been removed leave the table entirely; the rest
-are cleaned up by `OPTIMIZE TABLE`.
+are cleaned up by [OPTIMIZE TABLE](optimize-table).
 
 The statement reads only the columns its condition needs. Nothing else is decoded.
 
@@ -135,6 +135,7 @@ DELETE FROM ran out of address budget tracking which rows of <table> it has acte
 
 ## See Also
 
+- [OPTIMIZE TABLE](optimize-table)
 - [UPDATE](update)
 - [MERGE](merge)
 - [INSERT](insert)

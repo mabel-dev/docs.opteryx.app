@@ -72,7 +72,7 @@ UPDATE catalogue.staging.batch SET imported_at = CURRENT_TIMESTAMP;
 There is no in-place mutation. The old version of each row is marked as deleted where it
 sits and the new version is written alongside it, both in one commit. Files the statement
 never touched are not rewritten, so the cost scales with how many rows change, not with the
-size of the table. Removed rows are cleaned up by `OPTIMIZE TABLE`.
+size of the table. Removed rows are cleaned up by [OPTIMIZE TABLE](optimize-table).
 
 Because a partial `SET` list rebuilds a whole row, the statement reads every column of the
 rows it changes — that is what makes the omitted columns keep their values.
@@ -151,6 +151,7 @@ UPDATE ran out of address budget tracking which rows of <table> it has acted on.
 
 ## See Also
 
+- [OPTIMIZE TABLE](optimize-table)
 - [DELETE](delete)
 - [MERGE](merge)
 - [INSERT](insert)

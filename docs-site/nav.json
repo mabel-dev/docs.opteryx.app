@@ -502,6 +502,9 @@
               "MERGE": "reference/sql/statements/merge.md"
             },
             {
+              "OPTIMIZE TABLE": "reference/sql/statements/optimize-table.md"
+            },
+            {
               "ORDER BY": "reference/sql/statements/order-by.md"
             },
             {
