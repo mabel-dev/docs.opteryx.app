@@ -98,7 +98,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 ### Query Parameters
 
 - **$filter** `string | null` [query; optional]
-  OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error.
+  OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string), now()/year()/month()/day()/hour()/minute()/second()/date() (date and time). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error. A rolling window combines now() with an ISO 8601 duration, e.g. published_at ge now() sub duration'P30D'.
 - **$top** `integer | null` [query; optional]
   Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.
 - **$skip** `integer | null` [query; optional]

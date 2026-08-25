@@ -176,7 +176,48 @@ curl 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories?$filter=p
 
 Truncate to five digits, or drop the fractional part, when building a literal from a machine-generated timestamp.
 
-To filter a rolling window, compute the boundary in the calling code and interpolate it - OData has no `now()` and no relative-date syntax.
+### Date functions and rolling windows
+
+`now()` is the current UTC instant. It takes no arguments and is evaluated once
+per query, so every row is compared against the same moment rather than a clock
+that drifts as the scan proceeds.
+
+Combined with an ISO 8601 duration literal and `add`/`sub`, it expresses a
+rolling window server-side, which keeps the query correct when it's re-run
+tomorrow:
+
+```bash
+curl "https://odata.opteryx.app/api/v4/public/security/ghsa_advisories?\$filter=published_at ge now() sub duration'P30D'&\$count=true&\$top=5"
+```
+
+The duration is ISO 8601: `P<n>D` days, `P<n>M` months, `P<n>Y` years, and
+after a `T`, `PT<n>H` hours, `PT<n>M` minutes, `PT<n>S` seconds. Parts combine -
+`P1DT2H30M` is a day and a half-past-two. Years and months are calendar-aware:
+`P1Y` is a calendar year, not 365.25 days. Weeks (`P2W`) are **not** accepted;
+write the equivalent in days.
+
+The date component functions return integers, and work on `DATE` and `TIMESTAMP`
+columns alike:
+
+| Function | Returns | Example |
+| --- | --- | --- |
+| `year(col)`, `month(col)`, `day(col)` | integer | `year(date_added) eq 2025` |
+| `hour(col)`, `minute(col)`, `second(col)` | integer | `hour(published_at) eq 9` |
+| `date(col)` | date | `date(published_at) eq 2026-08-03` |
+
+`hour()`, `minute()` and `second()` are only meaningful on a `TIMESTAMP` column.
+`date()` narrows a timestamp to its day, so `date(published_at) eq 2026-08-03`
+matches the whole day where `published_at eq 2026-08-03` matches only midnight.
+
+Prefer a literal range over a component function where both express the same
+question. `date_added ge 2025-01-01 and date_added lt 2026-01-01` can skip whole
+files using their stored min/max, while `year(date_added) eq 2025` has to read
+every row to evaluate the function.
+
+`time()`, `mindatetime()` and `maxdatetime()` parse - they're part of the OData
+v4 grammar - but aren't implemented, and return a 400 naming what to write
+instead. There's no cast from a timestamp to a time, and the extremes of
+`Edm.DateTimeOffset` fall outside the range an Opteryx timestamp can hold.
 
 ### Aggregating with `$apply`
 
