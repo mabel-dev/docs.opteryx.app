@@ -13,7 +13,7 @@ Opteryx scales up, not out. It runs as one process on one machine — there is n
 
 ## Not a transactional store
 
-There is no `COMMIT`, `ROLLBACK`, `SET TRANSACTION`, or isolation level — a query reads the snapshot it resolves at plan time. `INSERT` is experimental and limited to some storage backends; `UPDATE` and `DELETE` are rejected at parse time in favour of a rewrite-the-table approach. Integrity constraints (`PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, `UNIQUE`) are accepted in `CREATE TABLE` syntax but not enforced. See [SQL Conformance](/docs/reference/sql/conformance) for the complete statement-by-statement breakdown.
+There is no `COMMIT`, `ROLLBACK`, `SET TRANSACTION`, or isolation level — a query reads the snapshot it resolves at plan time. Each statement is its own atomic commit and there is no way to group several into one. `INSERT` is experimental and limited to some storage backends; `UPDATE`, `DELETE` and `MERGE` are experimental and need a catalog-backed table. There is no locking: a write built against a version of a table that another writer has since replaced is refused, not queued or retried. Integrity constraints (`PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, `UNIQUE`) are accepted in `CREATE TABLE` syntax but not enforced. See [SQL Conformance](/docs/reference/sql/conformance) for the complete statement-by-statement breakdown.
 
 ## Storage and file formats
 

@@ -310,13 +310,17 @@
         "implementation": "opteryx.planner.logical_planner.logical_planner_builders.all_op",
         "lowering": "COMPARISON_OPERATOR named 'AllOp' + the comparison, e.g. AllOpNotEq",
         "node_type": "COMPARISON_OPERATOR",
-        "notes": "Plans, but does not run. No AllOp form has a kernel: the ordering comparisons are rejected as unknown operators, and AllOpEq/AllOpNotEq are rejected as outside the c-native predicate set. `NOT IN UNNEST(...)` lowers here and inherits the gap.",
-        "status": "unsupported",
+        "notes": "The PATTERN forms run natively (draken_like_any): `LIKE ALL` requires every pattern to match, and `NOT LIKE ALL` requires none of them to - the latter is the De Morgan dual of `LIKE ANY`, NOT the negation of `LIKE ALL`. The COMPARISON forms plan but do not run: the ordering comparisons are rejected as unknown operators, and AllOpEq/AllOpNotEq are rejected as outside the c-native predicate set. `NOT IN UNNEST(...)` lowers here and inherits that gap. The patterns must be bracketed.",
+        "status": "partial",
         "summary": "Universally-quantified comparison.",
         "syntax_forms": [
             "expr = ALL(array)",
             "expr <> ALL(array)",
-            "expr > ALL(array)"
+            "expr > ALL(array)",
+            "expr LIKE ALL (patterns)",
+            "expr NOT LIKE ALL (patterns)",
+            "expr ILIKE ALL (patterns)",
+            "expr NOT ILIKE ALL (patterns)"
         ]
     },
     "QUANTIFIED_ANY": {
@@ -328,7 +332,7 @@
         "implementation": "opteryx.planner.logical_planner.logical_planner_builders.any_op",
         "lowering": "COMPARISON_OPERATOR named 'AnyOp' + the comparison, e.g. AnyOpEq",
         "node_type": "COMPARISON_OPERATOR",
-        "notes": "The pattern operators take the quantifier too - `name LIKE ANY ('a%', 'b%')` builds AnyOpLike. The patterns must be bracketed.",
+        "notes": "The pattern operators take the quantifier too - `name LIKE ANY ('a%', 'b%')` builds AnyOpLike. The patterns must be bracketed. `NOT LIKE ANY` and `NOT ILIKE ANY` are REFUSED: they decompose to `NOT(a AND b)`, which is true unless every pattern matches, and that is almost never what is meant. Write `NOT LIKE ALL (patterns)` for rows matching none of the patterns, or `NOT (LIKE ALL (patterns))` for the literal reading.",
         "status": "active",
         "summary": "Existentially-quantified comparison.",
         "syntax_forms": [
@@ -375,13 +379,13 @@
             "SimilarTo"
         ],
         "category": "pattern",
-        "documentation": "Pattern match against the expression on the right.",
+        "documentation": "Refused. SQL-standard pattern match, which Opteryx does not implement.",
         "implementation": "opteryx.planner.logical_planner.logical_planner_builders.pattern_match",
-        "lowering": "RLike (negated: NotRLike)",
+        "lowering": "none - raises UnsupportedSyntaxError",
         "node_type": "COMPARISON_OPERATOR",
-        "notes": "The pattern is a REGULAR EXPRESSION, not a SQL-standard SIMILAR TO pattern - this is a spelling of RLIKE, and the same lowering is applied to the PostgreSQL regex operators. The resulting operators are catalogued in operators.json.",
-        "status": "active",
-        "summary": "Regex pattern match.",
+        "notes": "REFUSED as of 2026-08-24. SIMILAR TO is its own SQL pattern language - `%` and `_` are the wildcards, `.` is a literal dot - and Opteryx has no implementation of it. It previously parsed and then applied POSIX REGEX to the pattern, which agrees with the standard only by coincidence: `name SIMILAR TO '^C.'` matched C-initial names and would match nothing under the standard. Use RLIKE for regular expressions, LIKE for SQL wildcards. The PostgreSQL regex operators `~` and `!~` were withdrawn at the same time - they were undocumented synonyms for RLIKE / NOT RLIKE, and one spelling per behaviour is the rule. Unary `~` (bitwise NOT) is a different operator and is unaffected.",
+        "status": "unsupported",
+        "summary": "Refused - use RLIKE or LIKE.",
         "syntax_forms": [
             "expr SIMILAR TO 'pattern'",
             "expr NOT SIMILAR TO 'pattern'"

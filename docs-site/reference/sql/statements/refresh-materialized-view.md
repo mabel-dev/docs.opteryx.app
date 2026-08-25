@@ -62,10 +62,15 @@ table modifier is **refused** when its target is a materialized view:
 |-----------|-------------------------------|
 | `CREATE TABLE ... AS SELECT` / `CREATE OR REPLACE TABLE` | Refused |
 | [INSERT](insert) | Refused |
+| [UPDATE](update) | Refused |
+| [DELETE](delete) | Refused |
+| [MERGE](merge) | Refused |
 | [TRUNCATE TABLE](truncate-table) | Refused |
 | [ALTER TABLE ... RENAME TO](alter-table#rename-to) | Refused |
 | `ALTER TABLE ... CLUSTER BY` | Refused |
+| `ALTER TABLE ... ADD / DROP / RENAME COLUMN`, `ALTER COLUMN ... TYPE` | Refused |
 | [DROP TABLE](drop-table) | Refused — use `DROP MATERIALIZED VIEW` |
+| `OPTIMIZE TABLE` | **Allowed** — see below |
 
 This is not a permissions rule and cannot be granted around. A write that landed on a view
 would either be erased by the next refresh or, worse, survive and leave the view disagreeing
@@ -77,6 +82,12 @@ The three statements that *do* change a materialized view:
 - `CREATE OR REPLACE MATERIALIZED VIEW` — change what it is defined as
 - `REFRESH MATERIALIZED VIEW` — rebuild it from that definition
 - `DROP MATERIALIZED VIEW` — remove it
+
+`OPTIMIZE TABLE` is the one modifier a view accepts, and it is allowed for a reason rather
+than by oversight: it compacts the files the view's rows already live in. That is lossless
+and declares no new structure, so the view still holds exactly what its `SELECT` produced
+and there is nothing for the next refresh to disagree with. Refusing it would make views
+the only relations that cannot be maintained.
 
 Reading a materialized view is unrestricted: it is queried exactly like a table.
 

@@ -23,7 +23,7 @@ Each role includes everything the role below it can do - **owner** implies **wri
 
 A couple of things that surprise people:
 
-- **`writer` can truncate a table.** Opteryx doesn't yet support row-level `UPDATE` or `DELETE FROM ... WHERE`, so `TRUNCATE TABLE` (a full wipe) is the only "delete" primitive that exists, and it's granted at the same tier as insert. There's no way to grant append-only access that's protected from truncation.
+- **`writer` can remove data, not just add it.** `TRUNCATE TABLE` (a full wipe), `DELETE`, `UPDATE` and `MERGE` all sit at the same tier as `INSERT` — they are writes to the table's contents, and the engine draws no line between adding rows and removing them. There's no way to grant append-only access that's protected from truncation or deletion.
 - **`writer` cannot replace a table.** `CREATE OR REPLACE TABLE` has the same blast radius as `DROP TABLE` - the existing data and history are gone - so it requires `owner`, even though `CREATE TABLE` for a brand-new table only requires `writer`.
 - **`writer` cannot change a table's clustering.** `ALTER TABLE ... CLUSTER BY` changes the table's physical layout rather than its contents, so it sits at the same `owner` tier as `DROP TABLE`, not the `writer` tier that governs inserts and truncates.
 - **`DROP COLLECTION` checks the grant against the collection's own name, not a pattern over its contents.** An `owner` grant on `workspace.staging.*` covers every table and view *inside* the `staging` collection but does not match `workspace.staging` itself, so it does not permit dropping the collection. You need a grant that matches `workspace.staging` directly - an exact grant on it, or a workspace-wide `workspace.*`.
