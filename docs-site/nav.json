@@ -499,6 +499,9 @@
               "LIMIT / OFFSET": "reference/sql/statements/limit.md"
             },
             {
+              "MERGE": "reference/sql/statements/merge.md"
+            },
+            {
               "ORDER BY": "reference/sql/statements/order-by.md"
             },
             {

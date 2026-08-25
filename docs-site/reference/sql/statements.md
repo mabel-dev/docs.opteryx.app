@@ -32,11 +32,12 @@ Combine results from multiple queries:
 
 ## Data Modification
 
-Statements for inserting data, and row-level statements Opteryx does not yet support:
+Statements for adding and changing data, and row-level statements Opteryx does not yet support:
 
 | Statement | Purpose |
 |-----------|---------|
 | [INSERT](statements/insert) | Add new rows to a table |
+| [MERGE](statements/merge) | Apply a set of changes — update, insert and delete — in one atomic statement |
 | [UPDATE](statements/update) | *Not supported* — see the page for a working alternative |
 | [DELETE](statements/delete) | *Not supported* — see the page for a working alternative |
 
