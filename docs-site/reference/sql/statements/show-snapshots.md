@@ -7,7 +7,7 @@ description: SQL SHOW SNAPSHOTS FOR statement syntax and examples for listing a 
 
 The `SHOW SNAPSHOTS FOR` statement lists a table's commit history — one row per snapshot, newest first, showing when each commit landed, who made it, what kind of operation it was, and how many records, files and bytes it added, deleted and left behind.
 
-Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of) or [VERSION AS OF](version-as-of), so this is the statement that tells you which points those are, and what each one changed. `TIMESTAMP AS OF` selects a snapshot by its `committed_at`; `VERSION AS OF` selects one directly by its `snapshot_id` (or reads `VERSION AS OF PREVIOUS` without looking either up). It answers from catalog metadata; no data files are read.
+Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timestamp-as-of) or [VERSION AS OF](version-as-of), so this is the statement that tells you which points those are, and what each one changed. `TIMESTAMP AS OF` selects a snapshot by its `committed_at`; `VERSION AS OF` selects one directly by its `snapshot_id`, by a tag name from the `tags` column, or as `PREVIOUS` without looking either up. It answers from catalog metadata; no data files are read.
 
 ## Syntax
 
@@ -35,9 +35,15 @@ Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one t
 | `parent_snapshot_id` | The snapshot this one was committed on top of; `null` for the first |
 | `schema_id` | The schema this snapshot was written against |
 | `commit_message` | The commit's message, when one was recorded |
+| `tags` | The tag names bound to this snapshot, as a list; empty for most rows |
 | `added_records` / `added_data_files` / `added_files_size_in_bytes` | What the commit added |
 | `deleted_records` / `deleted_data_files` / `deleted_files_size_in_bytes` | What the commit removed |
 | `total_records` / `total_data_files` / `total_files_size_in_bytes` | What the table held after the commit |
+
+`tags` is also the answer to "why is this old snapshot still here". Snapshots are otherwise
+reclaimed on a schedule, and a tag is the one thing that holds one back — so a row far outside
+the usual history with a name in this column is being kept deliberately, and is being charged
+for. See [CREATE TAG](alter-table#create-tag).
 
 A counter the catalog never recorded is `null`, not `0`. Zero would claim the commit added or deleted nothing; `null` says it was not written down. Older snapshots are the usual case.
 

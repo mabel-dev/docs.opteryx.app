@@ -7,6 +7,12 @@ description: ARRAY
 
 An ordered sequence of elements, all of the same type. Array columns appear when reading Parquet or JSONL files that contain repeated/array fields. The element type is declared as `ARRAY<type>` (e.g. `ARRAY<INTEGER>`, `ARRAY<VARCHAR>`).
 
+## Example
+
+```sql
+SELECT '[1, 2, 3]'::ARRAY<INTEGER>;
+```
+
 ## Comparisons
 
 This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.

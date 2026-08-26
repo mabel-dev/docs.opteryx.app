@@ -122,7 +122,7 @@ Manage tables, table properties, and statistics:
 | Statement | Purpose |
 |-----------|---------|
 | [CREATE TABLE](statements/create-table) | Create a table, or materialize a query as a new or replaced table |
-| [ALTER TABLE](statements/alter-table) | Add, drop, rename or widen a column; set a table's clustering columns; rename/move a table |
+| [ALTER TABLE](statements/alter-table) | Add, drop, rename or widen a column; set a table's clustering columns; rename/move a table; create or drop a snapshot tag |
 | [DROP TABLE](statements/drop-table) | Remove a table |
 | [TRUNCATE TABLE](statements/truncate-table) | Remove all rows from a table |
 | [ANALYZE TABLE](statements/analyze-table) | Collect statistics for query optimization |

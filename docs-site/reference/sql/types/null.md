@@ -7,6 +7,12 @@ description: NULL
 
 The absence of a value. NULL is not a type you declare — it appears when a column has no value or an expression produces no result.
 
+## Example
+
+```sql
+SELECT NULL;
+```
+
 ## Comparisons
 
 This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.

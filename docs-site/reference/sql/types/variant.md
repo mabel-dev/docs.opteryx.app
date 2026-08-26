@@ -7,6 +7,12 @@ description: VARIANT
 
 A semi-structured type produced exclusively by the `->` operator when extracting a JSON field from a VARCHAR/NVARCHAR/VARBINARY column. Use `->` to extract a field as VARIANT (a JSON value), or `->>` to extract the same field as NVARCHAR (JSON strings unquoted to plain text).
 
+## Example
+
+```sql
+SELECT '{"a": 1}' -> 'a';
+```
+
 ## Comparisons
 
 This type does not support direct comparisons with `=`, `<`, or `>`. Extract or cast values first.

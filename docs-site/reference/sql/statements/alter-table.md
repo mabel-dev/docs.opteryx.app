@@ -1,11 +1,11 @@
 ---
 title: ALTER TABLE Statement — Opteryx Reference
-description: SQL ALTER TABLE syntax and examples for adding, dropping, renaming and retyping columns, setting a table's clustering columns, and renaming or moving a table, in Opteryx
+description: SQL ALTER TABLE syntax and examples for adding, dropping, renaming and retyping columns, setting a table's clustering columns, renaming or moving a table, and creating or dropping snapshot tags, in Opteryx
 ---
 
 # ALTER TABLE
 
-The `ALTER TABLE` statement changes a table's columns, its physical layout, or its name. Opteryx supports six operations:
+The `ALTER TABLE` statement changes a table's columns, its physical layout, its name, or which of its snapshots are held from reclamation. Opteryx supports eight operations:
 
 | Operation | Purpose |
 |-----------|---------|
@@ -15,6 +15,8 @@ The `ALTER TABLE` statement changes a table's columns, its physical layout, or i
 | [`ALTER COLUMN ... TYPE`](#alter-column-type) | Widen a column's type |
 | [`CLUSTER BY`](#cluster-by) | Set the columns a catalog-backed table should be sorted/clustered by |
 | [`RENAME TO`](#rename-to) | Rename a table, optionally moving it to another collection |
+| [`CREATE TAG`](#create-tag) | Name a snapshot, and hold it from reclamation for as long as the name exists |
+| [`DROP TAG`](#drop-tag) | Remove the name, releasing the snapshot it held |
 
 Any other `ALTER TABLE` operation — `ADD CONSTRAINT`, `SET DEFAULT`, `SET NOT NULL`, and the rest — is rejected when the query is planned. Opteryx does not enforce integrity constraints, so a statement that only declares one would change nothing; it is refused rather than accepted and silently ignored.
 
@@ -38,6 +40,12 @@ CLUSTER BY ( <column> [, ...] );
 
 ALTER TABLE [ IF EXISTS ] <table_name>
 RENAME TO <new_table_name>;
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+DROP TAG <tag_name>;
 ~~~
 
 `<table_name>` and `<new_table_name>` are fully qualified as
@@ -347,9 +355,128 @@ That means the cost scales with the size of the table, not with the length of th
 
 The vacated storage location is reclaimed by the same background sweep that reclaims dropped tables, not deleted immediately.
 
+## CREATE TAG
+
+~~~sql
+ALTER TABLE [ IF EXISTS ] <table_name>
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
+~~~
+
+A tag is a **name bound to one snapshot, which keeps that snapshot alive**. Snapshots are
+otherwise reclaimed on a schedule you do not control — see
+[Snapshot Reclamation](/docs/reference/sql/advanced/adv-time-travel#snapshot-reclamation) —
+so without a tag there is no way to say "the data the February report was built from" and
+still be able to read it in March. The name is the small half of the feature; the
+keeping-alive is the point.
+
+### Parameters
+
+- **`<tag_name>`** — starts with a letter, then letters, digits and underscores, up to 128
+  characters. No dots, no hyphens. It may be written bare or single-quoted —
+  `CREATE TAG report_202602` and `CREATE TAG 'report_202602'` mean the same thing — and it
+  **folds to lowercase**: `MyTag` and `mytag` are one tag with one spelling.
+- **`AS OF VERSION <snapshot_id>`** — a snapshot id, as reported by
+  [`SHOW SNAPSHOTS FOR`](show-snapshots).
+- **`AS OF VERSION CURRENT`** — the snapshot a plain `SELECT` reads today. This is the
+  default when the clause is omitted entirely.
+- **`AS OF VERSION PREVIOUS`** — the parent of the current snapshot, exactly the one
+  [`VERSION AS OF PREVIOUS`](version-as-of) would read.
+- `IF EXISTS` — skip the operation without error if the table does not exist.
+
+### Tag the Current Version
+~~~sql
+ALTER TABLE workspace.collection.observations
+CREATE TAG report_202602;
+~~~
+
+Equivalent to `AS OF VERSION CURRENT`. The commonest form: name what is there right now,
+before something else lands on top of it.
+
+### Tag a Specific Snapshot
+~~~sql
+ALTER TABLE workspace.collection.observations
+CREATE TAG report_202602 AS OF VERSION 1755000000000;
+~~~
+
+### Tag the Version Before the Current One
+~~~sql
+ALTER TABLE workspace.collection.observations
+CREATE TAG before_the_backfill AS OF VERSION PREVIOUS;
+~~~
+
+### Notes (CREATE TAG)
+
+- **A tag resolves to an id at creation, and stores that id.** `CURRENT` and `PREVIOUS` are
+  looked up once, when the statement runs. A tag holding the word "current" would silently
+  mean something different tomorrow, which is the opposite of what a tag is for.
+- **A tag is immutable.** Re-creating a name that already exists is refused, not silently
+  rebound. To move a name, [`DROP TAG`](#drop-tag) it and create it again — the drop is the
+  visible act that releases the old snapshot.
+- **A tag lives until it is dropped.** Nothing ages it out, no retention setting reaches it,
+  and no refresh supersedes it.
+- **The storage a tag holds is charged.** A tag stops bytes from being reclaimed, and those
+  bytes are billed to the table's workspace like any other stored data, for as long as the
+  tag exists. This is the cost of the guarantee, and it is open-ended by design.
+- **A reclaimed snapshot cannot be tagged.** Its files are already on their way out of
+  storage, so the statement fails rather than creating a name that promises data nobody can
+  produce. Tag it before it ages out, not after.
+- **A table can hold 100 tags.** Nothing ages a tag out, so the limit is the only bound on
+  how much history one table can pin. The hundred-and-first is an error naming the limit,
+  never a silent drop of an older one.
+- **A table with nothing committed to it has no version to tag**, and says so.
+- Requires the `owner` role on the table — the same tier as every other `ALTER TABLE`
+  operation. Creating a tag commits the table's owner to an open-ended storage cost, and
+  dropping one is how data stops being kept; neither is a writer's call. See
+  [Security & Permissions](/docs/core-concepts/access-and-permissions).
+- Requires a catalog-backed table with snapshot history. There is nothing to tag on a
+  connector without one, and the statement is rejected when the query is planned.
+- Accepted against a materialized view — see [Materialized Views](#materialized-views).
+
+## DROP TAG
+
+~~~sql
+ALTER TABLE [ IF EXISTS ] <table_name>
+DROP TAG <tag_name>;
+~~~
+
+Removes the name and **releases the snapshot it was holding**.
+
+### Drop a Tag
+~~~sql
+ALTER TABLE workspace.collection.observations
+DROP TAG report_202602;
+~~~
+
+### Notes (DROP TAG)
+
+- **Dropping a tag is how you agree to lose the data it was holding.** The snapshot returns
+  to the ordinary retention rules immediately, and if it is already older than the retention
+  window it is reclaimed on the next maintenance run — possibly within minutes. There is no
+  grace period, and the data is not recoverable by re-creating the tag afterwards.
+- There is no `IF EXISTS` for the tag itself. A name that is not there is an error, so a
+  typo cannot be mistaken for a successful drop. (The `IF EXISTS` in the syntax above
+  forgives a missing *table*, not a missing tag.)
+- The name becomes reusable at once, which is what makes drop-then-create the sanctioned way
+  to move a tag to a different snapshot.
+- Requires the `owner` role, as `CREATE TAG` does.
+
+## Reading a Tag
+
+A tag is read with [`VERSION AS OF`](version-as-of), naming it instead of a snapshot id:
+
+~~~sql
+SELECT * FROM workspace.collection.observations
+VERSION AS OF 'report_202602';
+~~~
+
+[`SHOW SNAPSHOTS FOR`](show-snapshots) reports the tags on each snapshot in its `tags`
+column, which is also the answer to "why is this old snapshot still here".
+
 ## Materialized Views
 
-`ALTER TABLE` is rejected against a materialized view — every operation, the column ones included. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
+`ALTER TABLE` is rejected against a materialized view for every operation that changes the table's shape, layout or name — the four column operations, `CLUSTER BY` and `RENAME TO`. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
+
+`CREATE TAG` and `DROP TAG` are the exception: they are **accepted** against a materialized view. A view's backing table has an ordinary snapshot history, and a tag on one pins it exactly as it would on any other table. A refresh that supersedes the tagged snapshot does not release it — so a view refreshing every fifteen minutes can hold an unbounded amount of history if it is tagged, bounded only by the hundred-tag limit. See [Notes](#notes-create-tag) below.
 
 ## See Also
 
@@ -357,3 +484,6 @@ The vacated storage location is reclaimed by the same background sweep that recl
 - [DROP TABLE](drop-table)
 - [TRUNCATE TABLE](truncate-table)
 - [ALTER MATERIALIZED VIEW](alter-materialized-view)
+- [SHOW SNAPSHOTS FOR](show-snapshots) — lists a table's snapshots, and the tags on each
+- [VERSION AS OF](version-as-of) — read a snapshot by tag name
+- [Time Travel](/docs/reference/sql/advanced/adv-time-travel) — how long snapshots last, and what a tag changes about that

@@ -1,6 +1,6 @@
 ---
 title: Time Travel Queries in Opteryx - Query Historical Data
-description: Use Opteryx time travel to query data as it existed at a specific point in time using TIMESTAMP AS OF, or a specific snapshot using VERSION AS OF.
+description: Use Opteryx time travel to query data as it existed at a specific point in time using TIMESTAMP AS OF, or a specific snapshot using VERSION AS OF - and tag a snapshot to keep it readable indefinitely.
 ---
 
 # Time Travel
@@ -8,8 +8,8 @@ description: Use Opteryx time travel to query data as it existed at a specific p
 Opteryx can query a catalog-backed table as it existed at a specific point in time. Each
 commit to a table writes a **snapshot**; `TIMESTAMP AS OF` selects the most recent snapshot
 committed at or before the timestamp you give, and reads the table as of that commit.
-[`VERSION AS OF`](#version-as-of) selects a snapshot directly, by id or by its relation to
-the current one, and is covered further down this page.
+[`VERSION AS OF`](#version-as-of) selects a snapshot directly — by id, by a tag name, or by
+its relation to the current one — and is covered further down this page.
 
 ```sql
 SELECT *
@@ -27,7 +27,7 @@ cannot reference a column.
 - If no `TIMESTAMP AS OF` clause is provided, the query reads the current snapshot.
 - `FOR SYSTEM_TIME AS OF` is not accepted; the spelling is `TIMESTAMP AS OF`.
 
-> Warning: **Older snapshots are reclaimed, and may be reclaimed at any point.** Time travel reaches back only as far as the snapshots that still exist, which is not something to plan against — see [Snapshot Reclamation](#snapshot-reclamation) below. A timestamp that resolved yesterday may not resolve today.
+> Warning: **Older snapshots are reclaimed, and may be reclaimed at any point.** Time travel reaches back only as far as the snapshots that still exist, which is not something to plan against — see [Snapshot Reclamation](#snapshot-reclamation) below. A timestamp that resolved yesterday may not resolve today. To keep one specific point readable indefinitely, [tag it](#pinning-a-snapshot-with-a-tag).
 
 ## Examples
 
@@ -102,6 +102,15 @@ SELECT *
 The id is whatever [`SHOW SNAPSHOTS FOR`](/docs/reference/sql/statements/show-snapshots)
 reports in its `snapshot_id` column for the commit you want.
 
+A snapshot that has been [tagged](#pinning-a-snapshot-with-a-tag) is read by name instead,
+and unlike an id it is guaranteed to still resolve:
+
+```sql
+SELECT *
+  FROM my_workspace.sales.orders
+   VERSION AS OF 'report_202602';
+```
+
 For the common case of "the version before this one", `VERSION AS OF PREVIOUS` resolves it
 without a `SHOW SNAPSHOTS FOR` lookup at all:
 
@@ -136,19 +145,64 @@ it, and a `VERSION AS OF` naming it directly (including `PREVIOUS`, if the recla
 was the parent) errors instead. Its data files are then released, passing through a
 quarantine period before deletion.
 
-Reclamation is not configurable per table, and there is no way to pin a snapshot or query how
-long one will survive. Treat reachable history as **best-effort and unbounded in neither
-direction**: it exists until maintenance runs.
+Reclamation is not configurable per table, and there is no way to query how long a given
+snapshot will survive. Treat *untagged* history as **best-effort**: it exists until
+maintenance runs. A [tagged](#pinning-a-snapshot-with-a-tag) snapshot is the exception, and
+the only one — it is held until the tag is dropped.
 
 The practical consequences:
 
 - **A snapshot can disappear between two runs of the same query.** A dashboard or scheduled job pinned to a fixed old timestamp will start returning nothing for it. Pin to a recent relative offset instead.
 - **Time travel is not a backup or an undo.** It is a read of history that still happens to be there. Recovery after reclamation is an operational restore, not something a query can reach.
-- **`SHOW SNAPSHOTS FOR` is the only honest answer** to how far back a given table reaches, and it is only true at the moment you run it.
+- **`SHOW SNAPSHOTS FOR` is the only honest answer** to how far back a given table reaches, and it is only true at the moment you run it — except for its tagged rows, which are true until someone drops the tag.
 
-If you need a point in time to survive, copy it out —
-`CREATE TABLE ... AS SELECT ... TIMESTAMP AS OF ...` — rather than relying on the snapshot
-still being there later.
+If you need a point in time to survive, **tag it** — see below. Copying it out with
+`CREATE TABLE ... AS SELECT ... TIMESTAMP AS OF ...` also works and gives you an independent
+table, but it duplicates every byte; a tag holds the snapshot you already have.
+
+## Pinning a Snapshot With a Tag
+
+A **tag** is a name bound to one snapshot, and creating one holds that snapshot — and every
+file it references — from reclamation for as long as the tag exists:
+
+```sql
+ALTER TABLE my_workspace.sales.orders
+CREATE TAG report_202602;
+```
+
+Read it back by name, at any distance in the future:
+
+```sql
+SELECT *
+  FROM my_workspace.sales.orders
+   VERSION AS OF 'report_202602';
+```
+
+This is what makes a fixed point safe to hard-code in a scheduled job, a dashboard or a
+report, which a bare timestamp or snapshot id never is.
+
+**What a tag costs.** It holds storage that would otherwise have been released, and those
+bytes are charged to the table's workspace for as long as the tag exists. That is the trade:
+an untagged snapshot is free and impermanent, a tagged one is permanent and billed. A table
+can hold 100 tags.
+
+**Releasing one.** `DROP TAG` returns the snapshot to the ordinary retention rules
+immediately — and if it is already past the retention window it is reclaimed on the next
+maintenance run, possibly within minutes:
+
+```sql
+ALTER TABLE my_workspace.sales.orders
+DROP TAG report_202602;
+```
+
+There is no grace period. Dropping a tag is how you agree to lose the data it was holding.
+
+**Finding them.** [`SHOW SNAPSHOTS FOR`](/docs/reference/sql/statements/show-snapshots)
+reports the tags on each snapshot in its `tags` column, which is also how you tell a snapshot
+that is being kept deliberately from one that has simply not been reclaimed yet.
+
+See [ALTER TABLE ... CREATE TAG](/docs/reference/sql/statements/alter-table#create-tag) for
+the full syntax, including tagging a specific snapshot id or the previous version.
 
 ## Temporal Self-Joins
 
@@ -168,8 +222,8 @@ surviving snapshot, the join silently compares against that snapshot rather than
 ## Limitations
 
 - Requires a catalog-backed table with a commit log; there is no time travel over a plain object-store path.
-- Snapshots are reclaimed, so reachable history may shrink at any point.
+- Snapshots are reclaimed, so reachable history may shrink at any point — unless a snapshot is [tagged](#pinning-a-snapshot-with-a-tag), which holds it until the tag is dropped.
 - Timestamps are evaluated in UTC.
 - Backfilled data is visible: reading at a past timestamp returns the snapshot as it was committed, including any corrections that commit carried.
 - The `TIMESTAMP AS OF` expression must be resolvable before the query runs — it cannot reference a column.
-- `VERSION AS OF` takes a bare snapshot id (or `PREVIOUS`) — no expressions, and no *n*-back offset beyond one.
+- `VERSION AS OF` takes a bare snapshot id, a tag name, or `PREVIOUS` — no expressions, and no *n*-back offset beyond one.

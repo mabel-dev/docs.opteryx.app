@@ -7,6 +7,12 @@ description: VECTOR
 
 A fixed-length vector of FP16 (half-precision) floating-point values. Used for similarity search and ML embedding workloads. Declared as `VECTOR(n)` where n is the number of dimensions.
 
+## Example
+
+```sql
+SELECT [1.0, 0.5, 0.25]::VECTOR(3);
+```
+
 ## Casting
 
 | From | Example | Notes |
@@ -25,3 +31,4 @@ Similarity search uses dedicated functions such as `COSINE_DISTANCE(a, b)` and `
 
 - Vector columns cannot be used with standard comparison operators (=, <, >, etc.).
 - The dimension count must match between vectors in any operation.
+- A VECTOR value cannot be projected in the SELECT list — `SELECT [1.0, 0.5, 0.25]::VECTOR(3)` is refused, because a literal list cannot be projected. A vector literal has to be consumed where it is built, by a function such as `COSINE_SIMILARITY(a, b)`.
