@@ -3,6 +3,12 @@ title: VECTOR — Opteryx Type
 description: VECTOR
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # VECTOR
 
 A fixed-length vector of FP16 (half-precision) floating-point values. Used for similarity search and ML embedding workloads. Declared as `VECTOR(n)` where n is the number of dimensions.

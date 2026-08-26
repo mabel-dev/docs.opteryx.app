@@ -5,7 +5,7 @@ description: What Opteryx Core actually supports today — Python versions, oper
 
 # Compatibility
 
-This page covers what Opteryx Core supports right now, as of `0.9.58`. It only lists what is verified against the current source and release pipeline — if something isn't here, treat it as unsupported rather than assume it works.
+This page covers what Opteryx Core supports right now, as of `0.9.82`. It only lists what is verified against the current source and release pipeline — if something isn't here, treat it as unsupported rather than assume it works.
 
 ## Python Versions
 
@@ -54,12 +54,15 @@ Storage is reached through one generic `FileSystemConnector`, which picks a file
 - **Local disk** — a bare path, or `file://`.
 - **Google Cloud Storage** — `gs://` or `gcs://`, authenticating through Google's own OAuth-based service account credentials.
 - **HTTP / HTTPS** — `http://` and `https://`, via range requests.
+- **Amazon S3** — `s3://`, via SigV4-signed range requests.
 
 `DiskConnector` and `GcpCloudStorageConnector` still work as names, but they are backwards-compatible aliases for `FileSystemConnector` rather than separate implementations.
 
 One exception worth knowing: the `READ_*` table functions are bare dataset functions with no per-query authorization layer, so a `gs://` path given to one of them is fetched **anonymously** — a plain unauthenticated HTTPS GET, never this process's ambient service-account credential. GCS's own object-level IAM decides whether that succeeds.
 
-S3, Azure Blob Storage, and MinIO are not implemented. Test configuration in CI references MinIO and Azure environment variables for mocking purposes, and some comments still name S3 as a hypothetical connector, but no corresponding connector code exists in the engine — don't take either as a sign they're supported.
+The complete set of protocols the engine will resolve is `file`, `gs`, `gcs`, `s3`, `http`, `https`, and a bare path; anything else is refused at plan time with `Unsupported storage protocol`.
+
+Azure Blob Storage and MinIO are not implemented. Test configuration in CI references MinIO and Azure environment variables for mocking purposes, but no corresponding connector code exists in the engine — don't take that as a sign they're supported.
 
 ## SQL Dialect
 
@@ -69,7 +72,7 @@ Opteryx parses SQL through its own `OpteryxDialect`, built on a fork of `sqlpars
 
 These come up often enough to call out explicitly as **not implemented**:
 
-- No REST, GraphQL, or gRPC server — Opteryx Core is an in-process library, not a service. (It does put an `opteryx` command on your PATH for running queries locally; the hosted [opteryx.app](https://opteryx.app) exposes a [Jobs API](/docs/reference/api) separately.)
+- No REST, GraphQL, or gRPC server — Opteryx Core is an in-process library, not a service. (It does put an `opteryx` command on your PATH for running queries locally; the hosted [opteryx.app](https://opteryx.app) exposes a [Jobs API](/docs/reference/api/jobs-api) separately.)
 - No Docker image, Helm chart, or Kubernetes manifests shipped with the project.
 - No OAuth, SAML, or OpenID Connect provider implemented by Opteryx itself. The GCS connector consumes Google's OAuth client library to authenticate outbound requests — that's using an auth protocol, not offering one.
 

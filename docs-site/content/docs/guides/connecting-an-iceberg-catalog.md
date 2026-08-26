@@ -197,7 +197,7 @@ Rotate at your catalog first if the old secret must stop working immediately: a 
 
 ## Doing It Through the API
 
-Everything in Studio is the [Control API](/docs/reference/api). Get a token first, exactly as in [Running a Query via the API](/docs/guides/running-a-query-via-the-api).
+Everything in Studio is the [Control API](/docs/reference/api/control-api). Get a token first, exactly as in [Running a Query via the API](/docs/guides/running-a-query-via-the-api).
 
 | Call | Purpose | Who |
 |---|---|---|

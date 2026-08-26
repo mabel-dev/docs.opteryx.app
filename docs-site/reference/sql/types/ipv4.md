@@ -3,6 +3,12 @@ title: IPV4 — Opteryx Type
 description: IPV4
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # IPV4
 
 An IPv4 address. Stored as an unsigned 32-bit integer and displayed in dotted-decimal notation. Because the storage is numeric, ordering, grouping, joining and comparison all operate on the underlying integer — and unsigned integer order is exactly IPv4 address order.

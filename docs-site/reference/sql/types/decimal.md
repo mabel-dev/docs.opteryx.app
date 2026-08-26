@@ -3,6 +3,12 @@ title: DECIMAL — Opteryx Type
 description: DECIMAL
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # DECIMAL
 
 Exact fixed-point number with declared precision and scale: `DECIMAL(precision, scale)`. Precision is the total number of significant digits (1–38); scale is the number of digits after the decimal point (0–precision). For example, `DECIMAL(10, 2)` holds values up to 99999999.99.

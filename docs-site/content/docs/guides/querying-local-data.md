@@ -36,7 +36,7 @@ for morsel in session.execute_to_morsels(
     print(morsel)
 ```
 
-`data.planets` maps to the folder `./data/planets/` — a dataset is a folder of Parquet files, not a single file. Querying other formats directly is not currently supported; see [Using Rugo Standalone](/docs/guides/rugo-standalone) if you need to read or write CSV or JSONL outside of a query.
+`data.planets` maps to the folder `./data/planets/` — a dataset is a folder of data files, not a single file. Parquet, JSONL and Skene all work as dataset formats; CSV does not, so read a CSV by path with `READ_CSV('...')` instead. See [Using Rugo Standalone](/docs/guides/rugo-standalone) if you need to read or write CSV or JSONL outside of a query.
 
 ## Getting Results Out
 

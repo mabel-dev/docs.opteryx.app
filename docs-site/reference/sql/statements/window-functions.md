@@ -13,9 +13,9 @@ Opteryx supports three families of window function, and **they follow different 
 |:--|:--|:--|
 | [Ranking](#ranking-functions) | `ROW_NUMBER`, `RANK`, `DENSE_RANK` | **Required** |
 | [Navigation](#navigation-functions) | `LAG`, `LEAD` | **Required** |
-| [Aggregate](#aggregate-windows) | every aggregate in the [aggregate catalog](/docs/reference/sql/aggregates) | **Not supported** |
+| [Aggregate](#aggregate-windows) | every aggregate in the [aggregate catalog](/docs/reference/sql/aggregates) | Optional |
 
-No family supports a frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`).
+Frame specifications (`ROWS BETWEEN`, `RANGE BETWEEN`) and named `WINDOW` clauses are supported. The detailed sections below predate that and have not yet been rewritten to cover frame semantics.
 
 Both families share a set of rules on **where** a window expression may appear. A window may sit inside a larger expression — `mass / SUM(mass) OVER ()` computes percent-of-total directly — but it may not appear inside an aggregate's argument or inside another window, and `SELECT *` cannot be combined with one. Read [Restrictions on Both Families](#restrictions-on-both-families) for the shapes that are refused and the remedies each refusal names.
 
@@ -257,11 +257,11 @@ SELECT name, COUNT(*) OVER (PARTITION BY planetId) AS c
 
 ### Notes
 
-- An `ORDER BY` inside the `OVER` clause of an **aggregate** window is rejected —
-  `SUM(gravity) OVER (PARTITION BY id ORDER BY id)` raises `Window functions with ORDER BY
-  are not supported. Use PARTITION BY only.` This is the opposite of the ranking functions
-  above, where `ORDER BY` is required. Running totals and moving averages, which are what
-  that syntax would express, are not available.
+- An `ORDER BY` inside the `OVER` clause of an **aggregate** window is optional, and is how
+  running totals and moving averages are expressed —
+  `SUM(mass) OVER (ORDER BY id)` and
+  `AVG(mass) OVER (ORDER BY id ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)`.
+  Unlike the ranking functions above, it is not required.
 - An aggregate window cannot be combined with `GROUP BY` in the same query:
 
   ~~~sql
@@ -397,8 +397,8 @@ Every restriction on this page applies to a window inside a `QUALIFY` as well. S
 - Window functions are evaluated after `WHERE`, `GROUP BY`, and `HAVING`, but before the statement's own `ORDER BY`. A filtered-out row does not contribute to the window: `SELECT name, COUNT(*) OVER () AS c FROM $planets WHERE id > 6` returns 3 rows, each with `c = 3`.
 - Each row in the result retains its own values — rows are not collapsed as they are with plain aggregation.
 - Multiple window expressions with different `PARTITION BY` columns can appear in the same `SELECT`.
-- Frame specification (`ROWS BETWEEN`, `RANGE BETWEEN`) is not supported for either family.
-- `NTILE`, `FIRST_VALUE`, `LAST_VALUE`, `NTH_VALUE`, and named `WINDOW` clauses are not implemented.
+- Frame specifications (`ROWS BETWEEN`, `RANGE BETWEEN`) are supported on aggregate windows.
+- `NTILE`, `PERCENT_RANK`, `CUME_DIST`, `FIRST_VALUE`, `LAST_VALUE`, `NTH_VALUE` and named `WINDOW` clauses are implemented but are not yet documented on this page.
 
 ## See Also
 

@@ -14,7 +14,10 @@ NAV_PATH = DOCS / 'nav.json'
 CONTENT_DIR = DOCS / 'content' / 'docs'
 REF_SQL_DIR = DOCS / 'reference' / 'sql'
 REF_API_DIR = DOCS / 'reference' / 'api'
-API_INDEX_PATH = DOCS / 'reference' / 'sql' / 'api.md'
+# The API index. It lives beside the generated per-API pages rather than under
+# reference/sql/, and at the route (/docs/reference/api) that a hand-written copy
+# in content/docs used to own — one page, generated, at the canonical URL.
+API_INDEX_PATH = DOCS / 'reference' / 'api.md'
 
 API_DOC_SPECS = {
     'api-opteryx-control.json': {
@@ -83,9 +86,35 @@ def load_json(path: pathlib.Path):
     return json.loads(path.read_text())
 
 
+# Stamped into every generated page. An HTML comment so it never renders, but it
+# is the first thing anyone opening the file to "just fix a sentence" sees — and
+# `check_generated_docs.py` uses it to find which pages this script owns without
+# having to keep a second list of them in sync.
+GENERATED_MARKER = '<!-- GENERATED FILE - DO NOT EDIT.'
+GENERATED_BANNER = (
+    GENERATED_MARKER + '\n'
+    '     Regenerate with `make sql-docs` from the docs repo root.\n'
+    '     To change what this page says, change the source it is generated from\n'
+    '     (a registrar in opteryx-core, or a service\'s own OpenAPI description)\n'
+    '     and re-export - a hand edit here is silently overwritten. -->'
+)
+
+
 def write_md(path: pathlib.Path, lines: List[str]):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text('\n'.join(lines))
+    body = '\n'.join(lines)
+    # Front matter has to stay first for the site's parser, so the banner goes
+    # after the closing --- when there is one, and at the very top otherwise.
+    if body.startswith('---\n'):
+        end = body.find('\n---\n', 4)
+        if end != -1:
+            cut = end + len('\n---\n')
+            body = body[:cut] + '\n' + GENERATED_BANNER + '\n' + body[cut:]
+        else:
+            body = GENERATED_BANNER + '\n' + body
+    else:
+        body = GENERATED_BANNER + '\n\n' + body
+    path.write_text(body)
 
 
 def _schema_to_type(schema: Optional[Dict[str, Any]]) -> str:
@@ -736,11 +765,16 @@ def _build_api_index(generated_specs: list[dict]):
         lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
     lines.append('')
 
-    lines.append('## Additional API Docs')
-    lines.append('')
-    for spec in manual_specs:
-        lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
-    lines.append('')
+    # Only when there is something to put under it. Every manual spec whose slug
+    # is also generated is filtered out upstream, so this section is usually
+    # empty — and an empty heading on the section's landing page reads as a
+    # missing page rather than as "there are none".
+    if manual_specs:
+        lines.append('## Additional API Docs')
+        lines.append('')
+        for spec in manual_specs:
+            lines.append(f"- [{spec['title']}](/docs/reference/api/{spec['slug']}) — {spec['summary']}")
+        lines.append('')
 
     write_md(API_INDEX_PATH, lines)
 
@@ -1503,7 +1537,12 @@ def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], typ
 
     # --- API Reference (top-level section) ---
     generated_api_docs, manual_api_docs = _get_available_api_docs()
-    api_items = [{spec['title']: f"reference/api/{spec['slug']}.md"} for spec in generated_api_docs + manual_api_docs]
+    # The index is generated too, so its nav entry is generated with it — this
+    # list is replaced wholesale below, so an entry added to nav.json by hand
+    # would not survive the next run.
+    api_index_href = API_INDEX_PATH.relative_to(DOCS).as_posix()
+    api_items = [{'Overview': api_index_href}]
+    api_items += [{spec['title']: f"reference/api/{spec['slug']}.md"} for spec in generated_api_docs + manual_api_docs]
 
     api_section = _find_section(nav, 'API Reference')
     if api_section is not None:

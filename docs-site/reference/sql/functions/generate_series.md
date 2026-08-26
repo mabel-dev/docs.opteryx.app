@@ -3,6 +3,12 @@ title: GENERATE_SERIES — Opteryx Function
 description: Builds the series as an ARRAY in a single row. `GENERATE_SERIES(10)` starts at 1; `GENERATE_SERIES(1, 10)` and `GENERATE_SERIES(1, 10, 2)` start where they say. `stop` is included when it falls on a step boundary. A step pointing away from `stop` yields an EMPTY array; a step of zero is refused. Arguments must be integer CONSTANTS. To get one ROW per value instead - which is what gap-filling and joining against a dense axis need - use the table spelling, `FROM GENERATE_SERIES(1, 10) AS g`, which also accepts floats and, with an INTERVAL step, timestamps.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # GENERATE_SERIES
 
 Builds the series as an ARRAY in a single row. `GENERATE_SERIES(10)` starts at 1; `GENERATE_SERIES(1, 10)` and `GENERATE_SERIES(1, 10, 2)` start where they say. `stop` is included when it falls on a step boundary. A step pointing away from `stop` yields an EMPTY array; a step of zero is refused. Arguments must be integer CONSTANTS. To get one ROW per value instead - which is what gap-filling and joining against a dense axis need - use the table spelling, `FROM GENERATE_SERIES(1, 10) AS g`, which also accepts floats and, with an INTERVAL step, timestamps.

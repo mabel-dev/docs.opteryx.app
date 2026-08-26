@@ -11,9 +11,12 @@ Opteryx Core ships a command-line interface alongside the library. It is the sam
 pip install opteryx-core
 ```
 
-The CLI runs as a module:
+Installing the package puts an `opteryx` command on your `PATH`. Everything below is
+written as `python -m opteryx`, which is equivalent and works even when the script
+directory isn't on your `PATH`:
 
 ```bash
+opteryx "SELECT name, gravity FROM \$planets ORDER BY mass DESC"
 python -m opteryx "SELECT name, gravity FROM \$planets ORDER BY mass DESC"
 ```
 

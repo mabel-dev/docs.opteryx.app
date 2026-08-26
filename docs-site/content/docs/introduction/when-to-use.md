@@ -15,7 +15,7 @@
 - **Data too large for one machine.** Opteryx is single-node by design — it scales up, not out. If a working set genuinely exceeds what one machine can hold, no amount of query tuning fixes that; the answer is a smaller working set or a different, distributed engine. See [Known Limits](/docs/roadmap-guarantees/known-limits).
 - **Transactional or write-heavy workloads.** There is no `COMMIT`, `ROLLBACK`, or isolation level — a query reads the snapshot it resolves at plan time, and each statement commits on its own. `INSERT` is experimental and limited to some storage backends; `UPDATE`, `DELETE` and `MERGE` are experimental, need a catalog-backed table, and are refused rather than queued if another writer commits first. They are built for periodic corrections and feed merges, not for a stream of small concurrent writes. See [SQL Conformance](/docs/reference/sql/conformance) for the full statement-by-statement breakdown.
 - **A system of record with enforced integrity constraints.** `PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, and `UNIQUE` are not enforced by the engine.
-- **Storage backends outside Parquet, JSONL, Skene, local disk, GCS, and HTTP(S).** S3, Azure Blob Storage, MinIO, ORC, and Avro are not implemented — see [Compatibility](/docs/roadmap-guarantees/compatibility).
+- **Storage backends outside Parquet, JSONL, Skene, local disk, GCS, S3, and HTTP(S).** Azure Blob Storage, MinIO, ORC, and Avro are not implemented — see [Compatibility](/docs/roadmap-guarantees/compatibility).
 - **A strict ANSI SQL, PostgreSQL, or MySQL dialect.** Opteryx parses its own dialect, close to but not identical to any of those — check syntax that leans on another engine's specifics before assuming it carries over.
 
 ## Still not sure?

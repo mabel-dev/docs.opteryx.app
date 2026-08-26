@@ -83,7 +83,7 @@ quicker to raise it there:
 
 | Project | Issues |
 | --- | --- |
-| Opteryx query engine (the `opteryx` package) | [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx/issues) |
+| Opteryx query engine (the `opteryx-core` package) | [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx/issues) |
 | SQLAlchemy dialect | [mabel-dev/opteryx-sqlalchemy](https://github.com/mabel-dev/opteryx-sqlalchemy/issues) |
 | Upload client | [mabel-dev/opteryx-upload](https://github.com/mabel-dev/opteryx-upload/issues) |
 | Terraform provider | [mabel-dev/terraform-provider-opteryx](https://github.com/mabel-dev/terraform-provider-opteryx/issues) |

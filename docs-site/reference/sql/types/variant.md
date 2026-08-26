@@ -3,6 +3,12 @@ title: VARIANT — Opteryx Type
 description: VARIANT
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # VARIANT
 
 A semi-structured type produced exclusively by the `->` operator when extracting a JSON field from a VARCHAR/NVARCHAR/VARBINARY column. Use `->` to extract a field as VARIANT (a JSON value), or `->>` to extract the same field as NVARCHAR (JSON strings unquoted to plain text).

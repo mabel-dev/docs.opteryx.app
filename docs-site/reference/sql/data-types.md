@@ -3,6 +3,12 @@ title: SQL Data Types — Opteryx Reference
 description: Reference for SQL data types supported by Opteryx.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # Data Types
 
 The following data types are supported by Opteryx.  Click a name for details.

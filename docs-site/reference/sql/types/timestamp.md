@@ -3,6 +3,12 @@ title: TIMESTAMP — Opteryx Type
 description: TIMESTAMP
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # TIMESTAMP
 
 A date and time value. The default scale is microseconds. Use `TIMESTAMP[s]`, `TIMESTAMP[ms]`, `TIMESTAMP[us]`, `TIMESTAMP[ns]`, or `TIMESTAMP[d]` to declare a specific scale — this matters when casting integer epoch columns.

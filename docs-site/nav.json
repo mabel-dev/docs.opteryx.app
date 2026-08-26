@@ -1,5 +1,15 @@
 [
   {
+    "Introduction": [
+      {
+        "What is Opteryx": "introduction/what-is-opteryx.md"
+      },
+      {
+        "When to use Opteryx": "introduction/when-to-use.md"
+      }
+    ]
+  },
+  {
     "Getting Started": [
       {
         "Logging in": "getting-started/registration.md"
@@ -17,9 +27,6 @@
       {
         "Cloud Warehouse": [
           {
-            "When a materialized view replaces a pipeline": "guides/when-a-materialized-view-replaces-a-pipeline.md"
-          },
-          {
             "Running a query via the API": "guides/running-a-query-via-the-api.md"
           },
           {
@@ -29,28 +36,13 @@
             "Using SQLAlchemy from a notebook": "guides/using-sqlalchemy.md"
           },
           {
-            "SQLAlchemy dialect reference": "reference/python/sqlalchemy.md"
-          },
-          {
             "Connecting via Arrow Flight SQL": "guides/connecting-via-flight-sql.md"
-          },
-          {
-            "Upload client (Python SDK)": "reference/python/upload.md"
-          },
-          {
-            "Sample data": "reference/sql/advanced/adv-sample-data.md"
-          },
-          {
-            "Credential-less authentication (OIDC)": "guides/oidc-authentication.md"
           },
           {
             "Connecting an Iceberg catalog": "guides/connecting-an-iceberg-catalog.md"
           },
           {
-            "Access and permissions": "core-concepts/access-and-permissions.md"
-          },
-          {
-            "Cost model": "core-concepts/cost-model.md"
+            "When a materialized view replaces a pipeline": "guides/when-a-materialized-view-replaces-a-pipeline.md"
           },
           {
             "Markdown in comments and descriptions": "core-concepts/markdown-in-descriptions.md"
@@ -58,7 +50,29 @@
         ]
       },
       {
+        "Accounts & Access": [
+          {
+            "Access and permissions": "core-concepts/access-and-permissions.md"
+          },
+          {
+            "Federator": "core-concepts/federator.md"
+          },
+          {
+            "Credential-less authentication (OIDC)": "guides/oidc-authentication.md"
+          },
+          {
+            "Billing accounts": "core-concepts/billing-accounts.md"
+          },
+          {
+            "Cost model": "core-concepts/cost-model.md"
+          }
+        ]
+      },
+      {
         "Embedded Engine": [
+          {
+            "Installing Opteryx Core": "getting-started/installation.md"
+          },
           {
             "Querying local data": "guides/querying-local-data.md"
           },
@@ -97,74 +111,164 @@
   {
     "SQL Language Reference": [
       {
-        "Data Types": {
-          "href": "reference/sql/data-types.md",
+        "Introduction to SQL": "reference/sql/introduction.md"
+      },
+      {
+        "Statements": {
+          "href": "reference/sql/statements.md",
           "items": [
             {
-              "ARRAY": "reference/sql/types/array.md"
+              "ALTER MATERIALIZED VIEW": "reference/sql/statements/alter-materialized-view.md"
             },
             {
-              "BOOLEAN": "reference/sql/types/boolean.md"
+              "ALTER TABLE": "reference/sql/statements/alter-table.md"
             },
             {
-              "DATE": "reference/sql/types/date.md"
+              "ALTER VIEW": "reference/sql/statements/alter-view.md"
             },
             {
-              "DECIMAL": "reference/sql/types/decimal.md"
+              "ALTER WORKSPACE": "reference/sql/statements/alter-workspace.md"
             },
             {
-              "FLOAT": "reference/sql/types/float.md"
+              "ANALYZE TABLE": "reference/sql/statements/analyze-table.md"
             },
             {
-              "INTEGER": "reference/sql/types/integer.md"
+              "COMMENT": "reference/sql/statements/comment.md"
             },
             {
-              "INTERVAL": "reference/sql/types/interval.md"
+              "CREATE COLLECTION": "reference/sql/statements/create-collection.md"
             },
             {
-              "IPV4": "reference/sql/types/ipv4.md"
+              "CREATE MATERIALIZED VIEW": "reference/sql/statements/create-materialized-view.md"
             },
             {
-              "NULL": "reference/sql/types/null.md"
+              "CREATE TABLE": "reference/sql/statements/create-table.md"
             },
             {
-              "NVARCHAR": "reference/sql/types/nvarchar.md"
+              "CREATE VIEW": "reference/sql/statements/create-view.md"
             },
             {
-              "TIME": "reference/sql/types/time.md"
+              "DELETE": "reference/sql/statements/delete.md"
             },
             {
-              "TIMESTAMP": "reference/sql/types/timestamp.md"
+              "DISTINCT": "reference/sql/statements/distinct.md"
             },
             {
-              "VARBINARY": "reference/sql/types/varbinary.md"
+              "DROP COLLECTION": "reference/sql/statements/drop-collection.md"
             },
             {
-              "VARCHAR": "reference/sql/types/varchar.md"
+              "DROP MATERIALIZED VIEW": "reference/sql/statements/drop-materialized-view.md"
             },
             {
-              "VARIANT": "reference/sql/types/variant.md"
+              "DROP STATISTICS": "reference/sql/statements/drop-statistics.md"
             },
             {
-              "VECTOR": "reference/sql/types/vector.md"
+              "DROP TABLE": "reference/sql/statements/drop-table.md"
+            },
+            {
+              "DROP TRIGGER": "reference/sql/statements/drop-trigger.md"
+            },
+            {
+              "DROP VIEW": "reference/sql/statements/drop-view.md"
+            },
+            {
+              "EXPLAIN": "reference/sql/statements/explain.md"
+            },
+            {
+              "GROUP BY": "reference/sql/statements/group-by.md"
+            },
+            {
+              "HAVING": "reference/sql/statements/having.md"
+            },
+            {
+              "INSERT": "reference/sql/statements/insert.md"
+            },
+            {
+              "JOIN": "reference/sql/statements/joins.md"
+            },
+            {
+              "LIMIT / OFFSET": "reference/sql/statements/limit.md"
+            },
+            {
+              "MERGE": "reference/sql/statements/merge.md"
+            },
+            {
+              "OPTIMIZE TABLE": "reference/sql/statements/optimize-table.md"
+            },
+            {
+              "ORDER BY": "reference/sql/statements/order-by.md"
+            },
+            {
+              "QUALIFY": "reference/sql/statements/qualify.md"
+            },
+            {
+              "READ_CSV": "reference/sql/statements/read-csv.md"
+            },
+            {
+              "READ_JSONL": "reference/sql/statements/read-jsonl.md"
+            },
+            {
+              "READ_PARQUET": "reference/sql/statements/read-parquet.md"
+            },
+            {
+              "REFRESH MATERIALIZED VIEW": "reference/sql/statements/refresh-materialized-view.md"
+            },
+            {
+              "SELECT": "reference/sql/statements/select.md"
+            },
+            {
+              "SET": "reference/sql/statements/set.md"
+            },
+            {
+              "SHOW COLUMNS": "reference/sql/statements/show-columns.md"
+            },
+            {
+              "SHOW CREATE VIEW": "reference/sql/statements/show-create.md"
+            },
+            {
+              "SHOW GRANTS": "reference/sql/statements/show-grants.md"
+            },
+            {
+              "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
+            },
+            {
+              "SHOW SNAPSHOTS FOR": "reference/sql/statements/show-snapshots.md"
+            },
+            {
+              "SHOW TRIGGERS FOR": "reference/sql/statements/show-triggers.md"
+            },
+            {
+              "SHOW USER": "reference/sql/statements/show-user.md"
+            },
+            {
+              "SHOW VARIABLES": "reference/sql/statements/show-variables.md"
+            },
+            {
+              "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
+            },
+            {
+              "TRUNCATE TABLE": "reference/sql/statements/truncate-table.md"
+            },
+            {
+              "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"
+            },
+            {
+              "UPDATE": "reference/sql/statements/update.md"
+            },
+            {
+              "VERSION AS OF": "reference/sql/statements/version-as-of.md"
+            },
+            {
+              "WHERE": "reference/sql/statements/where.md"
+            },
+            {
+              "WINDOW": "reference/sql/statements/window-functions.md"
+            },
+            {
+              "WITH (CTE)": "reference/sql/statements/with.md"
             }
           ]
         }
-      },
-      {
-        "Expressions": "reference/sql/expressions.md"
-      },
-      {
-        "System Variables": "reference/sql/variables.md"
-      },
-      {
-        "Reserved Words": "reference/sql/reserved-words.md"
-      },
-      {
-        "Virtual Datasets": "reference/sql/virtual-datasets.md"
-      },
-      {
-        "Limits": "reference/sql/limits.md"
       },
       {
         "Functions": {
@@ -423,203 +527,6 @@
         "Aggregates": "reference/sql/aggregates.md"
       },
       {
-        "Statements": {
-          "href": "reference/sql/statements.md",
-          "items": [
-            {
-              "ALTER MATERIALIZED VIEW": "reference/sql/statements/alter-materialized-view.md"
-            },
-            {
-              "ALTER TABLE": "reference/sql/statements/alter-table.md"
-            },
-            {
-              "ALTER VIEW": "reference/sql/statements/alter-view.md"
-            },
-            {
-              "ALTER WORKSPACE": "reference/sql/statements/alter-workspace.md"
-            },
-            {
-              "ANALYZE TABLE": "reference/sql/statements/analyze-table.md"
-            },
-            {
-              "COMMENT": "reference/sql/statements/comment.md"
-            },
-            {
-              "CREATE COLLECTION": "reference/sql/statements/create-collection.md"
-            },
-            {
-              "CREATE MATERIALIZED VIEW": "reference/sql/statements/create-materialized-view.md"
-            },
-            {
-              "CREATE TABLE": "reference/sql/statements/create-table.md"
-            },
-            {
-              "CREATE VIEW": "reference/sql/statements/create-view.md"
-            },
-            {
-              "DELETE": "reference/sql/statements/delete.md"
-            },
-            {
-              "DISTINCT": "reference/sql/statements/distinct.md"
-            },
-            {
-              "DROP COLLECTION": "reference/sql/statements/drop-collection.md"
-            },
-            {
-              "DROP MATERIALIZED VIEW": "reference/sql/statements/drop-materialized-view.md"
-            },
-            {
-              "DROP STATISTICS": "reference/sql/statements/drop-statistics.md"
-            },
-            {
-              "DROP TABLE": "reference/sql/statements/drop-table.md"
-            },
-            {
-              "DROP TRIGGER": "reference/sql/statements/drop-trigger.md"
-            },
-            {
-              "DROP VIEW": "reference/sql/statements/drop-view.md"
-            },
-            {
-              "EXPLAIN": "reference/sql/statements/explain.md"
-            },
-            {
-              "GROUP BY": "reference/sql/statements/group-by.md"
-            },
-            {
-              "HAVING": "reference/sql/statements/having.md"
-            },
-            {
-              "INSERT": "reference/sql/statements/insert.md"
-            },
-            {
-              "JOIN": "reference/sql/statements/joins.md"
-            },
-            {
-              "LIMIT / OFFSET": "reference/sql/statements/limit.md"
-            },
-            {
-              "MERGE": "reference/sql/statements/merge.md"
-            },
-            {
-              "OPTIMIZE TABLE": "reference/sql/statements/optimize-table.md"
-            },
-            {
-              "ORDER BY": "reference/sql/statements/order-by.md"
-            },
-            {
-              "QUALIFY": "reference/sql/statements/qualify.md"
-            },
-            {
-              "READ_CSV": "reference/sql/statements/read-csv.md"
-            },
-            {
-              "READ_JSONL": "reference/sql/statements/read-jsonl.md"
-            },
-            {
-              "READ_PARQUET": "reference/sql/statements/read-parquet.md"
-            },
-            {
-              "REFRESH MATERIALIZED VIEW": "reference/sql/statements/refresh-materialized-view.md"
-            },
-            {
-              "SELECT": "reference/sql/statements/select.md"
-            },
-            {
-              "SET": "reference/sql/statements/set.md"
-            },
-            {
-              "SHOW COLUMNS": "reference/sql/statements/show-columns.md"
-            },
-            {
-              "SHOW CREATE VIEW": "reference/sql/statements/show-create.md"
-            },
-            {
-              "SHOW GRANTS": "reference/sql/statements/show-grants.md"
-            },
-            {
-              "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
-            },
-            {
-              "SHOW SNAPSHOTS FOR": "reference/sql/statements/show-snapshots.md"
-            },
-            {
-              "SHOW TRIGGERS FOR": "reference/sql/statements/show-triggers.md"
-            },
-            {
-              "SHOW USER": "reference/sql/statements/show-user.md"
-            },
-            {
-              "SHOW VARIABLES": "reference/sql/statements/show-variables.md"
-            },
-            {
-              "TIMESTAMP AS OF": "reference/sql/statements/timestamp-as-of.md"
-            },
-            {
-              "TRUNCATE TABLE": "reference/sql/statements/truncate-table.md"
-            },
-            {
-              "UNION / INTERSECT / EXCEPT": "reference/sql/statements/union.md"
-            },
-            {
-              "UPDATE": "reference/sql/statements/update.md"
-            },
-            {
-              "VERSION AS OF": "reference/sql/statements/version-as-of.md"
-            },
-            {
-              "WHERE": "reference/sql/statements/where.md"
-            },
-            {
-              "WINDOW": "reference/sql/statements/window-functions.md"
-            },
-            {
-              "WITH (CTE)": "reference/sql/statements/with.md"
-            }
-          ]
-        }
-      },
-      {
-        "SQL Supported": "reference/sql/supported-sql.md"
-      },
-      {
-        "SQL Conformance": "reference/sql/conformance.md"
-      },
-      {
-        "Advanced topics": [
-          {
-            "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"
-          },
-          {
-            "Engine configuration": "reference/sql/advanced/adv-engine-configuration.md"
-          },
-          {
-            "Information schema": "reference/sql/advanced/adv-information-schema.md"
-          },
-          {
-            "NULL semantics": "reference/sql/advanced/adv-null-semantics.md"
-          },
-          {
-            "Relation constructors": "reference/sql/advanced/adv-temp-tables.md"
-          },
-          {
-            "Time travel queries": "reference/sql/advanced/adv-time-travel.md"
-          },
-          {
-            "Working with arrays": "reference/sql/advanced/adv-working-with-lists.md"
-          },
-          {
-            "Working with IPs": "reference/sql/advanced/adv-working-with-ips.md"
-          },
-          {
-            "Working with JSON": "reference/sql/advanced/adv-working-with-structs.md"
-          },
-          {
-            "Working with timestamps": "reference/sql/advanced/adv-working-with-timestamps.md"
-          }
-        ]
-      },
-      {
         "Operators": {
           "href": "reference/sql/operators.md",
           "items": [
@@ -736,11 +643,137 @@
             }
           ]
         }
+      },
+      {
+        "Expressions": "reference/sql/expressions.md"
+      },
+      {
+        "Data Types": {
+          "href": "reference/sql/data-types.md",
+          "items": [
+            {
+              "ARRAY": "reference/sql/types/array.md"
+            },
+            {
+              "BOOLEAN": "reference/sql/types/boolean.md"
+            },
+            {
+              "DATE": "reference/sql/types/date.md"
+            },
+            {
+              "DECIMAL": "reference/sql/types/decimal.md"
+            },
+            {
+              "FLOAT": "reference/sql/types/float.md"
+            },
+            {
+              "INTEGER": "reference/sql/types/integer.md"
+            },
+            {
+              "INTERVAL": "reference/sql/types/interval.md"
+            },
+            {
+              "IPV4": "reference/sql/types/ipv4.md"
+            },
+            {
+              "NULL": "reference/sql/types/null.md"
+            },
+            {
+              "NVARCHAR": "reference/sql/types/nvarchar.md"
+            },
+            {
+              "TIME": "reference/sql/types/time.md"
+            },
+            {
+              "TIMESTAMP": "reference/sql/types/timestamp.md"
+            },
+            {
+              "VARBINARY": "reference/sql/types/varbinary.md"
+            },
+            {
+              "VARCHAR": "reference/sql/types/varchar.md"
+            },
+            {
+              "VARIANT": "reference/sql/types/variant.md"
+            },
+            {
+              "VECTOR": "reference/sql/types/vector.md"
+            }
+          ]
+        }
+      },
+      {
+        "System Variables": "reference/sql/variables.md"
+      },
+      {
+        "Virtual Datasets": "reference/sql/virtual-datasets.md"
+      },
+      {
+        "Reserved Words": "reference/sql/reserved-words.md"
+      },
+      {
+        "Limits": "reference/sql/limits.md"
+      },
+      {
+        "SQL Supported": "reference/sql/supported-sql.md"
+      },
+      {
+        "SQL Conformance": "reference/sql/conformance.md"
+      },
+      {
+        "Advanced topics": [
+          {
+            "Engine configuration": "reference/sql/advanced/adv-engine-configuration.md"
+          },
+          {
+            "Information schema": "reference/sql/advanced/adv-information-schema.md"
+          },
+          {
+            "NULL semantics": "reference/sql/advanced/adv-null-semantics.md"
+          },
+          {
+            "Relation constructors": "reference/sql/advanced/adv-temp-tables.md"
+          },
+          {
+            "Sample data": "reference/sql/advanced/adv-sample-data.md"
+          },
+          {
+            "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"
+          },
+          {
+            "Time travel queries": "reference/sql/advanced/adv-time-travel.md"
+          },
+          {
+            "Working with arrays": "reference/sql/advanced/adv-working-with-lists.md"
+          },
+          {
+            "Working with IPs": "reference/sql/advanced/adv-working-with-ips.md"
+          },
+          {
+            "Working with JSON": "reference/sql/advanced/adv-working-with-structs.md"
+          },
+          {
+            "Working with timestamps": "reference/sql/advanced/adv-working-with-timestamps.md"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Python Reference": [
+      {
+        "SQLAlchemy dialect": "reference/python/sqlalchemy.md"
+      },
+      {
+        "Upload client": "reference/python/upload.md"
       }
     ]
   },
   {
     "API Reference": [
+      {
+        "Overview": "reference/api.md"
+      },
       {
         "Authentication API": "reference/api/authentication-api.md"
       },
@@ -764,6 +797,12 @@
         "Engine overview": "reference/internals/engine-overview.md"
       },
       {
+        "The planner": "architecture/planner.md"
+      },
+      {
+        "Execution model": "core-concepts/execution-model.md"
+      },
+      {
         "Rugo file engine": "reference/internals/rugo.md"
       },
       {
@@ -773,13 +812,13 @@
         "Draken vector library": "reference/internals/draken.md"
       },
       {
-        "Bytecode expression engine": "reference/internals/bytecode-engine.md"
-      },
-      {
         "Draken vector encoding": "reference/internals/draken-vector-encoding.md"
       },
       {
         "Draken string storage": "reference/internals/draken-german-strings.md"
+      },
+      {
+        "Bytecode expression engine": "reference/internals/bytecode-engine.md"
       },
       {
         "RISC-V support": "reference/internals/riscv-support.md"
@@ -793,6 +832,9 @@
     "Roadmap & Guarantees": [
       {
         "Compatibility": "roadmap-guarantees/compatibility.md"
+      },
+      {
+        "Known limits": "roadmap-guarantees/known-limits.md"
       }
     ]
   },

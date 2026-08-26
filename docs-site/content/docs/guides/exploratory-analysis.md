@@ -75,8 +75,8 @@ import pyarrow
 
 morsels = session.execute_to_morsels("""
     SELECT
-        DATE_FORMAT(ordered_at, '%Y-%m') AS month,
-        SUM(amount)                      AS revenue
+        FORMAT_TIMESTAMP('%Y-%m', ordered_at) AS month,
+        SUM(amount)                           AS revenue
       FROM data.transactions
      GROUP BY month
      ORDER BY month

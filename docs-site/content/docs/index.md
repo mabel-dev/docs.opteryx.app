@@ -41,15 +41,17 @@ Opteryx is a SQL query engine designed for analyzing data across various sources
 
 ## Key Features
 
-- **SQL Compatibility**: Full SQL query support for data analysis
-- **Multiple Data Sources**: Query data from various sources seamlessly
-- **High Performance**: Optimized for fast query execution
-- **Easy to Use**: Simple setup and intuitive interface
+- **SQL**: A broad SQL surface — see [SQL Conformance](/docs/reference/sql/conformance) for what is and isn't supported
+- **Multiple Data Sources**: Parquet, JSONL and Skene datasets on local disk, Google Cloud Storage or HTTP(S)
+- **High Performance**: A vectorised, native execution engine with predicate and projection pushdown
+- **Two ways to run it**: embedded in your own Python process, or hosted at [opteryx.app](https://opteryx.app)
 
 ## Quick Links
 
-- [Installation Guide](getting-started/installation) - Get started with Opteryx
+- [What is Opteryx](introduction/what-is-opteryx) - the engine, and what it's built for
+- [When to use Opteryx](introduction/when-to-use) - where it fits, and where it doesn't
 - [Quick Start Tutorial](getting-started/quick-start) - Learn the basics in minutes
+- [Installation Guide](getting-started/installation) - embed the engine in your own Python process
 - [About Opteryx](about) - Learn more about the project
 
 ## Getting Help

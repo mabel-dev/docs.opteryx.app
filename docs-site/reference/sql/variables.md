@@ -3,6 +3,12 @@ title: System Variables — Opteryx Reference
 description: Every Opteryx system variable, its type, and who is permitted to set it.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # System Variables
 
 Opteryx exposes 24 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.

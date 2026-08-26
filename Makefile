@@ -86,7 +86,14 @@ check-statement-coverage: ## Fail if a supported statement has no page, or a pag
 check-window-aggregates: ## Fail if the window functions page has drifted from the aggregate catalog
 	@python3 scripts/check_window_aggregates.py
 
-check-sql: check-sql-definitions check-statement-coverage check-window-aggregates ## Every SQL-surface drift check
+# Generated pages are rewritten from definitions/ on every `make sql-docs`, so a
+# hand edit to one works right up until the next regeneration and then vanishes
+# without trace. This regenerates into a scratch copy and diffs, so an edit is
+# caught in review rather than discovered missing months later.
+check-generated-docs: ## Fail if a generated docs page has been hand-edited
+	@python3 scripts/check_generated_docs.py
+
+check-sql: check-sql-definitions check-statement-coverage check-window-aggregates check-generated-docs ## Every SQL-surface drift check
 
 sql-docs: sql-definitions ## Sync definitions, then rebuild the reference pages
 	@python3 scripts/update_docs_from_definitions.py

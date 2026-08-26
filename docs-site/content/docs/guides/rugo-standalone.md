@@ -11,16 +11,16 @@ description: Rugo is Opteryx's native file engine, available on its own. A fast,
 pip install rugo
 ```
 
-This gets you Rugo and [Draken](/docs/reference/internals/rugo) (the columnar library it emits into) — and nothing else.
+This gets you Rugo and [Draken](/docs/reference/internals/draken) (the columnar library it emits into) — and nothing else.
 
 ## Rugo vs. Opteryx
 
 These are two different things worth keeping straight:
 
 - **Rugo** reads and writes Parquet, CSV, and JSONL directly — you call its functions, get Draken morsels back, and work with them in Python. There is no SQL here.
-- **Opteryx** is the SQL engine built on top of Rugo. Querying a dataset with SQL — `SELECT ... FROM data.table` — currently only works against **Parquet** data.
+- **Opteryx** is the SQL engine built on top of Rugo. Querying a dataset with SQL — `SELECT ... FROM data.table` — works against **Parquet**, **JSONL** and **Skene** folders.
 
-If you have CSV or JSONL you want to query with SQL, use Rugo to convert it to Parquet first (below), then query the Parquet with Opteryx.
+CSV is not a dataset format. To query a CSV with SQL, either read it by path with `READ_CSV('...')`, or use Rugo to convert it to Parquet first (below).
 
 ## Reading Parquet Directly
 

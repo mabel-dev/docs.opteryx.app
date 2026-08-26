@@ -3,6 +3,12 @@ title: NULLIF — Opteryx Function
 description: Compares the two arguments and yields null when they are equal; otherwise preserves the first argument.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # NULLIF
 
 Compares the two arguments and yields null when they are equal; otherwise preserves the first argument.

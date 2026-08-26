@@ -6,8 +6,11 @@ This guide covers installing Opteryx Core, the Python library, to embed the engi
 
 Before installing Opteryx, ensure you have:
 
-- Python 3.8 or higher
+- Python 3.11 or higher — 3.14 is the version the test suite runs against
 - pip (Python package installer)
+
+See [Compatibility](/docs/roadmap-guarantees/compatibility) for which Python versions and
+platforms have wheels built for them, and which are covered by the test matrix.
 
 ## Installation Methods
 

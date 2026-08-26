@@ -1,6 +1,6 @@
 # What is Opteryx
 
-Opteryx is an open-source SQL query engine for analytics. It runs as a Python library — `pip install opteryx` and you have a full SQL engine in your process — and is built to query data where it already lives: Parquet files on object storage, local files, and a range of other sources, without copying it into a warehouse first.
+Opteryx is an open-source SQL query engine for analytics. It runs as a Python library — `pip install opteryx-core` and you have a full SQL engine in your process — and is built to query data where it already lives: Parquet files on object storage, local files, and a range of other sources, without copying it into a warehouse first.
 
 ## Overview
 
@@ -20,8 +20,8 @@ The internal memory model is purpose-built for the engine rather than borrowed f
 
 Opteryx queries data across a range of sources from a single SQL surface:
 
-- Parquet, ORC, CSV, JSONL, and Arrow files
-- Object storage (Google Cloud Storage, S3, MinIO) and local disk
+- Parquet, JSONL, and Skene (the engine's own native format) as dataset formats; CSV, JSONL and Parquet files by path through the `READ_*` table functions
+- Object storage (Google Cloud Storage, Amazon S3), plain HTTP(S), and local disk
 - In-process Python data structures (lists of dicts, pandas, Polars, PyArrow)
 - A growing set of operational stores accessed through connectors
 

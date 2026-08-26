@@ -17,16 +17,15 @@ There is no `COMMIT`, `ROLLBACK`, `SET TRANSACTION`, or isolation level — a qu
 
 ## Storage and file formats
 
-- **Storage backends**: local disk, Google Cloud Storage, and plain HTTP(S) are implemented. S3, Azure Blob Storage, and MinIO are not — despite references to them in test configuration and code comments, there is no corresponding connector.
+- **Storage backends**: local disk, Google Cloud Storage, Amazon S3, and plain HTTP(S) are implemented. Azure Blob Storage and MinIO are not — despite references to them in test configuration, there is no corresponding connector.
 - **File formats**: Parquet, JSONL, and Skene (the engine's own native format) are supported as dataset formats; CSV is queryable through `READ_CSV` but is not a dataset format. ORC and Avro are not supported at all.
 
 See [Compatibility](compatibility) for the full list, including platform and Python version support.
 
 ## SQL features not implemented
 
-- `GROUPING SETS`, `ROLLUP`, and `CUBE`
+- `GROUPING SETS` and `CUBE` — `ROLLUP` is the supported `GROUP BY` grouping construct
 - `WITH RECURSIVE`
-- Window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, `LEAD` / `LAG` — so running totals and moving averages via window functions aren't available
 - `WITH TIME ZONE` — timestamps carry no zone
 - `RIGHT SEMI` / `RIGHT ANTI` joins — swap the relation order and use `LEFT SEMI` / `LEFT ANTI` instead
 - Cursors (`DECLARE CURSOR`, `FETCH`) — results stream to the client as morsels instead

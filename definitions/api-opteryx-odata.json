@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Opteryx OData Service",
+    "title": "Opteryx OData v4 Service",
     "version": "0.1.0"
   },
   "paths": {
@@ -29,6 +29,9 @@
     },
     "/api/v4/": {
       "get": {
+        "tags": [
+          "OData v4"
+        ],
         "summary": "OData v4 Service Document",
         "description": "Returns the OData v4 service document listing all accessible EntitySets grouped by workspace and collection.",
         "operationId": "get_service_document_api_v4__get",
@@ -81,6 +84,9 @@
     },
     "/api/v4/$metadata": {
       "get": {
+        "tags": [
+          "OData v4"
+        ],
         "summary": "OData v4 Service-wide EDMX Metadata",
         "description": "Returns the complete OData v4 EDMX metadata document describing all EntityTypes and EntitySets accessible to the authenticated user.",
         "operationId": "get_edmx_metadata_api_v4__metadata_get",
@@ -181,10 +187,10 @@
                   "type": "null"
                 }
               ],
-              "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error.",
+              "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string), in_subnet (IPv4 CIDR containment). Case-sensitive. in_subnet(ip_column, 'cidr') is an Opteryx extension for IPv4-typed columns, e.g. in_subnet(src_addr, '192.168.4.0/24'); the PostgreSQL <<= operator is not valid OData syntax. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error. Date and time functions: now() (the query's wall clock, evaluated once per query so every row sees the same instant), year(), month(), day(), hour(), minute(), second() (each returns the named component of a date or timestamp as an integer, e.g. year(shipped_date) eq 2024), and date() (narrows a timestamp to its date part, e.g. date(created_at) eq 2024-01-01). The OData functions time(), mindatetime() and maxdatetime() are not implemented and are rejected with a message naming what to write instead. Rolling windows: combine now() with an ISO 8601 duration literal using add or sub, e.g. published_at ge now() sub duration'P30D' for the last 30 days. The duration syntax is duration'PnYnMnDTnHnMnS', optionally signed, e.g. duration'P1Y', duration'P18M', duration'PT12H', duration'-P7D'. Year and month durations are calendar-aware — duration'P1Y' means one calendar year and duration'P1M' one calendar month, so their length depends on the date they are applied to — while day, hour, minute and second durations are fixed spans (duration'P30D' is always exactly 30 × 24 hours).",
               "title": "$Filter"
             },
-            "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string). Case-sensitive. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error."
+            "description": "OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string), in_subnet (IPv4 CIDR containment). Case-sensitive. in_subnet(ip_column, 'cidr') is an Opteryx extension for IPv4-typed columns, e.g. in_subnet(src_addr, '192.168.4.0/24'); the PostgreSQL <<= operator is not valid OData syntax. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error. Date and time functions: now() (the query's wall clock, evaluated once per query so every row sees the same instant), year(), month(), day(), hour(), minute(), second() (each returns the named component of a date or timestamp as an integer, e.g. year(shipped_date) eq 2024), and date() (narrows a timestamp to its date part, e.g. date(created_at) eq 2024-01-01). The OData functions time(), mindatetime() and maxdatetime() are not implemented and are rejected with a message naming what to write instead. Rolling windows: combine now() with an ISO 8601 duration literal using add or sub, e.g. published_at ge now() sub duration'P30D' for the last 30 days. The duration syntax is duration'PnYnMnDTnHnMnS', optionally signed, e.g. duration'P1Y', duration'P18M', duration'PT12H', duration'-P7D'. Year and month durations are calendar-aware — duration'P1Y' means one calendar year and duration'P1M' one calendar month, so their length depends on the date they are applied to — while day, hour, minute and second durations are fixed spans (duration'P30D' is always exactly 30 × 24 hours)."
           },
           {
             "name": "$top",
@@ -217,10 +223,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Skip N rows for pagination (server-driven). Example: &$skip=100 to fetch rows 101+. Combine with $top for paging.",
+              "description": "Skip N rows for pagination (server-driven). Requires $orderby: without a deterministic row order, paging duplicates some rows and drops others. Example: &$orderby=id asc&$skip=100 to fetch rows 101+. Combine with $top for paging.",
               "title": "$Skip"
             },
-            "description": "Skip N rows for pagination (server-driven). Example: &$skip=100 to fetch rows 101+. Combine with $top for paging."
+            "description": "Skip N rows for pagination (server-driven). Requires $orderby: without a deterministic row order, paging duplicates some rows and drops others. Example: &$orderby=id asc&$skip=100 to fetch rows 101+. Combine with $top for paging."
           },
           {
             "name": "$orderby",
@@ -307,10 +313,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Data aggregation: groupby((col), aggregate(sum(amount) as Total, $count as Count)). Supports min, max, average, sum, countdistinct.",
+              "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N)).",
               "title": "$Apply"
             },
-            "description": "Data aggregation: groupby((col), aggregate(sum(amount) as Total, $count as Count)). Supports min, max, average, sum, countdistinct."
+            "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N))."
           },
           {
             "name": "authorization",
@@ -341,7 +347,7 @@
             }
           },
           "400": {
-            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), invalid $count value, or invalid $apply expression"
+            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, or invalid $apply expression"
           },
           "401": {
             "description": "Missing or invalid authentication (no bearer token or basic auth)"
@@ -371,7 +377,7 @@
           "OData v4"
         ],
         "summary": "Per-dataset OData EDMX metadata",
-        "description": "Returns OData $metadata (EDMX) for a single dataset, including column types, nullability, cardinality, and min/max values as custom annotations.",
+        "description": "Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), latest-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), and materialized-view state (Custom.MaterializedView.*). Annotations are omitted where they do not apply to the dataset kind or are unavailable.",
         "operationId": "dataset_metadata_api_v4__workstream___collection___dataset___metadata_get",
         "parameters": [
           {

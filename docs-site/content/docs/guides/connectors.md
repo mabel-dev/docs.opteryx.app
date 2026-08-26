@@ -20,8 +20,9 @@ the process working directory**, with dots as separators:
 SELECT name FROM testdata.astronauts;   -- reads ./testdata/astronauts/
 ```
 
-That directory is scanned for data files (Parquet, CSV, JSONL). This is the
-whole configuration story for local querying — there is nothing to register.
+That directory is scanned for data files (Parquet, JSONL, or Skene — CSV is not a
+dataset format; read it by path with `read_csv` below). This is the whole
+configuration story for local querying — there is nothing to register.
 
 > Warning: Because the path is resolved against the **current working directory**, the same query run from a different directory reads different data, or fails. Register a prefix (below) if you need a fixed location.
 

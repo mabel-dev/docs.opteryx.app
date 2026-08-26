@@ -46,7 +46,7 @@ certified conformance at that feature level.
 | Numeric and string types | E011, E021 | **yes** | Full `DECIMAL(p,s)` for p in 1–38. See [Data Types](data-types) and the [Limits](limits) page for the boundaries. |
 | Basic predicates | E061 | **yes** | Comparison, `BETWEEN`, `IN`, `LIKE`, `EXISTS`, quantified subquery predicates, `IS NULL`. |
 | Set functions | E091 | **yes** | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `COUNT(DISTINCT ...)`, plus a wider [aggregate set](aggregates) including `ARRAY_AGG` and sketch-based approximations. |
-| Grouping | E051 | **yes** | `GROUP BY` and `HAVING`. `GROUPING SETS`, `ROLLUP`, and `CUBE` are **not** implemented. |
+| Grouping | E051 | **yes** | `GROUP BY` and `HAVING`. `ROLLUP` is supported; `GROUPING SETS` and `CUBE` are **not** implemented. |
 | Set operations | E071, F302, F304 | **yes** | `UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`, and the `ALL` (multiset) forms. See [UNION / INTERSECT / EXCEPT](statements/union). |
 | Joined tables | E031, F041 | **yes** | `INNER`, `LEFT`, `RIGHT`, `FULL OUTER`, `CROSS`, `NATURAL`, `USING`, non-equi joins, and `LEFT SEMI` / `LEFT ANTI` as extensions. `RIGHT SEMI` and `RIGHT ANTI` are not supported — swap the relations. See [JOIN](statements/joins). |
 | Subqueries | E051, E061 | **yes** | Subqueries in `FROM`, in the select list, and in predicates. **Correlated** subqueries, `EXISTS` / `NOT EXISTS`, and `IN (SELECT ...)` are supported — the optimizer decorrelates them into semi/anti joins. |
@@ -69,7 +69,7 @@ certified conformance at that feature level.
 | Feature | Reference | Support | Notes |
 |:--|:--|:--|:--|
 | Boolean type | T031 | **yes** | `BOOLEAN` is a first-class type. |
-| Window functions | T611 | **partial** | Two families with different rules: ranking (`ROW_NUMBER`, `RANK`, `DENSE_RANK`) **requires** `ORDER BY` inside `OVER`; aggregate windows (`SUM` / `COUNT` / `AVG` `OVER (PARTITION BY ...)`) **reject** it. Window frames (`ROWS BETWEEN ...`), named `WINDOW` clauses, and `LEAD` / `LAG` are **not** implemented, so running totals and moving averages are unavailable. See [Window Functions](statements/window-functions). |
+| Window functions | T611 | **partial** | Ranking (`ROW_NUMBER`, `RANK`, `DENSE_RANK`, `NTILE`, `PERCENT_RANK`, `CUME_DIST`), navigation (`LAG`, `LEAD`) and value (`FIRST_VALUE`, `LAST_VALUE`, `NTH_VALUE`) functions **require** `ORDER BY` inside `OVER`. Aggregate windows, frame specifications (`ROWS BETWEEN`, `RANGE BETWEEN`) and named `WINDOW` clauses are supported, so running totals and moving averages are available. See [Window Functions](statements/window-functions). |
 | `information_schema` | — | **partial** | Three views — `tables`, `columns`, `triggers` — read live from the catalog. Addressed as `<workspace>.information_schema.<view>`. See [Information schema](advanced/adv-information-schema). |
 | Temporal query | — | **extension** | `TIMESTAMP AS OF` reads a table as at a point in time; `VERSION AS OF` reads it as at a specific snapshot id, or `VERSION AS OF PREVIOUS` for the one before current. Not a standard feature; see [TIMESTAMP AS OF](statements/timestamp-as-of) and [VERSION AS OF](statements/version-as-of). |
 | Semi-structured types | — | **extension** | `ARRAY`, `VARIANT`, `VECTOR`, and `IPV4`, with JSON path operators (`->`, `->>`, `@?`). Outside the standard entirely. |

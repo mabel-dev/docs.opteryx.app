@@ -3,6 +3,12 @@ title: Integer division — Opteryx Operator
 description: Divides two integers and truncates the result toward zero. Symbol: DIV
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT.
+     Regenerate with `make sql-docs` from the docs repo root.
+     To change what this page says, change the source it is generated from
+     (a registrar in opteryx-core, or a service's own OpenAPI description)
+     and re-export - a hand edit here is silently overwritten. -->
+
 # Integer division
 
 Divides two integers and truncates the result toward zero.
