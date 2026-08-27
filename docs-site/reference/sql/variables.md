@@ -11,7 +11,7 @@ description: Every Opteryx system variable, its type, and who is permitted to se
 
 # System Variables
 
-Opteryx exposes 24 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
+Opteryx exposes 26 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
 
 > Be Aware: Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all. Everything else is fixed by the server or stamped per session.
 
@@ -46,6 +46,8 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 | `max_sql_length` | INT64 | `256000` |
 | `median_memory_budget_bytes` | INT64 | `2147483648` |
 | `result_retention_days` | INT64 | `7` |
+| `spill_ceiling_bytes` | INT64 | `1073741824` |
+| `spill_flush_bytes` | INT64 | `536870912` |
 | `sql_mode` | VARCHAR | `opteryx` |
 | `sql_select_limit` | INT64 | `1073741824` |
 | `system_time_zone` | VARCHAR | `UTC` |

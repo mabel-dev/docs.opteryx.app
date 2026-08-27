@@ -22,6 +22,7 @@ It takes no options — there is nothing to specify beyond the statement itself.
 | Column | Description |
 |--------|-------------|
 | `pattern` | The name pattern the grant applies to, e.g. `production.*` |
+| `level` | The object level the pattern addresses — `workspace`, `collection` or `dataset` — or blank for a pattern that addresses no single object |
 | `role` | `reader`, `writer` or `owner` |
 | `actions` | The actions that role permits, derived from the role |
 
@@ -32,10 +33,10 @@ SHOW GRANTS;
 ~~~
 
 ~~~
- pattern      | role   | actions
---------------+--------+--------------------------------------------------
- production.* | owner  | ALTER, CREATE, DELETE, DROP, MANIFEST, READ, UPDATE, WRITE
- public.*     | reader | READ
+ pattern      | level     | role   | actions
+--------------+-----------+--------+--------------------------------------------------
+ production.* | workspace | owner  | ALTER, CREATE, DELETE, DROP, GRANT, MANIFEST, READ, REVOKE, UPDATE, WRITE
+ public.*     | workspace | reader | READ
 ~~~
 
 ## Reading the Result
@@ -57,10 +58,9 @@ The roles are cumulative in what they permit:
 
 ## This Statement Grants Nothing
 
-`SHOW GRANTS` reports; it does not confer. **Opteryx has no `GRANT` or `REVOKE`
-statement.** Access policies are issued by the platform's policy service and handed to the
-session when it connects, so the engine can only ever narrow what you may do, never widen
-it. To change a policy, use the platform's access-control API rather than SQL.
+`SHOW GRANTS` reports; it does not confer. Grants are changed with the separate
+[GRANT](grant) and [REVOKE](revoke) statements, and the grants held on a particular
+object are listed with [SHOW GRANTS ON](show-grants-on).
 
 Policies are resolved once, when the session connects. A policy changed elsewhere is
 picked up by the next connection, not by a session already running.
@@ -78,6 +78,9 @@ picked up by the next connection, not by a session already running.
 
 ## See Also
 
+- [GRANT](grant)
+- [REVOKE](revoke)
+- [SHOW GRANTS ON](show-grants-on)
 - [ALTER WORKSPACE](alter-workspace)
 - [DROP COLLECTION](drop-collection)
 - [SHOW VARIABLES](show-variables)
