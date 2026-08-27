@@ -144,17 +144,63 @@ function normalizeFenceLanguage(
   return canonical;
 }
 
+// Tabler icon path data, keyed by fence language; `file` is the fallback for
+// any labeled language without its own glyph.
+const LANGUAGE_ICON_PATHS: Record<string, string> = {
+  sql:
+    `<path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />` +
+    `<path d="M4 6v6a8 3 0 0 0 16 0v-6" />` +
+    `<path d="M4 12v6a8 3 0 0 0 16 0v-6" />`,
+  bash: `<path d="M5 7l5 5l-5 5" /><path d="M12 19l7 0" />`,
+  python:
+    `<path d="M12 9h-7a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h3" />` +
+    `<path d="M12 15h7a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-3" />` +
+    `<path d="M8 9v-4a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v5a2 2 0 0 1 -2 2h-4a2 2 0 0 0 -2 2v5a2 2 0 0 0 2 2h4a2 2 0 0 0 2 -2v-4" />` +
+    `<path d="M11 6l0 .01" /><path d="M13 18l0 .01" />`,
+  json:
+    `<path d="M7 4a2 2 0 0 0 -2 2v3a2 3 0 0 1 -2 3a2 3 0 0 1 2 3v3a2 2 0 0 0 2 2" />` +
+    `<path d="M17 4a2 2 0 0 1 2 2v3a2 3 0 0 0 2 3a2 3 0 0 0 -2 3v3a2 2 0 0 1 -2 2" />`,
+  text:
+    `<path d="M14 3v4a1 1 0 0 0 1 1h4" />` +
+    `<path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />` +
+    `<path d="M9 9l1 0" /><path d="M9 13l6 0" /><path d="M9 17l6 0" />`,
+  markdown:
+    `<path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />` +
+    `<path d="M7 15v-6l2 2l2 -2v6" /><path d="M14 13l2 2l2 -2m-2 2v-6" />`,
+  file:
+    `<path d="M14 3v4a1 1 0 0 0 1 1h4" />` +
+    `<path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />`,
+};
+
+function languageIcon(language: string): string {
+  const paths = LANGUAGE_ICON_PATHS[language] ?? LANGUAGE_ICON_PATHS.file;
+  return (
+    `<svg class="code-block-lang-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">` +
+    `${paths}</svg>`
+  );
+}
+
+const COPY_BUTTON =
+  `<button type="button" class="copy-btn" data-copy-button>` +
+  `<svg class="copy-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>` +
+  `<span class="copy-btn-label">Copy</span>` +
+  `</button>`;
+
 // The button carries no copy of the code — `CodeCopy` reads it from the <pre>
 // at click time, so the highlighted markup is not duplicated into the page for
 // every block. Only fences with a language we highlight get a button: the rest
 // are mostly query output and console transcripts, which are there to be read
 // rather than run.
-function wrapInCodeBlock(highlighted: string, language: string): string {
+function wrapInCodeBlock(
+  highlighted: string,
+  language: string,
+  { copyButton = true }: { copyButton?: boolean } = {},
+): string {
   return (
     `<div class="code-block" data-code-block>` +
     `<div class="code-block-header">` +
-    `<span class="code-block-lang">${language}</span>` +
-    `<button type="button" class="copy-btn" data-copy-button>Copy</button>` +
+    `<span class="code-block-lang">${languageIcon(language)}${language}</span>` +
+    (copyButton ? COPY_BUTTON : "") +
     `</div>${highlighted}</div>`
   );
 }
@@ -208,7 +254,9 @@ function transformCalloutBlockquotes(html: string): string {
       const iconPath =
         normalizedType === "tip"
           ? "/images/bulb-outline.svg"
-          : "/images/warning-outline.svg";
+          : normalizedType === "warning"
+            ? "/images/alert-triangle-warning.svg"
+            : "/images/alert-triangle-danger.svg";
 
       return `<blockquote data-callout="${normalizedType}">
             <div class="callout-header">
@@ -240,16 +288,34 @@ export async function renderMarkdownToHtml(
       }
 
       const language = normalizeFenceLanguage(token.lang);
-      if (!language) {
+      const rawLabel = String(token.lang ?? "")
+        .trim()
+        .toLowerCase();
+
+      let block: string;
+      if (language) {
+        const highlighter = await getHighlighter();
+        const highlighted = highlighter.codeToHtml(token.text ?? "", {
+          lang: language,
+          theme: SHIKI_THEME,
+        });
+        block = wrapInCodeBlock(highlighted, language);
+      } else if (/^[a-z0-9_+-]+$/.test(rawLabel)) {
+        // A fence labeled with a language we don't highlight still gets the
+        // header with its icon and name — just no copy button, and the code
+        // rendered plain.
+        const escaped = String(token.text ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        block = wrapInCodeBlock(
+          `<pre><code>${escaped}</code></pre>`,
+          rawLabel,
+          { copyButton: false },
+        );
+      } else {
         return;
       }
-
-      const highlighter = await getHighlighter();
-      const highlighted = highlighter.codeToHtml(token.text ?? "", {
-        lang: language,
-        theme: SHIKI_THEME,
-      });
-      const block = wrapInCodeBlock(highlighted, language);
 
       token.type = "html";
       token.raw = block;

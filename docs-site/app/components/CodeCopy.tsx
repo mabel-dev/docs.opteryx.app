@@ -29,26 +29,30 @@ export default function CodeCopy() {
         return;
       }
 
+      // The label span sits next to the icon; writing to the button itself
+      // would wipe the icon out.
+      const label = button.querySelector(".copy-btn-label") ?? button;
+
       try {
         await navigator.clipboard.writeText(code);
       } catch {
         // Clipboard access is denied outside a secure context, and in some
         // privacy configurations. Say so rather than showing "Copied" over a
         // clipboard that still holds whatever was there before.
-        button.textContent = "Press ⌘C";
+        label.textContent = "Press ⌘C";
         button.dataset.copyState = "failed";
         const failureTimer = setTimeout(() => {
-          button.textContent = "Copy";
+          label.textContent = "Copy";
           delete button.dataset.copyState;
         }, RESET_DELAY_MS);
         timers.add(failureTimer);
         return;
       }
 
-      button.textContent = "Copied";
+      label.textContent = "Copied";
       button.dataset.copyState = "copied";
       const timer = setTimeout(() => {
-        button.textContent = "Copy";
+        label.textContent = "Copy";
         delete button.dataset.copyState;
       }, RESET_DELAY_MS);
       timers.add(timer);
