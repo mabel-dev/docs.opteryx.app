@@ -51,6 +51,9 @@ STATEMENTS = ROOT / "docs-site" / "reference" / "sql" / "statements"
 # page behind a near-miss.
 PAGE_OVERRIDES = {
     "COMMENT ON": "comment",
+    # Both ALTER MATERIALIZED VIEW forms are one statement page.
+    "ALTER MATERIALIZED VIEW ... OWNER TO": "alter-materialized-view",
+    "ALTER MATERIALIZED VIEW ... SUSPEND / RESUME": "alter-materialized-view",
 }
 
 # Statements whose reference lives somewhere other than a statement page.
