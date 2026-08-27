@@ -750,6 +750,9 @@
             "Working with arrays": "reference/sql/advanced/adv-working-with-lists.md"
           },
           {
+            "Working with CTEs": "reference/sql/advanced/adv-working-with-ctes.md"
+          },
+          {
             "Working with IPs": "reference/sql/advanced/adv-working-with-ips.md"
           },
           {
