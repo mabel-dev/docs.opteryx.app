@@ -1,5 +1,6 @@
 import React from "react";
 import { renderMarkdownToHtml } from "@/app/lib/renderMarkdown";
+import CodeCopy from "@/app/components/CodeCopy";
 
 type DocRendererProps = { source: string };
 
@@ -25,6 +26,7 @@ export default async function DocRenderer({ source }: DocRendererProps) {
         className="docs-article"
         dangerouslySetInnerHTML={{ __html: html }}
       />
+      <CodeCopy />
     </div>
   );
 }

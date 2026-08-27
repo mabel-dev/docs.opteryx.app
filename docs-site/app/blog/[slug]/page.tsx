@@ -7,6 +7,7 @@ import { renderMarkdownToHtml } from "@/app/lib/renderMarkdown";
 import { listMarkdownSlugs } from "@/app/lib/listMarkdownSlugs";
 import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 import BlogPostTOC from "@/app/blog/BlogPostTOC";
+import CodeCopy from "@/app/components/CodeCopy";
 
 type Props = {
   params: {
@@ -205,6 +206,7 @@ export default async function Page({ params }: Props) {
         {/* Post body */}
         <article className="post-body">
           <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          <CodeCopy />
           <div className="post-footer">
             <p className="post-disclaimer">
               {`This post was accurate at the time of publication${

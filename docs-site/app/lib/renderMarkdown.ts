@@ -144,6 +144,21 @@ function normalizeFenceLanguage(
   return canonical;
 }
 
+// The button carries no copy of the code — `CodeCopy` reads it from the <pre>
+// at click time, so the highlighted markup is not duplicated into the page for
+// every block. Only fences with a language we highlight get a button: the rest
+// are mostly query output and console transcripts, which are there to be read
+// rather than run.
+function wrapInCodeBlock(highlighted: string, language: string): string {
+  return (
+    `<div class="code-block" data-code-block>` +
+    `<div class="code-block-header">` +
+    `<span class="code-block-lang">${language}</span>` +
+    `<button type="button" class="copy-btn" data-copy-button>Copy</button>` +
+    `</div>${highlighted}</div>`
+  );
+}
+
 function addHeadingIdsToHtml(html: string): string {
   // A page may repeat a heading — the API reference pages carry a "Responses"
   // and a "Try it live" under every endpoint. The slug alone is therefore not
@@ -234,10 +249,11 @@ export async function renderMarkdownToHtml(
         lang: language,
         theme: SHIKI_THEME,
       });
+      const block = wrapInCodeBlock(highlighted, language);
 
       token.type = "html";
-      token.raw = highlighted;
-      token.text = highlighted;
+      token.raw = block;
+      token.text = block;
       token.pre = false;
       token.block = true;
       token.lang = undefined;

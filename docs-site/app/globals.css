@@ -3248,6 +3248,33 @@ kbd {
     color: var(--text-deep);
     line-height: 1.65;
 }
+
+/* `.docs-article pre` and `.prose pre` give a bare fence its own frame. Inside a
+   .code-block the wrapper owns the border, radius and spacing, so the <pre>
+   drops them rather than drawing a second box inside the first. */
+.docs-article .code-block pre,
+.prose .code-block pre {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+.docs-article .code-block,
+.prose .code-block {
+    margin: 0 0 22px;
+}
+.code-block-lang {
+    font-family: var(--font-display);
+}
+.code-block-header .copy-btn:focus-visible {
+    outline: 2px solid var(--opteryx-teal);
+    outline-offset: 1px;
+}
+.code-block-header .copy-btn[data-copy-state="copied"] {
+    color: var(--opteryx-navy);
+}
+.code-block-header .copy-btn[data-copy-state="failed"] {
+    color: var(--muted);
+}
 .code-block .tok-kw {
     color: var(--opteryx-teal);
     font-weight: 600;
