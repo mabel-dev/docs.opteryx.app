@@ -19,6 +19,9 @@
       },
       {
         "Load and query data": "getting-started/reading-data.md"
+      },
+      {
+        "Your first table": "getting-started/your-first-table.md"
       }
     ]
   },
