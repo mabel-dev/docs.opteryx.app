@@ -75,7 +75,9 @@ The `SELECT` clause can be thought of as choosing which columns we want from the
 For example, the following query returns planets with fewer than 10 moons and a day longer than 24 hours:
 
 ~~~sql
-SELECT *
+SELECT name,
+       lengthOfDay,
+       numberOfMoons
   FROM $planets
  WHERE lengthOfDay > 24
    AND numberOfMoons < 10;
@@ -106,8 +108,8 @@ SELECT name,
 Result:
 
 ~~~
-name  	| lengthOfDay | numberOfMoons
---------+-------------+---------------
-Mercury	|      4222.6 |             0
-Venus   |        2802 |             0
+name  	| numberOfMoons
+--------+---------------
+Mercury	|             0
+Venus   |             0
 ~~~
