@@ -64,6 +64,18 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | [SHOW USER](statements/show-user) | Show the current connection's identity |
 | [SHOW GRANTS](statements/show-grants) | List the access policies the current connection holds |
 
+## Access Control
+
+Administer who holds what on a workspace, collection, or dataset:
+
+| Statement | Purpose |
+|-----------|---------|
+| [GRANT](statements/grant) | Grant a reader, writer or owner role on an object to a user |
+| [REVOKE](statements/revoke) | Revoke a granted role from a user |
+| [SHOW GRANTS ON](statements/show-grants-on) | List the grants held on an object |
+
+For the current session's own grants, see [SHOW GRANTS](statements/show-grants) above.
+
 ## Session State
 
 | Statement | Purpose |
@@ -87,6 +99,7 @@ Materialized views store a query's result as a physical table and refresh it aut
 | Statement | Purpose |
 |-----------|---------|
 | [CREATE MATERIALIZED VIEW](statements/create-materialized-view) | Materialize a query as a self-refreshing table |
+| [ALTER MATERIALIZED VIEW](statements/alter-materialized-view) | Change a view's refresh owner, or suspend and resume its refresh |
 | [DROP MATERIALIZED VIEW](statements/drop-materialized-view) | Remove a materialized view and its refresh triggers |
 | [REFRESH MATERIALIZED VIEW](statements/refresh-materialized-view) | Rebuild a materialized view from its defining SELECT |
 | [DROP TRIGGER](statements/drop-trigger) | Remove one refresh trigger from a table |
@@ -101,8 +114,9 @@ Manage workspaces - the top level of the naming hierarchy:
 | Statement | Purpose |
 |-----------|---------|
 | [ALTER WORKSPACE](statements/alter-workspace) | Set a workspace property, such as `deletion_protection` |
+| [DROP WORKSPACE](statements/drop-workspace) | Permanently delete a workspace and everything in it |
 
-Workspaces themselves are created and deleted through the platform, not through SQL.
+Workspaces are created through the platform, not through SQL.
 
 ## Collection Management
 

@@ -175,7 +175,13 @@
               "DROP VIEW": "reference/sql/statements/drop-view.md"
             },
             {
+              "DROP WORKSPACE": "reference/sql/statements/drop-workspace.md"
+            },
+            {
               "EXPLAIN": "reference/sql/statements/explain.md"
+            },
+            {
+              "GRANT": "reference/sql/statements/grant.md"
             },
             {
               "GROUP BY": "reference/sql/statements/group-by.md"
@@ -217,6 +223,9 @@
               "REFRESH MATERIALIZED VIEW": "reference/sql/statements/refresh-materialized-view.md"
             },
             {
+              "REVOKE": "reference/sql/statements/revoke.md"
+            },
+            {
               "SELECT": "reference/sql/statements/select.md"
             },
             {
@@ -230,6 +239,9 @@
             },
             {
               "SHOW GRANTS": "reference/sql/statements/show-grants.md"
+            },
+            {
+              "SHOW GRANTS ON": "reference/sql/statements/show-grants-on.md"
             },
             {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
