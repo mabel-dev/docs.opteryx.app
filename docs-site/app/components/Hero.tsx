@@ -33,9 +33,9 @@ export default function Hero() {
           <div>
             <div className="eyebrow">Documentation</div>
             <h1>
-              Query <em>anything,</em>
+              A SQL engine that
               <br />
-              in plain SQL.
+              <em>fits in your process.</em>
             </h1>
           </div>
           <div className="meta">
