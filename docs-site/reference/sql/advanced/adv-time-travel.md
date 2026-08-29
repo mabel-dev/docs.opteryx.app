@@ -120,19 +120,51 @@ SELECT *
    VERSION AS OF PREVIOUS;
 ```
 
-This walks the catalog's `parent_snapshot_id` chain — it reads the current snapshot and the
-one immediately behind it, never the table's whole history, so it costs the same as an
-ordinary read plus one extra snapshot lookup.
+`PREVIOUS` means the previous version of the **data**, not the previous snapshot. Compaction
+and statistics refresh commit snapshots of their own that change no rows, so the snapshot
+immediately behind the current one is frequently the same data an ordinary read returns —
+which would look like a successful time-travel query and be indistinguishable from one.
+`PREVIOUS` walks the catalog's `parent_snapshot_id` chain past those and stops at the last
+commit a user made, so it always returns something that actually differs.
+
+That walk is a handful of snapshot lookups, never the table's whole history.
 
 **Notes:**
 
 - `0` is not a usable snapshot id — it is reserved so `PREVIOUS` has an unambiguous internal
   form, and `VERSION AS OF 0` is refused even if a real snapshot happened to have that id.
-- `PREVIOUS` is exactly one snapshot back; there is no `PREVIOUS 2` or similar.
-- `PREVIOUS` errors, rather than returning something unexpected, if the current snapshot has
-  no parent (the table's first snapshot) or the parent has been reclaimed — see
+- `PREVIOUS` is exactly one version of the data back; there is no `PREVIOUS 2` or similar.
+- `PREVIOUS` errors, rather than returning something unexpected, if the table is at the
+  earliest version of its data or that earlier version has been reclaimed — see
   [Snapshot Reclamation](#snapshot-reclamation).
 - Requires the same catalog-backed table with a commit log that `TIMESTAMP AS OF` requires.
+
+## The Latest Snapshot, and Rolling Back
+
+A table read with no version clause returns its **latest** snapshot — the head. `latest` is a
+name as well as a concept: `SHOW SNAPSHOTS FOR` marks that row `is_latest` and lists `latest`
+in its `tags` column, and `VERSION AS OF latest` reads it. It is a virtual tag, holding
+nothing back from reclamation; `latest` and `previous` are reserved names no real tag can
+take.
+
+[`ALTER TABLE ... ROLLBACK TO VERSION`](/docs/reference/sql/statements/alter-table#rollback-to-version)
+moves the head to an older snapshot, which makes that version what every reader sees:
+
+```sql
+ALTER TABLE my_workspace.sales.orders
+ROLLBACK TO VERSION before_the_migration;
+```
+
+Nothing is copied and nothing is deleted — a rollback moves one pointer. The snapshots it
+moves off stay in `SHOW SNAPSHOTS FOR` and stay readable by id, so a rollback is undone by
+rolling forward to the id it moved off. They are **not** held from reclamation though: once
+they age out the rollback can no longer be undone, so tag the current version before rolling
+back if you may want it again.
+
+After a rollback the latest snapshot is not the newest one in the history, and time travel
+respects that: `TIMESTAMP AS OF` will not select a snapshot ahead of the head, so a
+point-in-time read never returns a version the table's owner has rolled back. Naming such a
+snapshot's id explicitly still reads it.
 
 See [VERSION AS OF](/docs/reference/sql/statements/version-as-of) for full syntax.
 
@@ -226,4 +258,4 @@ surviving snapshot, the join silently compares against that snapshot rather than
 - Timestamps are evaluated in UTC.
 - Backfilled data is visible: reading at a past timestamp returns the snapshot as it was committed, including any corrections that commit carried.
 - The `TIMESTAMP AS OF` expression must be resolvable before the query runs — it cannot reference a column.
-- `VERSION AS OF` takes a bare snapshot id, a tag name, or `PREVIOUS` — no expressions, and no *n*-back offset beyond one.
+- `VERSION AS OF` takes a bare snapshot id, a tag name, `LATEST`, or `PREVIOUS` — no expressions, and no *n*-back offset beyond one.

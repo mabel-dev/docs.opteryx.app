@@ -17,6 +17,7 @@ The `ALTER TABLE` statement changes a table's columns, its physical layout, its 
 | [`RENAME TO`](#rename-to) | Rename a table, optionally moving it to another collection |
 | [`CREATE TAG`](#create-tag) | Name a snapshot, and hold it from reclamation for as long as the name exists |
 | [`DROP TAG`](#drop-tag) | Remove the name, releasing the snapshot it held |
+| [`ROLLBACK TO VERSION`](#rollback-to-version) | Make an older snapshot the latest one, for every reader |
 
 Any other `ALTER TABLE` operation — `ADD CONSTRAINT`, `SET DEFAULT`, `SET NOT NULL`, and the rest — is rejected when the query is planned. Opteryx does not enforce integrity constraints, so a statement that only declares one would change nothing; it is refused rather than accepted and silently ignored.
 
@@ -42,10 +43,13 @@ ALTER TABLE [ IF EXISTS ] <table_name>
 RENAME TO <new_table_name>;
 
 ALTER TABLE [ IF EXISTS ] <table_name>
-CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | LATEST | PREVIOUS } ];
 
 ALTER TABLE [ IF EXISTS ] <table_name>
 DROP TAG <tag_name>;
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+ROLLBACK TO VERSION { <snapshot_id> | <tag_name> | PREVIOUS };
 ~~~
 
 `<table_name>` and `<new_table_name>` are fully qualified as
@@ -359,7 +363,7 @@ The vacated storage location is reclaimed by the same background sweep that recl
 
 ~~~sql
 ALTER TABLE [ IF EXISTS ] <table_name>
-CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | LATEST | PREVIOUS } ];
 ~~~
 
 A tag is a **name bound to one snapshot, which keeps that snapshot alive**. Snapshots are
@@ -377,19 +381,21 @@ keeping-alive is the point.
   **folds to lowercase**: `MyTag` and `mytag` are one tag with one spelling.
 - **`AS OF VERSION <snapshot_id>`** — a snapshot id, as reported by
   [`SHOW SNAPSHOTS FOR`](show-snapshots).
-- **`AS OF VERSION CURRENT`** — the snapshot a plain `SELECT` reads today. This is the
-  default when the clause is omitted entirely.
-- **`AS OF VERSION PREVIOUS`** — the parent of the current snapshot, exactly the one
-  [`VERSION AS OF PREVIOUS`](version-as-of) would read.
+- **`AS OF VERSION LATEST`** — the snapshot a plain `SELECT` reads today. This is the
+  default when the clause is omitted entirely. (`CURRENT` was the old spelling and is
+  refused, with a message naming `LATEST`.)
+- **`AS OF VERSION PREVIOUS`** — the previous version of the *data*, exactly the one
+  [`VERSION AS OF PREVIOUS`](version-as-of) would read. It steps over the compaction and
+  statistics commits that changed no rows.
 - `IF EXISTS` — skip the operation without error if the table does not exist.
 
-### Tag the Current Version
+### Tag the Latest Version
 ~~~sql
 ALTER TABLE workspace.collection.observations
 CREATE TAG report_202602;
 ~~~
 
-Equivalent to `AS OF VERSION CURRENT`. The commonest form: name what is there right now,
+Equivalent to `AS OF VERSION LATEST`. The commonest form: name what is there right now,
 before something else lands on top of it.
 
 ### Tag a Specific Snapshot
@@ -406,9 +412,12 @@ CREATE TAG before_the_backfill AS OF VERSION PREVIOUS;
 
 ### Notes (CREATE TAG)
 
-- **A tag resolves to an id at creation, and stores that id.** `CURRENT` and `PREVIOUS` are
-  looked up once, when the statement runs. A tag holding the word "current" would silently
+- **A tag resolves to an id at creation, and stores that id.** `LATEST` and `PREVIOUS` are
+  looked up once, when the statement runs. A tag holding the word "latest" would silently
   mean something different tomorrow, which is the opposite of what a tag is for.
+- **`latest` and `previous` cannot be used as tag names.** Both already resolve on the read
+  path — `latest` is the virtual tag `SHOW SNAPSHOTS FOR` shows against the head — and a
+  real, immutable tag of either name would take the word over and then never move again.
 - **A tag is immutable.** Re-creating a name that already exists is refused, not silently
   rebound. To move a name, [`DROP TAG`](#drop-tag) it and create it again — the drop is the
   visible act that releases the old snapshot.
@@ -459,6 +468,95 @@ DROP TAG report_202602;
 - The name becomes reusable at once, which is what makes drop-then-create the sanctioned way
   to move a tag to a different snapshot.
 - Requires the `owner` role, as `CREATE TAG` does.
+
+## ROLLBACK TO VERSION
+
+~~~sql
+ALTER TABLE [ IF EXISTS ] <table_name>
+ROLLBACK TO VERSION { <snapshot_id> | <tag_name> | PREVIOUS };
+~~~
+
+Makes an older snapshot the **latest** one. Every read of the table with no version clause
+returns that snapshot from the moment the statement commits — for every reader, not just the
+session that ran it.
+
+Nothing is copied and nothing is deleted. A rollback moves one pointer, so it takes the same
+time on a table of a thousand rows and a table of a billion.
+
+### Parameters
+
+- **`<snapshot_id>`** — a snapshot id, as reported by [`SHOW SNAPSHOTS FOR`](show-snapshots).
+- **`<tag_name>`** — a tag on this table. The most reliable form: a tag is the only reference
+  guaranteed to still resolve, because holding its snapshot from reclamation is what a tag
+  does.
+- **`PREVIOUS`** — the previous version of the data, exactly what
+  [`VERSION AS OF PREVIOUS`](version-as-of) would read. It steps over the compaction and
+  statistics commits that changed no rows, so rolling back `PREVIOUS` always undoes a change
+  somebody made.
+- `IF EXISTS` — skip the operation without error if the table does not exist.
+
+### Undo the Last Change
+~~~sql
+ALTER TABLE workspace.collection.observations
+ROLLBACK TO VERSION PREVIOUS;
+~~~
+
+### Roll Back to a Tagged Snapshot
+~~~sql
+ALTER TABLE workspace.collection.observations
+CREATE TAG before_the_migration;
+
+-- ... the migration goes wrong ...
+
+ALTER TABLE workspace.collection.observations
+ROLLBACK TO VERSION before_the_migration;
+~~~
+
+Tagging before a risky change is the pattern this statement is built around: the tag
+guarantees the snapshot is still there to go back to, and gives the rollback a name a person
+can recognise months later.
+
+### Roll Forward Again
+~~~sql
+SHOW SNAPSHOTS FOR workspace.collection.observations;
+
+ALTER TABLE workspace.collection.observations
+ROLLBACK TO VERSION 1755000000000;
+~~~
+
+A rollback is undone by rolling *forward* — the snapshot it moved off is still in the
+history, and naming its id makes it the latest one again.
+
+### Notes (ROLLBACK TO VERSION)
+
+- **Nothing is deleted.** The snapshots the head moves off keep their data files, stay in
+  [`SHOW SNAPSHOTS FOR`](show-snapshots), and can still be read by id with
+  [`VERSION AS OF`](version-as-of). That is what makes a rollback reversible.
+- **They are not held from reclamation, though.** Ordinary retention still applies, and once
+  a rolled-off snapshot ages out the rollback can no longer be undone. If you may want to go
+  back, [`CREATE TAG`](#create-tag) the current version *before* rolling back.
+- **The `latest` name follows the head.** After a rollback, `SHOW SNAPSHOTS FOR` reports
+  `is_latest` and the virtual `latest` tag against the snapshot you rolled back to, which is
+  not the newest row in the list.
+- **`TIMESTAMP AS OF` will not return a rolled-off version.** A point-in-time read is bounded
+  by the latest snapshot, so it never answers with a version the table's owner has rolled
+  back. Naming a rolled-off snapshot's id explicitly still works.
+- **The schema pointer moves with the head.** Rolling back past an `ADD COLUMN` restores the
+  schema that snapshot was written with, so the table does not advertise columns its files do
+  not have.
+- **It is a compare-and-swap.** If a commit lands between the statement reading the head and
+  moving it, the rollback is refused rather than discarding that commit. Re-run it.
+- **Rolling back to where the head already is succeeds and changes nothing** — so a rollback
+  that has to be retried is safe to retry.
+- **A locked table is refused**, as it is for a drop: a lock is two people agreeing not to
+  change a table, and replacing every row in it is a change.
+- **A reclaimed snapshot cannot be rolled back to**, and neither can one with no manifest —
+  pointing the head at either would present the table as empty rather than as rolled back.
+- Requires the `owner` role on the table — the same tier as every other `ALTER TABLE`
+  operation. A rollback changes what every reader of the table sees; it is not a writer's
+  call. See [Security & Permissions](/docs/core-concepts/access-and-permissions).
+- Requires a catalog-backed table with snapshot history. There is nothing to roll back to on
+  a connector without one, and the statement is rejected when the query is planned.
 
 ## Reading a Tag
 

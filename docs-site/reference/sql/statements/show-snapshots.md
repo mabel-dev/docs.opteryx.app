@@ -27,7 +27,7 @@ Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one t
 |--------|-------------|
 | `snapshot_id` | The snapshot's identifier |
 | `committed_at` | When the commit landed, UTC |
-| `is_current` | `true` for the snapshot a plain `SELECT` reads today; `false` for the rest |
+| `is_latest` | `true` for the snapshot a plain `SELECT` reads today; `false` for the rest. After a [rollback](alter-table#rollback-to-version) this is **not** the newest row |
 | `operation_type` | What the commit did, e.g. `append`, `overwrite`, `compact` |
 | `author` | The identity that made the commit |
 | `user_created` | `true` for a commit made by a user statement, `false` for one the engine made itself (a refresh, a compaction) |
@@ -35,7 +35,7 @@ Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one t
 | `parent_snapshot_id` | The snapshot this one was committed on top of; `null` for the first |
 | `schema_id` | The schema this snapshot was written against |
 | `commit_message` | The commit's message, when one was recorded |
-| `tags` | The tag names bound to this snapshot, as a list; empty for most rows |
+| `tags` | The tag names bound to this snapshot, as a list; empty for most rows. The latest snapshot always carries `latest` |
 | `added_records` / `added_data_files` / `added_files_size_in_bytes` | What the commit added |
 | `deleted_records` / `deleted_data_files` / `deleted_files_size_in_bytes` | What the commit removed |
 | `total_records` / `total_data_files` / `total_files_size_in_bytes` | What the table held after the commit |
@@ -44,6 +44,12 @@ Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one t
 reclaimed on a schedule, and a tag is the one thing that holds one back — so a row far outside
 the usual history with a name in this column is being kept deliberately, and is being charged
 for. See [CREATE TAG](alter-table#create-tag).
+
+One name in that column is different: **`latest`** is a virtual tag. It is not something
+anybody created and it holds nothing back from reclamation — it names whichever snapshot is
+the head right now, and it moves when the head moves. It is listed because it is a name you
+can write: `VERSION AS OF latest` reads exactly like `VERSION AS OF <any tag>`. `latest` and
+`previous` are reserved, so no real tag can take either name.
 
 A counter the catalog never recorded is `null`, not `0`. Zero would claim the commit added or deleted nothing; `null` says it was not written down. Older snapshots are the usual case.
 
@@ -68,7 +74,7 @@ SELECT * FROM my_workspace.sales.orders
 VERSION AS OF 1755000000000;
 ~~~
 
-If you only want the commit immediately before the current one, `VERSION AS OF PREVIOUS`
+If you only want the version of the data before the current one, `VERSION AS OF PREVIOUS`
 answers it without a lookup here at all — see [VERSION AS OF](version-as-of).
 
 `SHOW SNAPSHOTS FOR` is not a subquery source — it cannot be wrapped in
@@ -80,6 +86,7 @@ only want part of the history.
 - **Requires read access.** A snapshot row is commit metadata about a table you can already read — it exposes no file paths and no storage layout — so `SHOW SNAPSHOTS FOR` needs the same access as a `SELECT` against the table. This is deliberately weaker than [SHOW MANIFEST FOR](show-manifest), which does expose storage layout and requires the `owner` role.
 - **Catalog-backed tables only.** The history is the catalog's commit log. A table on a store that keeps no commit log reports that it has no snapshot history, rather than reporting an empty one — the two are different answers.
 - **A table with nothing committed returns no rows.** That is an empty history, not an error.
+- **Snapshots ahead of the latest one are listed.** A [rollback](alter-table#rollback-to-version) moves the head backwards without deleting anything, so the snapshots it moved off stay in this history and stay readable by id — which is what makes a rollback reversible. They are not held from reclamation, though: once they age out they go, and the rollback can no longer be undone. A [tag](alter-table#create-tag) is what keeps one indefinitely.
 - **Expired snapshots are not listed.** A snapshot retired by the retention policy leaves the history this statement returns, even during the window in which it may still be recoverable. What you see here is the history you can read, not every commit ever made.
 - **Always returns the whole history.** `SHOW` statements have no `WHERE` clause or column list, and the result is not a subquery source, so there is nothing to filter or project with at the source.
 - **Free to run.** No data files are read.
