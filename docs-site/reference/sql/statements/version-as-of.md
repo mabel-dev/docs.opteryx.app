@@ -10,8 +10,8 @@ than a timestamp. Name the snapshot three ways: by its id, by a **tag** bound to
 `PREVIOUS` — the version of the data before the current one, without you having to look up
 its id or commit time first.
 
-A table read with no version clause returns its **latest** snapshot. `latest` is also a name
-you can write: it appears in the `tags` column of [`SHOW SNAPSHOTS FOR`](show-snapshots)
+A table read with no version clause returns its **current** snapshot. `current` is also a
+name you can write: it appears in the `tags` column of [`SHOW SNAPSHOTS FOR`](show-snapshots)
 against whichever snapshot is currently the head, and it moves when
 [`ALTER TABLE ... ROLLBACK TO VERSION`](alter-table#rollback-to-version) moves the head.
 
@@ -46,7 +46,7 @@ SELECT ...
   rows — compaction and statistics refresh commit snapshots of their own — so `PREVIOUS`
   always returns data that differs from an unqualified read, never the same rows under a
   different snapshot id.
-- **`LATEST`** — the snapshot the table currently reads by default. Accepted, though a read
+- **`CURRENT`** — the snapshot the table currently reads by default. Accepted, though a read
   with no version clause already returns it.
 
 ## Examples
@@ -111,11 +111,11 @@ SELECT * FROM my_workspace.sales.orders VERSION AS OF 1755000000000;
   the table and the tag, and deliberately does not list the tags that do exist: someone who
   cannot see a table's tags should not learn them from a failed guess.
 - A tag name may be written bare (`VERSION AS OF report_202602`) as well as quoted, and both
-  mean the same thing. `latest` and `previous` are **reserved**: you cannot create tags with
+  mean the same thing. `current` and `previous` are **reserved**: you cannot create tags with
   those names, which is what makes a bare word after `VERSION AS OF` unambiguous.
-- `VERSION AS OF CURRENT` is **not** accepted. The word is `LATEST` — the head is called the
-  latest snapshot in SQL, in `SHOW SNAPSHOTS FOR` and in the catalog alike.
-- Nothing ahead of the latest snapshot is readable by time travel. After a rollback the
+- `VERSION AS OF LATEST` is **not** accepted. The word is `CURRENT` — the head is called the
+  current snapshot in SQL, in `SHOW SNAPSHOTS FOR` and in the catalog alike.
+- Nothing ahead of the current snapshot is readable by time travel. After a rollback the
   snapshots that were rolled off are still listed by `SHOW SNAPSHOTS FOR` and can still be
   read **by id**, but `TIMESTAMP AS OF` will not select one: a point-in-time read never
   returns a version the table's owner has rolled back.
@@ -131,6 +131,6 @@ SELECT * FROM my_workspace.sales.orders VERSION AS OF 1755000000000;
 - [ALTER TABLE ... CREATE TAG](alter-table#create-tag) — bind a name to a snapshot and hold
   it from reclamation.
 - [ALTER TABLE ... ROLLBACK TO VERSION](alter-table#rollback-to-version) — make an older
-  snapshot the latest one, for every reader.
+  snapshot the current one, for every reader.
 - [Time Travel Queries](../advanced/adv-time-travel) — advanced topic covering
   reclamation, temporal self-joins, and partitioning requirements.

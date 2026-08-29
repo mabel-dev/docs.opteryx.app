@@ -139,13 +139,13 @@ That walk is a handful of snapshot lookups, never the table's whole history.
   [Snapshot Reclamation](#snapshot-reclamation).
 - Requires the same catalog-backed table with a commit log that `TIMESTAMP AS OF` requires.
 
-## The Latest Snapshot, and Rolling Back
+## The Current Snapshot, and Rolling Back
 
-A table read with no version clause returns its **latest** snapshot — the head. `latest` is a
-name as well as a concept: `SHOW SNAPSHOTS FOR` marks that row `is_latest` and lists `latest`
-in its `tags` column, and `VERSION AS OF latest` reads it. It is a virtual tag, holding
-nothing back from reclamation; `latest` and `previous` are reserved names no real tag can
-take.
+A table read with no version clause returns its **current** snapshot — the head. `current` is
+a name as well as a concept: `SHOW SNAPSHOTS FOR` marks that row `is_current` and lists
+`current` in its `tags` column, and `VERSION AS OF current` reads it. It is a virtual tag,
+holding nothing back from reclamation; `current` and `previous` are reserved names no real
+tag can take.
 
 [`ALTER TABLE ... ROLLBACK TO VERSION`](/docs/reference/sql/statements/alter-table#rollback-to-version)
 moves the head to an older snapshot, which makes that version what every reader sees:
@@ -161,7 +161,7 @@ rolling forward to the id it moved off. They are **not** held from reclamation t
 they age out the rollback can no longer be undone, so tag the current version before rolling
 back if you may want it again.
 
-After a rollback the latest snapshot is not the newest one in the history, and time travel
+After a rollback the current snapshot is not the newest one in the history, and time travel
 respects that: `TIMESTAMP AS OF` will not select a snapshot ahead of the head, so a
 point-in-time read never returns a version the table's owner has rolled back. Naming such a
 snapshot's id explicitly still reads it.
@@ -258,4 +258,4 @@ surviving snapshot, the join silently compares against that snapshot rather than
 - Timestamps are evaluated in UTC.
 - Backfilled data is visible: reading at a past timestamp returns the snapshot as it was committed, including any corrections that commit carried.
 - The `TIMESTAMP AS OF` expression must be resolvable before the query runs — it cannot reference a column.
-- `VERSION AS OF` takes a bare snapshot id, a tag name, `LATEST`, or `PREVIOUS` — no expressions, and no *n*-back offset beyond one.
+- `VERSION AS OF` takes a bare snapshot id, a tag name, `CURRENT`, or `PREVIOUS` — no expressions, and no *n*-back offset beyond one.

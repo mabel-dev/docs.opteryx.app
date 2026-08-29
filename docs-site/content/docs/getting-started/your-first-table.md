@@ -125,7 +125,7 @@ SHOW SNAPSHOTS FOR personal.<you>.planet_notes;
 
 One row per commit, newest first: when it landed, what kind of operation it was, and how many records and files it added and removed. You should see the `CREATE` at the bottom and the `UPDATE` and `DELETE` above it.
 
-Any of those points can be read directly. `PREVIOUS` is the version of the data before the latest one, so this is the table as it stood before the `DELETE` — with Pluto still in it:
+Any of those points can be read directly. `PREVIOUS` is the version of the data before the current one, so this is the table as it stood before the `DELETE` — with Pluto still in it:
 
 ```sql
 SELECT *

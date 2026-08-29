@@ -17,7 +17,7 @@ The `ALTER TABLE` statement changes a table's columns, its physical layout, its 
 | [`RENAME TO`](#rename-to) | Rename a table, optionally moving it to another collection |
 | [`CREATE TAG`](#create-tag) | Name a snapshot, and hold it from reclamation for as long as the name exists |
 | [`DROP TAG`](#drop-tag) | Remove the name, releasing the snapshot it held |
-| [`ROLLBACK TO VERSION`](#rollback-to-version) | Make an older snapshot the latest one, for every reader |
+| [`ROLLBACK TO VERSION`](#rollback-to-version) | Make an older snapshot the current one, for every reader |
 
 Any other `ALTER TABLE` operation — `ADD CONSTRAINT`, `SET DEFAULT`, `SET NOT NULL`, and the rest — is rejected when the query is planned. Opteryx does not enforce integrity constraints, so a statement that only declares one would change nothing; it is refused rather than accepted and silently ignored.
 
@@ -43,7 +43,7 @@ ALTER TABLE [ IF EXISTS ] <table_name>
 RENAME TO <new_table_name>;
 
 ALTER TABLE [ IF EXISTS ] <table_name>
-CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | LATEST | PREVIOUS } ];
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
 
 ALTER TABLE [ IF EXISTS ] <table_name>
 DROP TAG <tag_name>;
@@ -363,7 +363,7 @@ The vacated storage location is reclaimed by the same background sweep that recl
 
 ~~~sql
 ALTER TABLE [ IF EXISTS ] <table_name>
-CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | LATEST | PREVIOUS } ];
+CREATE TAG <tag_name> [ AS OF VERSION { <snapshot_id> | CURRENT | PREVIOUS } ];
 ~~~
 
 A tag is a **name bound to one snapshot, which keeps that snapshot alive**. Snapshots are
@@ -381,21 +381,21 @@ keeping-alive is the point.
   **folds to lowercase**: `MyTag` and `mytag` are one tag with one spelling.
 - **`AS OF VERSION <snapshot_id>`** — a snapshot id, as reported by
   [`SHOW SNAPSHOTS FOR`](show-snapshots).
-- **`AS OF VERSION LATEST`** — the snapshot a plain `SELECT` reads today. This is the
-  default when the clause is omitted entirely. (`CURRENT` was the old spelling and is
-  refused, with a message naming `LATEST`.)
+- **`AS OF VERSION CURRENT`** — the snapshot a plain `SELECT` reads today. This is the
+  default when the clause is omitted entirely. (`LATEST` was the old spelling and is
+  refused, with a message naming `CURRENT`.)
 - **`AS OF VERSION PREVIOUS`** — the previous version of the *data*, exactly the one
   [`VERSION AS OF PREVIOUS`](version-as-of) would read. It steps over the compaction and
   statistics commits that changed no rows.
 - `IF EXISTS` — skip the operation without error if the table does not exist.
 
-### Tag the Latest Version
+### Tag the Current Version
 ~~~sql
 ALTER TABLE workspace.collection.observations
 CREATE TAG report_202602;
 ~~~
 
-Equivalent to `AS OF VERSION LATEST`. The commonest form: name what is there right now,
+Equivalent to `AS OF VERSION CURRENT`. The commonest form: name what is there right now,
 before something else lands on top of it.
 
 ### Tag a Specific Snapshot
@@ -412,11 +412,11 @@ CREATE TAG before_the_backfill AS OF VERSION PREVIOUS;
 
 ### Notes (CREATE TAG)
 
-- **A tag resolves to an id at creation, and stores that id.** `LATEST` and `PREVIOUS` are
-  looked up once, when the statement runs. A tag holding the word "latest" would silently
+- **A tag resolves to an id at creation, and stores that id.** `CURRENT` and `PREVIOUS` are
+  looked up once, when the statement runs. A tag holding the word "current" would silently
   mean something different tomorrow, which is the opposite of what a tag is for.
-- **`latest` and `previous` cannot be used as tag names.** Both already resolve on the read
-  path — `latest` is the virtual tag `SHOW SNAPSHOTS FOR` shows against the head — and a
+- **`current` and `previous` cannot be used as tag names.** Both already resolve on the read
+  path — `current` is the virtual tag `SHOW SNAPSHOTS FOR` shows against the head — and a
   real, immutable tag of either name would take the word over and then never move again.
 - **A tag is immutable.** Re-creating a name that already exists is refused, not silently
   rebound. To move a name, [`DROP TAG`](#drop-tag) it and create it again — the drop is the
@@ -476,7 +476,7 @@ ALTER TABLE [ IF EXISTS ] <table_name>
 ROLLBACK TO VERSION { <snapshot_id> | <tag_name> | PREVIOUS };
 ~~~
 
-Makes an older snapshot the **latest** one. Every read of the table with no version clause
+Makes an older snapshot the **current** one. Every read of the table with no version clause
 returns that snapshot from the moment the statement commits — for every reader, not just the
 session that ran it.
 
@@ -525,7 +525,7 @@ ROLLBACK TO VERSION 1755000000000;
 ~~~
 
 A rollback is undone by rolling *forward* — the snapshot it moved off is still in the
-history, and naming its id makes it the latest one again.
+history, and naming its id makes it the current one again.
 
 ### Notes (ROLLBACK TO VERSION)
 
@@ -535,11 +535,11 @@ history, and naming its id makes it the latest one again.
 - **They are not held from reclamation, though.** Ordinary retention still applies, and once
   a rolled-off snapshot ages out the rollback can no longer be undone. If you may want to go
   back, [`CREATE TAG`](#create-tag) the current version *before* rolling back.
-- **The `latest` name follows the head.** After a rollback, `SHOW SNAPSHOTS FOR` reports
-  `is_latest` and the virtual `latest` tag against the snapshot you rolled back to, which is
+- **The `current` name follows the head.** After a rollback, `SHOW SNAPSHOTS FOR` reports
+  `is_current` and the virtual `current` tag against the snapshot you rolled back to, which is
   not the newest row in the list.
 - **`TIMESTAMP AS OF` will not return a rolled-off version.** A point-in-time read is bounded
-  by the latest snapshot, so it never answers with a version the table's owner has rolled
+  by the current snapshot, so it never answers with a version the table's owner has rolled
   back. Naming a rolled-off snapshot's id explicitly still works.
 - **The schema pointer moves with the head.** Rolling back past an `ADD COLUMN` restores the
   schema that snapshot was written with, so the table does not advertise columns its files do
