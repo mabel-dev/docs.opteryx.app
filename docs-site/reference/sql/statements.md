@@ -102,10 +102,22 @@ Materialized views store a query's result as a physical table and refresh it aut
 | [ALTER MATERIALIZED VIEW](statements/alter-materialized-view) | Change a view's refresh owner, or suspend and resume its refresh |
 | [DROP MATERIALIZED VIEW](statements/drop-materialized-view) | Remove a materialized view and its refresh triggers |
 | [REFRESH MATERIALIZED VIEW](statements/refresh-materialized-view) | Rebuild a materialized view from its defining SELECT |
-| [DROP TRIGGER](statements/drop-trigger) | Remove one refresh trigger from a table |
-| [SHOW TRIGGERS FOR](statements/show-triggers) | List the refresh triggers attached to a table |
+| [SHOW TRIGGERS FOR](statements/show-triggers) | List the triggers attached to a table |
 
-There is no `CREATE TRIGGER` — triggers only come into existence through `CREATE MATERIALIZED VIEW`.
+A materialized view's refresh triggers are created and maintained by `CREATE MATERIALIZED VIEW` itself — they are not authored by hand.
+
+## Tasks & Triggers
+
+A task is a statement the platform runs for you, on demand or when a table changes. Where a materialized view rebuilds one `SELECT` in full, a task runs any statement — typically appending only what changed, which suits tables too large to rebuild:
+
+| Statement | Purpose |
+|-----------|---------|
+| [CREATE TASK](statements/create-task) | Define a statement the platform can run, optionally fired by a table |
+| [EXECUTE](statements/execute) | Run a task now, supplying its parameters |
+| [DROP TASK](statements/drop-task) | Remove a task |
+| [CREATE TRIGGER](statements/create-trigger) | Fire a task when a table changes |
+| [ALTER TRIGGER](statements/alter-trigger) | Suspend or resume a trigger |
+| [DROP TRIGGER](statements/drop-trigger) | Remove a trigger from a table |
 
 ## Workspace Management
 

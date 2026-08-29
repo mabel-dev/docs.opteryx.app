@@ -127,6 +127,9 @@
               "ALTER TABLE": "reference/sql/statements/alter-table.md"
             },
             {
+              "ALTER TRIGGER": "reference/sql/statements/alter-trigger.md"
+            },
+            {
               "ALTER VIEW": "reference/sql/statements/alter-view.md"
             },
             {
@@ -146,6 +149,12 @@
             },
             {
               "CREATE TABLE": "reference/sql/statements/create-table.md"
+            },
+            {
+              "CREATE TASK": "reference/sql/statements/create-task.md"
+            },
+            {
+              "CREATE TRIGGER": "reference/sql/statements/create-trigger.md"
             },
             {
               "CREATE VIEW": "reference/sql/statements/create-view.md"
@@ -169,6 +178,9 @@
               "DROP TABLE": "reference/sql/statements/drop-table.md"
             },
             {
+              "DROP TASK": "reference/sql/statements/drop-task.md"
+            },
+            {
               "DROP TRIGGER": "reference/sql/statements/drop-trigger.md"
             },
             {
@@ -176,6 +188,9 @@
             },
             {
               "DROP WORKSPACE": "reference/sql/statements/drop-workspace.md"
+            },
+            {
+              "EXECUTE": "reference/sql/statements/execute.md"
             },
             {
               "EXPLAIN": "reference/sql/statements/explain.md"
