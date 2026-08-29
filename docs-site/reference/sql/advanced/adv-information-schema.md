@@ -165,11 +165,51 @@ is the shorthand.
 
 ---
 
+## `information_schema.column_relationships`
+
+One row per relationship declared with
+[ALTER TABLE ... ADD CONSTRAINT](/docs/reference/sql/statements/alter-table#add-constraint) —
+a record that a column holds values corresponding to a column of another table.
+
+**Nothing here is enforced.** A write that breaks a relationship succeeds, and the engine
+never consults these rows when planning a query. They exist so that people and tools can
+see how the tables in a workspace fit together.
+
+| Column                    | Type        | Description                                                        |
+|---------------------------|-------------|--------------------------------------------------------------------|
+| `constraint_catalog`      | `VARCHAR`   | The workspace name                                                 |
+| `constraint_collection`   | `VARCHAR`   | The collection the declaring table belongs to                      |
+| `constraint_name`         | `VARCHAR`   | The name given to the declaration, and the handle `DROP CONSTRAINT` uses |
+| `table_name`              | `VARCHAR`   | The declaring table, as `collection.dataset`                       |
+| `column_name`             | `VARCHAR`   | Its column — the near end of the relationship                      |
+| `referenced_table_name`   | `VARCHAR`   | The referenced table, as `collection.dataset`                      |
+| `referenced_column_name`  | `VARCHAR`   | Its column — the far end                                           |
+| `relationship_kind`       | `VARCHAR`   | `maps` — the columns hold corresponding values                     |
+| `cardinality`             | `VARCHAR`   | As declared, never derived from the data. A foreign key means `many_to_one` |
+| `origin`                  | `VARCHAR`   | `asserted` — somebody wrote it down                                |
+| `status`                  | `VARCHAR`   | `active`                                                           |
+| `asserted_by`             | `VARCHAR`   | Who declared it                                                    |
+| `asserted_at`             | `TIMESTAMP` | When it was declared                                               |
+| `verified_at`             | `TIMESTAMP` | When the declaration was last checked against the data. Always `NULL` today — nothing checks |
+
+```sql
+SELECT table_name, column_name, referenced_table_name, referenced_column_name
+  FROM opteryx.information_schema.column_relationships;
+```
+
+A row is listed against the table the constraint was declared **on**. To find what points
+*at* a table, filter on `referenced_table_name` — that reads every declaration in the
+workspace rather than one table's, so it is the slower direction.
+
+---
+
 ## Permissions
 
 `information_schema.tables`, `information_schema.columns` and `information_schema.views` only ever show tables and views the querying identity has [read permission](/docs/core-concepts/access-and-permissions) on. A table that isn't readable to you simply doesn't appear in the results — it isn't hidden with an error, and it isn't visible with its schema exposed. This applies row-by-row, so a query against `information_schema` always succeeds even if you have no access to any tables in the workspace; it just returns no rows.
 
 `information_schema.triggers` follows the same rule against the trigger's **source table**, and `information_schema.schemata` against the collection's contents — a collection appears only if something inside it is readable to you.
+
+`information_schema.column_relationships` requires **both** tables to be readable, not just the one the constraint was declared on. A row names the other table's collection, dataset and column, so showing it to someone who can read only one side would disclose the shape of data they have no access to. A relationship you can half-see does not appear at all.
 
 A missing execution context denies everything rather than falling back to showing all rows.
 
@@ -179,5 +219,5 @@ A missing execution context denies everything rather than falling back to showin
 
 This is an early implementation. Known gaps:
 
-- `tables`, `columns`, `views`, `schemata` and `triggers` are implemented. `routines` is not.
+- `tables`, `columns`, `views`, `schemata`, `triggers` and `column_relationships` are implemented. `routines` is not.
 - `information_schema.columns` and `information_schema.views` do one catalog round trip per table or view found. Predicate pushdown covers only equality and `IN` on the enumeration key columns (`table_catalog`, `table_schema`, `table_name`, and `table_type` on `tables`) — those are known before any round trip, so filtering on them skips the lookups entirely. Every other predicate is applied after the fact, so an unfiltered query against a workspace with a very large number of tables is proportionally slower.

@@ -1,6 +1,6 @@
 ---
 title: JSON extract text — Opteryx Operator
-description: Returns the selected JSON value encoded as a blob or text-like binary value. Symbol: ->>
+description: Returns the selected JSON value as text (nvarchar), from a document given as text or binary JSON. Symbol: ->>
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,7 +11,7 @@ description: Returns the selected JSON value encoded as a blob or text-like bina
 
 # JSON extract text
 
-Returns the selected JSON value encoded as a blob or text-like binary value.
+Returns the selected JSON value as text (nvarchar), from a document given as text or binary JSON.
 
 **Category:** extraction
 

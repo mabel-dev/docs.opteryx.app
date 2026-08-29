@@ -1,11 +1,11 @@
 ---
 title: ALTER TABLE Statement — Opteryx Reference
-description: SQL ALTER TABLE syntax and examples for adding, dropping, renaming and retyping columns, setting a table's clustering columns, renaming or moving a table, and creating or dropping snapshot tags, in Opteryx
+description: SQL ALTER TABLE syntax and examples for adding, dropping, renaming and retyping columns, setting a table's clustering columns, renaming or moving a table, creating or dropping snapshot tags, and declaring informational foreign keys, in Opteryx
 ---
 
 # ALTER TABLE
 
-The `ALTER TABLE` statement changes a table's columns, its physical layout, its name, or which of its snapshots are held from reclamation. Opteryx supports eight operations:
+The `ALTER TABLE` statement changes a table's columns, its physical layout, its name, which of its snapshots are held from reclamation, or what it records about how its columns relate to other tables. Opteryx supports eleven operations:
 
 | Operation | Purpose |
 |-----------|---------|
@@ -18,8 +18,10 @@ The `ALTER TABLE` statement changes a table's columns, its physical layout, its 
 | [`CREATE TAG`](#create-tag) | Name a snapshot, and hold it from reclamation for as long as the name exists |
 | [`DROP TAG`](#drop-tag) | Remove the name, releasing the snapshot it held |
 | [`ROLLBACK TO VERSION`](#rollback-to-version) | Make an older snapshot the current one, for every reader |
+| [`ADD CONSTRAINT`](#add-constraint) | Declare, without enforcing, that a column corresponds to a column of another table |
+| [`DROP CONSTRAINT`](#drop-constraint) | Remove one of those declarations by name |
 
-Any other `ALTER TABLE` operation — `ADD CONSTRAINT`, `SET DEFAULT`, `SET NOT NULL`, and the rest — is rejected when the query is planned. Opteryx does not enforce integrity constraints, so a statement that only declares one would change nothing; it is refused rather than accepted and silently ignored.
+Any other `ALTER TABLE` operation — `SET DEFAULT`, `SET NOT NULL`, `PRIMARY KEY`, an enforcing `FOREIGN KEY`, and the rest — is rejected when the query is planned. Opteryx enforces no integrity constraints, so accepting one would imply behaviour it does not have; it is refused rather than accepted and silently ignored. The single exception is the `NOT ENFORCED` foreign key below, which says on its face that nothing is checked and so promises nothing.
 
 ## Syntax
 
@@ -50,6 +52,13 @@ DROP TAG <tag_name>;
 
 ALTER TABLE [ IF EXISTS ] <table_name>
 ROLLBACK TO VERSION { <snapshot_id> | <tag_name> | PREVIOUS };
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+ADD CONSTRAINT <constraint_name>
+FOREIGN KEY ( <column> ) REFERENCES <table_name> ( <column> ) NOT ENFORCED;
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+DROP CONSTRAINT [ IF EXISTS ] <constraint_name>;
 ~~~
 
 `<table_name>` and `<new_table_name>` are fully qualified as
@@ -570,9 +579,93 @@ VERSION AS OF 'report_202602';
 [`SHOW SNAPSHOTS FOR`](show-snapshots) reports the tags on each snapshot in its `tags`
 column, which is also the answer to "why is this old snapshot still here".
 
+## ADD CONSTRAINT
+
+~~~sql
+ALTER TABLE [ IF EXISTS ] <table_name>
+ADD CONSTRAINT <constraint_name>
+FOREIGN KEY ( <column> ) REFERENCES <table_name> ( <column> ) NOT ENFORCED;
+~~~
+
+Records that a column holds values corresponding to a column of another table — a
+customer reference that matches a customer id, an order line that matches an order.
+**Nothing is enforced.** A write that breaks the relationship succeeds, no error is
+raised, and the engine never consults the declaration when planning a query. It is
+recorded so that people and tools can see how your tables fit together.
+
+`NOT ENFORCED` is required and is never assumed. A plain `FOREIGN KEY` is an enforcing
+one, and Opteryx will not accept a statement whose ordinary meaning is a rule it has no
+intention of applying.
+
+### Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `<constraint_name>` | Names the declaration. It is the only handle `DROP CONSTRAINT` has, so it is required, and it must be unique on the table |
+| `FOREIGN KEY ( <column> )` | The column on this table. Exactly one |
+| `REFERENCES <table_name> ( <column> )` | The table and column it corresponds to. Exactly one column, and the table must be in the same workspace |
+
+### Declare a Relationship
+~~~sql
+ALTER TABLE support.helpdesk.tickets
+ADD CONSTRAINT tickets_customer_fk
+FOREIGN KEY (customer_ref) REFERENCES support.crm.customers (id) NOT ENFORCED;
+~~~
+
+### Notes (ADD CONSTRAINT)
+
+- **Nothing is ever checked.** Not on `INSERT`, not on `UPDATE`, not on `DELETE`, and not
+  when the constraint is created — a table already full of values with no match on the
+  other side accepts the declaration without complaint.
+- **The engine does not use it.** It will not turn a join into a different one, prune a
+  read, or change a plan. Tools read it; the engine records it.
+- **Both columns must exist**, on both tables, and both tables must be in the same
+  workspace. A relationship is held by the workspace it is declared in, so it cannot point
+  at another one.
+- **One relationship per statement**, since `ALTER TABLE` takes one operation at a time.
+  A composite key is not supported: what is recorded is that one column corresponds to one
+  column.
+- **The form implies `many_to_one`.** That is what a foreign key means, and it is recorded
+  as declared rather than checked against the data.
+- Clauses that describe enforcement are rejected: `ON DELETE`, `ON UPDATE`, `MATCH`,
+  `DEFERRABLE`, `INITIALLY` and `NOT VALID`. There is no rule here for them to qualify.
+- Requires the `owner` role on the table being altered, **and at least `reader` on the
+  table being referenced** — which stops a relationship being declared into data the
+  author has never seen.
+- Read the declarations back from
+  [`information_schema.column_relationships`](/docs/reference/sql/advanced/adv-information-schema),
+  where a row appears only if you can see both of its tables.
+
+## DROP CONSTRAINT
+
+~~~sql
+ALTER TABLE [ IF EXISTS ] <table_name>
+DROP CONSTRAINT [ IF EXISTS ] <constraint_name>;
+~~~
+
+Removes one declaration by name. Nothing else changes: no data is touched, because none
+ever depended on it.
+
+### Drop a Declaration
+~~~sql
+ALTER TABLE support.helpdesk.tickets
+DROP CONSTRAINT tickets_customer_fk;
+~~~
+
+### Notes (DROP CONSTRAINT)
+
+- A name that is not there is an error, so a typo cannot be mistaken for a successful drop.
+  `DROP CONSTRAINT IF EXISTS` makes it quiet.
+- `CASCADE` and `RESTRICT` are rejected. Nothing references a declaration, so there is
+  nothing for either to decide.
+- Requires the `owner` role, as `ADD CONSTRAINT` does. Only the near table is checked —
+  removing a declaration discloses nothing about the table it referenced.
+- Dropping either table removes the declarations on it. A declaration pointing *at* a
+  dropped or renamed table is left in place, naming something that is no longer there.
+
 ## Materialized Views
 
-`ALTER TABLE` is rejected against a materialized view for every operation that changes the table's shape, layout or name — the four column operations, `CLUSTER BY` and `RENAME TO`. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
+`ALTER TABLE` is rejected against a materialized view for every operation that changes the table's shape, layout or name — the four column operations, `CLUSTER BY`, `RENAME TO`, and the two constraint operations. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
 
 `CREATE TAG` and `DROP TAG` are the exception: they are **accepted** against a materialized view. A view's backing table has an ordinary snapshot history, and a tag on one pins it exactly as it would on any other table. A refresh that supersedes the tagged snapshot does not release it — so a view refreshing every fifteen minutes can hold an unbounded amount of history if it is tagged, bounded only by the hundred-tag limit. See [Notes](#notes-create-tag) below.
 

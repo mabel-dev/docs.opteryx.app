@@ -38,11 +38,12 @@
             "ALTER TABLE [IF EXISTS] table_name RENAME TO new_table_name",
             "ALTER TABLE [IF EXISTS] table_name CREATE TAG tag_name [AS OF VERSION snapshot_id | CURRENT | PREVIOUS]",
             "ALTER TABLE [IF EXISTS] table_name DROP TAG tag_name",
-            "ALTER TABLE [IF EXISTS] table_name ROLLBACK TO VERSION snapshot_id | tag_name | PREVIOUS"
+            "ALTER TABLE [IF EXISTS] table_name ADD CONSTRAINT constraint_name FOREIGN KEY (column) REFERENCES table_name (column) NOT ENFORCED",
+            "ALTER TABLE [IF EXISTS] table_name DROP CONSTRAINT [IF EXISTS] constraint_name"
         ],
-        "summary": "Change a table's columns, its clustering columns, its name, or the tags naming its snapshots.",
-        "documentation": "ADD/DROP/RENAME COLUMN and ALTER COLUMN ... TYPE change the table's shape, rewriting each data file's footer and copying the columns they do not touch byte-for-byte. ADD COLUMN ... DEFAULT fills the rows that already exist with a literal; it is a backfill value, not stored state a later INSERT consults. ALTER COLUMN ... TYPE only widens within a type family. CLUSTER BY records the columns a catalog-backed table is sorted by, in priority order. RENAME TO renames the relation and may move it between collections. CREATE TAG binds a name to one snapshot and holds that snapshot - and every file it references - from expiry until the tag is dropped; the version defaults to CURRENT, the name may be quoted or bare and folds to lowercase, and the storage a tag pins is charged. DROP TAG releases it, which returns the snapshot to the ordinary retention rules at once. ROLLBACK TO VERSION makes an older snapshot the current one, so every unqualified read returns it - it moves one pointer, copies and deletes nothing, and is undone by rolling forward to the id it moved off (which retention will eventually reclaim unless a tag holds it).",
-        "notes": "One operation per statement. CLUSTER BY takes column names, not expressions. RENAME TO cannot cross workspaces. DROP COLUMN takes one column and rejects CASCADE/RESTRICT. ADD COLUMN accepts only a literal DEFAULT, and rejects FIRST/AFTER - a new column is always appended. The two guards are independent: IF EXISTS on the ALTER makes a missing TABLE a no-op, IF NOT EXISTS on ADD COLUMN (and IF EXISTS on DROP COLUMN) makes an already-settled COLUMN a no-op, which is what makes a migration script re-runnable. ALTER COLUMN ... TYPE rejects narrowing, integer-to-float, cross-family changes, no-ops and USING. SET DEFAULT, DROP DEFAULT, SET NOT NULL and ADD CONSTRAINT are rejected at plan time - the engine enforces no constraints, so accepting them would imply behaviour it does not have."
+        "summary": "Change a table's columns, its clustering columns, its name, the tags naming its snapshots, or the relationships declared on it.",
+        "documentation": "ADD/DROP/RENAME COLUMN and ALTER COLUMN ... TYPE change the table's shape, rewriting each data file's footer and copying the columns they do not touch byte-for-byte. ADD COLUMN ... DEFAULT fills the rows that already exist with a literal; it is a backfill value, not stored state a later INSERT consults. ALTER COLUMN ... TYPE only widens within a type family. CLUSTER BY records the columns a catalog-backed table is sorted by, in priority order. RENAME TO renames the relation and may move it between collections. CREATE TAG binds a name to one snapshot and holds that snapshot - and every file it references - from expiry until the tag is dropped; the version defaults to CURRENT, the name may be quoted or bare and folds to lowercase, and the storage a tag pins is charged. DROP TAG releases it, which returns the snapshot to the ordinary retention rules at once. ADD CONSTRAINT records an informational foreign key: a declaration that one column holds values corresponding to another, which nothing enforces and nothing plans from. DROP CONSTRAINT removes one by name.",
+        "notes": "One operation per statement. CLUSTER BY takes column names, not expressions. RENAME TO cannot cross workspaces. DROP COLUMN takes one column and rejects CASCADE/RESTRICT. ADD COLUMN accepts only a literal DEFAULT, and rejects FIRST/AFTER - a new column is always appended. The two guards are independent: IF EXISTS on the ALTER makes a missing TABLE a no-op, IF NOT EXISTS on ADD COLUMN (and IF EXISTS on DROP COLUMN) makes an already-settled COLUMN a no-op, which is what makes a migration script re-runnable. ALTER COLUMN ... TYPE rejects narrowing, integer-to-float, cross-family changes, no-ops and USING. SET DEFAULT, DROP DEFAULT and SET NOT NULL are rejected at plan time - the engine enforces no constraints, so accepting them would imply behaviour it does not have. ADD CONSTRAINT admits exactly one form on that same reasoning: 'FOREIGN KEY (column) REFERENCES table (column) NOT ENFORCED', which says on its face that nothing is checked and so implies nothing. It records that two columns hold corresponding values, for tooling and discovery; a write that breaks the relationship still succeeds, and the engine never uses the declaration to plan or rewrite a query. NOT ENFORCED is never defaulted - a bare FOREIGN KEY is an enforcing one and stays rejected, as do PRIMARY KEY, UNIQUE and CHECK, along with ON DELETE/ON UPDATE/MATCH, DEFERRABLE and NOT VALID. The constraint must be named (DROP CONSTRAINT has no other handle) and takes one column on each side. DROP CONSTRAINT removes it by name and rejects CASCADE/RESTRICT."
     },
     "alter_view": {
         "canonical_name": "ALTER VIEW",
@@ -346,7 +347,7 @@
         "scope": "statement",
         "status": "supported",
         "syntax_forms": [
-            "MERGE INTO target AS t USING source AS s ON predicate WHEN MATCHED [AND predicate] THEN UPDATE SET column = expression, ... WHEN MATCHED [AND predicate] THEN DELETE WHEN NOT MATCHED [AND predicate] THEN INSERT (column, ...) VALUES (expression, ...)"
+            "MERGE INTO target AS t USING source AS s ON predicate [WHEN MATCHED [AND predicate] THEN UPDATE SET column = expression, ...] [WHEN MATCHED [AND predicate] THEN DELETE] [WHEN NOT MATCHED [AND predicate] THEN INSERT (column, ...) VALUES (expression, ...)]"
         ],
         "summary": "Apply a set of changes to a table in one atomic statement.",
         "documentation": "Desugars to a single LEFT JOIN with the SOURCE on the left, so a row is matched exactly when the ON condition is true. One CASE chain over the arm conditions produces both the action code and every output column, so classification and blending run natively in the projection. Merge-on-read: a replaced row's old version is marked deleted by its (file, ordinal) address and its replacement appended, both landing in ONE snapshot. Rows no arm claims cost nothing - they are not read past the join, not rewritten, and contribute no delete position.",
@@ -494,6 +495,20 @@
         "documentation": "Handled as a SHOW node with object metadata.",
         "notes": "Currently used for view-style objects."
     },
+    "show_effective_grants_on": {
+        "canonical_name": "SHOW EFFECTIVE GRANTS ON",
+        "planner_entry": "plan_show_effective_grants_on",
+        "scope": "statement",
+        "status": "supported",
+        "syntax_forms": [
+            "SHOW EFFECTIVE GRANTS ON WORKSPACE workspace_name",
+            "SHOW EFFECTIVE GRANTS ON COLLECTION collection_name",
+            "SHOW EFFECTIVE GRANTS ON DATASET dataset_name"
+        ],
+        "summary": "List every grant that reaches a workspace, collection, or dataset.",
+        "documentation": "The same four columns as SHOW GRANTS ON - the user, the pattern, the object level that pattern addresses, and the role - but one row per policy that COVERS the object rather than per policy stored at it. A dataset with no grants of its own that sits under a workspace owner's grant lists that owner, and the pattern and level columns say which policy reaches it. One row per covering policy, not per user: a user may reach an object through several, and which one grants the access is what has to change to remove it. Naming a WORKSPACE returns what SHOW GRANTS ON WORKSPACE returns, since a workspace listing is already every policy at every level; the two differ only for a COLLECTION or a DATASET. The caller must hold OWNER covering the object, exactly as for SHOW GRANTS ON.",
+        "notes": "Coverage is decided by the permissions capability with the same matcher that decides real queries, so the listing cannot report access the engine would not grant. Available only where the deployment registers a policy service."
+    },
     "show_grants": {
         "canonical_name": "SHOW GRANTS",
         "planner_entry": "plan_show_variables",
@@ -517,7 +532,7 @@
             "SHOW GRANTS ON DATASET dataset_name"
         ],
         "summary": "List the grants held on a workspace, collection, or dataset.",
-        "documentation": "One row per stored policy - the user it is granted to, its pattern, the object level that pattern addresses, and the role - ordered by user. SHOW GRANTS ON WORKSPACE lists every policy in the workspace at every level; naming a COLLECTION or DATASET lists only the policies at exactly that object, one-to-one with what GRANT and REVOKE there act on (a broader covering grant is shown by the workspace listing). The caller must hold OWNER covering the object: who may see the grants on an object is who may change them.",
+        "documentation": "One row per stored policy - the user it is granted to, its pattern, the object level that pattern addresses, and the role - ordered by user. SHOW GRANTS ON WORKSPACE lists every policy in the workspace at every level; naming a COLLECTION or DATASET lists only the policies at exactly that object, one-to-one with what GRANT and REVOKE there act on (a broader covering grant is shown by SHOW EFFECTIVE GRANTS ON, and by the workspace listing). The caller must hold OWNER covering the object: who may see the grants on an object is who may change them.",
         "notes": "Available only where the deployment registers a policy service; embedded and CLI sessions refuse the statement. For the session's own grants, use bare SHOW GRANTS."
     },
     "show_manifest": {
@@ -641,12 +656,11 @@
             "relation VERSION AS OF snapshot_id",
             "relation VERSION AS OF PREVIOUS",
             "relation VERSION AS OF tag",
-            "relation VERSION AS OF CURRENT",
             "relation TIMESTAMP AS OF timestamp_expression"
         ],
         "summary": "Query a catalog-backed table as of a snapshot, a tag or a point in time.",
-        "documentation": "VERSION AS OF takes a literal snapshot id. VERSION AS OF PREVIOUS is rewritten, before the statement reaches the parser, to a sentinel the connector resolves against the catalog: the previous version of the DATA, walking back past the compaction and statistics commits that changed no rows, so it never returns the same rows an unqualified read would. TIMESTAMP AS OF takes an expression that resolves to a timestamp before the query runs - a literal like '2024-01-01', or NOW() combined with an INTERVAL - and the binder resolves it to the snapshot that was current at that instant, never one ahead of the table's current head. VERSION AS OF <tag> reads the snapshot a tag names; the name may be written quoted or bare, folds to lowercase, and is resolved through the catalog. A tag holds its snapshot from expiry for as long as it exists, so a tagged version stays readable where a bare snapshot id eventually will not.",
-        "notes": "Only a connector with snapshot-based time travel accepts either form; against any other connector both are rejected at bind time. VERSION AS OF 0 is rejected outright - 0 is the sentinel PREVIOUS rewrites to, so a literal 0 would be indistinguishable from it. FOR SYSTEM_TIME AS OF is not accepted; use TIMESTAMP AS OF. VERSION AS OF CURRENT reads the head, which is what a relation with no version clause already reads. VERSION AS OF LATEST is refused with a message naming CURRENT: the head has one name across SQL, SHOW SNAPSHOTS and the catalog. current and previous are reserved and cannot be used as tag names."
+        "documentation": "VERSION AS OF takes a literal snapshot id. VERSION AS OF PREVIOUS is rewritten, before the statement reaches the parser, to the snapshot immediately before the current one. TIMESTAMP AS OF takes an expression that resolves to a timestamp before the query runs - a literal like '2024-01-01', or NOW() combined with an INTERVAL - and the binder resolves it to the snapshot that was current at that instant. VERSION AS OF <tag> reads the snapshot a tag names; the name may be written quoted or bare, folds to lowercase, and is resolved through the catalog. A tag holds its snapshot from expiry for as long as it exists, so a tagged version stays readable where a bare snapshot id eventually will not.",
+        "notes": "Only a connector with snapshot-based time travel accepts either form; against any other connector both are rejected at bind time. VERSION AS OF 0 is rejected outright - 0 is the sentinel PREVIOUS rewrites to, so a literal 0 would be indistinguishable from it. FOR SYSTEM_TIME AS OF is not accepted; use TIMESTAMP AS OF. VERSION AS OF CURRENT is refused on a read - a relation with no version clause already reads the current version, and CURRENT is accepted only when creating a tag."
     },
     "where": {
         "canonical_name": "WHERE",
