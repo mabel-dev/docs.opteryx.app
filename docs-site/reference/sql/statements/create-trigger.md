@@ -63,9 +63,15 @@ CREATE OR REPLACE TRIGGER ingest_on_events
 ## Notes
 
 - Requires the `writer` role on the **table** the trigger is attached to — landing a
-  trigger is an update to that table. It does not require any permission on the task: a
-  trigger confers no authority of its own, and what the task may do was settled against its
-  author when the task was created.
+  trigger is an update to that table.
+- **The trigger's runs execute as its owner, which is pinned to you.** The trigger is what
+  makes a run unattended, so the trigger is what names whose authority the run carries.
+  The task's statement is gated against that owner every time it fires — nothing is
+  settled once at creation and left to go stale. Move the owner with
+  [ALTER TRIGGER ... OWNER TO](alter-trigger).
+- **Platform identities cannot own triggers.** They can read a great deal but have no
+  billing account, so work pinned to one would run on a schedule forever and land on
+  nobody's bill. Own a trigger as a user or a service account.
 - A fired task is passed the committing snapshot and its parent, as `:current_version` and
   `:parent_version`. The window is fixed when the trigger fires, so a run means the same
   thing however long afterwards it is picked up.

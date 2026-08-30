@@ -53,6 +53,9 @@ EXECUTE my_workspace.ops.ingest_new
 
 ## Notes
 
+- **The task runs as you.** `EXECUTE` is an attended run: the statement is gated against
+  your own permissions, exactly as if you had typed it. Only an unattended run — a
+  [trigger](create-trigger) firing — carries a pinned identity, the trigger's owner.
 - Arguments must be **constants**. A column reference is refused: a task's arguments are
   bound when it runs, not evaluated against a relation.
 - Values are substituted into the task's statement only after that statement has been

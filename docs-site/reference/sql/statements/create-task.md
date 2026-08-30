@@ -13,9 +13,10 @@ re-runs one `SELECT` into its own backing table, a task runs any statement the e
 plan — typically an `INSERT` that appends only what changed, which is what makes it
 suitable for tables too large to rebuild.
 
-A task runs as its owner, so creating one is not merely registering some SQL: it creates
-something that executes with an identity. What you may define is therefore bounded by what
-you could already run yourself — see [Notes](#notes).
+A task carries no identity of its own. Running one with [EXECUTE](execute) runs it as
+**you**, gated by your own permissions at that moment; an unattended run carries the
+identity of the [trigger](create-trigger) that fired it. Creating a task therefore
+confers no authority — see [Notes](#notes).
 
 ## Syntax
 
@@ -37,7 +38,8 @@ CREATE [ OR REPLACE ] TASK <task_name>
 - **`<statement>`** — the SQL the task runs. It may contain `:name` placeholders, which are
   supplied when the task is executed rather than now.
 - `OR REPLACE` — redefine an existing task instead of refusing. The previous statement is
-  kept as an earlier version, and the task's owner is **not** changed.
+  kept as an earlier version, and triggers pointing at the task are untouched — including
+  whose identity they run it as.
 
 ## Examples
 
@@ -78,16 +80,14 @@ CREATE OR REPLACE TASK my_workspace.ops.ingest_events AS
 
 ## Notes
 
-- **You may only create a task you could run yourself.** Creating one requires `reader` on
-  everything the statement reads and `writer` where it writes, checked against you at the
-  time you create it and again every time you redefine it. Without that, a task would let
-  anyone define work over data they cannot see and have a privileged identity run it.
-- **The task runs as you.** There is no syntax for naming another principal — an argument
-  that could is the escalation above, written out. Ownership survives `OR REPLACE`, so
-  editing a task never quietly transfers whose authority it runs with.
-- **Platform identities cannot own tasks.** They can read a great deal but have no billing
-  account, so a task pinned to one would run on a schedule forever and land on nobody's
-  bill. Own a task as a user or a service account.
+- **Creating a task checks nothing but the name.** A task is stored SQL: its statement is
+  gated when it *runs*, against whoever the run actually is — you, for `EXECUTE`; the
+  trigger's owner, for a fired run. A creation-time copy of those checks would be checked
+  against the wrong principal the moment anyone else ran it.
+- **`ON <table>` is the exception**, because it creates a trigger — and a trigger's
+  unattended runs execute as its owner, pinned to you. So the `ON` form additionally
+  requires `writer` on that table and that you are an identity that can be billed, the
+  same gates [CREATE TRIGGER](create-trigger) applies.
 - The statement is parsed when the task is created, so SQL that could never run is refused
   now rather than discovered when it fires. It is not fully planned — a task's placeholders
   have no values yet, and planning would demand them.
