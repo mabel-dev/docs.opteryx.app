@@ -25,7 +25,7 @@ API_DOC_SPECS = {
         'title': 'Control API',
         'status': 'Published',
         'base_url': 'https://control.opteryx.app',
-        'summary': 'Billing accounts and membership, payment methods and invoices, workspace lifecycle, and the access policies that govern who can reach what.',
+        'summary': 'Billing accounts and membership, payment methods and invoices, workspace lifecycle and catalogs, the access policies that govern who can reach what, and the notification feed behind the Studio bell.',
         'try_it_live': True,
     },
     'api-opteryx-authenticate.json': {
