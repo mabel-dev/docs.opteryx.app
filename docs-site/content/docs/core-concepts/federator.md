@@ -12,7 +12,7 @@
 
 ## It's a grant, not a special case
 
-`federator` gets its access the exact same way a person does - a role on a resource pattern via the [Control API](/docs/reference/api/control-api) (see [Security & Permissions](/docs/core-concepts/access-and-permissions)). That means it shows up as an ordinary row in a workspace's access list (`federator - writer - via collection sales`, for example), and its grants can be reviewed, narrowed, or revoked from Manage Access exactly like anyone else's.
+`federator` gets its access the exact same way a person does - a role on a resource pattern, granted with [`GRANT`](/docs/reference/sql/statements/grant) (see [Security & Permissions](/docs/core-concepts/access-and-permissions)). That means it shows up as an ordinary row in a workspace's access list (`federator - writer - via collection sales`, for example), and its grants can be reviewed, narrowed, or revoked from Manage Access exactly like anyone else's.
 
 This also means access can be **too narrow**: if `federator` doesn't hold write access somewhere, compaction can't run there, and no materialized view in that scope can be pinned to it. Revoking `federator`'s grant on a collection stops both.
 

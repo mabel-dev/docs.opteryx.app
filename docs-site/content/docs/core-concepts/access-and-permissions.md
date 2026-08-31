@@ -29,7 +29,7 @@ A couple of things that surprise people:
 - **`DROP COLLECTION` checks the grant against the collection's own name, not a pattern over its contents.** An `owner` grant on `workspace.staging.*` covers every table and view *inside* the `staging` collection but does not match `workspace.staging` itself, so it does not permit dropping the collection. You need a grant that matches `workspace.staging` directly - an exact grant on it, or a workspace-wide `workspace.*`.
 - **`ALTER WORKSPACE` needs ownership of the workspace itself, and owning its contents is not enough.** This goes one level further than the `DROP COLLECTION` rule above: even a workspace-wide `workspace.*` grant does not permit it, because that pattern covers everything *in* the workspace without matching the workspace's own name. You need a grant matching `workspace` directly, or a global `*`. Workspace properties govern the whole workspace, so the grant has to be scoped to it.
 - **`ALTER TABLE ... RENAME TO` is checked at both ends.** It needs `owner` on the source (the table stops existing under that name) *and* create permission at the target, so owning a table does not let you move it into a collection you have no grant on.
-- **There's also an `admin` role**, but it only applies to the [Control API](/docs/reference/api/control-api) - an admin can view and manage other users' grants on a pattern they administer. It does **not** grant any query access on its own; an admin who also needs to run queries needs a separate `reader`/`writer`/`owner` grant.
+- **Granting is `owner`-only, and never self-service.** Only an `owner` whose own grant covers the object may `GRANT` or `REVOKE` on it - owning `billing.*` does not let you administer `ops.*`. You cannot grant yourself access, so bootstrapping a workspace's first owner is not something a `GRANT` can do; that happens when the workspace is created.
 
 ## Workspace boundaries
 
@@ -42,17 +42,26 @@ Two schemas are handled specially and can't be targeted by a policy:
 
 ## Managing grants
 
-Grants are managed via the [Control API](/docs/reference/api/control-api), which accepts JSON policy documents identifying a principal, a role, and a resource pattern.
+Grants are managed in SQL, alongside every other statement you run. There is no
+separate API to call and no JSON policy document to assemble.
 
-Example - granting `writer` on every dataset in the `sales` collection:
+~~~sql
+GRANT WRITER ON COLLECTION analytics.sales TO USER bastian;
+REVOKE WRITER ON COLLECTION analytics.sales FROM USER bastian;
+~~~
 
-```json
-{
-  "principal": { "identity": "bastian" },
-  "role": "writer",
-  "pattern": "sales.*"
-}
-```
+See [`GRANT`](/docs/reference/sql/statements/grant) and
+[`REVOKE`](/docs/reference/sql/statements/revoke) for the full syntax. Each acts
+on exactly one policy: there is no in-place edit, so changing someone's role is a
+`REVOKE` followed by a `GRANT`.
+
+To read grants back, [`SHOW GRANTS ON`](/docs/reference/sql/statements/show-grants-on)
+lists the policies attached to an object, and
+[`SHOW EFFECTIVE GRANTS ON`](/docs/reference/sql/statements/show-effective-grants-on)
+also includes the broader grants above it - so a dataset reachable only through a
+workspace-wide grant still names the person who holds it. Both are `owner`-gated on
+the same authority a `GRANT` there would need: who may see the grants is who may
+change them.
 
 ## Audit & Logging
 
