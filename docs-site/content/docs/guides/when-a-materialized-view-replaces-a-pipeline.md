@@ -68,3 +68,4 @@ A materialized view still needs a small amount of upkeep, just less of it:
 - [REFRESH MATERIALIZED VIEW](/docs/reference/sql/statements/refresh-materialized-view)
 - [DROP MATERIALIZED VIEW](/docs/reference/sql/statements/drop-materialized-view)
 - [Federator](/docs/core-concepts/federator)
+- [Tasks and Triggers](/docs/guides/tasks-and-triggers) — the general form, for transforms that are not one `SELECT` or tables too large to rebuild

@@ -48,6 +48,9 @@
             "When a materialized view replaces a pipeline": "guides/when-a-materialized-view-replaces-a-pipeline.md"
           },
           {
+            "Tasks and triggers": "guides/tasks-and-triggers.md"
+          },
+          {
             "Markdown in comments and descriptions": "core-concepts/markdown-in-descriptions.md"
           }
         ]

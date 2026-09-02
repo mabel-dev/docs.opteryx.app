@@ -63,12 +63,16 @@ Refresh is automatic and event-driven, not scheduled:
   rebuild a view on demand.
 - Rapid successive commits within roughly 60 seconds coalesce into a single refresh
   rather than one refresh per commit.
-- The refresh runs with the permissions of the view's **owner** — the identity that created
-  it, recorded as `runs_as` — not those of whoever's commit triggered it. The committer is
-  incidental: an ingest account with rights on a source table but none where the view lives
-  would otherwise make the view permanently unrefreshable, and which principal happened to
-  write last would decide whether a refresh worked. Ownership is pinned at creation and moves
-  only with [ALTER MATERIALIZED VIEW ... OWNER TO](alter-materialized-view).
+- The refresh runs with the permissions of the **refresh trigger's owner** — the identity
+  that created the view, pinned on each of its refresh triggers as `runs_as` — not those of
+  whoever's commit triggered it. The committer is incidental: an ingest account with rights
+  on a source table but none where the view lives would otherwise make the view permanently
+  unrefreshable, and which principal happened to write last would decide whether a refresh
+  worked. The view itself carries no identity, exactly as a task does not: running
+  `REFRESH MATERIALIZED VIEW` yourself runs it as you. A trigger's identity is pinned when
+  the trigger is created, survives `CREATE OR REPLACE`, and moves with
+  [ALTER MATERIALIZED VIEW ... OWNER TO](alter-materialized-view) (every trigger of the
+  view at once) or [ALTER TRIGGER ... OWNER TO](alter-trigger) (one trigger).
 - If the owner loses the permissions the refresh needs, it is denied and the view goes stale —
   visibly so: check `last_fired_status` in
   [information_schema.triggers](../advanced/adv-information-schema)

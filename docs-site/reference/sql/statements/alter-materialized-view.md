@@ -23,19 +23,25 @@ by redefining that with `CREATE OR REPLACE MATERIALIZED VIEW`.
 
 ## OWNER TO
 
-A materialized view refreshes as a **pinned identity**, recorded when the view is created and
-shown as `runs_as`. Every automatic refresh runs with that principal's permissions and is
-billed to them — not to whoever's write happened to trigger it.
+A materialized view refreshes as a **pinned identity** — not as whoever's write happened to
+trigger it. That identity lives on each of the view's **refresh triggers**, pinned when the
+trigger is created and shown as `runs_as` in `information_schema.triggers`; the view itself
+carries none, exactly as a task carries none. Every automatic refresh runs with that
+principal's permissions and is billed to them.
+
+A view reading four tables has four refresh triggers. This statement repoints **all of them
+at once**, so the view never refreshes as two identities depending on which source was
+written to last. [ALTER TRIGGER ... OWNER TO](alter-trigger) moves one trigger.
 
 ~~~sql
 ALTER MATERIALIZED VIEW analytics.daily_orders OWNER TO 'etl@example.com';
 ALTER MATERIALIZED VIEW analytics.daily_orders OWNER TO CURRENT_USER;
 ~~~
 
-This statement is the **only** thing that moves that identity. In particular, redefining a
-view with `CREATE OR REPLACE MATERIALIZED VIEW` does not: fixing a colleague's view does not
-make you responsible for keeping it fresh, and does not hand your permissions to whoever
-edits it next.
+Redefining a view with `CREATE OR REPLACE MATERIALIZED VIEW` does not move it: a trigger the
+view already had keeps its identity, and only the trigger on a **newly read** source is pinned
+to the editor. Fixing a colleague's view does not make you responsible for keeping it fresh,
+and does not hand your permissions to whoever edits it next.
 
 `CURRENT_USER` resolves to the identity running the statement — the way to take ownership of
 a view yourself. Quoting it (`'CURRENT_USER'`) instead names a principal literally called
@@ -43,8 +49,8 @@ a view yourself. Quoting it (`'CURRENT_USER'`) instead names a principal literal
 
 ### Parameters
 
-- **`<principal>`** — the identity to make the view's refresh owner. Every automatic refresh
-  runs, and is billed, as this principal from then on.
+- **`<principal>`** — the identity to pin on every refresh trigger of the view. Every
+  automatic refresh runs, and is billed, as this principal from then on.
 - `CURRENT_USER` — the identity running the statement; the way to take ownership yourself.
 
 ### Why This Needs Workspace Owner
@@ -52,9 +58,9 @@ a view yourself. Quoting it (`'CURRENT_USER'`) instead names a principal literal
 `OWNER TO <principal>` requires the `owner` role on the **workspace**, deliberately stricter
 than owning the view itself.
 
-When a view is created, its owner is necessarily an identity that held every permission the
-definition needed — because it was the identity that ran it. This statement is the one thing
-that can break that: it can point a view's refresh at a principal with *broader* permissions
+When a view is created, its triggers' owner is necessarily an identity that held every
+permission the definition needed — because it was the identity that ran it. This statement
+can break that: it can point a view's refresh at a principal with *broader* permissions
 than the caller's own, and nothing can inspect another principal's grants to prevent it. A
 workspace owner can already grant themselves anything in the workspace, so requiring that
 tier escalates nothing that was not already available.
@@ -67,7 +73,8 @@ running it, so no permission can be borrowed.
 Refreshes stop, **visibly**: the job fails and `last_refresh_status` records the denial. That
 is intended. The alternative — quietly falling back to whoever's commit fired the refresh —
 would make a view's behaviour depend on which principal happened to write last, and could run
-it with permissions it was never granted.
+it with permissions it was never granted. A refresh trigger with **no** owner recorded is
+refused the same way, with `last_fired_status` reading `owner-missing`.
 
 For views that must outlive an individual, set the owner to a service principal.
 

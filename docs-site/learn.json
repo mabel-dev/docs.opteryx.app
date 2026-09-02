@@ -61,6 +61,7 @@
       { "title": "MERGE", "href": "/docs/reference/sql/statements/merge", "kind": "Reference", "minutes": 10, "why": "Upserts: the statement behind most incremental loads." },
       { "title": "Time travel queries", "href": "/docs/reference/sql/advanced/time-travel", "kind": "Reference", "minutes": 10, "why": "Read a table as it was at a snapshot or at a point in time." },
       { "title": "When a materialized view replaces a pipeline", "href": "/docs/guides/when-a-materialized-view-replaces-a-pipeline", "kind": "Guide", "minutes": 10, "why": "One statement instead of a scheduler, a job and a swap. And when that is the wrong trade." },
+      { "title": "Tasks and triggers", "href": "/docs/guides/tasks-and-triggers", "kind": "Guide", "minutes": 15, "why": "The general form: a stored statement fired by a commit and handed exactly what that commit changed. A blueprint and two worked examples." },
       { "title": "CREATE TASK", "href": "/docs/reference/sql/statements/create-task", "kind": "Reference", "minutes": 10, "why": "The general form: any statement, run on demand or when a table commits." },
       { "title": "CREATE TRIGGER", "href": "/docs/reference/sql/statements/create-trigger", "kind": "Reference", "minutes": 10, "why": "Wire a task to a table, and whose identity an unattended run carries." },
       { "title": "Access and permissions", "href": "/docs/core-concepts/access-and-permissions", "kind": "Concept", "minutes": 10, "why": "Workspaces as the boundary, and what reader, writer and owner each allow." },
