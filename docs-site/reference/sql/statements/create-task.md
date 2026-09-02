@@ -34,12 +34,12 @@ CREATE [ OR REPLACE ] TASK <task_name>
 - **`<table_name>`** — a table whose commits fire this task. Supplying it creates the
   trigger alongside the task, so one statement leaves nothing half-wired. Omit it and the
   task is defined but nothing fires it, which is what a backfill or a replay wants; add
-  triggers later with [CREATE TRIGGER](create-trigger).
+  its trigger later with [CREATE TRIGGER](create-trigger). A task has one trigger at most.
 - **`<statement>`** — the SQL the task runs. It may contain `:name` placeholders, which are
   supplied when the task is executed rather than now.
 - `OR REPLACE` — redefine an existing task instead of refusing. The previous statement is
-  kept as an earlier version, and triggers pointing at the task are untouched — including
-  whose identity they run it as.
+  kept as an earlier version, and the trigger pointing at the task is untouched — including
+  whose identity it runs it as.
 
 ## Examples
 

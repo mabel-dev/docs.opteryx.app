@@ -53,8 +53,8 @@ DROP TRIGGER IF EXISTS ingest_on_events ON my_workspace.raw.events;
   trigger is an update to that table.
 - Dropping a task trigger leaves the task defined. It can still be run by hand with
   [EXECUTE](execute), and fired again by attaching a new trigger with
-  [CREATE TRIGGER](create-trigger). A task fired by several tables keeps its other
-  triggers.
+  [CREATE TRIGGER](create-trigger). A task has one trigger at a time, so dropping it is
+  also how a task is moved from one table to another.
 - Dropping a refresh trigger leaves the materialized view queryable, but it goes stale
   silently as its source changes. To resume refreshing, re-create the view with
   [CREATE OR REPLACE MATERIALIZED VIEW](create-materialized-view), which rebuilds its

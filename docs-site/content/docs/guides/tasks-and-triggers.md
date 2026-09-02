@@ -17,7 +17,9 @@ A **task** is a stored statement. It has a name in the catalog, like a table, an
 
 A **trigger** is attached to a table and names a task. Every commit that writes data to the table fires it. Compaction and expiration do not, because they change no rows. The trigger is what makes a run unattended, so the trigger is what carries an identity: its runs execute as its owner, which starts out as whoever created it.
 
-Splitting the two is deliberate. One task can be fired by several tables, run by hand for a backfill, or replayed over an old window, without being redefined. And a trigger can be suspended, resumed or handed to another owner without touching the SQL.
+Splitting the two is deliberate. One task can be run by hand for a backfill, or replayed over an old window, without being redefined. And a trigger can be suspended, resumed or handed to another owner without touching the SQL.
+
+A task has **one** trigger at most. The window a run is handed is a pair of snapshot ids from the table that fired it, and two firing tables would push two unrelated version sequences through the same two placeholders. See [One Task, One Trigger](#one-task-one-trigger) below for what to do when two tables should cause the same work.
 
 For the common case where the task reads the table that fires it, one statement does both:
 
@@ -225,16 +227,27 @@ Each commit to `ref.customers` appends one row per changed customer to the histo
 
 The update arm compares columns with `<>`, which is false when either side is `NULL`. If a tracked column can be null, wrap both sides in `COALESCE` so a change to or from null is caught. See [NULL semantics](/docs/reference/sql/advanced/null-semantics).
 
-## One Task, Several Tables
+## One Task, One Trigger
 
-A trigger names one table, but a task can have any number of triggers. To run the same reconciliation whenever either of two tables commits:
+A trigger names one table, and a task has at most one trigger. A second trigger aimed at a task that already has one is refused:
 
 ```sql
 CREATE TRIGGER reconcile_on_orders  ON my_workspace.raw.orders  EXECUTE my_workspace.ops.reconcile;
 CREATE TRIGGER reconcile_on_returns ON my_workspace.raw.returns EXECUTE my_workspace.ops.reconcile;
+-- refused: task my_workspace.ops.reconcile is already fired by reconcile_on_orders ON
+-- my_workspace.raw.orders; a task has one trigger - its window is that source's version sequence.
 ```
 
-The window placeholders describe the commit that fired the run, on whichever table that was. A snapshot id from `returns` means nothing on `orders`, so a task fired from several tables should either read all of its sources at head and recompute, or be written so the window only ever applies to one of them.
+The rule exists because of the window. `:parent_version` and `:current_version` are snapshot ids of the table that fired the run, and a snapshot id from `returns` means nothing on `orders`. With two firing tables the same two placeholders would carry ids from two unrelated sequences, and nothing in the statement could tell which. The result is plausible wrong rows and no error. One source also lets the platform keep `last_window_to` as a real floor, skipping a run that a later one has already covered and widening a window back over a failed one, neither of which is meaningful across two sequences.
+
+When two tables should cause the same work, write it as two tasks, each windowed on its own source:
+
+```sql
+CREATE TASK my_workspace.ops.reconcile_orders  ON my_workspace.raw.orders  AS ...;
+CREATE TASK my_workspace.ops.reconcile_returns ON my_workspace.raw.returns AS ...;
+```
+
+If the work is a derivation that reads every source at head and recomputes, it is a [materialized view](/docs/guides/when-a-materialized-view-replaces-a-pipeline), which carries one refresh trigger per source by design. To move a task from one table to another, drop its trigger with [DROP TRIGGER](/docs/reference/sql/statements/drop-trigger) and attach the new one.
 
 ## Things That Bite
 

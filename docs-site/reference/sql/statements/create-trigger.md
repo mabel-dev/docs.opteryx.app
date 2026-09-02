@@ -9,8 +9,13 @@ The `CREATE TRIGGER` statement attaches a trigger to a table so that committing 
 table runs a [task](create-task).
 
 Use this when the firing condition is not simply "the table the task reads" — a task can be
-fired by several tables, or by a table it does not itself read. Where the two do coincide,
-`CREATE TASK ... ON <table>` creates the trigger for you in one statement.
+fired by a table it does not itself read, or defined first and wired up later. Where the
+two do coincide, `CREATE TASK ... ON <table>` creates the trigger for you in one statement.
+
+A task has **one** trigger at most. Attaching a second is refused, because a fired run's
+window is a pair of snapshot ids from the firing table, and two tables would push two
+unrelated version sequences through the same two placeholders. Two tables that should
+cause the same work are two tasks, or a [materialized view](create-materialized-view).
 
 Triggers that refresh a **materialized view** are still created automatically by
 [CREATE MATERIALIZED VIEW](create-materialized-view) and are not authored with this
@@ -44,12 +49,12 @@ CREATE TRIGGER ingest_on_events
     EXECUTE my_workspace.ops.ingest_new;
 ~~~
 
-### Fire One Task From Several Tables
+### Fire a Task From a Table It Does Not Read
 ~~~sql
-CREATE TRIGGER ingest_on_events ON my_workspace.raw.events
-    EXECUTE my_workspace.ops.reconcile;
-
-CREATE TRIGGER ingest_on_returns ON my_workspace.raw.returns
+-- The task joins a small event table to a large reference table, and should
+-- run when events land, not every time the reference data is reloaded.
+CREATE TRIGGER reconcile_on_events
+    ON my_workspace.raw.events
     EXECUTE my_workspace.ops.reconcile;
 ~~~
 
@@ -75,6 +80,9 @@ CREATE OR REPLACE TRIGGER ingest_on_events
 - A fired task is passed the committing snapshot and its parent, as `:current_version` and
   `:parent_version`. The window is fixed when the trigger fires, so a run means the same
   thing however long afterwards it is picked up.
+- **One trigger per task.** A `CREATE TRIGGER` naming a task that already has a trigger on
+  another table is refused, and the message names the trigger that holds it. Drop that
+  one first with [DROP TRIGGER](drop-trigger) to move the task, or define a second task.
 - Only **catalog events** — a commit to a table — can fire a trigger. Clock schedules and
   application signals are refused rather than stored, because nothing dispatches them yet
   and a trigger nothing fires is worse than none: the table it maintains stops updating
