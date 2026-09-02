@@ -138,25 +138,41 @@ have no access to anywhere would still have its existence disclosed here.
 
 ## `information_schema.triggers`
 
-One row per trigger in the workspace's catalog — the refresh triggers created by
-[CREATE MATERIALIZED VIEW](/docs/reference/sql/statements/create-materialized-view), which
-re-run a materialized view's query when data is committed to a source table.
+One row per trigger in the workspace's catalog. A trigger is attached to a table and fires
+when data is committed to it. It is one of two kinds: a **task trigger**, created with
+[CREATE TRIGGER](/docs/reference/sql/statements/create-trigger) or `CREATE TASK ... ON`,
+which runs a [task](/docs/reference/sql/statements/create-task); or a **refresh trigger**,
+created by
+[CREATE MATERIALIZED VIEW](/docs/reference/sql/statements/create-materialized-view),
+which re-runs a materialized view's query. Both kinds share these columns.
 
-| Column               | Type        | Description                                                        |
-|----------------------|-------------|--------------------------------------------------------------------|
-| `trigger_catalog`    | `VARCHAR`   | The workspace name                                                 |
-| `trigger_collection` | `VARCHAR`   | The collection the trigger belongs to                              |
-| `trigger_name`       | `VARCHAR`   | The trigger name, generated as `refresh__<collection>__<view_name>__<suffix>` |
-| `event_object_table` | `VARCHAR`   | The source table the trigger is attached to, as `collection.dataset` |
-| `action_kind`        | `VARCHAR`   | The kind of action the trigger performs                            |
-| `target_view`        | `VARCHAR`   | The materialized view the trigger refreshes                        |
-| `created_by`         | `VARCHAR`   | Who created the trigger                                            |
-| `created_at`         | `TIMESTAMP` | When the trigger was created                                       |
-| `last_fired_at`      | `TIMESTAMP` | When the trigger last fired                                        |
-| `last_fired_status`  | `VARCHAR`   | How the last firing went — the place to look when a materialized view seems stale |
+| Column                     | Type        | Description                                                        |
+|----------------------------|-------------|--------------------------------------------------------------------|
+| `trigger_catalog`          | `VARCHAR`   | The workspace name                                                 |
+| `trigger_collection`       | `VARCHAR`   | The collection the trigger belongs to                              |
+| `trigger_name`             | `VARCHAR`   | The trigger name — as given to `CREATE TRIGGER`, or generated as `refresh__<collection>__<view_name>__<suffix>` for a refresh trigger |
+| `event_object_table`       | `VARCHAR`   | The source table the trigger is attached to, as `collection.dataset` |
+| `action_kind`              | `VARCHAR`   | `task` — the trigger executes a task; `materialized_view_refresh` — it refreshes a materialized view |
+| `target`                   | `VARCHAR`   | What the trigger fires, fully qualified: the task it executes, or the materialized view it refreshes, depending on `action_kind` |
+| `runs_as`                  | `VARCHAR`   | Whose identity an unattended run carries — the trigger's owner, not necessarily `created_by`. Moved with `ALTER TRIGGER ... OWNER TO` |
+| `created_by`               | `VARCHAR`   | Who created the trigger                                            |
+| `created_at`               | `TIMESTAMP` | When the trigger was created                                       |
+| `last_fired_at`            | `TIMESTAMP` | When the trigger last fired                                        |
+| `last_fired_status`        | `VARCHAR`   | How the last firing went, including `suspended` and `throttled` for a firing that was refused — the place to look when a task has not run or a materialized view seems stale |
+| `suspended_at`             | `TIMESTAMP` | When the trigger was paused with `ALTER TRIGGER ... SUSPEND`. `NULL` while it is live |
+| `suspended_by`             | `VARCHAR`   | Who paused it. `NULL` while it is live                             |
+| `minimum_interval_seconds` | `BIGINT`    | The floor between two firings, set with `ALTER TRIGGER ... SET MINIMUM INTERVAL TO`. `NULL` for a trigger created before the setting existed, which fires on every commit; `0` where the floor was removed |
+
+`last_fired_status` is the outcome of the most recent time a commit **reached** the
+trigger, not of the work it started. `enqueued` means a job was submitted. `throttled`
+means the commit landed inside the trigger's minimum interval and nothing was submitted,
+which is the setting working, not a fault. `suspended` means the trigger is paused.
+`skipped-unread` and `superseded` are deliberate skips — a view nobody has read, or a
+task run already covered by a later one. `egress-blocked`, `owner-missing` and `error`
+need someone to act.
 
 ```sql
-SELECT trigger_name, event_object_table, target_view, last_fired_at, last_fired_status
+SELECT trigger_name, event_object_table, action_kind, target, runs_as, last_fired_at, last_fired_status
   FROM opteryx.information_schema.triggers;
 ```
 

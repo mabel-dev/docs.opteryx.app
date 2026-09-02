@@ -58,7 +58,7 @@ SELECT * FROM personal.<you>.batch_totals ORDER BY load_batch;
 Two rows now. If there is still one, check how the last refresh went:
 
 ```sql
-SELECT trigger_name, target_view, last_fired_at, last_fired_status
+SELECT trigger_name, target, last_fired_at, last_fired_status
   FROM personal.information_schema.triggers;
 ```
 

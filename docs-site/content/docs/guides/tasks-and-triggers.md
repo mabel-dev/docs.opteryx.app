@@ -125,7 +125,7 @@ Make a commit to the source, then look at the trigger:
 SHOW TRIGGERS FOR my_workspace.raw.events;
 ```
 
-The `last_fired_at` and `last_fired_status` columns tell you whether the run happened and how it went. For every trigger in a workspace at once, query [information_schema.triggers](/docs/reference/sql/advanced/information-schema#information_schematriggers).
+The `last_fired_at` and `last_fired_status` columns tell you whether the run happened and how it went. A status of `throttled` means a commit landed inside the trigger's minimum interval (120 seconds for a new trigger) and was deliberately not fired again — see *A burst of commits fires once* below. For every trigger in a workspace at once, query [information_schema.triggers](/docs/reference/sql/advanced/information-schema#information_schematriggers).
 
 ### 7. Give it an owner that will outlive you
 
@@ -241,6 +241,7 @@ The window placeholders describe the commit that fired the run, on whichever tab
 - **A task that writes to the table that fires it loops.** Its own commit fires the trigger again, and again. Write somewhere else, or keep the trigger on a different table from the one the task writes.
 - **Only commits fire triggers.** There are no clock schedules, and a trigger definition that asks for one is refused rather than stored. If you need something to run at three in the morning regardless of commits, have your scheduler call `EXECUTE` through the [Jobs API](/docs/guides/running-a-query-via-the-api). The task is the same either way.
 - **A run is gated when it fires, not when the trigger was created.** If the owner loses `reader` on the source or `writer` on the destination, the next run is denied and `last_fired_status` says so. Nothing else changes: the source keeps accepting commits and the destination quietly stops growing. Check the status when a downstream table looks behind.
+- **A burst of commits fires once.** A new trigger carries a minimum interval of 120 seconds. The first commit in a burst fires; commits inside the interval after it are recorded as `throttled` and fire nothing. Nothing is lost — the next run after the interval takes a window that reaches back over the skipped commits — but the destination is current as of the *first* commit in the burst until then. Loosen or remove the floor with `ALTER TRIGGER ... SET MINIMUM INTERVAL TO <n> [SECONDS|MINUTES]`; `0` fires on every commit. See [ALTER TRIGGER](/docs/reference/sql/statements/alter-trigger).
 - **Suspend, do not drop.** `ALTER TRIGGER ... SUSPEND` keeps the trigger and records that it was switched off deliberately. A dropped trigger looks the same as one that never existed. See [ALTER TRIGGER](/docs/reference/sql/statements/alter-trigger).
 - **Dropping a task does not drop its triggers.** They live on the tables that fire them. Remove them with [DROP TRIGGER](/docs/reference/sql/statements/drop-trigger), then the task.
 - **Egress protection follows the task.** If the task copies data out of a workspace that restricts egress, the run is refused unless that workspace has marked this task `SECURE` for the destination. See [ALTER WORKSPACE](/docs/reference/sql/statements/alter-workspace#secure-the-sanctioned-exemption).
