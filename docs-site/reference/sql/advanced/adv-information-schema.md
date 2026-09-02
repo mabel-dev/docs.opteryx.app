@@ -7,7 +7,7 @@ description: Query information_schema.tables and information_schema.columns to d
 
 `information_schema` is a reserved schema that exposes metadata about the tables, views, and columns registered in an Opteryx workspace's catalog. It is read from the catalog live at query time — not a fixed or generated snapshot — so it reflects whatever exists in the catalog at the moment the query runs.
 
-Five views are currently available: `tables`, `columns`, `views`, `schemata`, and `triggers`.
+Eight views are currently available: `tables`, `columns`, `views`, `schemata`, `triggers`, `tasks`, `column_relationships`, and `grants`.
 
 ```sql
 SELECT *
@@ -201,6 +201,60 @@ A row is listed against the table the constraint was declared **on**. To find wh
 *at* a table, filter on `referenced_table_name` — that reads every declaration in the
 workspace rather than one table's, so it is the slower direction.
 
+
+---
+
+## `information_schema.grants`
+
+The workspace's access, as a relation. One row per **object and policy that reaches it** —
+for the workspace itself, each collection, and each table and view, every stored access
+policy whose pattern covers it. `SHOW GRANTS ON` and `SHOW EFFECTIVE GRANTS ON` answer the
+same questions one object at a time, as statements; this is both answers for the whole
+workspace, so a client can read access live and narrow it with `WHERE`.
+
+| Column             | Type      | Description                                                                 |
+|--------------------|-----------|-----------------------------------------------------------------------------|
+| `grant_catalog`    | `VARCHAR` | The workspace name                                                          |
+| `grant_collection` | `VARCHAR` | The object's collection. `NULL` on the workspace row                        |
+| `object_kind`      | `VARCHAR` | `workspace`, `collection` or `dataset` — the kinds the grant statements name |
+| `object_name`      | `VARCHAR` | The object, fully qualified: `w`, `w.c` or `w.c.d` — what `GRANT ... ON <kind> <object>` takes |
+| `grantee`          | `VARCHAR` | Who holds the policy                                                        |
+| `role`             | `VARCHAR` | `owner`, `writer` or `reader`                                               |
+| `pattern`          | `VARCHAR` | The policy's own pattern — the thing to `REVOKE` to remove this access      |
+| `level`            | `VARCHAR` | The level that pattern addresses: `workspace`, `collection` or `dataset`    |
+| `origin`           | `VARCHAR` | `explicit` — the policy is stored **at** this object; `inherited` — it covers the object from the collection or workspace above |
+
+`origin` is the column the view exists for. The `explicit` rows are what `SHOW GRANTS ON`
+reports for an object, and what a `GRANT` or `REVOKE` there acts on. The `inherited` rows
+are what `SHOW EFFECTIVE GRANTS ON` adds — a dataset with nothing granted on it directly is
+still reachable by the workspace owner, and this says so, naming the policy that does it.
+
+One row per covering policy, never one per person: a user who reaches a dataset through
+both a collection grant and a workspace grant gets two rows, because either policy alone
+keeps the access in place and an administrator has to know which to change.
+
+```sql
+-- Everything stored in the workspace: every policy, once, at its own object.
+SELECT object_name, grantee, role
+  FROM opteryx.information_schema.grants
+ WHERE origin = 'explicit';
+
+-- Everyone who can reach one dataset, and through which policy.
+SELECT grantee, role, pattern, level, origin
+  FROM opteryx.information_schema.grants
+ WHERE object_name = 'opteryx.sales.orders';
+```
+
+Every stored policy appears as `explicit` at its own pattern exactly once, **whether or not
+the catalog still holds what it names** — a grant on a dataset that has since been dropped
+is listed rather than lost, which is exactly the grant a listing needs to be complete for.
+The workspace row lists the policies that cover the workspace as an object (`w.*`); the
+whole workspace's policies are the `explicit` rows.
+
+Filtering on `object_name` with `=` reads that one object without walking the catalog at
+all — the read a dataset page makes. Whatever the filter, the catalog is listed once and the
+policy store read once.
+
 ---
 
 ## Permissions
@@ -213,11 +267,18 @@ workspace rather than one table's, so it is the slower direction.
 
 A missing execution context denies everything rather than falling back to showing all rows.
 
+`information_schema.grants` is gated differently, because it is not about data. A row
+describes who can reach an object, which is strictly more sensitive than the object's
+existence, so a row is shown only where the querying identity could **administer** the
+object — owner authority covering it, the same gate `SHOW GRANTS ON` holds. A collection
+owner sees their collection and what is under it; everything else is simply absent, not
+refused.
+
 ---
 
 ## Limitations
 
 This is an early implementation. Known gaps:
 
-- `tables`, `columns`, `views`, `schemata`, `triggers` and `column_relationships` are implemented. `routines` is not.
+- `tables`, `columns`, `views`, `schemata`, `triggers`, `tasks`, `column_relationships` and `grants` are implemented. `routines` is not.
 - `information_schema.columns` and `information_schema.views` do one catalog round trip per table or view found. Predicate pushdown covers only equality and `IN` on the enumeration key columns (`table_catalog`, `table_schema`, `table_name`, and `table_type` on `tables`) — those are known before any round trip, so filtering on them skips the lookups entirely. Every other predicate is applied after the fact, so an unfiltered query against a workspace with a very large number of tables is proportionally slower.

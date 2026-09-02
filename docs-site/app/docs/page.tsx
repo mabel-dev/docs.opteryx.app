@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { learnPaths } from "@/app/lib/learnPaths";
 
 type DocSection = {
   title: string;
@@ -100,6 +101,37 @@ export default function Page() {
               Read the Blog
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Learning paths */}
+      <section className="docs-section">
+        <div className="docs-section-header">
+          <h2>Learning paths</h2>
+          <p>
+            An ordered route through the docs for the job you are doing, ending
+            in a hands-on exercise
+          </p>
+        </div>
+        <div className="card-grid">
+          {learnPaths.map((learnPath) => (
+            <Link
+              key={learnPath.slug}
+              href={`/learn/${learnPath.slug}`}
+              className="post-card"
+            >
+              <div className={`post-card-art tone-${learnPath.tone}`}>
+                <span className="art-glyph">{learnPath.title.toUpperCase()}</span>
+              </div>
+              <div className="post-card-body">
+                <div className="post-card-cat">
+                  {learnPath.steps.length} steps · {learnPath.time}
+                </div>
+                <h3>{learnPath.headline}</h3>
+                <p>{learnPath.persona}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 

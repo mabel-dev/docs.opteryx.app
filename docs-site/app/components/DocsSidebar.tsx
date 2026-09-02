@@ -8,6 +8,7 @@ import {
   type DocsNavItem,
   type DocsNavSection,
 } from "@/app/lib/docsNav";
+import { learnPaths } from "@/app/lib/learnPaths";
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
@@ -183,7 +184,26 @@ export default function DocsSidebar() {
     },
   ];
 
-  const navToRender = isReleasesPage ? releasesNav : sidebarNav;
+  const isLearnPage = pathname.startsWith("/learn");
+
+  const learnNav: DocsNavSection[] = [
+    {
+      title: "Learning paths",
+      items: [
+        { title: "All paths", href: "/learn" },
+        ...learnPaths.map((learnPath) => ({
+          title: learnPath.title,
+          href: `/learn/${learnPath.slug}`,
+        })),
+      ],
+    },
+  ];
+
+  const navToRender = isReleasesPage
+    ? releasesNav
+    : isLearnPage
+      ? learnNav
+      : sidebarNav;
 
   return (
     <aside className="docs-sidebar">

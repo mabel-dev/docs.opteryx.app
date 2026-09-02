@@ -8,11 +8,16 @@ import SearchBox from './SearchBox'
 export default function SiteHeader() {
   const pathname = usePathname()
 
-  const section = pathname.startsWith('/blog') ? 'Blog' : 'Docs'
+  const section = pathname.startsWith('/blog')
+    ? 'Blog'
+    : pathname.startsWith('/learn')
+      ? 'Learn'
+      : 'Docs'
 
   const navLinks = [
     { label: 'Home',     href: '/' },
     { label: 'Docs',     href: '/docs' },
+    { label: 'Learn',    href: '/learn' },
     { label: 'Blog',     href: '/blog' },
   ]
 

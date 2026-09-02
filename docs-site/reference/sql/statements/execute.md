@@ -82,3 +82,8 @@ EXECUTE my_workspace.ops.ingest_new
   identical appearance are the shape most likely to be transposed silently, so parameters
   are named.
 - A missing argument names the parameter it could not fill.
+- **The run carries the task's identity into egress protection.** If the task's
+  statement copies data out of a workspace that restricts egress, it is refused like any
+  other write — unless that workspace has marked *this task* `SECURE` for the
+  destination. The same statement typed by hand is not exempt; what is sanctioned is the
+  task, not the SQL. See [ALTER WORKSPACE](alter-workspace#secure-the-sanctioned-exemption).

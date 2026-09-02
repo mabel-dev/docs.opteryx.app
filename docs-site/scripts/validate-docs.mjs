@@ -9,6 +9,8 @@ const projectRoot = path.resolve(__dirname, '..')
 const contentDocsDir = path.join(projectRoot, 'content', 'docs')
 const referenceDir = path.join(projectRoot, 'reference')
 const navPath = path.join(projectRoot, 'nav.json')
+const learnPath = path.join(projectRoot, 'learn.json')
+const learnContentDir = path.join(projectRoot, 'content', 'learn')
 
 const LEAF_PREFIXES_TO_TRIM = ['adv-']
 
@@ -228,9 +230,37 @@ function main() {
   const contentRoutes = listMarkdownRoutesFromContent()
   const referenceRoutes = new Set(routeMap.keys())
 
+  // Learning paths point at existing pages; a step whose target has moved is
+  // a dead end in the middle of a route, so check them like any other link.
+  const learnJson = fileExists(learnPath) ? readJson(learnPath) : []
+  const learnSlugs = new Set(learnJson.map((entry) => entry.slug))
+
+  for (const entry of learnJson) {
+    for (const step of entry.steps || []) {
+      if (typeof step.href !== 'string' || !step.href.startsWith('/docs')) {
+        errors.push(`Learning path step must link under /docs (${entry.slug}): ${step.title}`)
+        continue
+      }
+      if (!validateDocsRoute(step.href, contentRoutes, referenceRoutes)) {
+        errors.push(`Broken step link in learn.json (${entry.slug}): ${step.href}`)
+      }
+    }
+
+    if (!fileExists(path.join(learnContentDir, entry.exercise || ''))) {
+      errors.push(`Missing exercise markdown for learning path ${entry.slug}: ${entry.exercise}`)
+    }
+
+    for (const next of entry.next || []) {
+      if (!learnSlugs.has(next)) {
+        errors.push(`Unknown next path in learn.json (${entry.slug}): ${next}`)
+      }
+    }
+  }
+
   const markdownFiles = [
     ...walkFiles(contentDocsDir, (filePath) => filePath.endsWith('.md')),
     ...walkFiles(referenceDir, (filePath) => filePath.endsWith('.md')),
+    ...walkFiles(learnContentDir, (filePath) => filePath.endsWith('.md')),
   ]
 
   const markdownLinkPattern = /\[[^\]]+\]\(([^)]+)\)/g

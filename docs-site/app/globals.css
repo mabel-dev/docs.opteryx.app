@@ -4966,3 +4966,274 @@ kbd {
     color: var(--muted);
     margin: 0;
 }
+
+/* ===========================================================================
+   LEARN — learning paths (/learn, /learn/<path>)
+   =========================================================================== */
+.learn-grid {
+    margin-top: 40px;
+}
+.learn-how {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin: 64px 0 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+}
+.learn-how h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-deep);
+    margin: 0 0 8px;
+}
+.learn-how p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+}
+.learn-help {
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+}
+@media (max-width: 880px) {
+    .learn-how {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin: 48px 0 56px;
+    }
+}
+
+/* Path page header */
+.learn-path .eyebrow {
+    margin-bottom: 12px;
+}
+.learn-meta,
+.learn-step-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted-2);
+}
+.learn-meta {
+    margin: -4px 0 8px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+.learn-meta .sep,
+.learn-step-meta .sep {
+    color: var(--border-2);
+}
+.breadcrumbs .current-crumb {
+    color: var(--text-deep);
+    font-weight: 500;
+}
+
+/* Progress */
+.learn-steps-wrap {
+    margin: 20px 0 8px;
+}
+.learn-progress {
+    margin-bottom: 20px;
+}
+.learn-progress-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--panel-2);
+    overflow: hidden;
+}
+.learn-progress-fill {
+    height: 100%;
+    background: var(--opteryx-teal);
+    border-radius: 999px;
+    transition: width var(--t-base);
+}
+.learn-progress-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+}
+.learn-reset {
+    font: inherit;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.learn-reset:hover {
+    color: var(--opteryx-teal);
+}
+
+/* Step list. Overrides the article's ordered-list styling: the number is the
+   tick button, not a list marker. */
+.docs-article .learn-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-s);
+    background: #fff;
+}
+.docs-article .learn-steps li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin: 0;
+    padding: 16px 18px;
+}
+.docs-article .learn-steps li + li {
+    border-top: 1px solid var(--border);
+}
+.docs-article .learn-steps li::marker {
+    content: "";
+}
+.learn-check {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border-2);
+    background: var(--muted-surface);
+    color: var(--text-deep);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background var(--t-fast),
+        color var(--t-fast),
+        border-color var(--t-fast);
+}
+.learn-check:hover {
+    border-color: var(--opteryx-teal);
+    color: var(--opteryx-teal);
+}
+.learn-steps li.done .learn-check {
+    background: var(--opteryx-teal);
+    border-color: var(--opteryx-teal);
+    color: #fff;
+}
+.learn-step-body {
+    flex: 1;
+    min-width: 0;
+}
+.learn-step-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.learn-step-head a {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-deep);
+}
+.learn-steps li.done .learn-step-head a {
+    color: var(--muted);
+}
+.learn-tag {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--opteryx-orange);
+    background: var(--orange-soft);
+    padding: 3px 7px;
+    border-radius: var(--r-xs);
+}
+.docs-article .learn-steps p {
+    margin: 4px 0 6px;
+    font-size: 14px;
+    color: var(--text);
+}
+.learn-steps li.done .learn-step-body p {
+    color: var(--muted);
+}
+
+/* Exercise questions */
+.learn-exercise details {
+    border: 1px solid var(--border);
+    border-radius: var(--r-s);
+    padding: 12px 16px;
+    margin: 0 0 12px;
+    background: var(--muted-surface);
+}
+.learn-exercise summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-deep);
+}
+.learn-exercise details[open] summary {
+    margin-bottom: 8px;
+}
+.learn-exercise details p:last-child {
+    margin-bottom: 0;
+}
+
+/* Where next */
+.learn-next {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.learn-next-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: var(--r-s);
+    background: #fff;
+    text-decoration: none;
+    transition:
+        border-color var(--t-fast),
+        box-shadow var(--t-base);
+}
+.docs-article a.learn-next-card:hover {
+    box-shadow: var(--shadow-m);
+    text-decoration: none;
+}
+.learn-next-card.tone-teal {
+    border-left-color: var(--opteryx-teal);
+}
+.learn-next-card.tone-orange {
+    border-left-color: var(--opteryx-orange);
+}
+.learn-next-card.tone-navy {
+    border-left-color: var(--opteryx-navy);
+}
+.learn-next-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.learn-next-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-deep);
+}
+@media (max-width: 640px) {
+    .learn-next {
+        grid-template-columns: 1fr;
+    }
+}

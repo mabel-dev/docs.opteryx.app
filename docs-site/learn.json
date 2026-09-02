@@ -1,0 +1,110 @@
+[
+  {
+    "slug": "analyst",
+    "title": "Analyst",
+    "tone": "teal",
+    "headline": "Answer questions with SQL in Studio",
+    "persona": "You write queries and want answers. Someone else worries about tables, tokens and pipelines.",
+    "time": "About 2 hours",
+    "outcomes": [
+      "Find your way around Opteryx Studio and the public sample datasets",
+      "Write SELECT queries with filters, joins, aggregates and window functions",
+      "Read an execution plan and say why a query is slow or expensive",
+      "Pull Opteryx data into Excel or Power BI over OData"
+    ],
+    "prerequisites": [
+      "An account on opteryx.app. Any Google, Microsoft or GitHub login works.",
+      "Some SQL. The path teaches the Opteryx dialect, not SQL from scratch."
+    ],
+    "steps": [
+      { "title": "What is Opteryx", "href": "/docs/introduction/what-is-opteryx", "kind": "Introduction", "minutes": 5, "why": "Where the engine fits and what it is not, so the rest of the path has context." },
+      { "title": "Logging in", "href": "/docs/getting-started/registration", "kind": "Getting started", "minutes": 5, "why": "Sign in with a provider you already have. There is nothing to install." },
+      { "title": "Site tour", "href": "/docs/getting-started/quick-start", "kind": "Getting started", "minutes": 10, "why": "The catalog, editor, results and reference panels you will spend the rest of the path in." },
+      { "title": "Load and query data", "href": "/docs/getting-started/reading-data", "kind": "Getting started", "minutes": 10, "why": "The public datasets you can query without loading anything, and the three ways to read data back." },
+      { "title": "SQL introduction", "href": "/docs/reference/sql/introduction", "kind": "Reference", "minutes": 25, "why": "A tutorial on the query language: relations, projection, filtering, joins and aggregation." },
+      { "title": "SELECT", "href": "/docs/reference/sql/statements/select", "kind": "Reference", "minutes": 10, "why": "The full statement shape, clause by clause, in the order the engine applies them." },
+      { "title": "JOIN", "href": "/docs/reference/sql/statements/joins", "kind": "Reference", "minutes": 10, "why": "Every join type Opteryx supports, including the ones that answer which rows have no match." },
+      { "title": "Aggregates", "href": "/docs/reference/sql/aggregates", "kind": "Reference", "minutes": 10, "why": "The functions that turn many rows into one, and how each treats NULL." },
+      { "title": "Window functions", "href": "/docs/reference/sql/statements/window-functions", "kind": "Reference", "minutes": 10, "why": "Rankings and running totals without collapsing rows." },
+      { "title": "Working with timestamps", "href": "/docs/reference/sql/advanced/working-with-timestamps", "kind": "Reference", "minutes": 10, "why": "Dates are where most analyst SQL goes wrong. Extraction, truncation and arithmetic." },
+      { "title": "Troubleshooting queries", "href": "/docs/guides/troubleshooting", "kind": "Guide", "minutes": 10, "why": "EXPLAIN, and the handful of changes that fix most slow queries." },
+      { "title": "Cost model", "href": "/docs/core-concepts/cost-model", "kind": "Concept", "minutes": 5, "why": "What a query costs and why selecting fewer columns is cheaper." },
+      { "title": "Querying via OData", "href": "/docs/guides/querying-via-odata", "kind": "Guide", "minutes": 10, "optional": true, "why": "Read Opteryx tables from Excel or Power BI with no code." }
+    ],
+    "exercise": "analyst.md",
+    "next": ["engineer", "developer"]
+  },
+  {
+    "slug": "engineer",
+    "title": "Data engineer",
+    "tone": "navy",
+    "headline": "Build tables that maintain themselves",
+    "persona": "You own the tables other people query: loading them, shaping them, keeping them fresh and controlling who sees what.",
+    "time": "About 3 hours",
+    "outcomes": [
+      "Load files into catalog tables from the UI, the API or the command line",
+      "Create, change and compact tables, and read any earlier version of them",
+      "Replace a refresh pipeline with a materialized view, or with a task and a trigger",
+      "Grant access with roles and know what each role permits",
+      "Point a workspace at your own Iceberg catalog"
+    ],
+    "prerequisites": [
+      "The Analyst path, or comfort with SQL DDL and DML.",
+      "An account on opteryx.app."
+    ],
+    "steps": [
+      { "title": "When to use Opteryx", "href": "/docs/introduction/when-to-use", "kind": "Introduction", "minutes": 5, "why": "Where it fits and where it does not, before you design around it." },
+      { "title": "Load and query data", "href": "/docs/getting-started/reading-data", "kind": "Getting started", "minutes": 10, "why": "The upload session, part and commit flow that every ingestion path uses." },
+      { "title": "The upload command line", "href": "/docs/guides/upload-cli", "kind": "Guide", "minutes": 10, "why": "Get files in from a shell or a scheduled job." },
+      { "title": "Your first table", "href": "/docs/getting-started/your-first-table", "kind": "Getting started", "minutes": 15, "why": "A full round trip: CTAS, UPDATE, DELETE, snapshots, OPTIMIZE and DROP." },
+      { "title": "INSERT", "href": "/docs/reference/sql/statements/insert", "kind": "Reference", "minutes": 5, "why": "Append rows from literal values or from a query." },
+      { "title": "MERGE", "href": "/docs/reference/sql/statements/merge", "kind": "Reference", "minutes": 10, "why": "Upserts: the statement behind most incremental loads." },
+      { "title": "Time travel queries", "href": "/docs/reference/sql/advanced/time-travel", "kind": "Reference", "minutes": 10, "why": "Read a table as it was at a snapshot or at a point in time." },
+      { "title": "When a materialized view replaces a pipeline", "href": "/docs/guides/when-a-materialized-view-replaces-a-pipeline", "kind": "Guide", "minutes": 10, "why": "One statement instead of a scheduler, a job and a swap. And when that is the wrong trade." },
+      { "title": "CREATE TASK", "href": "/docs/reference/sql/statements/create-task", "kind": "Reference", "minutes": 10, "why": "The general form: any statement, run on demand or when a table commits." },
+      { "title": "CREATE TRIGGER", "href": "/docs/reference/sql/statements/create-trigger", "kind": "Reference", "minutes": 10, "why": "Wire a task to a table, and whose identity an unattended run carries." },
+      { "title": "Access and permissions", "href": "/docs/core-concepts/access-and-permissions", "kind": "Concept", "minutes": 10, "why": "Workspaces as the boundary, and what reader, writer and owner each allow." },
+      { "title": "GRANT", "href": "/docs/reference/sql/statements/grant", "kind": "Reference", "minutes": 5, "why": "Grant a role on a workspace, a collection or a single dataset." },
+      { "title": "Federator", "href": "/docs/core-concepts/federator", "kind": "Concept", "minutes": 5, "why": "The platform identity, and why a long-lived view should not depend on one person's account." },
+      { "title": "Connecting an Iceberg catalog", "href": "/docs/guides/connecting-an-iceberg-catalog", "kind": "Guide", "minutes": 15, "why": "Keep your tables in your own Iceberg REST catalog instead of Opteryx storage." },
+      { "title": "Cost model", "href": "/docs/core-concepts/cost-model", "kind": "Concept", "minutes": 5, "why": "How usage is measured, so refresh frequency and scan width are deliberate choices." }
+    ],
+    "exercise": "engineer.md",
+    "next": ["developer", "analyst"]
+  },
+  {
+    "slug": "developer",
+    "title": "Developer",
+    "tone": "orange",
+    "headline": "Call Opteryx from your own code",
+    "persona": "You are wiring Opteryx into an application, a notebook or a service, and you need auth, a client and a result you can work with.",
+    "time": "About 2.5 hours",
+    "outcomes": [
+      "Authenticate with client credentials, and without any stored secret using OIDC",
+      "Submit SQL over HTTP and turn the columnar result into rows",
+      "Query from Python through SQLAlchemy, pandas and Arrow Flight SQL",
+      "Embed the engine in your own process and query local Parquet"
+    ],
+    "prerequisites": [
+      "Python 3 and curl.",
+      "An account on opteryx.app for the hosted parts. The embedded engine needs only pip."
+    ],
+    "steps": [
+      { "title": "What is Opteryx", "href": "/docs/introduction/what-is-opteryx", "kind": "Introduction", "minutes": 5, "why": "Two ways to use it, hosted service or in-process library. This path covers both." },
+      { "title": "Logging in", "href": "/docs/getting-started/registration", "kind": "Getting started", "minutes": 5, "why": "Where API tokens live in Studio." },
+      { "title": "Running a query via the API", "href": "/docs/guides/running-a-query-via-the-api", "kind": "Guide", "minutes": 15, "why": "Token, submit, poll, results. The whole HTTP flow with curl." },
+      { "title": "Authentication API", "href": "/docs/reference/api/authentication-api", "kind": "Reference", "minutes": 10, "why": "Creating and revoking client credentials, and issuing tokens." },
+      { "title": "Jobs API", "href": "/docs/reference/api/jobs-api", "kind": "Reference", "minutes": 10, "why": "Every endpoint for submitting, polling, paging and downloading results." },
+      { "title": "Using SQLAlchemy", "href": "/docs/guides/using-sqlalchemy", "kind": "Guide", "minutes": 10, "why": "The dialect, the connection string, and straight into pandas." },
+      { "title": "Connecting via Arrow Flight SQL", "href": "/docs/guides/connecting-via-flight-sql", "kind": "Guide", "minutes": 10, "why": "Large results streamed as Arrow, with ADBC or pyarrow." },
+      { "title": "Credential-less authentication (OIDC)", "href": "/docs/guides/oidc-authentication", "kind": "Guide", "minutes": 15, "why": "Let GitHub Actions or a GCP service account prove who it is with no secret to rotate." },
+      { "title": "Installing Opteryx Core", "href": "/docs/getting-started/installation", "kind": "Getting started", "minutes": 5, "why": "pip install, and what the embedded engine does and does not include." },
+      { "title": "Querying local data", "href": "/docs/guides/querying-local-data", "kind": "Guide", "minutes": 15, "why": "Register a workspace, query a folder of Parquet, stream results as morsels." },
+      { "title": "Embedding in a service", "href": "/docs/guides/embedding-in-a-service", "kind": "Guide", "minutes": 10, "why": "Set up once at startup, parameterise safely, choose a result shape." },
+      { "title": "Compatibility", "href": "/docs/roadmap-guarantees/compatibility", "kind": "Roadmap", "minutes": 5, "why": "What is verified against the current release, so you do not build on a guess." },
+      { "title": "Known limits", "href": "/docs/roadmap-guarantees/known-limits", "kind": "Roadmap", "minutes": 5, "optional": true, "why": "The architectural gaps worth knowing before you commit." }
+    ],
+    "exercise": "developer.md",
+    "next": ["engineer", "analyst"]
+  }
+]

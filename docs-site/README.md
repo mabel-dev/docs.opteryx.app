@@ -11,6 +11,9 @@ Next.js documentation frontend for Opteryx.
 - `reference/` - markdown source for API/SQL/Python reference docs.
 - `scripts/validate-docs.mjs` - validates nav targets and markdown links.
 - `nav.json` - sidebar/navigation tree.
+- `learn.json` - the learning paths under `/learn`: ordered steps (existing docs pages) per persona.
+- `content/learn/` - the hands-on exercise markdown for each learning path.
+- `app/learn/` - renders the learning paths index and per-path pages.
 - `public/` - static assets.
 
 ## Conventions
@@ -19,6 +22,7 @@ Next.js documentation frontend for Opteryx.
 - Add new non-reference docs as markdown files under `content/docs/`.
 - Add new reference docs as markdown files under `reference/` and register in `nav.json`.
 - Update `nav.json` whenever sidebar or breadcrumb placement should change.
+- Learning paths link to existing pages only; add a step to `learn.json` rather than duplicating content under `content/learn/`.
 
 ## Development
 

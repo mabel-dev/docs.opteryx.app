@@ -12,10 +12,14 @@ the naming hierarchy (`workspace.collection.table`), rather than anything inside
 
 ~~~sql
 ALTER WORKSPACE <workspace> SET <property> TO <value>;
+
+ALTER WORKSPACE <source> SET SECURE <object> TO <workspace> [, <workspace> ...];
+ALTER WORKSPACE <source> DROP SECURE <object>;
 ~~~
 
 `<workspace>` names the workspace itself — not a collection or table within it; see
-[Notes](#notes) below.
+[Notes](#notes) below. The two `SECURE` forms are the narrow exemption from
+`egress_protection`, described under [SECURE](#secure-the-sanctioned-exemption).
 
 ## Properties
 
@@ -134,7 +138,62 @@ A refresh of an existing materialized view that is blocked by this setting fails
 the view stops updating and records why — rather than silently continuing to copy.
 [REFRESH MATERIALIZED VIEW](refresh-materialized-view) is a write like any other, so it
 meets this check when it is planned, and it meets it again in the catalog before an
-automatic refresh is even queued.
+automatic refresh is even queued. A [task](create-task) fired by a
+[trigger](create-trigger) is checked the same way: in the catalog before the run is
+queued, where a refusal is recorded on the trigger as `egress-blocked`, and again when
+the run is planned.
+
+## SECURE: The Sanctioned Exemption
+
+Turning `egress_protection` off is all-or-nothing: it unlocks every copy out of the
+workspace, for everyone, until somebody turns it back on. Often what actually needs to
+be allowed is one known statement — a platform pipeline that moves billing events into
+another workspace, say. `SECURE` is the narrow form: it sanctions **one named object**,
+copying into **named destination workspaces**, and leaves the lock on for everything
+else.
+
+~~~sql
+-- Run against the SOURCE workspace: the one whose data leaves.
+ALTER WORKSPACE landing SET SECURE platform.ops.billing_events_ingest TO platform;
+
+-- Withdraw it. The object's next copy is refused again.
+ALTER WORKSPACE landing DROP SECURE platform.ops.billing_events_ingest;
+~~~
+
+- **`<source>`** is the workspace being copied *out of*. The statement relaxes that
+  workspace's protection, so it is that workspace's owner who runs it — the same
+  requirement as `SET egress_protection TO OFF`, and for the same reason. Nobody else
+  can grant the exemption: not the object's author, not the destination's owner.
+- **`<object>`** is the task or materialized view doing the copying, **fully qualified**
+  as `<workspace>.<collection>.<name>`. It usually lives in a different workspace from
+  the source, so a short name is refused rather than guessed.
+- **The destinations** are workspace names, not relations. A copy is allowed or refused
+  per crossing, so that is the grain the sanction is kept at. The source cannot name
+  itself: a copy that stays inside one workspace is never egress.
+
+### What Is Sanctioned, Exactly
+
+Both the object **and** the destination must match. A task's statement can be redefined
+with `CREATE OR REPLACE TASK`, so a sanction that followed the object wherever it later
+pointed would let a redefinition carry an exemption into a workspace the source never
+agreed to. Sanction the destinations you mean.
+
+Only the object named is exempt. The same `INSERT ... SELECT` typed by hand at a prompt
+is still refused: a hand-typed statement names no object a source could have sanctioned.
+What makes a task's run exempt is that a task ran it — [EXECUTE](execute) carries the
+task's identity onto the write it expands to, and so does a trigger firing it.
+
+The sanction is re-read every time the object copies, in the catalog before an
+unattended run is queued and again when any run is planned. Dropping it takes effect on
+the object's next copy.
+
+### Why the Record Lives on the Source
+
+The sanction is stored on the **source** workspace, not on the object. That placement is
+the enforcement, not merely the filing: a flag on the object would be settable by whoever
+may edit the object — the party the protection exists to protect against — which would
+make egress protection advisory. Where the record lives, only the source's owner can
+write it.
 
 ## Notes
 
@@ -152,10 +211,15 @@ automatic refresh is even queued.
   supports this.
 - `ALTER WORKSPACE` names a workspace, not a table within one. A qualified name such as
   `workspace.collection` is rejected.
-- There is no `SHOW` form or `information_schema` table that reads these settings back.
+- There is no `SHOW` form or `information_schema` table that reads these settings back,
+  including the objects a workspace has marked `SECURE`.
+- A refused copy names both remedies in its error, the `SECURE` statement for the exact
+  object first: sanctioning one door is usually what was wanted, not unlocking the
+  building.
 
 ## See Also
 
+- [CREATE TASK](create-task), [EXECUTE](execute), [CREATE TRIGGER](create-trigger)
 - [SHOW GRANTS](show-grants)
 - [ALTER TABLE](alter-table)
 - [ALTER VIEW](alter-view)
