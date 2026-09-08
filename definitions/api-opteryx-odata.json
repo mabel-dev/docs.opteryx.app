@@ -144,7 +144,7 @@
           "OData v4"
         ],
         "summary": "Query dataset rows",
-        "description": "Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $orderby, $top, $skip, $apply, $count). Returns paginated results with total count and nextLink for server-driven paging.",
+        "description": "Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $orderby, $top, $skip, $apply, $count). Returns paginated results with total count and nextLink for server-driven paging. The dataset segment may carry a `@{label}` version selector: `dataset@current` (the default, also what a bare `dataset` means), `dataset@previous` (the most recent version of the data before this one — maintenance snapshots such as compaction that changed no rows are skipped), `dataset@{tag}` (a named snapshot), or `dataset@{snapshot_id}` (a specific snapshot id). `@current` and `@previous` are resolved fresh on every page, so paging through them is not snapshot-isolated against concurrent writes; `@{tag}` and `@{snapshot_id}` are immutable and page consistently.",
         "operationId": "read_dataset_api_v4__workstream___collection___dataset__get",
         "parameters": [
           {
@@ -347,13 +347,16 @@
             }
           },
           "400": {
-            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, or invalid $apply expression"
+            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, or invalid $apply expression. A malformed @{label} version selector also returns 400."
           },
           "401": {
             "description": "Missing or invalid authentication (no bearer token or basic auth)"
           },
           "403": {
             "description": "Forbidden: authenticated but no permission for dataset"
+          },
+          "404": {
+            "description": "Dataset not found, or the @{label} version selector names a tag, snapshot, or previous version that does not exist"
           },
           "501": {
             "description": "Unsupported query feature: $search or $expand not implemented"
@@ -377,7 +380,7 @@
           "OData v4"
         ],
         "summary": "Per-dataset OData EDMX metadata",
-        "description": "Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), current-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), and materialized-view state (Custom.MaterializedView.*). Annotations are omitted where they do not apply to the dataset kind or are unavailable.",
+        "description": "Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), current-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), and materialized-view state (Custom.MaterializedView.*). Annotations are omitted where they do not apply to the dataset kind or are unavailable. The dataset segment may carry a `@{label}` version selector — `dataset@current`, `dataset@previous`, `dataset@{tag}`, or `dataset@{snapshot_id}` — and the Custom.Snapshot.* and Custom.Tags annotations describe that version rather than the current one.",
         "operationId": "dataset_metadata_api_v4__workstream___collection___dataset___metadata_get",
         "parameters": [
           {
@@ -435,6 +438,9 @@
               }
             }
           },
+          "400": {
+            "description": "Malformed @{label} version selector, or the dataset kind does not support snapshot versioning"
+          },
           "401": {
             "description": "Missing or invalid authentication"
           },
@@ -442,7 +448,7 @@
             "description": "Forbidden: no permission to view dataset metadata"
           },
           "404": {
-            "description": "Dataset not found in catalog"
+            "description": "Dataset not found in catalog, or the @{label} version selector names a tag, snapshot, or previous version that does not exist"
           },
           "422": {
             "description": "Validation Error",
