@@ -75,6 +75,11 @@ ALTER TRIGGER ingest_on_events ON my_workspace.raw.events
 ALTER TRIGGER ingest_on_events ON my_workspace.raw.events OWNER TO svc_ingest;
 ~~~
 
+### Take Ownership Yourself
+~~~sql
+ALTER TRIGGER ingest_on_events ON my_workspace.raw.events OWNER TO CURRENT_USER;
+~~~
+
 ## Notes
 
 - Requires the `writer` role on the table the trigger is attached to, the same as creating
@@ -104,4 +109,6 @@ ALTER TRIGGER ingest_on_events ON my_workspace.raw.events OWNER TO svc_ingest;
 - Lowering the floor takes effect at the next commit. Raising it does not undo a firing
   that has already happened.
 - What a trigger runs cannot be altered in place — repoint it with
-  [CREATE OR REPLACE TRIGGER](create-trigger).
+  [CREATE OR REPLACE TRIGGER](create-trigger). To redefine what the *task* it fires runs,
+  without resetting the trigger's schedule or touching its owner or suspend state, use
+  [ALTER TASK](alter-task).

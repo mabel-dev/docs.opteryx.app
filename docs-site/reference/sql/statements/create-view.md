@@ -25,7 +25,9 @@ SELECT ...;
 - `OR REPLACE` — overwrite an existing view's definition instead of failing if one already
   exists under this name.
 - `IF NOT EXISTS` — leave an existing view untouched instead of failing if one already
-  exists under this name.
+  exists under this name. A true no-op: a second `CREATE VIEW IF NOT EXISTS` with a
+  different body does not take effect. Cannot be combined with `OR REPLACE` — the first
+  always redefines, the second only ever no-ops.
 
 ## Examples
 

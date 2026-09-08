@@ -7,7 +7,7 @@ description: How triggers work in Opteryx and how to build one. A task holds the
 
 Something writes to a table, and you want something else to happen: new rows copied into a curated table, a history table extended, a downstream summary brought up to date. In most warehouses that means a scheduler polling for change. In Opteryx the commit itself does the work. A **trigger** on the table fires a **task** you recorded earlier, and the task is told exactly which rows the commit added or removed.
 
-If you have used streams and tasks elsewhere, the shape is familiar, with one difference: nothing polls, and there is no schedule to set. A trigger fires because a commit landed, and the run is handed that commit's boundaries.
+If you have used streams and tasks elsewhere, the shape is familiar, with one difference: nothing polls. This guide focuses on the commit-fired case, where a trigger fires because a commit landed and the run is handed that commit's boundaries; a trigger can also fire on a clock or an application signal instead — see [CREATE TRIGGER](/docs/reference/sql/statements/create-trigger) for the `ON SCHEDULE` and `ON SIGNAL` forms.
 
 This guide is for [opteryx.app](https://opteryx.app), the hosted service. Tasks and triggers live in the catalog, so the embedded engine over local Parquet has nothing to attach them to.
 
@@ -252,20 +252,22 @@ If the work is a derivation that reads every source at head and recomputes, it i
 ## Things That Bite
 
 - **A task that writes to the table that fires it loops.** Its own commit fires the trigger again, and again. Write somewhere else, or keep the trigger on a different table from the one the task writes.
-- **Only commits fire triggers.** There are no clock schedules, and a trigger definition that asks for one is refused rather than stored. If you need something to run at three in the morning regardless of commits, have your scheduler call `EXECUTE` through the [Jobs API](/docs/guides/running-a-query-via-the-api). The task is the same either way.
+- **A commit trigger fires only on commits that write data.** Compaction and expiration don't. If you need something to run at three in the morning regardless of commits, use `CREATE TRIGGER ... ON SCHEDULE '<cron>'` instead of calling a scheduler out-of-band — the task is the same either way. See [CREATE TRIGGER](/docs/reference/sql/statements/create-trigger).
 - **A run is gated when it fires, not when the trigger was created.** If the owner loses `reader` on the source or `writer` on the destination, the next run is denied and `last_fired_status` says so. Nothing else changes: the source keeps accepting commits and the destination quietly stops growing. Check the status when a downstream table looks behind.
 - **A burst of commits fires once.** A new trigger carries a minimum interval of 120 seconds. The first commit in a burst fires; commits inside the interval after it are recorded as `throttled` and fire nothing. Nothing is lost — the next run after the interval takes a window that reaches back over the skipped commits — but the destination is current as of the *first* commit in the burst until then. Loosen or remove the floor with `ALTER TRIGGER ... SET MINIMUM INTERVAL TO <n> [SECONDS|MINUTES]`; `0` fires on every commit. See [ALTER TRIGGER](/docs/reference/sql/statements/alter-trigger).
 - **Suspend, do not drop.** `ALTER TRIGGER ... SUSPEND` keeps the trigger and records that it was switched off deliberately. A dropped trigger looks the same as one that never existed. See [ALTER TRIGGER](/docs/reference/sql/statements/alter-trigger).
 - **Dropping a task does not drop its triggers.** They live on the tables that fire them. Remove them with [DROP TRIGGER](/docs/reference/sql/statements/drop-trigger), then the task.
 - **Egress protection follows the task.** If the task copies data out of a workspace that restricts egress, the run is refused unless that workspace has marked this task `SECURE` for the destination. See [ALTER WORKSPACE](/docs/reference/sql/statements/alter-workspace#secure-the-sanctioned-exemption).
-- **Redefining a task takes effect on its next run.** `CREATE OR REPLACE TASK` swaps the SQL and keeps the triggers, including whose identity they run as. What a trigger runs cannot be edited in place; repoint it with `CREATE OR REPLACE TRIGGER`.
+- **Redefining a task takes effect on its next run.** `CREATE OR REPLACE TASK` swaps the SQL and keeps the triggers, including whose identity they run as — but it also resets a schedule trigger's next-due instant, even when only the SQL changed. Use `ALTER TASK <name> AS <statement>` instead when you want to redefine the SQL without touching the trigger's schedule, owner or suspend state at all. See [ALTER TASK](/docs/reference/sql/statements/alter-task). What a trigger runs cannot be edited in place; repoint it with `CREATE OR REPLACE TRIGGER`.
 
 ## Related
 
 - [CREATE TASK](/docs/reference/sql/statements/create-task)
+- [ALTER TASK](/docs/reference/sql/statements/alter-task)
 - [EXECUTE](/docs/reference/sql/statements/execute)
 - [CREATE TRIGGER](/docs/reference/sql/statements/create-trigger)
 - [ALTER TRIGGER](/docs/reference/sql/statements/alter-trigger)
+- [SHOW CREATE](/docs/reference/sql/statements/show-create)
 - [SHOW TRIGGERS FOR](/docs/reference/sql/statements/show-triggers)
 - [Time Travel](/docs/reference/sql/advanced/time-travel)
 - [When a Materialized View Replaces a Pipeline](/docs/guides/when-a-materialized-view-replaces-a-pipeline)

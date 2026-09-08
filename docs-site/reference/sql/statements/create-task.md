@@ -21,7 +21,7 @@ confers no authority — see [Notes](#notes).
 ## Syntax
 
 ~~~sql
-CREATE [ OR REPLACE ] TASK <task_name>
+CREATE [ OR REPLACE ] TASK [ IF NOT EXISTS ] <task_name>
     [ ON <table_name> ]
     AS <statement>;
 ~~~
@@ -39,7 +39,12 @@ CREATE [ OR REPLACE ] TASK <task_name>
   supplied when the task is executed rather than now.
 - `OR REPLACE` — redefine an existing task instead of refusing. The previous statement is
   kept as an earlier version, and the trigger pointing at the task is untouched — including
-  whose identity it runs it as.
+  whose identity it runs it as. To redefine only the statement without also being able to
+  change `ON <table_name>`, use [ALTER TASK](alter-task).
+- `IF NOT EXISTS` — leave an existing task untouched instead of failing if one already
+  exists under this name. A true no-op: the second statement's body and `ON` clause are
+  both discarded. Cannot be combined with `OR REPLACE` — the first always redefines, the
+  second only ever no-ops.
 
 ## Examples
 
@@ -94,3 +99,10 @@ CREATE OR REPLACE TASK my_workspace.ops.ingest_events AS
 - A task cannot create, drop, or run another task.
 - Relations inside the statement must be **fully qualified**. A task is planned with no
   implicit workspace, so a two-part name cannot be resolved.
+
+## See Also
+
+- [ALTER TASK](alter-task)
+- [DROP TASK](drop-task)
+- [CREATE TRIGGER](create-trigger)
+- [EXECUTE](execute)

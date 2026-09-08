@@ -56,7 +56,7 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | Statement | Purpose |
 |-----------|---------|
 | [SHOW COLUMNS](statements/show-columns) | List a dataset's columns, types, and nullability |
-| [SHOW CREATE VIEW](statements/show-create) | Show the query a view was created from |
+| [SHOW CREATE](statements/show-create) | Show the DDL that creates a table, view, materialized view, task or trigger |
 | [SHOW MANIFEST FOR](statements/show-manifest) | Inspect a dataset's file-level manifest and per-file statistics |
 | [SHOW SNAPSHOTS FOR](statements/show-snapshots) | List a table's commit history, newest first |
 | [SHOW TRIGGERS FOR](statements/show-triggers) | List the refresh triggers attached to a table |
@@ -108,16 +108,18 @@ A materialized view's refresh triggers are created and maintained by `CREATE MAT
 
 ## Tasks & Triggers
 
-A task is a statement the platform runs for you, on demand or when a table changes. Where a materialized view rebuilds one `SELECT` in full, a task runs any statement — typically appending only what changed, which suits tables too large to rebuild:
+A task is a statement the platform runs for you, on demand, on a table's commits, on a clock, or on an application signal. Where a materialized view rebuilds one `SELECT` in full, a task runs any statement — typically appending only what changed, which suits tables too large to rebuild:
 
 | Statement | Purpose |
 |-----------|---------|
 | [CREATE TASK](statements/create-task) | Define a statement the platform can run, optionally fired by a table |
+| [ALTER TASK](statements/alter-task) | Redefine what a task runs, without touching its trigger |
 | [EXECUTE](statements/execute) | Run a task now, supplying its parameters |
 | [DROP TASK](statements/drop-task) | Remove a task |
-| [CREATE TRIGGER](statements/create-trigger) | Fire a task when a table changes |
-| [ALTER TRIGGER](statements/alter-trigger) | Suspend or resume a trigger |
-| [DROP TRIGGER](statements/drop-trigger) | Remove a trigger from a table |
+| [CREATE TRIGGER](statements/create-trigger) | Fire a task on a table's commits, a clock schedule, or a signal |
+| [ALTER TRIGGER](statements/alter-trigger) | Suspend or resume a trigger, transfer its owner, or set its firing floor |
+| [DROP TRIGGER](statements/drop-trigger) | Remove a trigger |
+| [SHOW CREATE](statements/show-create) | Show a trigger's definition |
 
 ## Workspace Management
 

@@ -130,6 +130,9 @@
               "ALTER TABLE": "reference/sql/statements/alter-table.md"
             },
             {
+              "ALTER TASK": "reference/sql/statements/alter-task.md"
+            },
+            {
               "ALTER TRIGGER": "reference/sql/statements/alter-trigger.md"
             },
             {
@@ -253,7 +256,7 @@
               "SHOW COLUMNS": "reference/sql/statements/show-columns.md"
             },
             {
-              "SHOW CREATE VIEW": "reference/sql/statements/show-create.md"
+              "SHOW CREATE": "reference/sql/statements/show-create.md"
             },
             {
               "SHOW GRANTS": "reference/sql/statements/show-grants.md"

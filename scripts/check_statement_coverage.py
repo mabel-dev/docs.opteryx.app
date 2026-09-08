@@ -54,6 +54,11 @@ PAGE_OVERRIDES = {
     # Both ALTER MATERIALIZED VIEW forms are one statement page.
     "ALTER MATERIALIZED VIEW ... OWNER TO": "alter-materialized-view",
     "ALTER MATERIALIZED VIEW ... SUSPEND / RESUME": "alter-materialized-view",
+    # All three ALTER TRIGGER forms are one statement page.
+    "ALTER TRIGGER ... OWNER TO": "alter-trigger",
+    "ALTER TRIGGER ... SUSPEND / RESUME": "alter-trigger",
+    "ALTER TRIGGER ... SET MINIMUM INTERVAL TO": "alter-trigger",
+    "ALTER TASK ... AS": "alter-task",
 }
 
 # Statements whose reference lives somewhere other than a statement page.
