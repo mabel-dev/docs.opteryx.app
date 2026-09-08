@@ -97,7 +97,7 @@ Returns the complete OData v4 EDMX metadata document describing all EntityTypes 
 
 **Tags:** OData v4
 
-Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $orderby, $top, $skip, $apply, $count). Returns paginated results with total count and nextLink for server-driven paging.
+Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $orderby, $top, $skip, $apply, $count). Returns paginated results with total count and nextLink for server-driven paging. The dataset segment may carry a `@{label}` version selector: `dataset@current` (the default, also what a bare `dataset` means), `dataset@previous` (the most recent version of the data before this one — maintenance snapshots such as compaction that changed no rows are skipped), `dataset@{tag}` (a named snapshot), or `dataset@{snapshot_id}` (a specific snapshot id). `@current` and `@previous` are resolved fresh on every page, so paging through them is not snapshot-isolated against concurrent writes; `@{tag}` and `@{snapshot_id}` are immutable and page consistently.
 
 ### Path Parameters
 
@@ -131,9 +131,10 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 ### Responses
 
 - **200** — Query succeeded; returns rows and pagination metadata (`application/json` `object`)
-- **400** — Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, or invalid $apply expression
+- **400** — Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, or invalid $apply expression. A malformed @{label} version selector also returns 400.
 - **401** — Missing or invalid authentication (no bearer token or basic auth)
 - **403** — Forbidden: authenticated but no permission for dataset
+- **404** — Dataset not found, or the @{label} version selector names a tag, snapshot, or previous version that does not exist
 - **501** — Unsupported query feature: $search or $expand not implemented
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
@@ -143,7 +144,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 
 **Tags:** OData v4
 
-Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), current-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), and materialized-view state (Custom.MaterializedView.*). Annotations are omitted where they do not apply to the dataset kind or are unavailable.
+Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), current-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), and materialized-view state (Custom.MaterializedView.*). Annotations are omitted where they do not apply to the dataset kind or are unavailable. The dataset segment may carry a `@{label}` version selector — `dataset@current`, `dataset@previous`, `dataset@{tag}`, or `dataset@{snapshot_id}` — and the Custom.Snapshot.* and Custom.Tags annotations describe that version rather than the current one.
 
 ### Path Parameters
 
@@ -158,7 +159,8 @@ Returns OData $metadata (EDMX) for a single dataset, including column types and 
 ### Responses
 
 - **200** — EDMX metadata document returned as XML (`application/json` `object`)
+- **400** — Malformed @{label} version selector, or the dataset kind does not support snapshot versioning
 - **401** — Missing or invalid authentication
 - **403** — Forbidden: no permission to view dataset metadata
-- **404** — Dataset not found in catalog
+- **404** — Dataset not found in catalog, or the @{label} version selector names a tag, snapshot, or previous version that does not exist
 - **422** — Validation Error (`application/json` `HTTPValidationError`)

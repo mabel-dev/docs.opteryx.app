@@ -1,6 +1,6 @@
 ---
 title: Querying via OData - Opteryx
-description: Read live data from the hosted Opteryx.app service using the OData v4 API - connect from Power BI and Excel, page with @odata.nextLink, aggregate with $apply, and handle errors.
+description: Read live data from the hosted Opteryx.app service using the OData v4 API - connect from Power BI and Excel, page with @odata.nextLink, aggregate with $apply, read a tagged or prior snapshot, and handle errors.
 ---
 
 # Querying via OData
@@ -133,6 +133,36 @@ When a query matches more rows than `$top`, the response carries exactly `$top` 
 Two details matter if you're writing the paging loop yourself. The link is **relative** - resolve it against `https://odata.opteryx.app` - and the `$` in the query string arrives **percent-encoded as `%24`**, which is equivalent and should be passed through unchanged rather than rewritten.
 
 Keep following `@odata.nextLink` until a response comes back without one; that response is the last page. There's no limit on how far `$skip` can reach, so a result set of any size can be read in full this way. The 25,000 cap applies only to the value of `$top` in a single request - a large result set is paged, never rejected.
+
+### Reading a Snapshot, Tag, or Prior Version
+
+Every request queries current data by default - but a dataset's path segment can carry a `@{label}` version selector to read a different point in its history instead:
+
+| Selector | Reads |
+| --- | --- |
+| `dataset` (no `@`) | Current data - the default |
+| `dataset@current` | Current data, explicitly |
+| `dataset@previous` | The version of the data before this one. Maintenance operations that change no rows - compaction, statistics refresh - are skipped, so this always names a version with different data, not just a different snapshot id. |
+| `dataset@{tag}` | A named, immutable snapshot |
+| `dataset@{snapshot_id}` | A specific snapshot, by id |
+
+```bash
+curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@previous?$top=5'
+curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@release_2026_q1?$top=5'
+curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@1755000000000?$top=5'
+```
+
+Tags and snapshot ids are visible in a dataset's metadata - `Custom.Tags` lists every tag a dataset holds, alongside the snapshot id each one names:
+
+```bash
+curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries/$metadata'
+```
+
+Requesting `$metadata` for a labelled dataset (`.../countries@release_2026_q1/$metadata`) describes that version rather than the current one - its `Custom.Snapshot.*` and `Custom.Tags` annotations reflect the snapshot the label resolved to.
+
+An unknown tag or snapshot id, or `@previous` on a dataset with no earlier version, returns `404`. A malformed selector - `dataset@` with nothing after the `@`, for instance - returns `400`.
+
+`@{tag}` and `@{snapshot_id}` are immutable, so paging with `$skip`/`$top` through one is fully consistent from first page to last. `@current` and `@previous` are resolved fresh on every request, so a page fetched partway through a paging loop can reflect a write that landed after the loop started - the same caveat that applies to any live query, not something specific to naming a version.
 
 ### Dates and Timestamps in `$filter`
 
@@ -299,10 +329,10 @@ Errors are JSON, shaped `{"error": {"code": ..., "message": ...}}`, with the HTT
 
 | Status | Meaning |
 | --- | --- |
-| `400` | Malformed `$filter`/`$apply` syntax, a type mismatch in a comparison, or `$top` above 25,000 |
+| `400` | Malformed `$filter`/`$apply` syntax, a type mismatch in a comparison, `$top` above 25,000, or a malformed `@{label}` version selector |
 | `401` | Missing or invalid bearer token |
 | `403` | Authenticated, but not permitted to read that dataset |
-| `404` | No such dataset |
+| `404` | No such dataset, or a `@{label}` version selector names a tag, snapshot, or previous version that doesn't exist |
 | `501` | `$search` or `$expand` - recognised by the standard, not implemented here |
 | `500` | Unexpected server-side error |
 
