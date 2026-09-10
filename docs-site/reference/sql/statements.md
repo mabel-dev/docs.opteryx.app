@@ -59,6 +59,7 @@ Inspect schemas, definitions, session state, and dataset metadata:
 | [SHOW CREATE](statements/show-create) | Show the DDL that creates a table, view, materialized view, task or trigger |
 | [SHOW MANIFEST FOR](statements/show-manifest) | Inspect a dataset's file-level manifest and per-file statistics |
 | [SHOW SNAPSHOTS FOR](statements/show-snapshots) | List a table's commit history, newest first |
+| [SHOW ALL SNAPSHOTS FOR](statements/show-snapshots#expired-snapshots) | The same history plus the snapshots that have expired but not yet been purged (owner) |
 | [SHOW TRIGGERS FOR](statements/show-triggers) | List the refresh triggers attached to a table |
 | [SHOW VARIABLES](statements/show-variables) | List session and system variables |
 | [SHOW USER](statements/show-user) | Show the current connection's identity |

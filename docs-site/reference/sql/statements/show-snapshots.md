@@ -13,9 +13,12 @@ Each snapshot is a point the table can be read at with [TIMESTAMP AS OF](timesta
 
 ~~~sql
 SHOW SNAPSHOTS FOR <table_name>;
+SHOW ALL SNAPSHOTS FOR <table_name>;
 ~~~
 
 Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one table, and there is no session default workspace to list histories across. Name the table with the `FOR` form.
+
+The `ALL` form adds the snapshots that have **expired but not yet been purged** — see [Expired Snapshots](#expired-snapshots) below. It needs `owner` on the table, where the plain form needs only read access.
 
 ## Parameters
 
@@ -39,6 +42,13 @@ Bare `SHOW SNAPSHOTS` is **not supported** — a commit history belongs to one t
 | `added_records` / `added_data_files` / `added_files_size_in_bytes` | What the commit added |
 | `deleted_records` / `deleted_data_files` / `deleted_files_size_in_bytes` | What the commit removed |
 | `total_records` / `total_data_files` / `total_files_size_in_bytes` | What the table held after the commit |
+
+`SHOW ALL SNAPSHOTS FOR` returns those columns and two more:
+
+| Column | Description |
+|--------|-------------|
+| `expired_at` | When the snapshot was retired, UTC; `null` for a live one |
+| `is_queryable` | `false` for an expired snapshot — the data behind it cannot be queried at all, by id, tag or timestamp |
 
 `tags` is also the answer to "why is this old snapshot still here". Snapshots are otherwise
 reclaimed on a schedule, and a tag is the one thing that holds one back — so a row far outside
@@ -81,13 +91,43 @@ answers it without a lookup here at all — see [VERSION AS OF](version-as-of).
 `FROM (...)`, filtered, or joined. Filter the returned rows client-side if you
 only want part of the history.
 
+### List Everything, Including What Has Expired
+~~~sql
+SHOW ALL SNAPSHOTS FOR my_workspace.sales.orders;
+~~~
+
+## Expired Snapshots
+
+A snapshot the retention policy has retired is **tombstoned, not deleted**: the record stays
+for a recovery window (7 days) while its data files pass through the orphan quarantine and
+the bucket's own soft delete. `SHOW SNAPSHOTS FOR` does not list those rows, because they are
+not history you can read — and `SHOW ALL SNAPSHOTS FOR` is how you see them.
+
+An expired row is a record of what is **still restorable**, not a version:
+
+- It cannot be read. `VERSION AS OF <expired id>` resolves to nothing, and a `TIMESTAMP AS OF`
+  that would have landed on it no longer does. `is_queryable` is `false` and says so.
+- It cannot be rolled back to.
+- Restoring it is an operational task, not a query — it rebuilds the snapshot into a new
+  dataset, and only while the files survive.
+- It disappears when the window closes. `expired_at` plus the recovery window is how long is
+  left to act.
+
+A **tagged** snapshot never appears here: a tag holds its snapshot from expiry indefinitely,
+which is what makes `tags` the answer to "why is this old snapshot still here".
+
 ## Notes
 
+- **`SHOW ALL SNAPSHOTS FOR` requires `owner`.** What it adds is what the table is still
+  holding in the restore window and how long is left to act on it — a question about the
+  storage and its retention rather than about data the caller can already read, and acting on
+  the answer is the owner's to do. It is gated exactly as [SHOW MANIFEST FOR](show-manifest)
+  is; the plain form stays at read.
 - **Requires read access.** A snapshot row is commit metadata about a table you can already read — it exposes no file paths and no storage layout — so `SHOW SNAPSHOTS FOR` needs the same access as a `SELECT` against the table. This is deliberately weaker than [SHOW MANIFEST FOR](show-manifest), which does expose storage layout and requires the `owner` role.
 - **Catalog-backed tables only.** The history is the catalog's commit log. A table on a store that keeps no commit log reports that it has no snapshot history, rather than reporting an empty one — the two are different answers.
 - **A table with nothing committed returns no rows.** That is an empty history, not an error.
 - **Snapshots ahead of the current one are listed.** A [rollback](alter-table#rollback-to-version) moves the head backwards without deleting anything, so the snapshots it moved off stay in this history and stay readable by id — which is what makes a rollback reversible. They are not held from reclamation, though: once they age out they go, and the rollback can no longer be undone. A [tag](alter-table#create-tag) is what keeps one indefinitely.
-- **Expired snapshots are not listed.** A snapshot retired by the retention policy leaves the history this statement returns, even during the window in which it may still be recoverable. What you see here is the history you can read, not every commit ever made.
+- **Expired snapshots are not listed by the plain form.** A snapshot retired by the retention policy leaves the history `SHOW SNAPSHOTS FOR` returns, even during the window in which it may still be recoverable: what that statement shows is the history you can read, not every commit ever made. `SHOW ALL SNAPSHOTS FOR` lists them, marked, for as long as the record survives.
 - **Always returns the whole history.** `SHOW` statements have no `WHERE` clause or column list, and the result is not a subquery source, so there is nothing to filter or project with at the source.
 - **Free to run.** No data files are read.
 

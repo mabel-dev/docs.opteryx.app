@@ -187,6 +187,7 @@ The practical consequences:
 - **A snapshot can disappear between two runs of the same query.** A dashboard or scheduled job pinned to a fixed old timestamp will start returning nothing for it. Pin to a recent relative offset instead.
 - **Time travel is not a backup or an undo.** It is a read of history that still happens to be there. Recovery after reclamation is an operational restore, not something a query can reach.
 - **`SHOW SNAPSHOTS FOR` is the only honest answer** to how far back a given table reaches, and it is only true at the moment you run it — except for its tagged rows, which are true until someone drops the tag.
+- **A reclaimed snapshot is not gone the instant it stops being readable.** Its record is kept for a recovery window while the files pass through quarantine and soft delete, and an owner can see what is still in that window with [`SHOW ALL SNAPSHOTS FOR`](/docs/reference/sql/statements/show-snapshots#expired-snapshots). Those rows cannot be read or rolled back to — restoring one is an operational task — but they are how you find out what there still is to restore, and how long is left.
 
 If you need a point in time to survive, **tag it** — see below. Copying it out with
 `CREATE TABLE ... AS SELECT ... TIMESTAMP AS OF ...` also works and gives you an independent
