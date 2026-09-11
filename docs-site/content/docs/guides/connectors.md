@@ -60,6 +60,7 @@ for morsel in session.execute_to_morsels("SELECT * FROM warehouse.sales.orders")
 | `LocalStoreConnector` | A local directory managed as a store, with schemas and snapshots | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 | `OpteryxConnector` | A catalog-backed workspace (the cloud warehouse) | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 | `MabelConnector` | Mabel-partitioned datasets | |
+| `PostgresConnector` | Tables in a PostgreSQL database (experimental) | |
 
 **Writable** means the connector supports DDL and DML — `CREATE TABLE`, `INSERT`,
 `DROP`, `TRUNCATE`. A statement that writes through a non-writable connector is
@@ -70,7 +71,8 @@ connector for somefile.foo does not support CREATE TABLE
 ~~~
 
 `OpteryxConnector` additionally supports **predicate pushdown**, so filters are
-evaluated during the scan rather than after it.
+evaluated during the scan rather than after it. `PostgresConnector` pushes
+predicates and `LIMIT` into the PostgreSQL server itself.
 
 ### Filesystem connectors
 
@@ -87,6 +89,73 @@ register_workspace("archive", create_gcs_connector, bucket="my-bucket")
 
 `DiskConnector` and `GcpCloudStorageConnector` are retained as legacy names for
 the two factories above.
+
+### PostgreSQL
+
+> Warning: The PostgreSQL connector is **experimental** and is not recommended for
+> production use. It works and is tested, but its configuration and limits may
+> change between releases.
+
+`PostgresConnector` binds a prefix to one PostgreSQL database. The server holds
+the data and executes the read; Opteryx streams the rows back as morsels.
+
+```python
+import opteryx
+from opteryx.connectors import register_workspace
+from opteryx.connectors.postgres_connector import PostgresConnector
+
+register_workspace(
+    "pg",
+    PostgresConnector,
+    host="db.example.com",
+    dbname="analytics",
+    user="opteryx_reader",
+    password="...",
+)
+
+session = opteryx.session()
+for morsel in session.execute_to_morsels("SELECT * FROM pg.public.planets"):
+    print(morsel)
+```
+
+A PostgreSQL schema is the middle segment of the relation name — `pg.public.planets`
+is `public.planets` on the server. A two-part name (`pg.planets`) uses the
+connector's default schema.
+
+| Setting | Default | What it is |
+|---------|---------|------------|
+| `host` | — | Server hostname. Required. |
+| `dbname` | — | Database to connect to. Required. |
+| `user` | — | Login to authenticate as. Required. |
+| `password` | — | That login's password. Required (may be empty). |
+| `port` | `5432` | Server port. |
+| `sslmode` | `require` | `disable`, `require`, or `verify-full`. Anything else is refused. |
+| `schema` | `public` | Schema used for a relation named without one. |
+| `timeout_s` | `30` | Connection timeout, in seconds. |
+| `preserve_sql_case` | `False` | Use the relation name as typed, for schemas whose objects were created with quoted mixed-case names. Otherwise names are lower-cased, matching PostgreSQL's own folding. |
+
+Connections are pooled inside the native client and keyed by the connection
+settings, so a long-lived connector does not open a connection per query.
+
+**What it pushes down.** Comparisons (`=`, `!=`, `<`, `<=`, `>`, `>=`), `LIKE`,
+`NOT LIKE`, `BETWEEN`, `IS NULL` and `IS NOT NULL` on boolean, integer, float,
+decimal, date, timestamp and varchar columns become `WHERE` clauses in the
+statement sent to the server, always as bind parameters and never as
+interpolated literals. `LIMIT` is pushed down too. A predicate that wraps the
+column in a function is not pushed — it has no SQL to become — and is evaluated
+by Opteryx after the scan.
+
+**What it refuses, at bind time rather than mid-scan.**
+
+- Every DDL and DML statement — the connector is not writable.
+- `FOR ... AS OF` and `VERSION AS OF` — a PostgreSQL table has no snapshots.
+- A column whose type has no Opteryx equivalent — `interval`, arrays, ranges.
+- A `numeric` column with no declared precision and scale, because the scan's
+  column type has to be fixed before the first row arrives and an undeclared
+  `numeric` has no scale.
+
+On the hosted service the same connector is configured from Studio rather than in
+code — see [Connecting a PostgreSQL database](/docs/guides/connecting-a-postgres-database).
 
 ## Setting a default
 

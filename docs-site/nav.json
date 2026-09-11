@@ -45,6 +45,9 @@
             "Connecting an Iceberg catalog": "guides/connecting-an-iceberg-catalog.md"
           },
           {
+            "Connecting a PostgreSQL database": "guides/connecting-a-postgres-database.md"
+          },
+          {
             "When a materialized view replaces a pipeline": "guides/when-a-materialized-view-replaces-a-pipeline.md"
           },
           {
