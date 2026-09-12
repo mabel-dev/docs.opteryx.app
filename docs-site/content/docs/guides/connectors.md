@@ -60,7 +60,7 @@ for morsel in session.execute_to_morsels("SELECT * FROM warehouse.sales.orders")
 | `LocalStoreConnector` | A local directory managed as a store, with schemas and snapshots | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 | `OpteryxConnector` | A catalog-backed workspace (the cloud warehouse) | <img src="/images/square-check.svg" alt="Allowed" class="table-check" /> |
 | `MabelConnector` | Mabel-partitioned datasets | |
-| `PostgresConnector` | Tables in a PostgreSQL database (experimental) | |
+| `PostgresConnector` | Tables in a PostgreSQL or PostgreSQL-compatible database (experimental) | |
 
 **Writable** means the connector supports DDL and DML — `CREATE TABLE`, `INSERT`,
 `DROP`, `TRUNCATE`. A statement that writes through a non-writable connector is
@@ -98,6 +98,12 @@ the two factories above.
 
 `PostgresConnector` binds a prefix to one PostgreSQL database. The server holds
 the data and executes the read; Opteryx streams the rows back as morsels.
+
+It speaks the PostgreSQL wire protocol, so it also reaches PostgreSQL-compatible
+servers — CockroachDB is tested; others work to the degree they implement
+PostgreSQL's own metadata services, which varies. Reading rows is the part most
+of them get right; what degrades first is the metadata around a query, and in
+this embedded connector that means the row-count estimate behind a scan.
 
 ```python
 import opteryx
