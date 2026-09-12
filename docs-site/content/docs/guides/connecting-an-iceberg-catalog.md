@@ -20,7 +20,7 @@ Connected catalogs are **read-only**.
 | Datasets listed in Studio and over [OData](/docs/guides/querying-via-odata) | Iceberg views |
 | Cross-workspace joins against your Opteryx-hosted data | Nested types — `struct`, `map`, `list` columns |
 
-A query that writes to a connected workspace fails; it does not fall back to Opteryx storage.
+A query that writes to a connected workspace is refused when it is planned, so nothing runs half-way; it does not fall back to Opteryx storage.
 
 ## Before You Start
 
@@ -32,7 +32,7 @@ A query that writes to a connected workspace fails; it does not fall back to Opt
 
 Where a workspace's tables live is fixed at creation. There is no convert and no revert — moving a workspace to different storage means deleting it and creating it again. The connection *settings* stay editable forever, because endpoints move and secrets rotate; the choice of storage does not.
 
-In Studio, the New workspace form asks the question directly: Opteryx storage, or your own catalog. Choosing your own catalog reveals the connection fields.
+In Studio, the New workspace form asks the question directly: Opteryx storage, your own Iceberg catalog, or your own PostgreSQL server. Choosing your own catalog reveals the connection fields.
 
 ## Connection Settings
 
@@ -51,7 +51,7 @@ Two modes, and the difference is whether Opteryx stores a secret.
 
 **Ambient** — Opteryx authenticates as its own service identity. Nothing is stored. The connection form shows you the identity to allowlist in your catalog. This is the right mode for a catalog that already understands Google identities, such as BigLake.
 
-**Stored** — you hand over a secret. It is encrypted with envelope encryption under a KMS key before it touches storage; only the ciphertext is persisted, and it is never returned by the API or rendered back into the form. A stored credential is write-only, so replacing it means typing a new one, never editing an old one.
+**Stored** — you hand over a secret. It is encrypted with envelope encryption under a KMS key before it touches storage; only the ciphertext is persisted, and it is never returned by the API or rendered back into the form — not to you either. A stored credential is write-only, so rotating a secret means typing the new one in full rather than editing the old one.
 
 A stored secret is delivered to the catalog client at a property you choose — `token` for a bearer token, `credential` for the OAuth2 client-credentials flow (`<client-id>:<client-secret>`), or any other property path your catalog reads. Exactly one secret is stored per binding.
 
@@ -59,13 +59,13 @@ A stored secret is delivered to the catalog client at a property you choose — 
 
 Both the New workspace form and the Catalog settings panel have a **Test connection** button, and it is worth using before you commit — the storage choice is permanent, so the answer should arrive while the decision is still reversible.
 
-The test reports one of a fixed set of outcomes — reachable, DNS failure, TLS failure, authorization rejected, not found, timeout, blocked address. It never shows text from your catalog: a REST catalog can echo a bearer token back inside an error body, and that body is not something to put on a screen or in a log.
+The test reports one of a fixed set of outcomes — reachable, DNS failure, TLS failure, authorization rejected, not found, timeout, blocked address. It never shows text from your catalog — a REST catalog can echo a bearer token back inside an error body, which is not something to put on a screen or in a log — so a failure gives you the category and not your catalog's own message. The detail behind an authorization rejected is in your catalog's logs.
 
-One honest caveat: an **ambient** test is reported as inconclusive. The service that runs the test and the engine that runs your queries authenticate as different identities, so a green tick proves the address is reachable and well-formed, not that the query engine may read your catalog. A stored-credential test exercises the real credential and does not carry that caveat.
+One honest caveat: an **ambient** test is reported as inconclusive. The service that runs the test and the engine that runs your queries authenticate as different identities, so a green tick proves the address is reachable and well-formed, not that the query engine may read your catalog. A stored-credential test exercises the real credential and does not carry that caveat. For an ambient binding, the thing that settles it is running a query.
 
 ## Refreshing the Dataset List
 
-Queries always go straight to your catalog, so a table is queryable the moment your catalog has it. **Listing** is separate: the Studio dataset tree and the OData service document read a stored list of names, schemas, and statistics that Opteryx projects from your catalog.
+Queries always go straight to your catalog, so a table is queryable the moment your catalog has it. **Listing** is separate: the Studio dataset tree and the [OData](/docs/guides/querying-via-odata) service document read a stored list of names, schemas, and statistics that Opteryx projects from your catalog.
 
 That list is refreshed only when someone presses **Refresh dataset list**. Nothing refreshes it automatically — not on page load, not after a settings change, not on a lookup miss. A refresh lists every namespace in your catalog and then loads every table it finds, which is a real cost against your catalog and possibly on your bill, so the decision stays with you. The panel states how old the list is, and a "dataset not found" error on a connected workspace says the same thing and recommends a refresh.
 
@@ -82,7 +82,7 @@ Underneath that, IAM takes its own few minutes, and permissions do not all becom
 So after granting, expect the first queries to fail, and read the errors rather than changing settings:
 
 - **The error changes between attempts** — grants are still landing. Wait.
-- **The error is identical for an hour** — something is genuinely missing. Use the table below.
+- **The error is identical for an hour** — something is genuinely missing. Match the message in [Troubleshooting](#troubleshooting).
 
 If you have granted everything and only the data-file read still fails (`Parquet pipeline error: HTTP 403`), the grants are correct and Opteryx is holding a token issued before them. That clears on its own.
 
@@ -109,7 +109,7 @@ OPTIMIZATIONS
 
 ## Example: Apache Polaris
 
-[Apache Polaris](https://polaris.apache.org/) implements the REST spec's OAuth2 client-credentials flow, so the binding stores a principal's client secret and PyIceberg drives the token exchange.
+[Apache Polaris](https://polaris.apache.org/) implements the REST spec's OAuth2 client-credentials flow, so all you store is a principal's client secret — the token exchange is handled for you.
 
 ```json
 {
@@ -126,7 +126,7 @@ Auth mode **stored**, with the secret delivered as `credential` and the value in
 
 Three settings worth explaining:
 
-- **`oauth2-server-uri` is explicit.** Left out, the client guesses the token endpoint from `uri` and warns about it — printing a config value to a log and relying on a fallback that is being removed.
+- **`oauth2-server-uri` is explicit.** Left out, the client guesses the token endpoint from `uri` and warns about it. That fallback is being removed, so setting it now is what keeps the binding working later.
 - **`scope`** is Polaris's own principal-role scope; without it the token carries no role.
 - **`header.X-Iceberg-Access-Delegation` is deliberately empty.** It opts out of Polaris credential vending, so Polaris serves metadata only and Opteryx reads the data files with its own identity. Leave it out and the client asks for vended credentials by default.
 
@@ -179,9 +179,10 @@ If your organization enforces `iam.allowedPolicyMemberDomains`, these grants are
 
 Amazon S3 Tables does expose an Iceberg REST endpoint, so it looks like it should drop into the settings above. It doesn't, for two reasons, each of which is on its own sufficient:
 
-1. **It authenticates with AWS SigV4**, which signs every request with an access key ID *and* a secret access key. A binding stores exactly one secret. There is no shape of the current credential store that carries an AWS key pair.
+1. **It authenticates with AWS SigV4**, which signs every request with an access key ID *and* a secret access key. A binding stores exactly one secret, so there is nowhere to put the pair.
 2. **Ambient mode is a Google identity.** Opteryx's engine runs on Google Cloud and its ambient credential is a Google service account — there is nothing for an AWS account to grant it.
-The engine *can* now read `s3://` data files — a scan resolves an S3 path and reads it with the same range-read path it uses for Google Cloud Storage, so that is no longer one of the reasons. The two above are each still sufficient on their own.
+
+Reading the data is not the obstacle: Opteryx reads `s3://` files as readily as Google Cloud Storage ones. It is the catalog handshake that has no answer.
 
 AWS Glue is a different protocol again — not a REST-spec catalog — and is not one of the catalog types Opteryx offers.
 
@@ -191,7 +192,7 @@ What *does* work today is any Iceberg REST catalog that authenticates with a bea
 
 Publish the new secret through the Catalog settings panel, or `PUT` the binding again. Every write bumps the binding's version, and every worker rebuilds its connection on the next query that touches the workspace — no restart, no redeploy, no window where queries fail.
 
-That applies to the binding's own settings and to a **stored** secret. It does not apply to **ambient** mode, where there is no secret to rotate: changing what the ambient identity is allowed to do is a change in *your* IAM, not a binding write, so nothing here notices it and the previous section's timing applies instead.
+That applies to the binding's own settings and to a **stored** secret. It does not apply to **ambient** mode, where there is no secret to rotate: changing what the ambient identity is allowed to do is a change in *your* IAM, not a binding write, so nothing here notices it and the timing in [Grants Take Time to Reach Opteryx](#grants-take-time-to-reach-opteryx) applies instead.
 
 Rotate at your catalog first if the old secret must stop working immediately: a revoked client secret stops new tokens being issued, but an already-issued bearer token stays valid until it expires. That is how OAuth2 is specified, not a gap in Opteryx.
 
@@ -301,3 +302,7 @@ Query and processing charges are the same as for any workspace — see the [Cost
 **A column is missing or a table won't open.** Iceberg `struct`, `map`, and `list` columns aren't read today. A table whose schema is entirely unreadable shows in the list with no columns and fails at query time.
 
 **Everything worked and then a whole namespace vanished from the tree.** Refresh the dataset list — the tree shows the last projection, not live state.
+
+## See Also
+
+- [Connecting a PostgreSQL database](/docs/guides/connecting-a-postgres-database) — the other bring-your-own-storage option
