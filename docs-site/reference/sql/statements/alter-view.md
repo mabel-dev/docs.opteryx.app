@@ -43,7 +43,9 @@ SELECT order_id, customer_id, amount, created_at
 
 - The view must exist before you can alter it.
 - Use the fully qualified name: `<workspace>.<collection>.<view_name>`.
-- The new definition replaces the entire previous query.
+- The new definition replaces the entire previous query, including the columns recorded
+  for the view — the new query is resolved when you alter the view, exactly as it is when
+  you create one, so every relation it reads must exist and be readable by you.
 - Any queries depending on the view will use the updated definition on their next execution.
 
 ## See Also

@@ -93,6 +93,24 @@ That answer is recorded when something connects: a **Test connection** on a save
 
 It is an observation, not a setting. Repoint the binding at a different server and it is learned again the next time anything connects.
 
+## CockroachDB
+
+CockroachDB is supported and tested alongside PostgreSQL, and there is no separate connector for it: choose **PostgreSQL** when the workspace is created and point it at your CockroachDB cluster. Everything in this guide applies, with a handful of differences worth knowing before you connect.
+
+| | What differs |
+|---|---|
+| Port | CockroachDB usually listens on `26257`, not `5432`. The Port field defaults to PostgreSQL's, so this is the one connection setting you will normally have to change. |
+| TLS | CockroachDB Cloud requires TLS, so leave `sslmode` at `require` — or `verify-full` if you want the certificate checked. |
+| Statistics | Kept current by the engine itself. There is no `ANALYZE` to remember, and a refreshed dataset list arrives with usable row and distinct counts without anything being scheduled. |
+| Table sizes | Not shown. CockroachDB has no equivalent of the PostgreSQL functions Opteryx reads sizes from, so that column is simply absent. |
+| System schemas | `crdb_internal` and `pg_extension` are never offered, in the same way `pg_catalog` and `information_schema` are not. |
+
+Opteryx asks the server which engine it is rather than assuming, so a CockroachDB workspace is labelled **CockroachDB** throughout Studio and is planned against CockroachDB's own statistics rather than PostgreSQL's. That label appears once something has connected — see [Which engine answered](#which-engine-answered).
+
+The read-only limits are the same, and so is time travel: a connected server keeps no snapshots for Opteryx to travel to, so `FOR ... AS OF` is refused on a CockroachDB workspace even though the cluster has `AS OF SYSTEM TIME` of its own.
+
+> Warning: the experimental status applies here too. CockroachDB is tested, but like PostgreSQL its behaviour, configuration and limits may change between releases.
+
 ## Addressing Tables
 
 Opteryx addresses a table as *workspace*.*schema*.*table*: your PostgreSQL schema sits where an Opteryx collection would, and the table itself is the dataset.

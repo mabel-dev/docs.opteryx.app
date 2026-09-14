@@ -12,6 +12,12 @@ precomputed. If you want the result stored as a physical table and kept up to da
 automatically as its sources change, use
 [CREATE MATERIALIZED VIEW](create-materialized-view) instead.
 
+The defining query is resolved when the view is created, and the columns it produces —
+their names and their types — are recorded alongside it, so tools can describe the view
+without planning its SQL. This means the query must be valid at the moment you create the
+view: every relation it reads has to exist and be readable by you. A view cannot be
+defined ahead of the tables it reads.
+
 ## Syntax
 
 ~~~sql
@@ -68,6 +74,10 @@ HAVING SUM(amount) > 10000;
 - Use fully qualified names: `<workspace>.<collection>.<view_name>`.
 - Views are read-only in most contexts.
 - View definitions are stored and can be modified with `ALTER VIEW` or removed with `DROP VIEW`.
+- The recorded columns describe the definition as it was written. A view defined with
+  `SELECT *` records the columns its sources had at that moment; the view itself still
+  expands the `*` on every read, so what it returns always follows the sources, and only
+  the recorded description can fall behind. Redefining the view refreshes it.
 
 ## See Also
 
