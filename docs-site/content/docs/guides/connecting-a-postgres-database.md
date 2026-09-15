@@ -13,7 +13,7 @@ Nothing is copied and nothing is migrated. `SELECT` runs against the tables your
 
 What this binding speaks is the PostgreSQL wire protocol, which is why it reaches more than PostgreSQL itself.
 
-**PostgreSQL** and **CockroachDB** are both supported and tested. Opteryx asks the server which one it is and reads that engine's statistics rather than assuming PostgreSQL's, so a CockroachDB workspace gets a properly informed planner and not an empty one.
+**PostgreSQL** and **CockroachDB** are both supported, and each has been exercised against a real server — [What Has Actually Been Tested](#what-has-actually-been-tested) records which versions, and when. Opteryx asks the server which one it is and reads that engine's statistics rather than assuming PostgreSQL's, so a CockroachDB workspace gets a properly informed planner and not an empty one.
 
 Other PostgreSQL-compatible servers — YugabyteDB, Greenplum, Timescale, and the managed forks — are likely to work, but **how well depends on how faithfully each one implements PostgreSQL's own metadata services**, and that varies a great deal. Speaking the protocol is the easy part. Querying is the part most of them get right: if your server can describe a statement and return rows, Opteryx can read it.
 
@@ -28,6 +28,31 @@ None of that stops a query. Missing statistics cost you a less well-costed plan,
 Nothing here is an error, and nothing fails the connection: Opteryx collects what your server actually offers and says what it got. If you are running something other than PostgreSQL or CockroachDB, connect it and see — the connection test tells you what answered, and a dataset refresh tells you how much of it could be described.
 
 > Warning: PostgreSQL support is **experimental** and is not recommended for production use. The connector works and is tested, but its behaviour, configuration and limits may change between releases, and it has had far less production use than Opteryx's own storage. Treat it as something to explore with, not something to build a dependency on. The same applies to CockroachDB, and more so to any other PostgreSQL-compatible server.
+
+## What Has Actually Been Tested
+
+Compatibility with a wire-protocol server is not a property anyone can claim in general — it is a thing that was true of a particular server, on a particular day, at a particular version. This table is a record of what was run, not a promise about what will keep working.
+
+| Server | Version | Last exercised | What was run |
+|---|---|---|---|
+| PostgreSQL (Aiven) | 16.15 | 2026-09-15 | The connector's full storage suite. This is the server the suite runs against in CI. |
+| CockroachDB Cloud | v26.2 | 2026-09-15 | Statistics channels and the row-count path, which is where CockroachDB differs from PostgreSQL. |
+| AlloyDB for PostgreSQL | 18.3 | 2026-09-15 | The full storage suite, a value-level round trip of every column type below, and connection pooling in transaction mode. |
+
+Nothing here is continuously re-tested against every version of every engine. A version newer than the one listed is untested rather than unsupported — the odds are good, but the row is a record and not a guarantee.
+
+### What the AlloyDB run established
+
+AlloyDB behaves as ordinary PostgreSQL over the wire and needs no engine-specific handling: it keeps row counts in `pg_class.reltuples` and column statistics in `pg_stats`, exactly where PostgreSQL does, so the planner is informed the same way and by the same path. Connection pooling in transaction mode was also exercised, and queries, statement description and parameter binding all worked through it.
+
+One thing is worth knowing if you are trying to confirm what you connected to: AlloyDB reports itself as plain PostgreSQL and does not name itself anywhere in its version string. A workspace pointed at AlloyDB is therefore labelled **PostgreSQL** in Studio, which is correct rather than a detection failure — see [Which Engine Answered](#which-engine-answered).
+
+Every column type Opteryx claims to read was also round-tripped by value against a purpose-built table and compared with the server's own rendering — `smallint`, `integer`, `bigint` at their extremes, `real`, `double precision`, `numeric` with and without a scale, `boolean`, `date`, `timestamp`, `timestamptz`, `uuid`, `json`, `jsonb`, `bytea`, `varchar`, `char` and `text`, each with a NULL row. All eighteen matched. Note that `char(n)` is blank-padded in PostgreSQL itself, so a `char(4)` holding `ab` reads back as `ab` followed by two spaces — that is the stored value, not padding Opteryx added.
+
+### What was not covered
+
+- Managed connection pooling on the other hosted PostgreSQL services. AlloyDB's pooler is its own; a result there does not carry over to another vendor's.
+- YugabyteDB, Greenplum, Redshift and the other compatible engines named above. None of them has been run against a live server, so treat the guidance about them as reasoning from how they are built rather than as a measurement.
 
 ## What You Get, and What You Don't
 
