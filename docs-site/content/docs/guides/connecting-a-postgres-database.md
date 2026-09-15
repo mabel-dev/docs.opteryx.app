@@ -51,6 +51,7 @@ Every column type Opteryx claims to read was also round-tripped by value against
 
 ### What was not covered
 
+- AlloyDB's columnar engine **serving a query**. Relations were loaded into it successfully and everything Opteryx reads was then re-checked and unchanged — row counts, statement description, column types and values are all identical whether or not a relation is columnar-resident. But the server's planner never actually chose a columnar scan during the run, so what was established is that loading a relation into the columnar engine changes nothing Opteryx depends on, and not that Opteryx was exercised against columnar execution itself.
 - Managed connection pooling on the other hosted PostgreSQL services. AlloyDB's pooler is its own; a result there does not carry over to another vendor's.
 - YugabyteDB, Greenplum, Redshift and the other compatible engines named above. None of them has been run against a live server, so treat the guidance about them as reasoning from how they are built rather than as a measurement.
 
