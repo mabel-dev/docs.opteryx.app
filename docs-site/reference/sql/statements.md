@@ -158,6 +158,16 @@ Manage tables, table properties, and statistics:
 | [DROP STATISTICS](statements/drop-statistics) | Discard statistics collected by `ANALYZE TABLE` |
 | [COMMENT](statements/comment) | Add descriptive comments to tables and views |
 
+## Sample Data
+
+Load a ready-made dataset when there is nothing to query yet:
+
+| Statement | Purpose |
+|-----------|---------|
+| [LOAD SAMPLE](statements/load-sample) | Copy a staged sample dataset — TPC-H — into an empty collection |
+
+The sample's files are copied, so what lands in the collection is an ordinary dataset you own and are billed for. See [Sample Data](advanced/adv-sample-data) for the built-in `$` relations, which are a different thing: they need no loading and cost nothing.
+
 ## Advanced Features
 
 Special clauses and time-based queries:

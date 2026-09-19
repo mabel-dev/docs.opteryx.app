@@ -1,6 +1,6 @@
 ---
 title: Sample Data in Opteryx - Built-in Test Datasets
-description: Explore the built-in sample dataset in Opteryx for testing and demonstration.
+description: Explore the built-in sample relations in Opteryx, and load the TPC-H sample dataset with LOAD SAMPLE.
 ---
 
 # Sample Data
@@ -24,3 +24,18 @@ SELECT name
 
 Other internal relations exist prefixed with `$` (such as `$variables` and `$user`). These are not intended for end-user queries — their structure and availability are not guaranteed.
 
+## Loading a Sample Dataset
+
+The `$` relations are tiny — enough to try an expression, not enough to write a realistic
+query against. For that, [LOAD SAMPLE](../statements/load-sample) copies a staged sample
+dataset into a collection of your own:
+
+```sql
+LOAD SAMPLE TPCH INTO personal.alice AT SCALE 0.1;
+```
+
+That creates the eight TPC-H tables — `region`, `nation`, `supplier`, `customer`, `part`,
+`partsupp`, `orders` and `lineitem` — in an empty collection. Unlike the `$` relations,
+these are ordinary datasets: they are copied into your own storage, they are billed like
+any other dataset, and you drop them when you are done with them. Staged scale factors on
+Opteryx Cloud are `0.01`, `0.1`, `1` (the default), `5` and `10`.

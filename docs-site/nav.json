@@ -223,6 +223,9 @@
               "LIMIT / OFFSET": "reference/sql/statements/limit.md"
             },
             {
+              "LOAD SAMPLE": "reference/sql/statements/load-sample.md"
+            },
+            {
               "MERGE": "reference/sql/statements/merge.md"
             },
             {
