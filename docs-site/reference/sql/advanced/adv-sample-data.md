@@ -34,8 +34,18 @@ dataset into a collection of your own:
 LOAD SAMPLE TPCH INTO personal.alice AT SCALE 0.1;
 ```
 
-That creates the eight TPC-H tables — `region`, `nation`, `supplier`, `customer`, `part`,
+That creates the eight [TPC-H](https://www.tpc.org/tpch/) tables — `region`, `nation`, `supplier`, `customer`, `part`,
 `partsupp`, `orders` and `lineitem` — in an empty collection. Unlike the `$` relations,
 these are ordinary datasets: they are copied into your own storage, they are billed like
 any other dataset, and you drop them when you are done with them. Staged scale factors on
 Opteryx Cloud are `0.01`, `0.1`, `1` (the default), `5` and `10`.
+
+The staged data follows the TPC-H schema and is provided for demonstration and
+testing only. It is not an official TPC benchmark implementation, and any timings
+you take against it are not comparable to published TPC-H results. See the
+[TPC-H specification](https://www.tpc.org/tpch/) for the benchmark itself.
+
+---
+
+TPC, TPC Benchmark, and TPC-H are trademarks of the
+[Transaction Processing Performance Council](https://www.tpc.org/).
