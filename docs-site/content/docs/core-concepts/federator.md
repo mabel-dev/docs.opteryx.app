@@ -19,7 +19,9 @@ ALTER WORKSPACE analytics SET maintenance TO OFF;   -- stop compacting this work
 ALTER WORKSPACE analytics SET maintenance TO ON;    -- resume
 ```
 
-It is on by default, it covers every table in the workspace, and there is no charge for it. In the web app it is a switch on the workspace's settings, and a collection or table shows the inherited value without its own control - maintenance is held at the workspace, exactly as a grant made there is.
+It is on by default, it covers every table in the workspace, and there is no charge for it.
+
+It applies to **Opteryx storage only**. If a workspace's tables live in an external catalog, Opteryx reads them but never rewrites them, so there is nothing for it to compact and the switch is replaced by a note saying so. In the web app it is a switch on the workspace's settings, and a collection or table shows the inherited value without its own control - maintenance is held at the workspace, exactly as a grant made there is.
 
 Underneath, the setting is that write access: turning maintenance on grants it and turning maintenance off revokes it. That is why there is nothing else to configure and nothing to keep in step - the setting and the access are one thing. It is also why `GRANT` and `REVOKE` naming a platform identity are refused: maintenance is how that access is managed, and a second route to the same state is a route to the two disagreeing.
 

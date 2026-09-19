@@ -27,7 +27,7 @@ ALTER WORKSPACE <source> DROP SECURE <object>;
 |----------|--------|---------|---------|
 | `deletion_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse deletion of the workspace |
 | `egress_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse automated copies of this workspace's data into another workspace |
-| `maintenance` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Let the platform keep this workspace's data compacted |
+| `maintenance` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Let the platform keep this workspace's data compacted (Opteryx storage only) |
 
 Only the properties listed above can be set. Any other name is rejected when the query is
 planned, so a typo cannot quietly become a new, meaningless property.
@@ -163,6 +163,13 @@ work as a `Compaction: <strategy>, N files -> 1 file` commit in a dataset's hist
 It is on by default, it applies to every table in the workspace, and there is no charge for
 it.
 
+**It applies to Opteryx storage only.** Compaction rewrites a table's file layout, and
+Opteryx only does that in storage it owns. A workspace whose tables live in an external
+catalog — Iceberg, or a database bound as a metastore — is read by Opteryx and never
+rewritten by it, so their layout stays that catalog's own business and this setting has
+nothing to act on. The setting can still be written there; it simply turns nothing on, and
+the web app shows those workspaces an explanation rather than a switch.
+
 ~~~sql
 ALTER WORKSPACE landing SET maintenance TO OFF;   -- stop compacting this workspace
 ALTER WORKSPACE landing SET maintenance TO ON;    -- resume
@@ -209,6 +216,9 @@ SELECT * FROM landing.information_schema.maintenance;
 
 One row, for the workspace - everything inside inherits it. Readable by anyone who can
 reach the workspace, since it says nothing about who holds access to it.
+
+On a workspace backed by an external catalog the value is not meaningful: `true` there says
+the platform holds the access, not that anything is being compacted.
 
 ## SECURE: The Sanctioned Exemption
 
