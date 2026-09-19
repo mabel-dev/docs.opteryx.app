@@ -1,21 +1,42 @@
 # Federator
 
-`federator` is a platform-managed system identity, not a person. It exists so that automated, long-running platform operations aren't tied to any individual's account - two things run under it today:
+`federator` is a platform-managed system identity, not a person. It exists so that automated, long-running platform operations aren't tied to any individual's account.
 
-- **The identity a materialized view can be pinned to.** By default, a materialized view refreshes with the permissions of whoever created it (`ALTER MATERIALIZED VIEW ... OWNER TO` moves this later). Pinning a view to a person's account instead means every refresh breaks the moment that person's access changes or they leave the org. Pointing it at `federator` instead gives the view a **long-term identity whose own permissions are managed in the workspace like anyone else's**, independent of who wrote the defining query:
+You do not normally need to know it exists. This page is here for when you meet the name - in a dataset's history, or in an error - and want to know what it is.
 
-  ```sql
-  ALTER MATERIALIZED VIEW analytics.sales.daily_totals OWNER TO federator;
-  ```
+## What it does
 
-- **The identity the platform's compaction service writes as.** Background compaction periodically merges a table's small files into fewer, larger ones (you'll see this as a `Compaction: <strategy>, N files → 1 file` commit on a dataset's history). Compaction rewrites the table's storage, so it needs write access to whatever it's compacting - `federator` is what that access is granted to.
+**It keeps your tables compacted.** Background compaction periodically merges a table's many small files into fewer, larger ones, which is what keeps scans fast as a table grows by small, frequent writes. You'll see the work as a `Compaction: <strategy>, N files → 1 file` commit on a dataset's history, and the commit is attributed to the platform rather than to a person, because no person ran it.
 
-## It's a grant, not a special case
+Compaction rewrites a table's storage, so it needs write access to what it is compacting.
 
-`federator` gets its access the exact same way a person does - a role on a resource pattern, granted with [`GRANT`](/docs/reference/sql/statements/grant) (see [Security & Permissions](/docs/core-concepts/access-and-permissions)). That means it shows up as an ordinary row in a workspace's access list (`federator - writer - via collection sales`, for example), and its grants can be reviewed, narrowed, or revoked from Manage Access exactly like anyone else's.
+## You manage it as a setting, not as a grant
 
-This also means access can be **too narrow**: if `federator` doesn't hold write access somewhere, compaction can't run there, and no materialized view in that scope can be pinned to it. Revoking `federator`'s grant on a collection stops both.
+Compaction is turned on and off per workspace, with [`ALTER WORKSPACE`](/docs/reference/sql/statements/alter-workspace#maintenance):
+
+```sql
+ALTER WORKSPACE analytics SET maintenance TO OFF;   -- stop compacting this workspace
+ALTER WORKSPACE analytics SET maintenance TO ON;    -- resume
+```
+
+It is on by default, it covers every table in the workspace, and there is no charge for it. In the web app it is a switch on the workspace's settings, and a collection or table shows the inherited value without its own control - maintenance is held at the workspace, exactly as a grant made there is.
+
+Underneath, the setting is that write access: turning maintenance on grants it and turning maintenance off revokes it. That is why there is nothing else to configure and nothing to keep in step - the setting and the access are one thing. It is also why `GRANT` and `REVOKE` naming a platform identity are refused: maintenance is how that access is managed, and a second route to the same state is a route to the two disagreeing.
+
+> **This changed.** Compaction used to be enabled by adding `federator` to a workspace's access list at `writer`, and turned off by revoking it. That worked, but it asked an administrator to know what `federator` was before they could keep their own tables fast. Existing workspaces were not affected by the change: the access they already had became the setting they already had.
+
+## Reading it back
+
+```sql
+SELECT * FROM analytics.information_schema.maintenance;
+```
+
+One row, for the workspace. Everything inside inherits it.
 
 ## Recognizing it
 
-In the web app, `federator` - and any other platform identity - is marked with a small robot icon next to its name wherever it appears in an access list, so it isn't mistaken for a person's account.
+In the web app, platform identities are shown as the platform rather than as accounts - a commit from compaction reads as Opteryx's own work, with a robot icon, and not as a colleague you don't recognise. They do not appear in a workspace's access list, because there is nothing there for you to act on.
+
+## What it does not do
+
+`federator` is not an account you can be given, log in as, or grant things to. It cannot own a materialized view: a view's refresh runs unattended and forever, so its owner has to be a principal who can be billed, and a platform identity is not one. `ALTER MATERIALIZED VIEW ... OWNER TO` names a real account - see [Tasks and Triggers](/docs/guides/tasks-and-triggers).

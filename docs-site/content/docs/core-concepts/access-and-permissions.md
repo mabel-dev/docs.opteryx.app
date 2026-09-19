@@ -71,4 +71,4 @@ For API-level authentication, see the [Authentication API](/docs/reference/api/a
 
 ## Platform identities
 
-Not every row in an access list is a person. `federator` is a platform-managed system identity used for materialized view ownership and background compaction - see [Federator](/docs/core-concepts/federator) for what it is and why it needs write access.
+Platform identities do not appear in an access list at all. The platform's own access - background compaction, most visibly - is managed as a workspace setting rather than as a grant, so there is no row there for you to act on; see [Federator](/docs/core-concepts/federator) and [`ALTER WORKSPACE ... SET maintenance`](/docs/reference/sql/statements/alter-workspace#maintenance).

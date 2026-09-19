@@ -1,6 +1,6 @@
 ---
 title: ALTER WORKSPACE Statement — Opteryx Reference
-description: SQL ALTER WORKSPACE statement syntax and examples for setting workspace-level protections such as deletion_protection and egress_protection in Opteryx
+description: SQL ALTER WORKSPACE statement syntax and examples for setting workspace-level properties such as deletion_protection, egress_protection and maintenance in Opteryx
 ---
 
 # ALTER WORKSPACE
@@ -27,14 +27,19 @@ ALTER WORKSPACE <source> DROP SECURE <object>;
 |----------|--------|---------|---------|
 | `deletion_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse deletion of the workspace |
 | `egress_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse automated copies of this workspace's data into another workspace |
+| `maintenance` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Let the platform keep this workspace's data compacted |
 
 Only the properties listed above can be set. Any other name is rejected when the query is
 planned, so a typo cannot quietly become a new, meaningless property.
 
-Both properties are **protections, and both default to `ON`**. That is deliberate and
+Two of the three are **protections, and both default to `ON`**. That is deliberate and
 uniform: every workspace property named `..._protection` is safe when on, so you can scan a
 workspace's settings for `OFF` without having to reason about which way each one points. A
 workspace you have never configured is protected on both counts.
+
+`maintenance` is not a protection and is the odd one out in a second way as well: it is the
+only property here that is not stored on the workspace. See
+[Maintenance](#maintenance) below.
 
 `TRUE` and `FALSE` are accepted as synonyms for `ON` and `OFF`.
 
@@ -53,6 +58,11 @@ ALTER WORKSPACE production SET deletion_protection TO ON;
 ### Allow Data To Be Copied Out
 ~~~sql
 ALTER WORKSPACE landing SET egress_protection TO OFF;
+~~~
+
+### Stop the Platform Compacting a Workspace
+~~~sql
+ALTER WORKSPACE landing SET maintenance TO OFF;
 ~~~
 
 ## Deletion Protection
@@ -143,6 +153,63 @@ automatic refresh is even queued. A [task](create-task) fired by a
 queued, where a refusal is recorded on the trigger as `egress-blocked`, and again when
 the run is planned.
 
+## Maintenance
+
+`maintenance` decides whether the platform keeps this workspace's data compacted. While it
+is on, Opteryx periodically merges a table's many small files into fewer, larger ones -
+which is what keeps scans fast as a table grows by small, frequent writes. You will see the
+work as a `Compaction: <strategy>, N files -> 1 file` commit in a dataset's history.
+
+It is on by default, it applies to every table in the workspace, and there is no charge for
+it.
+
+~~~sql
+ALTER WORKSPACE landing SET maintenance TO OFF;   -- stop compacting this workspace
+ALTER WORKSPACE landing SET maintenance TO ON;    -- resume
+~~~
+
+### It Is Held at the Workspace
+
+Maintenance is set on the workspace and **inherited by everything in it**. A collection or
+a table does not have its own setting to turn off, in the same way a table does not have
+its own copy of a grant made at the workspace above it - it shows the inherited value and
+points at where that value is managed.
+
+There is no way to exclude one table from an otherwise-maintained workspace. That is the
+same rule access policies follow: an inherited grant is not revoked at the table, it is
+revoked where it was granted.
+
+### What It Actually Changes
+
+Unlike the two protections, `maintenance` is not a flag stored on the workspace. Compaction
+runs as a platform identity, and what the setting turns on and off is that identity's write
+access to this workspace - so the setting IS the access, with no second copy of the answer
+that could disagree with it.
+
+Two consequences worth knowing:
+
+- Turning maintenance off takes effect on the next compaction the platform would have run.
+  Nothing already committed is undone; compaction only ever rewrites file layout, never
+  rows.
+- `GRANT` and `REVOKE` naming a platform identity are refused. Maintenance is how that
+  access is managed, and a second route to the same state is a route to the two disagreeing.
+
+### Reading It Back
+
+`maintenance` is the one workspace property with an `information_schema` table, because
+it is the one whose value is not simply what you last set:
+
+~~~sql
+SELECT * FROM landing.information_schema.maintenance;
+~~~
+
+| catalog_name | maintenance |
+|--------------|-------------|
+| `landing`    | `true`      |
+
+One row, for the workspace - everything inside inherits it. Readable by anyone who can
+reach the workspace, since it says nothing about who holds access to it.
+
 ## SECURE: The Sanctioned Exemption
 
 Turning `egress_protection` off is all-or-nothing: it unlocks every copy out of the
@@ -211,8 +278,9 @@ write it.
   supports this.
 - `ALTER WORKSPACE` names a workspace, not a table within one. A qualified name such as
   `workspace.collection` is rejected.
-- There is no `SHOW` form or `information_schema` table that reads these settings back,
-  including the objects a workspace has marked `SECURE`.
+- There is no `SHOW` form or `information_schema` table that reads the two protections
+  back, including the objects a workspace has marked `SECURE`. `maintenance` is the
+  exception - see [Reading It Back](#reading-it-back).
 - A refused copy names both remedies in its error, the `SECURE` statement for the exact
   object first: sanctioning one door is usually what was wanted, not unlocking the
   building.
