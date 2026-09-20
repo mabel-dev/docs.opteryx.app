@@ -160,8 +160,7 @@ is on, Opteryx periodically merges a table's many small files into fewer, larger
 which is what keeps scans fast as a table grows by small, frequent writes. You will see the
 work as a `Compaction: <strategy>, N files -> 1 file` commit in a dataset's history.
 
-It is on by default, it applies to every table in the workspace, and there is no charge for
-it.
+It is on by default and applies to every table in the workspace.
 
 **It applies to Opteryx storage only.** Compaction rewrites a table's file layout, and
 Opteryx only does that in storage it owns. A workspace whose tables live in an external

@@ -19,7 +19,7 @@ ALTER WORKSPACE analytics SET maintenance TO OFF;   -- stop compacting this work
 ALTER WORKSPACE analytics SET maintenance TO ON;    -- resume
 ```
 
-It is on by default, it covers every table in the workspace, and there is no charge for it.
+It is on by default and covers every table in the workspace.
 
 It applies to **Opteryx storage only**, and the web app treats it as what it is: a setting of Opteryx storage, shown with the rest of that workspace's storage settings. If a workspace's tables live in an external catalog, Opteryx reads them but never rewrites them, so there is nothing to compact and no setting to offer. In the web app it is a switch on the workspace's settings, and a collection or table shows the inherited value without its own control - maintenance is held at the workspace, exactly as a grant made there is.
 
