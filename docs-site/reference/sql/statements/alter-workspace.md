@@ -167,8 +167,9 @@ it.
 Opteryx only does that in storage it owns. A workspace whose tables live in an external
 catalog — Iceberg, or a database bound as a metastore — is read by Opteryx and never
 rewritten by it, so their layout stays that catalog's own business and this setting has
-nothing to act on. The setting can still be written there; it simply turns nothing on, and
-the web app shows those workspaces an explanation rather than a switch.
+nothing to act on. The statement is still accepted there; it simply turns nothing on. In
+the web app it is a setting of **Opteryx storage** specifically, shown inside that card and
+absent for a workspace backed by anything else.
 
 ~~~sql
 ALTER WORKSPACE landing SET maintenance TO OFF;   -- stop compacting this workspace
