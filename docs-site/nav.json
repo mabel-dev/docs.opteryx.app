@@ -160,6 +160,9 @@
               "CREATE TABLE": "reference/sql/statements/create-table.md"
             },
             {
+              "CREATE TABLE ... CLONE": "reference/sql/statements/clone.md"
+            },
+            {
               "CREATE TASK": "reference/sql/statements/create-task.md"
             },
             {
@@ -221,9 +224,6 @@
             },
             {
               "LIMIT / OFFSET": "reference/sql/statements/limit.md"
-            },
-            {
-              "LOAD SAMPLE": "reference/sql/statements/load-sample.md"
             },
             {
               "MERGE": "reference/sql/statements/merge.md"

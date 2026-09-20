@@ -59,6 +59,16 @@ PAGE_OVERRIDES = {
     "ALTER TRIGGER ... SUSPEND / RESUME": "alter-trigger",
     "ALTER TRIGGER ... SET MINIMUM INTERVAL TO": "alter-trigger",
     "ALTER TASK ... AS": "alter-task",
+    # Both fork maintenance forms are sections of the ALTER TABLE page, beside
+    # the tag and constraint forms they sit with in the grammar.
+    "ALTER TABLE ... RESYNC": "alter-table",
+    "ALTER TABLE ... DETACH": "alter-table",
+    # The fork statement's page is named for what it does, not for the whole
+    # clause - "create-table-...-clone" is a filename nobody would guess.
+    "CREATE TABLE ... CLONE": "clone",
+    # Both clone forms are one page: they are the same operation at two grains,
+    # and splitting them would mean two pages each explaining what a fork is.
+    "CREATE COLLECTION ... CLONE": "clone",
 }
 
 # Statements whose reference lives somewhere other than a statement page.

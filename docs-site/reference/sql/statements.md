@@ -158,15 +158,17 @@ Manage tables, table properties, and statistics:
 | [DROP STATISTICS](statements/drop-statistics) | Discard statistics collected by `ANALYZE TABLE` |
 | [COMMENT](statements/comment) | Add descriptive comments to tables and views |
 
-## Sample Data
+## Forks
 
-Load a ready-made dataset when there is nothing to query yet:
+Create a dataset from another one without copying its data:
 
 | Statement | Purpose |
 |-----------|---------|
-| [LOAD SAMPLE](statements/load-sample) | Copy a staged sample dataset — TPC-H — into an empty collection |
+| [CREATE TABLE ... CLONE](statements/clone) | Fork a dataset — the new one borrows the original's files |
+| [ALTER TABLE ... RESYNC](statements/alter-table#resync) | Bring a fork back up to date with its source |
+| [ALTER TABLE ... DETACH](statements/alter-table#detach) | Copy what a fork borrowed, and end the relationship |
 
-The sample's files are copied, so what lands in the collection is an ordinary dataset you own and are billed for. See [Sample Data](advanced/adv-sample-data) for the built-in `$` relations, which are a different thing: they need no loading and cost nothing.
+A fork is an ordinary dataset: query it, write to it, time-travel it, drop it. Writes land in its own storage and never touch the files it borrowed, and the source will not expire the snapshot a fork rests on. See [Sample Data](advanced/adv-sample-data) for ready-made datasets worth forking.
 
 ## Advanced Features
 

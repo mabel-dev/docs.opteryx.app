@@ -663,6 +663,64 @@ DROP CONSTRAINT tickets_customer_fk;
 - Dropping either table removes the declarations on it. A declaration pointing *at* a
   dropped or renamed table is left in place, naming something that is no longer there.
 
+## RESYNC
+
+Makes a **fork** equal its source's current contents again. Only a dataset created by
+[CREATE TABLE ... CLONE](clone) can be resynced.
+
+~~~sql
+ALTER TABLE <fork> RESYNC [ FORCE ];
+~~~
+
+Like the clone itself, this moves no data — it borrows the source's current files the
+way the original clone did.
+
+### Resync a fork
+~~~sql
+ALTER TABLE personal.alice.lineitem RESYNC;
+~~~
+
+### Notes (RESYNC)
+
+- Refused **without `FORCE`** when the fork has commits of its own since it was last in
+  sync. Those commits are what a resync would supersede, and quietly dropping someone's
+  edits is not a refresh.
+- `FORCE` discards nothing physically. The superseded commits stay readable through
+  [time travel](version-as-of) until the fork's own retention retires them.
+- Refused when the fork is already up to date, rather than committing a snapshot that
+  changed nothing.
+- If the source's schema has changed, the resync adopts it — a resync means "become the
+  source again", schema included.
+- **Manual only.** Nothing resyncs a fork on a schedule. A fork that refreshed itself
+  would be a materialized view, which already exists and has different guarantees.
+- Requires the `owner` role: `FORCE` can supersede the caller's own commits.
+
+## DETACH
+
+Turns a fork into an ordinary dataset by copying everything it borrowed into its own
+storage.
+
+~~~sql
+ALTER TABLE <fork> DETACH;
+~~~
+
+This is the one fork operation that **moves data**, which is why it is written out
+rather than happening implicitly. Afterwards the dataset stands alone, and its former
+source owes it nothing — which is what lets that source be renamed or dropped.
+
+### Detach a fork
+~~~sql
+ALTER TABLE personal.alice.lineitem DETACH;
+~~~
+
+### Notes (DETACH)
+
+- Only the **current** snapshot's files are copied. Older snapshots of the fork keep
+  naming the source's paths and may stop resolving once the source moves on. That is
+  the trade `DETACH` makes, and the reason it is not automatic.
+- The copied bytes are stored — and billed — as yours from then on.
+- Requires the `owner` role.
+
 ## Materialized Views
 
 `ALTER TABLE` is rejected against a materialized view for every operation that changes the table's shape, layout or name — the four column operations, `CLUSTER BY`, `RENAME TO`, and the two constraint operations. A view is defined by its `SELECT`, not authored as a table, so its columns are whatever that query returns; changing them means changing the query. Use `CREATE OR REPLACE MATERIALIZED VIEW`, rebuild it with [REFRESH MATERIALIZED VIEW](refresh-materialized-view), or remove it with [DROP MATERIALIZED VIEW](drop-materialized-view).
@@ -675,6 +733,7 @@ DROP CONSTRAINT tickets_customer_fk;
 - [DROP TABLE](drop-table)
 - [TRUNCATE TABLE](truncate-table)
 - [ALTER MATERIALIZED VIEW](alter-materialized-view)
+- [CREATE TABLE ... CLONE](clone) — fork a dataset without copying it
 - [SHOW SNAPSHOTS FOR](show-snapshots) — lists a table's snapshots, and the tags on each
 - [VERSION AS OF](version-as-of) — read a snapshot by tag name
 - [Time Travel](/docs/reference/sql/advanced/adv-time-travel) — how long snapshots last, and what a tag changes about that

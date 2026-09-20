@@ -1,6 +1,6 @@
 ---
 title: ALTER WORKSPACE Statement — Opteryx Reference
-description: SQL ALTER WORKSPACE statement syntax and examples for setting workspace-level properties such as deletion_protection, egress_protection and maintenance in Opteryx
+description: SQL ALTER WORKSPACE statement syntax and examples for setting workspace-level properties such as deletion_protection, egress_protection, maintenance and listed in Opteryx
 ---
 
 # ALTER WORKSPACE
@@ -28,11 +28,12 @@ ALTER WORKSPACE <source> DROP SECURE <object>;
 | `deletion_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse deletion of the workspace |
 | `egress_protection` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Refuse automated copies of this workspace's data into another workspace |
 | `maintenance` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Let the platform keep this workspace's data compacted (Opteryx storage only) |
+| `listed` | `ON` / `OFF` (also `TRUE` / `FALSE`) | `ON` | Show this workspace in dataset listings — the catalog tree, pickers, `$metadata` |
 
 Only the properties listed above can be set. Any other name is rejected when the query is
 planned, so a typo cannot quietly become a new, meaningless property.
 
-Two of the three are **protections, and both default to `ON`**. That is deliberate and
+Two of the four are **protections, and both default to `ON`**. That is deliberate and
 uniform: every workspace property named `..._protection` is safe when on, so you can scan a
 workspace's settings for `OFF` without having to reason about which way each one points. A
 workspace you have never configured is protected on both counts.
@@ -41,9 +42,33 @@ workspace you have never configured is protected on both counts.
 only property here that is not stored on the workspace. See
 [Maintenance](#maintenance) below.
 
+`listed` is not a protection either, and it is important not to read it as one. Turning it
+off keeps a workspace out of **listings** — the catalog tree, dataset pickers, and
+`$metadata` — and changes nothing about who may read what is in it. An unlisted workspace
+is still queryable by name, still appears in `information_schema`, and is still named in
+provenance and fork relationships. Access is decided by grants, and only by grants.
+
+It is for a **library** namespace: one whose datasets are meant to be found once, forked,
+and then worked with under your own name. Without it, a namespace holding several scale
+factors of a benchmark puts every one of those datasets in the catalog of every account on
+the platform, permanently, to be used once.
+
+It defaults to `ON` for the opposite reason the protections do. Theirs is "unset must mean
+protect"; this one follows the status quo, because the two mistakes are not equal — an
+unlisted workspace that shows up is clutter, while a listed one that vanishes is your data
+disappearing out of your own catalog.
+
 `TRUE` and `FALSE` are accepted as synonyms for `ON` and `OFF`.
 
 ## Examples
+
+### Keep a Library Workspace Out of Everyone's Catalog
+~~~sql
+ALTER WORKSPACE samples SET listed TO OFF;
+~~~
+
+Its datasets stay readable and forkable by name — they simply stop appearing in the catalog
+tree.
 
 ### Allow the Workspace To Be Deleted
 ~~~sql

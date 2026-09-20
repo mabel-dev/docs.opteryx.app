@@ -1,6 +1,6 @@
 ---
 title: Sample Data in Opteryx - Built-in Test Datasets
-description: Explore the built-in sample relations in Opteryx, and load the TPC-H sample dataset with LOAD SAMPLE.
+description: Explore the built-in sample relations in Opteryx, and fork a ready-made dataset with CREATE TABLE ... CLONE.
 ---
 
 # Sample Data
@@ -24,28 +24,21 @@ SELECT name
 
 Other internal relations exist prefixed with `$` (such as `$variables` and `$user`). These are not intended for end-user queries — their structure and availability are not guaranteed.
 
-## Loading a Sample Dataset
+## Starting From a Ready-Made Dataset
 
-The `$` relations are tiny — enough to try an expression, not enough to write a realistic
-query against. For that, [LOAD SAMPLE](../statements/load-sample) copies a staged sample
-dataset into a collection of your own:
+The `$` relations are tiny — enough to try an expression, not enough to write a
+realistic query against. For that, fork a dataset that already exists with
+[CREATE TABLE ... CLONE](../statements/clone):
 
 ```sql
-LOAD SAMPLE TPCH INTO personal.alice AT SCALE 0.1;
+CREATE TABLE personal.alice.lineitem CLONE samples.tpch_sf1.lineitem;
 ```
 
-That creates the eight [TPC-H](https://www.tpc.org/tpch/) tables — `region`, `nation`, `supplier`, `customer`, `part`,
-`partsupp`, `orders` and `lineitem` — in an empty collection. Unlike the `$` relations,
-these are ordinary datasets: they are copied into your own storage, they are billed like
-any other dataset, and you drop them when you are done with them. Staged scale factors on
-Opteryx Cloud are `0.01`, `0.1`, `1` (the default), `5` and `10`.
+Nothing is copied: the new dataset borrows the original's files, so the statement costs
+the same whether the source holds a megabyte or a terabyte. Unlike the `$` relations,
+what you get is an ordinary dataset — you can write to it, time-travel it and drop it,
+and it occupies no storage of your own until you change it.
 
-The staged data follows the TPC-H schema and is provided for demonstration and
-testing only. It is not an official TPC benchmark implementation, and any timings
-you take against it are not comparable to published TPC-H results. See the
-[TPC-H specification](https://www.tpc.org/tpch/) for the benchmark itself.
-
----
-
-TPC, TPC Benchmark, and TPC-H are trademarks of the
-[Transaction Processing Performance Council](https://www.tpc.org/).
+Use [ALTER TABLE ... RESYNC](../statements/alter-table#resync) to pick up changes the
+source has made since, and [ALTER TABLE ... DETACH](../statements/alter-table#detach) to
+take a private copy and end the relationship.

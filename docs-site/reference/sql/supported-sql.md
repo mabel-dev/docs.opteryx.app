@@ -20,7 +20,7 @@ This page gives a concise, practical summary of the SQL features supported by Op
 - Aggregates: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
 - Set ops: `UNION` / `UNION ALL`, `INTERSECT`, `EXCEPT`
 - Data mod: `INSERT`, [UPDATE](/docs/reference/sql/statements/update), [DELETE](/docs/reference/sql/statements/delete) and [MERGE](/docs/reference/sql/statements/merge) (all experimental, backend-dependent). The row-level statements need a catalog-backed table. Use `MERGE` to update, insert and delete in one atomic statement.
-- Sample data: [LOAD SAMPLE](/docs/reference/sql/statements/load-sample) copies the TPC-H sample dataset into an empty collection, when there is nothing to query yet
+- Forks: [CREATE TABLE ... CLONE](/docs/reference/sql/statements/clone) creates a dataset from another without copying its data; `ALTER TABLE ... RESYNC | DETACH` keep it up to date or set it loose
 - DDL: `CREATE` / `DROP` / `TRUNCATE` / `ALTER TABLE`, `CREATE` / `ALTER` / `DROP VIEW`, `CREATE` / `DROP` / `REFRESH MATERIALIZED VIEW`, `DROP TRIGGER`, `DROP COLLECTION`, `ALTER WORKSPACE`, `COMMENT ON`, `ANALYZE TABLE`
 
 > Tip: Opteryx targets a pragmatic, file-oriented SQL subset suitable for ad-hoc analytical queries — not full RDBMS parity.
