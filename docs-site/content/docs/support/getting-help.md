@@ -16,7 +16,7 @@ redact anything you would not want read by a stranger.
 
 Two minutes here often saves an afternoon:
 
-- **[status.opteryx.app](https://status.opteryx.app)** — if the platform is
+- **[opteryx.statuspage.io](https://opteryx.statuspage.io)** — if the platform is
   having an incident, it will be there first. Subscribe for updates rather than
   refreshing.
 - **[Limits](/docs/reference/sql/limits)** — engine ceilings you might be

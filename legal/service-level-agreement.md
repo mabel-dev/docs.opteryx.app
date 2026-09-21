@@ -19,7 +19,7 @@ commitment for the Opteryx hosted service.
 > ready to commit, publish only Section 2 (Free plan) and Section 8, and say
 > that Paid plan service levels are available on request — that is a defensible
 > position, and it is better than a number you cannot honour. Note that
-> `status.opteryx.app` already creates an availability expectation, so saying
+> `opteryx.statuspage.io` already creates an availability expectation, so saying
 > nothing at all is the worst of the three options.
 
 ---
@@ -101,7 +101,7 @@ terminate for material breach under Section 10.3 of the Terms of Service.
 Unavailable Minutes exclude any period of unavailability arising from:
 
 - **Scheduled maintenance**, announced at least {{MAINTENANCE_NOTICE}} in
-  advance on `status.opteryx.app`, within the maintenance window described in
+  advance on `opteryx.statuspage.io`, within the maintenance window described in
   Section 6;
 - **Emergency maintenance** reasonably necessary to address a security
   vulnerability or imminent service failure;
@@ -127,12 +127,12 @@ Unavailable Minutes exclude any period of unavailability arising from:
 **Scheduled maintenance window:** {{MAINTENANCE_WINDOW}}.
 
 We aim to perform maintenance without downtime. Where downtime is required, we
-will announce it on `status.opteryx.app` at least {{MAINTENANCE_NOTICE}} in
+will announce it on `opteryx.statuspage.io` at least {{MAINTENANCE_NOTICE}} in
 advance, and will keep it within the window where practicable.
 
 ## 7. Status and incident communication
 
-Current and historical status is published at `status.opteryx.app`. During an
+Current and historical status is published at `opteryx.statuspage.io`. During an
 incident affecting a Section 1 component, we will post an initial
 acknowledgement, updates at least {{INCIDENT_UPDATE_INTERVAL}} while the
 incident is open, and a resolution notice.

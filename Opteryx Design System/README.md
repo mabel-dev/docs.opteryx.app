@@ -19,7 +19,7 @@ Public references:
 
 - Homepage: https://opteryx.app
 - Docs: https://docs.opteryx.app
-- Status: https://status.opteryx.app / https://opteryx.statuspage.io
+- Status: https://opteryx.statuspage.io / https://opteryx.statuspage.io
 - Repo: https://github.com/mabel-dev/ (maintainer: Justin Joyce)
 
 ## Products represented

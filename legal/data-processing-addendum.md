@@ -282,7 +282,7 @@ contact you notify to us.
 - Audit logging of authentication events, permission grants and revocations, and
   administrative actions.
 - Operational monitoring and alerting, with public status reporting at
-  `status.opteryx.app`.
+  `opteryx.statuspage.io`.
 
 **Resilience and recovery**
 

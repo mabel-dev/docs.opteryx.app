@@ -34,7 +34,7 @@ It forms part of the [Terms of Service](./terms-of-service.md).
 | Channel | Available to | Use for |
 | --- | --- | --- |
 | [Documentation](https://docs.opteryx.app) | Everyone | Reference, guides, limits |
-| [Status page](https://status.opteryx.app) | Everyone | Current incidents, subscribe for updates |
+| [Status page](https://opteryx.statuspage.io) | Everyone | Current incidents, subscribe for updates |
 | [Issue tracker](https://github.com/mabel-dev/opteryx.app/issues/new/choose) | Everyone | Platform bugs, questions, feature requests — public |
 | [GitHub issues](https://github.com/mabel-dev/opteryx/issues) | Everyone | Open source engine bugs |
 | {{COMMUNITY_CHANNEL}} | Everyone | Questions, discussion |
@@ -94,7 +94,7 @@ Please include:
   OData, Flight SQL, SQLAlchemy;
 - the business impact, so we can set severity correctly.
 
-Before reporting, it is worth checking [status.opteryx.app](https://status.opteryx.app),
+Before reporting, it is worth checking [opteryx.statuspage.io](https://opteryx.statuspage.io),
 the [Limits](https://docs.opteryx.app/docs/reference/sql/limits) page for engine
 ceilings, and [Known Limits](https://docs.opteryx.app/docs/roadmap-guarantees/known-limits)
 for features that are not implemented rather than broken.

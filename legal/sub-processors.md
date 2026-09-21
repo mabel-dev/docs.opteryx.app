@@ -46,7 +46,7 @@ contents of your datasets.
 | Sub-processor | Role | Data processed | Location | Transfer mechanism |
 | --- | --- | --- | --- | --- |
 | Stripe (Stripe Payments Europe Ltd / Stripe Inc.) | Card collection and processing, payment method storage | Billing contact details, billing address, card details (collected directly by Stripe), transaction records | Ireland / United States | UK Addendum to SCCs {{— confirm against your signed Stripe DPA}} |
-| Atlassian (Statuspage) | Public status page and incident subscriber notifications at `status.opteryx.app` | Subscriber email addresses (self-supplied); no customer data | United States | UK Addendum to SCCs |
+| Atlassian (Statuspage) | Public status page and incident subscriber notifications at `opteryx.statuspage.io` | Subscriber email addresses (self-supplied); no customer data | United States | UK Addendum to SCCs |
 | {{EMAIL_PROVIDER}} | Transactional and service notification email | Recipient name and email address, message content | {{EMAIL_PROVIDER_LOCATION}} | {{EMAIL_PROVIDER_TRANSFER}} |
 | {{SUPPORT_TOOL}} | Support ticketing and correspondence | Name, email address, support correspondence, any data you include in a ticket | {{SUPPORT_TOOL_LOCATION}} | {{SUPPORT_TOOL_TRANSFER}} |
 | {{ERROR_MONITORING}} | Application error and performance monitoring | Technical diagnostics, IP address, user identifier | {{ERROR_MONITORING_LOCATION}} | {{ERROR_MONITORING_TRANSFER}} |

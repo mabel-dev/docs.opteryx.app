@@ -160,7 +160,7 @@ SLA applies, the Service is provided on a reasonable-endeavours basis.
 8.2 Support is provided as described in the
 [Support Policy](./support-policy.md).
 
-8.3 We publish operational status at `status.opteryx.app`. Publication of a
+8.3 We publish operational status at `opteryx.statuspage.io`. Publication of a
 status page is not itself a warranty or commitment as to availability.
 
 8.4 **Changes to the Service.** We develop the Service continuously and may add,

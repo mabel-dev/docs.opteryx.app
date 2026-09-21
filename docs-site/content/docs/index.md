@@ -60,7 +60,7 @@ If something isn't working, or you're stuck:
 
 - [Raise a bug or ask a question](https://github.com/mabel-dev/opteryx.app/issues/new/choose) — issues for the Opteryx platform are tracked in the open at [mabel-dev/opteryx.app](https://github.com/mabel-dev/opteryx.app/issues)
 - [Getting help](support/getting-help) - what to include in a ticket, and how to report a security issue
-- [status.opteryx.app](https://status.opteryx.app) - check here first in case there is a live incident
+- [opteryx.statuspage.io](https://opteryx.statuspage.io) - check here first in case there is a live incident
 - Bugs in the open source engine itself go to [mabel-dev/opteryx](https://github.com/mabel-dev/opteryx/issues)
 
 ## License

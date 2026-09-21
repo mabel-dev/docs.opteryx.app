@@ -90,7 +90,7 @@ should not be.}}
 **Secrets management.** {{SECRETS_MANAGEMENT — e.g. Google Secret Manager, with
 rotation policy.}}
 
-**Availability.** Operational status is published at `status.opteryx.app`,
+**Availability.** Operational status is published at `opteryx.statuspage.io`,
 hosted independently of our infrastructure so it stays up when we do not.
 
 ## Resilience and disaster recovery
@@ -158,7 +158,7 @@ should do.
 Commissioner's Office within 72 hours under UK GDPR Article 33.
 
 **Service incidents** (availability rather than security) are communicated
-through `status.opteryx.app` as described in the
+through `opteryx.statuspage.io` as described in the
 [SLA](./service-level-agreement.md).
 
 ## Compliance
