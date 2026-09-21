@@ -13,15 +13,19 @@ If you haven't signed in yet, start with [Logging In](registration), and [Site T
 
 ## Where Your Table Will Live
 
-Every relation is addressed as `workspace.collection.table`. You have a workspace of your own, `personal`, whose collection is your username — `personal.<you>.<table>` is yours outright, and no one else can be granted access to it (see [Access and Permissions](/docs/core-concepts/access-and-permissions)).
+Every relation is addressed as `workspace.collection.table`. You have a workspace of your own, `personal`, whose collection is your username — that collection is yours outright, and no one else can be granted access to it (see [Access and Permissions](/docs/core-concepts/access-and-permissions)).
 
-To find the name to type, ask for it:
+You don't have to type your username. `@@external_user` holds it, and it resolves where it stands inside a relation name, so every statement below addresses `personal.@@external_user.planet_notes` and reaches your own table whoever runs it.
+
+To see what it resolves to:
 
 ```sql
 SELECT USER();
 ```
 
-Everything below writes `personal.<you>` — substitute the value you just got back. If your username is `ada`, `personal.<you>.planet_notes` is `personal.ada.planet_notes`.
+If that returns `ada`, then `personal.@@external_user.planet_notes` is `personal.ada.planet_notes`. You can write the name out in full instead — the two are the same table.
+
+Only your own identity resolves this way, and only inside a name: `@@external_user` and `@@billing_account` are the variables a relation name accepts, so there is no way to address someone else's collection by variable.
 
 ## 1. Look at the Source Data
 
@@ -46,7 +50,7 @@ SHOW COLUMNS FROM public.astronomy.planets;
 `CREATE TABLE ... AS SELECT` — CTAS — creates a table by materializing a query result. Here that's two columns per planet: its name, and a review status you're going to fill in later.
 
 ```sql
-CREATE TABLE personal.<you>.planet_notes AS
+CREATE TABLE personal.@@external_user.planet_notes AS
 SELECT name,
        'unreviewed' AS review_status
   FROM public.astronomy.planets;
@@ -64,14 +68,14 @@ It's an ordinary table now, and reads like any other:
 
 ```sql
 SELECT *
-  FROM personal.<you>.planet_notes
+  FROM personal.@@external_user.planet_notes
  ORDER BY name;
 ```
 
 ```sql
 SELECT review_status,
        COUNT(*) AS planets
-  FROM personal.<you>.planet_notes
+  FROM personal.@@external_user.planet_notes
  GROUP BY review_status;
 ```
 
@@ -79,12 +83,12 @@ Every row should still be `unreviewed`. The **Execution plan** tab next to the r
 
 ## 4. Change Some Rows
 
-> Warning: `UPDATE` and `DELETE` are experimental, and work only against catalog-backed tables — which `personal.<you>.*` is. They aren't suitable for production use yet.
+> Warning: `UPDATE` and `DELETE` are experimental, and work only against catalog-backed tables — which `personal.@@external_user.*` is. They aren't suitable for production use yet.
 
 `UPDATE` changes the rows a condition names:
 
 ```sql
-UPDATE personal.<you>.planet_notes
+UPDATE personal.@@external_user.planet_notes
    SET review_status = 'reviewed'
  WHERE name IN ('Earth', 'Mars');
 ```
@@ -96,7 +100,7 @@ Check the result:
 ```sql
 SELECT review_status,
        COUNT(*) AS planets
-  FROM personal.<you>.planet_notes
+  FROM personal.@@external_user.planet_notes
  GROUP BY review_status;
 ```
 
@@ -109,7 +113,7 @@ See [UPDATE](/docs/reference/sql/statements/update) for the full set of limitati
 `DELETE` takes the same shape:
 
 ```sql
-DELETE FROM personal.<you>.planet_notes
+DELETE FROM personal.@@external_user.planet_notes
  WHERE name = 'Pluto';
 ```
 
@@ -120,7 +124,7 @@ It reports how many rows it removed, and a `DELETE` that matches nothing is a su
 Each of those statements committed a new version of the table, and the history is queryable:
 
 ```sql
-SHOW SNAPSHOTS FOR personal.<you>.planet_notes;
+SHOW SNAPSHOTS FOR personal.@@external_user.planet_notes;
 ```
 
 One row per commit, newest first: when it landed, what kind of operation it was, and how many records and files it added and removed. You should see the `CREATE` at the bottom and the `UPDATE` and `DELETE` above it.
@@ -129,7 +133,7 @@ Any of those points can be read directly. `PREVIOUS` is the version of the data 
 
 ```sql
 SELECT *
-  FROM personal.<you>.planet_notes VERSION AS OF PREVIOUS
+  FROM personal.@@external_user.planet_notes VERSION AS OF PREVIOUS
  ORDER BY name;
 ```
 
@@ -140,7 +144,7 @@ See [VERSION AS OF](/docs/reference/sql/statements/version-as-of) for selecting 
 `UPDATE` and `DELETE` don't rewrite the files a row lives in — they mark the row as deleted where it sits and readers skip it. That's what makes them cheap, but the bytes stay on disk, and each write adds files. `OPTIMIZE TABLE` is what actually clears both:
 
 ```sql
-OPTIMIZE TABLE personal.<you>.planet_notes;
+OPTIMIZE TABLE personal.@@external_user.planet_notes;
 ```
 
 There's no strategy to pick — it's detected from the table. Nothing about the table's contents changes; a `SELECT` returns the same rows before and after. On a table this small there is nothing worth compacting and it may well decline to do anything, which is a success, not a failure. See [OPTIMIZE TABLE](/docs/reference/sql/statements/optimize-table).
@@ -148,7 +152,7 @@ There's no strategy to pick — it's detected from the table. Nothing about the 
 ## 8. Clean Up
 
 ```sql
-DROP TABLE personal.<you>.planet_notes;
+DROP TABLE personal.@@external_user.planet_notes;
 ```
 
 > Warning: `DROP TABLE` removes the data the table holds, and its history along with it — the snapshots from step 6 go too. This cannot be undone.
@@ -157,7 +161,7 @@ Add `IF EXISTS` if you want the statement to succeed when the table has already 
 
 ```sql
 SELECT *
-  FROM personal.<you>.planet_notes;
+  FROM personal.@@external_user.planet_notes;
 ```
 
 That should now fail to resolve the table, and it should be gone from the catalog panel.
