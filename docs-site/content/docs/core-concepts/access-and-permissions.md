@@ -38,7 +38,7 @@ Workspaces are the primary isolation and billing boundary. A grant on a broader 
 Two schemas are handled specially and can't be targeted by a policy:
 
 - **`public.*`** is read-only for everyone, regardless of any grant - you can't be given `writer` or `owner` there.
-- **`personal.<username>.*`** is fully owned by that user - no grant is needed, and no one else can be granted access to it.
+- **`personal.<username>.*`** is fully owned by that user - no grant is needed, and no one else can be granted access to it. Write `$me` in place of your username and it resolves to you, so `personal.$me.*` always passes without you typing it - see [`$me`](/docs/reference/sql/virtual-datasets#the-me-pronoun).
 
 ## Managing grants
 

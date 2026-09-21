@@ -63,4 +63,7 @@ is still clearer, but it is not required.
 - No word is reserved in **both** positions — a name that fails as a column may
   still be a valid table name, and vice versa.
 - Identifiers may start with a letter, `_`, `$` or `@`, and `$`-prefixed names
-  are reserved for Opteryx's own [virtual datasets](advanced/adv-sample-data).
+  are reserved for the engine's own — the [virtual datasets](virtual-datasets)
+  such as `$planets`, and `$me`, which stands for your username inside a
+  relation name. Quoting escapes the reservation: `` `$me` `` is an ordinary
+  identifier.

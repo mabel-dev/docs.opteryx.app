@@ -2,20 +2,20 @@
 
 You will build a table you own, put a materialized view on top of it, watch the view refresh itself when the table changes, run a task by hand, then clean everything up. It takes about 40 minutes in [Studio](https://opteryx.app). Everything is created under your `personal` workspace, so nothing here is visible to anyone else.
 
-Everything below writes to your own `personal` collection, and you don't have to type your username to do it: `@@external_user` holds it and resolves where it stands inside a relation name, so `personal.@@external_user.planet_log` is your table whoever runs this.
+Everything below writes to your own `personal` collection, and you don't have to type your username to do it: `$me` stands for it and resolves where it stands inside a relation name, so `personal.$me.planet_log` is your table whoever runs this.
 
-To see what it resolves to:
+To see what it stands for:
 
 ```sql
 SELECT USER();
 ```
 
-If that returns `ada`, then `personal.@@external_user.planet_log` is `personal.ada.planet_log`. Step 5 is the one place you will need the value itself.
+If that returns `ada`, then `personal.$me.planet_log` is `personal.ada.planet_log`. Step 5 is the one place you will need the value itself.
 
 ### 1. A table of your own
 
 ```sql
-CREATE TABLE personal.@@external_user.planet_log AS
+CREATE TABLE personal.$me.planet_log AS
 SELECT name,
        mass,
        number_of_moons,
@@ -28,35 +28,35 @@ One row per planet in the sample, committed as a single version. `load_batch` is
 ### 2. A view that maintains itself
 
 ```sql
-CREATE MATERIALIZED VIEW personal.@@external_user.batch_totals AS
+CREATE MATERIALIZED VIEW personal.$me.batch_totals AS
 SELECT load_batch,
        COUNT(*)             AS planets,
        SUM(number_of_moons) AS moons
-  FROM personal.@@external_user.planet_log
+  FROM personal.$me.planet_log
  GROUP BY load_batch;
 ```
 
 ```sql
-SELECT * FROM personal.@@external_user.batch_totals;
+SELECT * FROM personal.$me.batch_totals;
 ```
 
 One row, `initial`. Creating the view also registered a refresh trigger on `planet_log`. Look at it:
 
 ```sql
-SHOW TRIGGERS FOR personal.@@external_user.planet_log;
+SHOW TRIGGERS FOR personal.$me.planet_log;
 ```
 
 ### 3. Change the source, watch the view follow
 
 ```sql
-INSERT INTO personal.@@external_user.planet_log (name, mass, number_of_moons, load_batch)
+INSERT INTO personal.$me.planet_log (name, mass, number_of_moons, load_batch)
 VALUES ('Ceres', 0.00094, 0, 'dwarf');
 ```
 
 Commits within about a minute coalesce into one refresh, so wait a minute, then:
 
 ```sql
-SELECT * FROM personal.@@external_user.batch_totals ORDER BY load_batch;
+SELECT * FROM personal.$me.batch_totals ORDER BY load_batch;
 ```
 
 Two rows now. If there is still one, check how the last refresh went:
@@ -69,7 +69,7 @@ SELECT trigger_name, target, last_fired_at, last_fired_status
 ### 4. Read the history
 
 ```sql
-SHOW SNAPSHOTS FOR personal.@@external_user.planet_log;
+SHOW SNAPSHOTS FOR personal.$me.planet_log;
 ```
 
 Two commits: the `CREATE` and the `INSERT`. The refresh does not appear here because it was a commit to `batch_totals`, not to `planet_log`.
@@ -78,7 +78,7 @@ Read the table as it was before the insert:
 
 ```sql
 SELECT load_batch, COUNT(*) AS planets
-  FROM personal.@@external_user.planet_log VERSION AS OF PREVIOUS
+  FROM personal.$me.planet_log VERSION AS OF PREVIOUS
  GROUP BY load_batch;
 ```
 
@@ -89,15 +89,15 @@ Only `initial`.
 A materialized view re-runs one `SELECT`. A task runs any statement, with values supplied at run time:
 
 ```sql
-CREATE TASK personal.@@external_user.add_body AS
+CREATE TASK personal.$me.add_body AS
     INSERT INTO personal.<you>.planet_log (name, mass, number_of_moons, load_batch)
     VALUES (:name, :mass, :moons, 'manual');
 ```
 
-Note the `<you>` on the second line: that one you substitute by hand. A task's body is stored as you write it and re-parsed each time the task fires, as whoever the task runs as — so a variable in there would have no single answer, and it is refused rather than guessed at. The task's own name is read now, when you run this, so it takes the variable like every other name on this page.
+Note the `<you>` on the second line: that one you substitute by hand. A task's body is stored as you write it and re-parsed each time the task fires, as whoever the task runs as — so `$me` in there would have no single answer, and it is refused rather than guessed at. The task's own name is read now, when you run this, so it takes `$me` like every other name on this page.
 
 ```sql
-EXECUTE personal.@@external_user.add_body
+EXECUTE personal.$me.add_body
     USING 'Eris' AS name,
           0.0166 AS mass,
           1 AS moons;
@@ -116,15 +116,15 @@ This lists the roles you hold and what each one permits. Your `personal` workspa
 ### 7. Clean up
 
 ```sql
-DROP TASK personal.@@external_user.add_body;
+DROP TASK personal.$me.add_body;
 ```
 
 ```sql
-DROP MATERIALIZED VIEW personal.@@external_user.batch_totals;
+DROP MATERIALIZED VIEW personal.$me.batch_totals;
 ```
 
 ```sql
-DROP TABLE personal.@@external_user.planet_log;
+DROP TABLE personal.$me.planet_log;
 ```
 
 Drop the view before the table so nothing is left pointing at a table that has gone. `DROP TABLE` also removes the history you read in step 4.
