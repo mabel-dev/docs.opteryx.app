@@ -17,6 +17,8 @@ Returns true when exactly one boolean operand evaluates to true.
 
 **SQL symbol:** `XOR`
 
+**Precedence:** level 6 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

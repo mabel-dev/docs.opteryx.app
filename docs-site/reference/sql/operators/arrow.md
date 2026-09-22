@@ -17,6 +17,8 @@ Returns the selected JSON value from a document or JSON-like value.
 
 **SQL symbol:** `->`
 
+**Precedence:** level 1 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

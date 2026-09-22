@@ -13,6 +13,16 @@ OData here is read-only - no `INSERT`/`UPDATE`/`DELETE`.
 
 The query syntax used below is defined by the standard, not by Opteryx. For the full grammar see [OData v4.01 Part 2: URL Conventions](https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html), and for `$apply` see the [Data Aggregation extension](https://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/odata-data-aggregation-ext-v4.0.html).
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- explain how the OData service differs from taking an extract
+- connect Power BI, Excel or another OData client to a dataset, with or without a token
+- discover the datasets available to you, and query one with filters and paging via `@odata.nextLink`
+- aggregate server-side with `$apply`, and read a tagged or prior snapshot
+- recognise the errors the service returns and what each one means
+
 ## A Live View, Not an Extract
 
 Every request queries current data. There's no extract to schedule and no copy to keep in sync - a dashboard refreshing hourly shows the data as it stood at each refresh.

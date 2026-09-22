@@ -17,6 +17,8 @@ Returns true when the supplied JSON path expression matches within the left docu
 
 **SQL symbol:** `@?`
 
+**Precedence:** level 1 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

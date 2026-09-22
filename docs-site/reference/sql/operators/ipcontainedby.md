@@ -17,6 +17,8 @@ Returns true when the left IPv4 address falls inside the network given on the ri
 
 **SQL symbol:** `<<=`
 
+**Precedence:** level 8 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

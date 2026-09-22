@@ -9,6 +9,16 @@ This guide is for [opteryx.app](https://opteryx.app), the hosted service. By def
 
 Nothing is copied and nothing is migrated. `SELECT` runs against the tables your catalog reports, at the snapshot it reports them, every time.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- say what connecting an Iceberg REST catalog gives you, and what it doesn't
+- create a workspace of the right kind — the choice is made at creation and can't be changed afterwards
+- configure the connection with either ambient or stored credentials, and test it
+- query the catalog's tables and refresh the dataset list on demand
+- follow a worked setup for Apache Polaris or Google BigLake, and know where AWS S3 Tables and Glue stand
+
 ## What You Get, and What You Don't
 
 Connected catalogs are **read-only**.

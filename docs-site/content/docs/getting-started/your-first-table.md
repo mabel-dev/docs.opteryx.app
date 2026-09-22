@@ -11,6 +11,16 @@ Nothing needs to be uploaded first — the table is built from `public.astronomy
 
 If you haven't signed in yet, start with [Logging In](registration), and [Site Tour](quick-start) for where the editor and catalog panel are.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- work out where a table of your own lives, and address it without typing your username
+- create a table from the result of a query with `CREATE TABLE ... AS SELECT`, and read it back
+- change and remove rows with `UPDATE` and `DELETE`, and see why the `WHERE` clause is what limits the damage
+- list a table's commit history, and read the version of it that existed before a change
+- compact the files a table has accumulated, and drop the table when you're done
+
 ## Where Your Table Will Live
 
 Every relation is addressed as `workspace.collection.table`. You have a workspace of your own, `personal`, whose collection is your username — that collection is yours outright, and no one else can be granted access to it (see [Access and Permissions](/docs/core-concepts/access-and-permissions)).

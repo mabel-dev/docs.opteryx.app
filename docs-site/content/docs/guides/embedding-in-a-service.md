@@ -7,6 +7,15 @@ description: Run Opteryx Core inside your own Python service. Register a workspa
 
 Because Opteryx Core is a library that runs in-process, it slots into a Python service the same way any other embedded engine would: set it up once at startup, then execute queries per request. This guide covers the shape of that, independent of which web framework you use.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- split Opteryx setup correctly between process startup and per-request work
+- bind request input as parameters rather than concatenating it into SQL
+- choose between collecting a result into one Arrow table and streaming it morsel by morsel
+- size your expectations to a single-node engine, and keep responses to summaries rather than raw dumps
+
 ## Set Up Once, at Startup
 
 Registering a workspace is a one-time step — do it when the process starts, not per request:

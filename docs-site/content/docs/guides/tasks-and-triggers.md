@@ -11,6 +11,16 @@ If you have used streams and tasks elsewhere, the shape is familiar, with one di
 
 This guide is for [opteryx.app](https://opteryx.app), the hosted service. Tasks and triggers live in the catalog, so the embedded engine over local Parquet has nothing to attach them to.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- keep tasks and triggers straight as two separate objects, and say what each one holds
+- describe the window of rows a run is handed, and why that's the commit's changes rather than the whole table
+- build a trigger from the blueprint, and adapt it to land new rows in a curated table or keep a change history
+- respect the one-task-one-trigger rule
+- avoid the traps that bite people building their first trigger
+
 ## Two Objects, Not One
 
 A **task** is a stored statement. It has a name in the catalog, like a table, and its SQL may contain `:name` placeholders that are filled in when it runs. A task carries no identity and no schedule. Run one by hand with [EXECUTE](/docs/reference/sql/statements/execute) and it runs as you, checked against your permissions at that moment.

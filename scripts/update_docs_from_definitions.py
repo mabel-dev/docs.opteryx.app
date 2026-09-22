@@ -1049,7 +1049,61 @@ def _type_link(type_name: str) -> str:
 # the docs generator could only ever agree with the engine by luck.
 
 
-def build_operators_docs(ops_def: Dict[str, Any]):
+def _precedence_lines(sources: List[Tuple[Dict[str, Any], bool]]) -> List[str]:
+    """The operator precedence section of operators.md.
+
+    Built from the `precedence` object opteryx-core attaches to every operator entry
+    (reference/precedence_catalog.py there). Three definition files carry one:
+    operators.json, unary_ops.json (NOT, IS NULL, unary minus...) and the
+    operator-shaped entries of expressions.json (BETWEEN, IS DISTINCT FROM, `::`).
+    Only operators.json entries have a page to link to.
+
+    An ordered list rather than a table: `|` and `||` are operators, and a pipe in a
+    Markdown table cell ends the cell.
+    """
+    tiers: Dict[int, Dict[str, Any]] = {}
+    for definitions, has_pages in sources:
+        for name, info in definitions.items():
+            precedence = info.get('precedence')
+            if not precedence:
+                continue
+            tier = tiers.setdefault(precedence['level'], {'spellings': [], 'note': None})
+            for spelling in precedence['spellings']:
+                shown = f'`{spelling}`'
+                if precedence['position'] == 'prefix':
+                    shown = f'unary `{spelling}`'
+                if has_pages:
+                    shown = f'[{shown}](operators/{slugify(name)})'
+                tier['spellings'].append(shown)
+            if precedence.get('note'):
+                tier['note'] = precedence['note']
+    if not tiers:
+        return []
+    if sorted(tiers) != list(range(1, len(tiers) + 1)):
+        raise ValueError(f'precedence levels are not contiguous from 1: {sorted(tiers)}')
+
+    lines = [
+        '## Operator precedence\n',
+        'When an expression is written without parentheses, operators higher in this '
+        'list bind first. Operators on the same line bind equally and group left to '
+        'right, so `a - b + c` is `(a - b) + c`. A prefix operator applies to '
+        'everything that binds tighter than it: `NOT a = b` is `NOT (a = b)`, and '
+        '`-a * b` is `(-a) * b`. Parentheses always override.\n',
+        'Some of these differ from other SQL engines; where they do, the line says so.\n',
+    ]
+    for level in sorted(tiers):
+        tier = tiers[level]
+        entry = f'{level}. ' + ' '.join(tier['spellings'])
+        if tier['note']:
+            entry += f' — {tier["note"]}'
+        lines.append(entry)
+    lines.append('')
+    return lines
+
+
+def build_operators_docs(
+    ops_def: Dict[str, Any], unary_def: Dict[str, Any], expressions_def: Dict[str, Any]
+):
     # index grouped by category
     categories: Dict[str, List[Tuple[str, Dict[str, Any]]]] = {}
     for name, info in ops_def.items():
@@ -1074,6 +1128,10 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             label = f"{display} `{sql_symbol}`" if sql_symbol else display
             lines.append(f'- [{label}](operators/{slug})')
         lines.append('')
+
+    lines.extend(
+        _precedence_lines([(ops_def, True), (unary_def, False), (expressions_def, False)])
+    )
 
     write_md(REF_SQL_DIR / 'operators.md', lines)
 
@@ -1113,6 +1171,12 @@ def build_operators_docs(ops_def: Dict[str, Any]):
             lines.append(f'**Category:** {category}\n')
         if sql_symbol:
             lines.append(f'**SQL symbol:** `{sql_symbol}`\n')
+        precedence = info.get('precedence')
+        if precedence:
+            lines.append(
+                f"**Precedence:** level {precedence['level']} of {precedence['levels']} "
+                f"(1 binds tightest) — see [operator precedence](../operators#operator-precedence).\n"
+            )
 
         # Syntax / Parameters / Returns / Examples / Notes / See Also, in the order
         # and notation the statement style guide sets out: UPPERCASE is a literal
@@ -1688,6 +1752,8 @@ def build_variables_docs(variables_def: Dict[str, Any]):
 def main():
     functions_def = load_json(DEFS / 'functions.json')
     operators_def = load_json(DEFS / 'operators.json')
+    unary_ops_def = load_json(DEFS / 'unary_ops.json')
+    expressions_def = load_json(DEFS / 'expressions.json')
     types_def = load_json(DEFS / 'types.json')
     aggregates_def = load_json(DEFS / 'aggregates.json')
     variables_def = load_json(DEFS / 'variables.json')
@@ -1698,7 +1764,7 @@ def main():
     _prune_stale(REF_SQL_DIR / 'types', {slugify(n) for n in types_def})
 
     build_functions_docs(functions_def)
-    build_operators_docs(operators_def)
+    build_operators_docs(operators_def, unary_ops_def, expressions_def)
     build_types_docs(types_def, operators_def)
     build_aggregates_docs(aggregates_def)
     build_variables_docs(variables_def)

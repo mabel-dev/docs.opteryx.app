@@ -9,6 +9,15 @@ This guide is for [opteryx.app](https://opteryx.app), the hosted service — not
 
 Running a query against the hosted service is three calls: get an access token, submit the job, then poll for its result.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- exchange a client ID and secret for a short-lived access token
+- submit a SQL statement to the Jobs API as a job, and read the response
+- poll that job to completion and recognise each status it can report
+- retrieve the results once it's finished
+
 ## 1. Get an Access Token
 
 Exchange a client ID and secret for a bearer token, using the `client_credentials` grant:

@@ -17,6 +17,8 @@ Returns true only when both boolean operands evaluate to true.
 
 **SQL symbol:** `AND`
 
+**Precedence:** level 14 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

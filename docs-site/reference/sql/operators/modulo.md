@@ -17,6 +17,8 @@ Returns the remainder after division of the left numeric operand by the right nu
 
 **SQL symbol:** `%`
 
+**Precedence:** level 4 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

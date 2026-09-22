@@ -7,6 +7,17 @@ description: Use Opteryx Core for exploratory data analysis in Jupyter notebooks
 
 Opteryx Core fits the notebook workflow well: it installs with `pip`, runs in the same process as your notebook kernel, and streams results in a form you can hand straight to pandas or a plotting library. It is a good fit when a Parquet dataset is larger than you want to load whole, but you still want to explore it interactively.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- set up Opteryx Core inside a notebook kernel and point it at a folder of Parquet
+- explore a dataset larger than memory by aggregating in SQL and pulling back only the summary
+- get a fast first look at an unfamiliar dataset — a sample, a row count, value frequencies
+- turn a small result into a pandas DataFrame and plot it
+- iterate a result row by row when you need Python-level logic
+- confirm the engine itself works using the built-in `$planets` relation
+
 ## Setup
 
 ```bash

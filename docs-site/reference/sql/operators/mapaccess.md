@@ -17,6 +17,8 @@ Returns the element at the requested index from an array, string, or blob-like v
 
 **SQL symbol:** `[]`
 
+**Precedence:** level 2 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

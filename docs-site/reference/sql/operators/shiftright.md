@@ -17,6 +17,8 @@ Shifts the bits of the left integer operand right by the number of positions in 
 
 **SQL symbol:** `>>`
 
+**Precedence:** level 8 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

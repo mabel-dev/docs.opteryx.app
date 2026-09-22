@@ -9,6 +9,16 @@ This is for [opteryx.app](https://opteryx.app), the hosted service, via its Arro
 
 Flight SQL is a gRPC-based protocol: query results stream back as Arrow record batches natively, with no JSON serialization step. It's read-only in this release — no `INSERT`/`UPDATE`/`DELETE`, no prepared statements, no transactions.
 
+## What you'll be able to do
+
+By the end of this page you'll be able to:
+
+- authenticate to the Flight SQL endpoint, and explain why no call here works anonymously
+- run a query from Python with `pyarrow.flight`, and follow the `GetFlightInfo`/`DoGet` two-step it makes you do yourself
+- run the same query more simply with the ADBC driver, and pull the result into pandas
+- list the datasets your token can see, using the same metadata calls a BI tool's table browser makes
+- point a JDBC/ODBC client such as DBeaver at the endpoint, and know the limits of this release
+
 ## Authentication
 
 Same bearer-token scheme as the rest of the hosted service (see [Authentication API](/docs/reference/api/authentication-api) for how to mint one), carried as gRPC call metadata instead of an HTTP header:

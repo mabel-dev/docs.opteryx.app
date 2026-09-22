@@ -17,6 +17,8 @@ Concatenates the left and right string or blob operands.
 
 **SQL symbol:** `||`
 
+**Precedence:** level 4 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

@@ -17,6 +17,8 @@ Returns true when the left array contains all values from the right array.
 
 **SQL symbol:** `@>>`
 
+**Precedence:** level 1 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

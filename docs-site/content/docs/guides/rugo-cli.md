@@ -7,6 +7,16 @@ description: Inspect, preview, convert, merge and split Parquet, CSV and JSONL f
 
 Installing [Rugo](/docs/guides/rugo-standalone) puts a `rugo` command on your `PATH` — the same reader and writer the engine uses, driven from the shell. It answers the questions you have about a file before you query it: what's in it, how big is it, what do the first rows look like — and converts between Parquet, CSV and JSONL without any Python in between.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- find a file's format, size and shape before you query it
+- preview rows and read per-column statistics
+- compare the schemas of two files
+- convert between Parquet, CSV and JSONL, and merge or split files
+- take JSON output from any verb and use it in a script
+
 ```bash
 pip install rugo
 ```

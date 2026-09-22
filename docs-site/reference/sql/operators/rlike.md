@@ -17,6 +17,8 @@ Returns true when the left string matches the regular expression on the right.
 
 **SQL symbol:** `RLIKE`
 
+**Precedence:** level 11 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

@@ -17,6 +17,8 @@ Returns true when the left string matches the SQL ILIKE pattern on the right wit
 
 **SQL symbol:** `ILIKE`
 
+**Precedence:** level 11 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

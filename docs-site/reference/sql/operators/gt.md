@@ -17,6 +17,8 @@ Returns true when the left operand is greater than the right operand.
 
 **SQL symbol:** `>`
 
+**Precedence:** level 10 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

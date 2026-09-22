@@ -17,6 +17,8 @@ Returns the selected JSON value as text (nvarchar), from a document given as tex
 
 **SQL symbol:** `->>`
 
+**Precedence:** level 1 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

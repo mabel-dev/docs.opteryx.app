@@ -17,6 +17,8 @@ Returns true when the left array contains any of the values provided by the righ
 
 **SQL symbol:** `@>`
 
+**Precedence:** level 1 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

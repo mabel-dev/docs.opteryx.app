@@ -9,6 +9,16 @@ This guide is for [opteryx.app](https://opteryx.app), the hosted service. By def
 
 Nothing is copied and nothing is migrated. `SELECT` runs against the tables your server holds, as they are at the moment the query runs.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- decide whether pointing a workspace at your own PostgreSQL server is the right move, and what it will and won't give you
+- create a workspace of the right kind — the choice can't be changed afterwards
+- fill in the connection settings, supply credentials, and test the connection before relying on it
+- address the tables it exposes, and refresh the dataset list when the source schema changes
+- tell which engine answered a query, and recognise the cases that are refused
+
 ## PostgreSQL and PostgreSQL-Compatible Servers
 
 What this binding speaks is the PostgreSQL wire protocol, which is why it reaches more than PostgreSQL itself.

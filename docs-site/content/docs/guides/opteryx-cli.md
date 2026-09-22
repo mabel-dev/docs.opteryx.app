@@ -7,6 +7,16 @@ description: Query Parquet datasets from your shell with the Opteryx CLI. One-sh
 
 Opteryx Core ships a command-line interface alongside the library. It is the same engine, driven from the shell — useful for checking a dataset without opening a notebook, for wiring a query into a shell script, and for timing a query while you tune it.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- run a one-shot SQL statement from your shell, and quote it so your shell leaves `$` names alone
+- query your own Parquet data by dataset name, by file path, or by folder
+- filter one file into another without writing any Python
+- work in the interactive session, and control how results are displayed
+- write results out as JSONL or Markdown, and time a query with the built-in benchmarking mode
+
 ```bash
 pip install opteryx-core
 ```

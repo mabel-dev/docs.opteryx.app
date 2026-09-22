@@ -18,6 +18,16 @@ Two providers are supported:
 
 This is not a new kind of principal. A binding is a second kind of credential on an existing machine client, stored beside that client's [access tokens](/docs/reference/api/authentication-api), listed and revoked through the same endpoints.
 
+## What you'll be able to do
+
+By the end of this page you'll be able to:
+
+- explain how a workload trades the OIDC token its platform already mints for an Opteryx access token, with no stored secret
+- pick the client a workload should be bound to, and register the workload against it
+- perform the exchange from a GitHub Actions workflow or a GCP service account
+- narrow a binding, and set the audience it will accept
+- list, time-limit and revoke bindings, and read the common exchange failures
+
 ## How the exchange works
 
 1. The workload asks its own platform for an OIDC token, naming Opteryx as the audience.

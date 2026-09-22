@@ -13,6 +13,16 @@ For a notebook or a local script, `opteryx-sqlalchemy` is the recommended way to
 pip install opteryx-sqlalchemy
 ```
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- build a connection URL from a client ID and secret, and keep that secret out of source control
+- run a query with plain SQLAlchemy Core
+- read a result straight into a pandas DataFrame
+- work around the bound-parameter limitation safely, and know why it exists
+- recognise what this dialect won't do — writes, and schema reflection
+
 ## Authenticating
 
 Create a client credential from the [Authentication API](/docs/reference/api/authentication-api) (or reuse one you already have) — you'll get a **client ID** and a **client secret**. The connection URL's username/password slots carry these, not a literal username and password:

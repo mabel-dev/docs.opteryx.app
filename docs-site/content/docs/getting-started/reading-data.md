@@ -2,6 +2,15 @@
 
 This page covers getting data into [opteryx.app](https://opteryx.app), the hosted service, and reading it back out with SQL. If you're embedding the `opteryx-core` engine directly in a Python process instead, see [Querying Local Data](/docs/guides/querying-local-data).
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- get a Parquet, CSV or NDJSON file into the hosted service, from the Studio upload flow or the Upload API
+- choose between the Jobs API, OData and Arrow Flight SQL for reading data back, and say what each is best at
+- know which of those need a token and which allow anonymous reads
+- find a public sample dataset to query before you've loaded anything of your own
+
 ## Loading Data
 
 Files are ingested through the [Upload API](/docs/reference/api/upload-api): open a session, upload one or more files as parts (Parquet, CSV, or NDJSON), then commit the session into a table. Opteryx Studio also has a guided upload flow in the UI that wraps the same API, if you'd rather drag and drop a file than script it.

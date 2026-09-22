@@ -17,6 +17,8 @@ Returns the sum of two numeric or interval-compatible operands.
 
 **SQL symbol:** `+`
 
+**Precedence:** level 5 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

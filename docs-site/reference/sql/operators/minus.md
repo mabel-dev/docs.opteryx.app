@@ -17,6 +17,8 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 
 **SQL symbol:** `-`
 
+**Precedence:** level 5 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

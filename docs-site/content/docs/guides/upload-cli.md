@@ -18,6 +18,16 @@ pip install opteryx-upload
 The command line and the terminal app come with it. Both are standard library —
 argparse and curses — so neither pulls anything extra into your environment.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- authenticate the upload client from environment variables
+- push a Parquet, CSV or NDJSON file into a table, and append to one that already exists
+- inspect what would be sent, and the column types agreed, without uploading anything
+- use the command in a shell pipeline
+- do the same from the full-screen terminal app, and find the commands and options you need
+
 ## Signing In
 
 Set your access token from the [Authentication API](/docs/reference/api/authentication-api):

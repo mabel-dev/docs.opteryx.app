@@ -17,6 +17,8 @@ Returns true when the network on the left, in CIDR notation, contains the IPv4 a
 
 **SQL symbol:** `>>=`
 
+**Precedence:** level 8 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

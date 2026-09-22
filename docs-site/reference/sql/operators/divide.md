@@ -17,6 +17,8 @@ Returns the quotient of two numeric operands.
 
 **SQL symbol:** `/`
 
+**Precedence:** level 4 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql

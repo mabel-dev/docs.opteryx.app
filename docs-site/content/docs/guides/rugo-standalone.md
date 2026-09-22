@@ -13,6 +13,16 @@ pip install rugo
 
 This gets you Rugo and [Draken](/docs/reference/internals/draken) (the columnar library it emits into) — and nothing else.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- decide when Rugo on its own is the right tool and when you want Opteryx and SQL
+- read and write Parquet, CSV and JSONL with no PyArrow and no SQL in the way
+- do the same from the command line
+- convert what you've read into Arrow when something downstream expects it
+- understand the one behavioural difference between Rugo and Opteryx, and why Rugo exists at all
+
 ## Rugo vs. Opteryx
 
 These are two different things worth keeping straight:

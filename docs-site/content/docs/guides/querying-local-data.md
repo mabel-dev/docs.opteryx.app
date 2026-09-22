@@ -7,6 +7,16 @@ description: Run SQL over local Parquet datasets with Opteryx Core. Register a w
 
 Opteryx Core is the engine behind [opteryx.app](https://opteryx.app), and it also runs as a standalone library. This guide covers using it locally: pointing it at a folder of Parquet data and querying it with SQL.
 
+## What You'll Be Able to Do
+
+By the end of this page you'll be able to:
+
+- register a workspace and query datasets by name rather than by file path
+- say how a dot-separated dataset name resolves to a folder, and which formats work as datasets
+- consume a result as morsels, as columns, as rows, or as an Arrow table
+- confirm your install works with the built-in `$planets` dataset, independently of storage access
+- bind parameters safely, and use projection and filters to keep a query fast
+
 ```bash
 pip install opteryx-core
 ```

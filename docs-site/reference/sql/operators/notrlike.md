@@ -17,6 +17,8 @@ Returns true when the left string does not match the regular expression on the r
 
 **SQL symbol:** `NOT RLIKE`
 
+**Precedence:** level 11 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+
 ## Syntax
 
 ```sql
