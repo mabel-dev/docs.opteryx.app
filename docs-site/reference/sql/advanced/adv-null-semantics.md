@@ -57,6 +57,25 @@ SELECT name
 
 `IS` comparisons are evaluated directly rather than going through the three-valued comparison logic, so they give a definite `true`/`false` even when the column itself is `NULL`.
 
+The same holds for the other `IS` tests, including `IS JSON`. A `NULL` is not a well-formed JSON document, so `IS JSON` returns `false` for it and `IS NOT JSON` returns `true`. Never `NULL`:
+
+```sql
+SELECT payload IS JSON AS ok
+  FROM (VALUES ('{"a": 1}'), ('not json'), (NULL)) AS t(payload);
+```
+
+```
+ ok
+-------
+ true
+ false
+ false
+```
+
+`IS NOT JSON` therefore picks up the `NULL` rows along with the malformed ones. Add `payload IS NOT NULL` if you only want the malformed ones.
+
+An untyped `NULL` literal has no type to test, so `SELECT NULL IS JSON` is a type error, the same as `SELECT NULL IS TRUE`. A `NULL` that comes from a column, or from `CAST(NULL AS VARCHAR)`, behaves as above.
+
 ## Coalescing Around NULL
 
 `IFNULL` and `COALESCE` substitute a value when a column is `NULL`, which is usually more useful than filtering the row out entirely:

@@ -76,13 +76,13 @@ Some of these differ from other SQL engines; where they do, the line says so.
 3. unary `-` unary `+`
 4. [`/`](operators/divide) [`%`](operators/modulo) [`*`](operators/multiply) [`DIV`](operators/myintegerdivide) [`||`](operators/stringconcat) — `||` binds like `*`. Postgres puts `||` below `+` and `-`; the two only meet in an expression that mixes strings and numbers.
 5. [`-`](operators/minus) [`+`](operators/plus)
-6. [`XOR`](operators/xor) — Logical XOR binds TIGHTER than `&` and every comparison, unlike MySQL, where it sits between AND and OR. `a = b XOR c = d` is `a = (b XOR c) = d` - parenthesise the comparisons: `(a = b) XOR (c = d)`.
-7. [`&`](operators/bitwiseand)
-8. [`^`](operators/bitwisexor) [`<<=`](operators/ipcontainedby) [`>>=`](operators/ipcontains) [`<<`](operators/shiftleft) [`>>`](operators/shiftright) — `^`, `<<` and `>>` share one tier, between `&` and `|`. MySQL binds `^` above `*` and the shifts above `&`, so `a & b << c` is `(a & b) << c` here and `a & (b << c)` in MySQL. The IPv4 containment operators `<<=` and `>>=` begin with the shift tokens and bind at this tier, not as comparisons.
-9. [`|`](operators/bitwiseor)
-10. [`=`](operators/eq) [`>`](operators/gt) [`>=`](operators/gteq) [`IN`](operators/inlist) [`<`](operators/lt) [`<=`](operators/lteq) [`!=`](operators/noteq) [`<>`](operators/noteq) [`NOT IN`](operators/notinlist) `BETWEEN` `NOT BETWEEN`
-11. [`ILIKE`](operators/ilike) [`LIKE`](operators/like) [`NOT ILIKE`](operators/notilike) [`NOT LIKE`](operators/notlike) [`NOT RLIKE`](operators/notrlike) [`RLIKE`](operators/rlike) `SIMILAR TO` `NOT SIMILAR TO` — Pattern matching binds LOOSER than comparison. Postgres has it tighter, so `a = b LIKE c` is `(a = b) LIKE c` here and `a = (b LIKE c)` there.
-12. `IS FALSE` `IS JSON ARRAY` `IS JSON OBJECT` `IS JSON SCALAR` `IS JSON` `IS NOT FALSE` `IS NOT JSON ARRAY` `IS NOT JSON OBJECT` `IS NOT JSON SCALAR` `IS NOT JSON` `IS NOT NULL` `IS NOT TRUE` `IS NULL` `IS TRUE` `IS DISTINCT FROM` `IS NOT DISTINCT FROM`
-13. unary `NOT`
-14. [`AND`](operators/and)
+6. [`&`](operators/bitwiseand)
+7. [`^`](operators/bitwisexor) [`<<=`](operators/ipcontainedby) [`>>=`](operators/ipcontains) [`<<`](operators/shiftleft) [`>>`](operators/shiftright) — `^`, `<<` and `>>` share one tier, between `&` and `|`. MySQL binds `^` above `*` and the shifts above `&`, so `a & b << c` is `(a & b) << c` here and `a & (b << c)` in MySQL. The IPv4 containment operators `<<=` and `>>=` begin with the shift tokens and bind at this tier, not as comparisons.
+8. [`|`](operators/bitwiseor)
+9. [`=`](operators/eq) [`>`](operators/gt) [`>=`](operators/gteq) [`IN`](operators/inlist) [`<`](operators/lt) [`<=`](operators/lteq) [`!=`](operators/noteq) [`<>`](operators/noteq) [`NOT IN`](operators/notinlist) `BETWEEN` `NOT BETWEEN`
+10. [`ILIKE`](operators/ilike) [`LIKE`](operators/like) [`NOT ILIKE`](operators/notilike) [`NOT LIKE`](operators/notlike) [`NOT RLIKE`](operators/notrlike) [`RLIKE`](operators/rlike) `SIMILAR TO` `NOT SIMILAR TO` — Pattern matching binds LOOSER than comparison. Postgres has it tighter, so `a = b LIKE c` is `(a = b) LIKE c` here and `a = (b LIKE c)` there.
+11. `IS FALSE` `IS JSON ARRAY` `IS JSON OBJECT` `IS JSON SCALAR` `IS JSON` `IS NOT FALSE` `IS NOT JSON ARRAY` `IS NOT JSON OBJECT` `IS NOT JSON SCALAR` `IS NOT JSON` `IS NOT NULL` `IS NOT TRUE` `IS NULL` `IS TRUE` `IS DISTINCT FROM` `IS NOT DISTINCT FROM`
+12. unary `NOT`
+13. [`AND`](operators/and)
+14. [`XOR`](operators/xor)
 15. [`OR`](operators/or)

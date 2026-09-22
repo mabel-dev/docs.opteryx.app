@@ -25,7 +25,7 @@ This type does not support direct comparisons with `=`, `<`, or `>`. Extract or 
 
 ## Notes
 
-VARIANT is NOT produced by reading JSON files/columns directly — file connectors map JSON object/struct columns to NVARCHAR. VARIANT only appears as the result of the `->` operator; there is no PARSE_JSON()/TO_VARIANT() function.
+VARIANT is NOT produced by reading JSON files/columns directly — file connectors map JSON object/struct columns to NVARCHAR. VARIANT only appears as the result of the `->` operator; there is no PARSE_JSON()/TO_VARIANT() function. To check JSON text before extracting from it, use `IS [NOT] JSON [VALUE | SCALAR | ARRAY | OBJECT]` — `WHERE payload IS NOT JSON` finds the malformed rows. It also accepts a VARIANT, so `(doc -> 'a') IS JSON ARRAY` tests what `->` returned.
 
 ## Limitations
 

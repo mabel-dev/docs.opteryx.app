@@ -73,6 +73,7 @@ certified conformance at that feature level.
 | `information_schema` | — | **partial** | Three views — `tables`, `columns`, `triggers` — read live from the catalog. Addressed as `<workspace>.information_schema.<view>`. See [Information schema](advanced/adv-information-schema). |
 | Temporal query | — | **extension** | `TIMESTAMP AS OF` reads a table as at a point in time; `VERSION AS OF` reads it as at a specific snapshot id, a tag name, `CURRENT`, or `PREVIOUS` for the previous version of the data. Not a standard feature; see [TIMESTAMP AS OF](statements/timestamp-as-of) and [VERSION AS OF](statements/version-as-of). |
 | Semi-structured types | — | **extension** | `ARRAY`, `VARIANT`, `VECTOR`, and `IPV4`, with JSON path operators (`->`, `->>`, `@?`). Outside the standard entirely. |
+| JSON predicate | T821, T822 | **partial** | `<expr> IS [NOT] JSON [VALUE \| SCALAR \| ARRAY \| OBJECT]` tests whether JSON text (`VARCHAR`, `NVARCHAR`, `VARBINARY` or `VARIANT`) is well-formed and has the shape asked for. `WITH UNIQUE KEYS` and `WITHOUT UNIQUE KEYS` are parsed and then refused, because duplicate-key checking (T822) is not implemented. The rest of T821 (`JSON_EXISTS`, `JSON_VALUE`, `JSON_QUERY`) is not implemented either; use `@?`, `->>` and `->`. Unlike PostgreSQL, a `NULL` operand gives `false` (`true` for `IS NOT JSON`), not `NULL`. |
 
 ## What Opteryx is validated against
 

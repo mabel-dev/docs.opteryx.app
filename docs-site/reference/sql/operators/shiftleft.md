@@ -17,7 +17,7 @@ Shifts the bits of the left integer operand left by the number of positions in t
 
 **SQL symbol:** `<<`
 
-**Precedence:** level 8 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+**Precedence:** level 7 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
 
 ## Syntax
 

@@ -17,7 +17,7 @@ Returns true when the left string does not match the SQL LIKE pattern on the rig
 
 **SQL symbol:** `NOT LIKE`
 
-**Precedence:** level 11 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+**Precedence:** level 10 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
 
 ## Syntax
 

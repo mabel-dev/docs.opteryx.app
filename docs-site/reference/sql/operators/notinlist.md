@@ -17,7 +17,7 @@ Returns true when the left operand does not match any element in the right-hand 
 
 **SQL symbol:** `NOT IN`
 
-**Precedence:** level 10 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+**Precedence:** level 9 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
 
 ## Syntax
 

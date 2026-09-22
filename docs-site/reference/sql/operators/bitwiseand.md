@@ -17,7 +17,7 @@ Combines integer operands using a bitwise AND operation.
 
 **SQL symbol:** `&`
 
-**Precedence:** level 7 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
+**Precedence:** level 6 of 15 (1 binds tightest) — see [operator precedence](../operators#operator-precedence).
 
 ## Syntax
 
