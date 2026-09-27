@@ -188,7 +188,7 @@ Quoting the value makes it a string, and comparing a string to a date or timesta
 {
   "error": {
     "code": "BadRequest",
-    "message": "Invalid query: Incompatible types for column 'cisa_kev.date_added' (DATE) and literal '2025-01-01' (VARCHAR). Using `CAST(column AS type)` may help resolve."
+    "message": "Invalid query: column *cisa_kev.date_added* (`DATE`) and literal `2025-01-01` (`VARCHAR`) cannot be compared, because their types do not match. Date and time literals are unquoted in OData v4: write `date_added ge 2024-01-01T00:00:00Z`, not `date_added ge '2024-01-01T00:00:00Z'` -- a quoted literal is a string."
   }
 }
 ```
@@ -258,6 +258,43 @@ every row to evaluate the function.
 v4 grammar - but aren't implemented, and return a 400 naming what to write
 instead. There's no cast from a timestamp to a time, and the extremes of
 `Edm.DateTimeOffset` fall outside the range an Opteryx timestamp can hold.
+
+### Converting types with `cast()`
+
+`cast(col, Edm.Type)` converts a value before it's compared, for when a column
+holds data in a different type from the one you need to compare it as - a
+numeric code stored as text, say:
+
+```bash
+curl "https://odata.opteryx.app/api/v4/public/security/cisa_kev?\$filter=cast(vendor_code, Edm.Int32) gt 100&\$top=5"
+```
+
+Without the cast, `vendor_code gt '100'` would compare as text, where `'42'`
+sorts after `'100'`.
+
+| Target | Converts to |
+| --- | --- |
+| `Edm.String` | text |
+| `Edm.Boolean` | boolean |
+| `Edm.Byte`, `Edm.SByte`, `Edm.Int16`, `Edm.Int32`, `Edm.Int64` | integers of that width |
+| `Edm.Single`, `Edm.Double` | floating point |
+| `Edm.Decimal` | fixed point, 18 digits with 6 after the point |
+| `Edm.Date` | date - from a timestamp, the same as `date()` |
+| `Edm.DateTimeOffset` | timestamp |
+
+The type name is unquoted, as the standard writes it. `cast()` works in
+`$compute` as well as `$filter`, so `$compute=cast(vendor_code, Edm.Int32) as code`
+makes the converted value available to `$select` and `$orderby`.
+
+`Edm.TimeOfDay`, `Edm.Duration`, `Edm.Binary` and `Edm.Guid` are valid OData
+targets but aren't supported, and return a 400 naming what to write instead.
+Neither is the one-argument form `cast(Edm.Type)`, which casts the entity itself
+to a derived type - no entity type here has one. `isof()` isn't implemented.
+
+Don't reach for `cast()` to compare against a quoted literal: write the literal
+in the column's own type instead. `date_added ge 2025-01-01` is right;
+`cast(date_added, Edm.String) ge '2025-01-01'` happens to work for ISO dates but
+compares text, and can't skip files using their stored min/max.
 
 ### Aggregating with `$apply`
 
@@ -348,7 +385,7 @@ Errors are JSON, shaped `{"error": {"code": ..., "message": ...}}`, with the HTT
 
 A failed read is never returned as a `200` with an empty `value` array. An empty `value` means the query ran and matched no rows; anything else is a non-2xx status with an error body. This distinction is guaranteed, so a consumer can safely treat "empty" as a real result rather than having to guess whether the read failed.
 
-Queries are executed by the Opteryx SQL engine, and some messages it raises are phrased for SQL - the type-mismatch error above suggesting `CAST(column AS type)` is one example. Your OData request is not translated into SQL before it runs; it's compiled directly into an execution plan. So read that kind of advice as a description of the underlying type problem - the [Data Types](/docs/reference/sql/data-types) reference explains the types being compared - and fix it in the OData expression rather than trying to pass SQL through a query option.
+Queries are executed by the Opteryx SQL engine, and some messages it raises are phrased for SQL. Your OData request is not translated into SQL before it runs; it's compiled directly into an execution plan. Type-mismatch errors are restated for OData - a quoted date or number is told to drop the quotes, and any other mismatch is given the OData `cast()` to write, in your own column - but other messages can still name SQL types or syntax. Read those as a description of the underlying problem - the [Data Types](/docs/reference/sql/data-types) reference explains the types being compared - and fix it in the OData expression rather than trying to pass SQL through a query option.
 
 ## Related
 
