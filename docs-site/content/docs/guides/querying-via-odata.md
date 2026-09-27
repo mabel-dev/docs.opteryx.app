@@ -262,15 +262,19 @@ instead. There's no cast from a timestamp to a time, and the extremes of
 ### Converting types with `cast()`
 
 `cast(col, Edm.Type)` converts a value before it's compared, for when a column
-holds data in a different type from the one you need to compare it as - a
-numeric code stored as text, say:
+holds data in a different type from the one you need. `iso_numeric` in the
+countries dataset is text, zero-padded to three digits, so `iso_numeric eq '4'`
+matches nothing - Afghanistan is stored as `'004'`. Compared as a number, it
+matches:
 
 ```bash
-curl "https://odata.opteryx.app/api/v4/public/security/cisa_kev?\$filter=cast(vendor_code, Edm.Int32) gt 100&\$top=5"
+curl "https://odata.opteryx.app/api/v4/public/geopolitics/countries?\$filter=cast(iso_numeric, Edm.Int32) eq 4&\$select=country_name_common,iso_numeric"
 ```
 
-Without the cast, `vendor_code gt '100'` would compare as text, where `'42'`
-sorts after `'100'`.
+A value that doesn't convert becomes `null`, as the OData standard defines it,
+rather than failing the query - Kosovo has no ISO numeric code, and its empty
+string simply doesn't match. To find the values that don't convert, compare
+the cast with `null`: `cast(iso_numeric, Edm.Int32) eq null`.
 
 | Target | Converts to |
 | --- | --- |
@@ -283,7 +287,7 @@ sorts after `'100'`.
 | `Edm.DateTimeOffset` | timestamp |
 
 The type name is unquoted, as the standard writes it. `cast()` works in
-`$compute` as well as `$filter`, so `$compute=cast(vendor_code, Edm.Int32) as code`
+`$compute` as well as `$filter`, so `$compute=cast(iso_numeric, Edm.Int32) as iso_code`
 makes the converted value available to `$select` and `$orderby`.
 
 `Edm.TimeOfDay`, `Edm.Duration`, `Edm.Binary` and `Edm.Guid` are valid OData
