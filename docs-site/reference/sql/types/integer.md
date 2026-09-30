@@ -43,5 +43,5 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `INTEGER`, `FLOAT`, `DECIMAL`.
 ## Limitations
 
 - Cannot compare INTEGER to VARCHAR or temporal types — cast first.
-- Overflow is not detected at runtime: values outside the ±9,223,372,036,854,775,807 range wrap silently.
-- Division and modulo by zero do not raise — `INTEGER / 0` and `INTEGER % 0` silently return 0.
+- Arithmetic overflow fails loudly: `+`, `-`, `*`, unary minus and `DIV` whose exact result is outside the result type's range raise an error rather than wrapping (as SUM does). For unsigned integers that includes a subtraction that would go below zero.
+- Integer division (`DIV`) and modulo (`%`) by zero raise an error rather than returning 0. `/` is true division and follows IEEE, so `x / 0` is ±inf or NaN.

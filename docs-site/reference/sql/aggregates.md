@@ -18,7 +18,7 @@ Aggregates combine multiple rows into single summary values and are typically us
 ### Approximate
 
 - **APPROX_COUNT_DISTINCT** — Estimates the number of distinct input values.
-  - SQL forms: `APPROX_COUNT_DISTINCT(expr)`
+  - SQL forms: `APPROX_COUNT_DISTINCT(expr)`, `APPROX_COUNT_DISTINCT(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Uses a sketch-based estimator instead of exact deduplication.
 - **APPROX_PERCENTILE** — Estimates a percentile using sketch-based aggregation.
@@ -33,7 +33,7 @@ Aggregates combine multiple rows into single summary values and are typically us
   - Support: grouped, strict_grouped
   - Notes: Supports DISTINCT, ORDER BY, and LIMIT forms in the aggregate surface.
 - **CIDR_AGG** — Collects IPv4 addresses into the smallest list of CIDR blocks that covers exactly those addresses.
-  - SQL forms: `CIDR_AGG(ipv4_expr)`
+  - SQL forms: `CIDR_AGG(ipv4_expr)`, `CIDR_AGG(DISTINCT ipv4_expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Returns ARRAY<VARCHAR> of CIDR blocks, ascending and non-overlapping. The cover is MINIMAL and unique: adjacent addresses fold into the largest aligned block, so 10.0.0.0-10.0.0.7 becomes a single 10.0.0.0/29. The operand must be IPV4 (a plain integer column is rejected). Duplicate addresses are free - the set deduplicates on insert - and NULLs are not members, so a group with no addresses returns an empty array rather than NULL. Works with and without GROUP BY. Bounded by two independent budgets, one on the collected address set and one on the emitted text: see @@cidr_agg_state_budget_bytes and @@cidr_agg_emit_budget_bytes.
 
@@ -51,18 +51,18 @@ Aggregates combine multiple rows into single summary values and are typically us
 ### Extrema
 
 - **MAX** — Returns the largest non-null input value.
-  - SQL forms: `MAX(expr)`
+  - SQL forms: `MAX(expr)`, `MAX(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Returns the greatest comparable non-null value encountered.
 - **MIN** — Returns the smallest non-null input value.
-  - SQL forms: `MIN(expr)`
+  - SQL forms: `MIN(expr)`, `MIN(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Returns the smallest comparable non-null value encountered.
 
 ### Numeric
 
 - **AVG** — Computes the arithmetic mean of the input values.
-  - SQL forms: `AVG(expr)`
+  - SQL forms: `AVG(expr)`, `AVG(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Ignores nulls and divides the running sum by the number of non-null values.
 - **CORR** — Computes the Pearson correlation coefficient between two numeric columns.
@@ -70,37 +70,37 @@ Aggregates combine multiple rows into single summary values and are typically us
   - Support: global, grouped, strict_grouped
   - Notes: Pearson correlation over (x, y) pairs where both values are non-null. Returns DOUBLE in [-1, 1]; NULL when undefined (no pairs, or zero variance in either input). DECIMAL inputs must be CAST to DOUBLE first.
 - **MEDIAN** — Computes the exact median (middle value) of the input values.
-  - SQL forms: `MEDIAN(expr)`
+  - SQL forms: `MEDIAN(expr)`, `MEDIAN(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Buffers all non-null values per group and selects the middle. Even-count inputs interpolate; result type is FLOAT. Buffering is bounded by a global 512MB memory budget — exceeding it raises an error. Decimal inputs must be CAST to FLOAT.
 - **STDDEV** — Computes the population standard deviation of the input values.
-  - SQL forms: `STDDEV(expr)`
+  - SQL forms: `STDDEV(expr)`, `STDDEV(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Population standard deviation (N denominator, not N-1/sample). Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
 - **STDDEV_POP** — Computes the population standard deviation of the input values.
-  - SQL forms: `STDDEV_POP(expr)`
+  - SQL forms: `STDDEV_POP(expr)`, `STDDEV_POP(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Population standard deviation (N denominator). Identical to STDDEV — an alternate SQL spelling of the same function. Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
 - **STDDEV_SAMP** — Computes the sample standard deviation of the input values.
-  - SQL forms: `STDDEV_SAMP(expr)`
+  - SQL forms: `STDDEV_SAMP(expr)`, `STDDEV_SAMP(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Sample standard deviation (N-1 denominator, Bessel's correction). Ignores nulls. NULL for a group with fewer than 2 non-null values (N-1 == 0 is undefined). DECIMAL inputs must be CAST to DOUBLE first.
 - **SUM** — Sums the input values.
-  - SQL forms: `SUM(expr)`
+  - SQL forms: `SUM(expr)`, `SUM(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Nulls are ignored; non-null values are accumulated.
 - **VAR_POP** — Computes the population variance of the input values.
-  - SQL forms: `VAR_POP(expr)`
+  - SQL forms: `VAR_POP(expr)`, `VAR_POP(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Population variance (N denominator) — STDDEV_POP without the final square root. Ignores nulls. DECIMAL inputs must be CAST to DOUBLE first.
 - **VAR_SAMP** — Computes the sample variance of the input values.
-  - SQL forms: `VAR_SAMP(expr)`
+  - SQL forms: `VAR_SAMP(expr)`, `VAR_SAMP(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
   - Notes: Sample variance (N-1 denominator, Bessel's correction) — STDDEV_SAMP without the final square root. Ignores nulls. NULL for a group with fewer than 2 non-null values. DECIMAL inputs must be CAST to DOUBLE first.
 
 ### Selection
 
 - **ANY_VALUE** — Returns one non-null value from the input set.
-  - SQL forms: `ANY_VALUE(expr)`
+  - SQL forms: `ANY_VALUE(expr)`, `ANY_VALUE(DISTINCT expr)`
   - Support: grouped, strict_grouped
   - Notes: Useful when a grouped query only needs one representative value from each group.

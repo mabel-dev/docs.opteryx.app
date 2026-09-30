@@ -168,6 +168,30 @@
         "default": false,
         "default_source": "literal"
     },
+    "disable_statistics_coverage": {
+        "name": "disable_statistics_coverage",
+        "type": "BOOL",
+        "owner": "USER",
+        "visibility": "UNRESTRICTED",
+        "settable": true,
+        "requires_entitlement": null,
+        "set_by": "any session",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "DISABLE_STATISTICS_COVERAGE"
+    },
+    "disable_topn_runtime_boundary": {
+        "name": "disable_topn_runtime_boundary",
+        "type": "BOOL",
+        "owner": "USER",
+        "visibility": "UNRESTRICTED",
+        "settable": true,
+        "requires_entitlement": null,
+        "set_by": "any session",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "DISABLE_TOPN_RUNTIME_BOUNDARY"
+    },
     "external_user": {
         "name": "external_user",
         "type": "VARCHAR",
@@ -202,6 +226,18 @@
         "default": null,
         "default_source": "environment",
         "environment_key": "GCP_PROJECT_ID"
+    },
+    "http_max_bytes_in_flight": {
+        "name": "http_max_bytes_in_flight",
+        "type": "INT64",
+        "owner": "USER",
+        "visibility": "RESTRICTED",
+        "settable": true,
+        "requires_entitlement": "platform_admin",
+        "set_by": "platform_admin only",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "OPTERYX_HTTP_MAX_BYTES_IN_FLIGHT"
     },
     "http_max_connections_per_host": {
         "name": "http_max_connections_per_host",
@@ -394,18 +430,6 @@
         "default": 1200,
         "default_source": "literal"
     },
-    "max_execution_worker_cap": {
-        "name": "max_execution_worker_cap",
-        "type": "INT64",
-        "owner": "SERVER",
-        "visibility": "RESTRICTED",
-        "settable": false,
-        "requires_entitlement": null,
-        "set_by": "not settable via SQL",
-        "default": null,
-        "default_source": "environment",
-        "environment_key": "MAX_EXECUTION_WORKER_CAP"
-    },
     "max_execution_workers": {
         "name": "max_execution_workers",
         "type": "INT64",
@@ -522,8 +546,8 @@
         "default_source": "environment",
         "environment_key": "PARQUET_IO_FETCH_AHEAD"
     },
-    "parquet_io_fetch_ahead_min_row_groups": {
-        "name": "parquet_io_fetch_ahead_min_row_groups",
+    "parquet_io_fetch_ahead_min_blocks": {
+        "name": "parquet_io_fetch_ahead_min_blocks",
         "type": "INT64",
         "owner": "USER",
         "visibility": "RESTRICTED",
@@ -532,7 +556,7 @@
         "set_by": "platform_admin only",
         "default": null,
         "default_source": "environment",
-        "environment_key": "PARQUET_IO_FETCH_AHEAD_MIN_ROW_GROUPS"
+        "environment_key": "PARQUET_IO_FETCH_AHEAD_MIN_BLOCKS"
     },
     "parquet_io_in_flight_limit": {
         "name": "parquet_io_in_flight_limit",
@@ -582,18 +606,6 @@
         "default_source": "environment",
         "environment_key": "PARQUET_LATE_MATERIALIZATION_MAX_SELECTIVITY"
     },
-    "parquet_local_io_worker_cap": {
-        "name": "parquet_local_io_worker_cap",
-        "type": "INT64",
-        "owner": "SERVER",
-        "visibility": "RESTRICTED",
-        "settable": false,
-        "requires_entitlement": null,
-        "set_by": "not settable via SQL",
-        "default": null,
-        "default_source": "environment",
-        "environment_key": "PARQUET_LOCAL_IO_WORKER_CAP"
-    },
     "parquet_local_io_workers": {
         "name": "parquet_local_io_workers",
         "type": "INT64",
@@ -638,6 +650,30 @@
         "set_by": "not settable via SQL",
         "default": 10,
         "default_source": "literal"
+    },
+    "skene_io_coalesce_max_bytes": {
+        "name": "skene_io_coalesce_max_bytes",
+        "type": "INT64",
+        "owner": "USER",
+        "visibility": "RESTRICTED",
+        "settable": true,
+        "requires_entitlement": "platform_admin",
+        "set_by": "platform_admin only",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SKENE_IO_COALESCE_MAX_BYTES"
+    },
+    "skene_io_coalesce_waste_ratio": {
+        "name": "skene_io_coalesce_waste_ratio",
+        "type": "FLOAT64",
+        "owner": "USER",
+        "visibility": "RESTRICTED",
+        "settable": true,
+        "requires_entitlement": "platform_admin",
+        "set_by": "platform_admin only",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SKENE_IO_COALESCE_WASTE_RATIO"
     },
     "skene_late_materialization_max_selectivity": {
         "name": "skene_late_materialization_max_selectivity",
@@ -743,7 +779,7 @@
     },
     "user_memberships": {
         "name": "user_memberships",
-        "type": "ARRAY<VARIANT>",
+        "type": "ARRAY<VARCHAR>",
         "owner": "INTERNAL",
         "visibility": "UNRESTRICTED",
         "settable": false,

@@ -11,7 +11,7 @@ description: Every Opteryx system variable, its type, and who is permitted to se
 
 # System Variables
 
-Opteryx exposes 25 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
+Opteryx exposes 27 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
 
 > Be Aware: Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all. Everything else is fixed by the server or stamped per session.
 
@@ -22,6 +22,8 @@ Opteryx exposes 25 system variables that a session can read. Use [SHOW VARIABLES
 | Variable | Type | Default |
 |---|---|---|
 | `disable_runtime_minmax_join_filter` | BOOL | `False` |
+| `disable_statistics_coverage` | BOOL | env `DISABLE_STATISTICS_COVERAGE` |
+| `disable_topn_runtime_boundary` | BOOL | env `DISABLE_TOPN_RUNTIME_BOUNDARY` |
 | `like_selectivity_decay` | FLOAT64 | env `LIKE_SELECTIVITY_DECAY` |
 | `match_threshold` | FLOAT64 | env `MATCH_THRESHOLD` |
 | `trace` | BOOL | env `OPTERYX_TRACE` |
@@ -51,7 +53,7 @@ Read-only from a session. Server-owned values are fixed when the server starts; 
 | `sql_select_limit` | INT64 | `1073741824` |
 | `system_time_zone` | VARCHAR | `UTC` |
 | `user_entitlements` | ARRAY<VARIANT> | _per session_ |
-| `user_memberships` | ARRAY<VARIANT> | _per session_ |
+| `user_memberships` | ARRAY<VARCHAR> | _per session_ |
 | `version` | VARCHAR | _from the build_ |
 
 ## Where defaults come from
