@@ -276,8 +276,6 @@ export async function renderMarkdownToHtml(
   const renderer = new Marked({
     gfm: true,
     breaks: false,
-    mangle: false,
-    headerIds: false,
     async: true,
   });
 
