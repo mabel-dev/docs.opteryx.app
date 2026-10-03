@@ -157,6 +157,9 @@
               "CREATE MATERIALIZED VIEW": "reference/sql/statements/create-materialized-view.md"
             },
             {
+              "CREATE SECRET": "reference/sql/statements/create-secret.md"
+            },
+            {
               "CREATE TABLE": "reference/sql/statements/create-table.md"
             },
             {
@@ -182,6 +185,9 @@
             },
             {
               "DROP MATERIALIZED VIEW": "reference/sql/statements/drop-materialized-view.md"
+            },
+            {
+              "DROP SECRET": "reference/sql/statements/drop-secret.md"
             },
             {
               "DROP STATISTICS": "reference/sql/statements/drop-statistics.md"
@@ -253,9 +259,6 @@
               "REVOKE": "reference/sql/statements/revoke.md"
             },
             {
-              "SECRETS": "reference/sql/statements/secrets.md"
-            },
-            {
               "SELECT": "reference/sql/statements/select.md"
             },
             {
@@ -275,6 +278,9 @@
             },
             {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
+            },
+            {
+              "SHOW SECRETS": "reference/sql/statements/show-secrets.md"
             },
             {
               "SHOW SNAPSHOTS FOR": "reference/sql/statements/show-snapshots.md"
@@ -778,6 +784,9 @@
           },
           {
             "Sample data": "reference/sql/advanced/adv-sample-data.md"
+          },
+          {
+            "Secret management": "reference/sql/advanced/adv-secret-management.md"
           },
           {
             "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"

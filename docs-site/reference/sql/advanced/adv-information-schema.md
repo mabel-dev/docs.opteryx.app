@@ -275,7 +275,7 @@ policy store read once.
 
 ## `information_schema.secrets`
 
-The workspace's [secrets](/docs/reference/sql/statements/secrets), one row each, **never
+The workspace's [secrets](/docs/reference/sql/advanced/adv-secret-management), one row each, **never
 with their values**. `SHOW SECRETS IN <workspace>` is a read of this table.
 
 | Column          | Type        | Description                                                         |

@@ -139,9 +139,11 @@ Store credentials in a workspace, encrypted and write-only, to read private buck
 
 | Statement | Purpose |
 |-----------|---------|
-| [CREATE SECRET](statements/secrets) | Store a credential, or replace one with `CREATE OR REPLACE` |
-| [DROP SECRET](statements/secrets) | Remove a stored credential |
-| [SHOW SECRETS](statements/secrets) | List a workspace's secrets, never their values |
+| [CREATE SECRET](statements/create-secret) | Store a credential, or replace one with `CREATE OR REPLACE` |
+| [DROP SECRET](statements/drop-secret) | Remove a stored credential |
+| [SHOW SECRETS](statements/show-secrets) | List a workspace's secrets, never their values |
+
+How secrets are scoped, protected and used: [Secret Management](advanced/adv-secret-management).
 
 ## Collection Management
 

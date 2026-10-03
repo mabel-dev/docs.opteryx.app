@@ -36,7 +36,7 @@ FROM READ_CSV(<path> [, separator => <char>]
   column sampled to infer its type. A larger value reduces the chance of a later type
   mismatch at the cost of a larger upfront sample.
 - **`credentials => '<workspace>.<secret>'`** — read a private `gs://` or `s3://`
-  path with a stored [secret](secrets). A string literal naming the secret, qualified
+  path with a stored [secret](create-secret). A string literal naming the secret, qualified
   with its workspace; never the credential itself. Every file read must fall under the
   secret's `SCOPE`, and you need `ALTER` on the secret's whole workspace to use it.
 
@@ -102,12 +102,13 @@ SELECT *
   from the path. Glob patterns are not supported on the anonymous path, because
   listing a bucket's contents needs a permission a public, unauthenticated read does
   not have. **With `credentials =>`** the read is signed with the named
-  [secret](secrets), and globs work: every file the glob expands to is checked against
+  [secret](create-secret), and globs work: every file the glob expands to is checked against
   the secret's `SCOPE` before anything is read. Use `gs://`, not `gcs://`.
 
 ## See Also
 
-- [Secrets](secrets)
+- [CREATE SECRET](create-secret)
+- [Secret Management](/docs/reference/sql/advanced/adv-secret-management)
 - [READ_JSONL](read-jsonl)
 - [READ_PARQUET](read-parquet)
 - [CREATE TABLE](create-table)
