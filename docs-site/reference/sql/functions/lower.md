@@ -28,4 +28,4 @@ LOWER(str)
 
 ## Returns
 
-**VARCHAR** — Returns the computed result as `VARCHAR`.
+**same as `str`** — Returns a value with the same type as `str`.

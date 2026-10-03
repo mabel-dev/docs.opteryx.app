@@ -27,7 +27,7 @@ Returns the element at the requested index from an array, string, or blob-like v
 
 ## Parameters
 
-- **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array), [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), [`vector`](../types/vector).
+- **`<value>`** — The array, string or blob to read from. Accepts [`array`](../types/array), [`nvarchar`](../types/nvarchar), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar), `vector`.
 - **`<index>`** — The zero-based position to read: 0 is the first element. A negative index counts back from the end, so -1 is the last. An index past either end gives NULL rather than raising. Accepts [`integer`](../types/integer).
 
 ## Returns

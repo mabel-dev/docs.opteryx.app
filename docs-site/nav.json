@@ -332,6 +332,9 @@
               "BASE85_ENCODE": "reference/sql/functions/base85_encode.md"
             },
             {
+              "CAST": "reference/sql/functions/cast.md"
+            },
+            {
               "CEILING": "reference/sql/functions/ceiling.md"
             },
             {
@@ -369,9 +372,6 @@
             },
             {
               "E": "reference/sql/functions/e.md"
-            },
-            {
-              "EMBED": "reference/sql/functions/embed.md"
             },
             {
               "EXTRACT": "reference/sql/functions/extract.md"
@@ -737,9 +737,6 @@
             },
             {
               "VARIANT": "reference/sql/types/variant.md"
-            },
-            {
-              "VECTOR": "reference/sql/types/vector.md"
             }
           ]
         }

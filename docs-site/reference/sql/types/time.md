@@ -33,6 +33,7 @@ When casting a string to this type, the following formats are accepted:
 | From | Example | Notes |
 |------|---------|-------|
 | from VARCHAR | `'09:30:45'::TIME` | String must be in HH:MM:SS[.ffffff] format |
+| to VARCHAR | `time_col::VARCHAR` | Renders as 'HH:MM:SS.ffffff', e.g. '09:30:45.000000'. `CAST ... FORMAT` and `FORMAT_TIMESTAMP` do not accept TIME yet |
 
 ## Comparisons
 

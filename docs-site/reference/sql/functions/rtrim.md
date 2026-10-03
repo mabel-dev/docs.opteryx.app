@@ -30,4 +30,4 @@ RTRIM(string, [characters])
 
 ## Returns
 
-**dynamic** — Returns a value whose type depends on the supplied arguments.
+**same as `string`** — Returns a value with the same type as `string`.

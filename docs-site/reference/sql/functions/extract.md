@@ -26,7 +26,7 @@ EXTRACT(part FROM date)
 - **part** `varchar` [constant]
     Date or time part to extract: `year`, `quarter`, `month`, `day`, `hour`, `minute`, `second` or `epoch`. Must be a constant expression.
 - **date** `temporal`
-    Date, time, or timestamp value to evaluate.
+    Date or timestamp value to evaluate.
 
 ## Returns
 

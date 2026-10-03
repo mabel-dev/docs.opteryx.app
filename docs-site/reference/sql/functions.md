@@ -21,6 +21,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 
 ## Conversion Functions
 
+- [CAST](functions/cast) — Type conversion. `TRY_CAST` and `SAFE_CAST` are the non-raising forms - they yield NULL where `CAST` raises.
 - [HUMANIZE](functions/humanize) — Format number in human-readable form.
 
 ## Date & Time Functions
@@ -103,6 +104,11 @@ The following functions are supported by Opteryx.  Click a name for details.
 
 - [JSONB_OBJECT_KEYS](functions/jsonb_object_keys) — Extract keys from JSON object.
 
+## Text Similarity Functions
+
+- [COSINE_DISTANCE](functions/cosine_distance) — Cosine distance between the embeddings of two texts.
+- [COSINE_SIMILARITY](functions/cosine_similarity) — Cosine similarity between the embeddings of two texts.
+
 ## Utility Functions
 
 - [COALESCE](functions/coalesce) — Return first non-null argument.
@@ -118,9 +124,3 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [RANDOM](functions/random) — Generate random numbers.
 - [RANDOM_STRING](functions/random_string) — Generate random bytes.
 - [USER](functions/user) — Current user name.
-
-## Vector / Embedding Functions
-
-- [COSINE_DISTANCE](functions/cosine_distance) — Cosine distance between two vectors.
-- [COSINE_SIMILARITY](functions/cosine_similarity) — Cosine similarity between two vectors.
-- [EMBED](functions/embed) — Convert text to an embedding vector.

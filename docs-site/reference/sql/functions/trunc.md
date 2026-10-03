@@ -32,7 +32,7 @@ TRUNC(value, unit)
 - **scale** `integer` [optional | variadic]
     Decimal scale to keep before truncating toward zero. Optional. Can be repeated.
 - **value** `temporal`
-    Date, time, or timestamp value to truncate.
+    Date or timestamp value to truncate.
 - **unit** `varchar` [constant]
     Granularity to truncate to, such as `day`, `month`, or `year`. Must be a constant expression.
 

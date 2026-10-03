@@ -895,7 +895,63 @@ def build_api_docs():
     _build_api_index(generated_specs)
 
 
-def build_functions_docs(functions_def: Dict[str, Any]):
+# Function-shaped SQL syntax. CAST is grammar, not a registered function, so it
+# lives in expressions.json and functions.json never sees it - but it is the
+# first thing anyone scans the function list for. Each entry here gets a list
+# line and a short page built from its expressions.json entry that points at
+# where the detail actually lives. Which category and which pages to point at
+# is docs-site layout, so like TYPE_GUIDES it lives here, not in opteryx-core.
+SYNTAX_FUNCTIONS: Dict[str, Dict[str, Any]] = {
+    'CAST': {
+        'category': 'Conversion Functions',
+        'details': [
+            ('Type Casting', '../expressions#type-casting',
+             '`CAST`, `::`, `TRY_CAST` and `SAFE_CAST`'),
+            ('Data Types', '../data-types',
+             'each type page has a Casting table of what converts to and from it'),
+            ('Parsing and rendering with an explicit format',
+             '../advanced/adv-working-with-timestamps#parsing-and-rendering-with-an-explicit-format',
+             '`CAST(... FORMAT ...)` and the format elements'),
+        ],
+    },
+}
+
+
+def syntax_functions(expressions_def: Dict[str, Any]) -> Dict[str, Any]:
+    """The SYNTAX_FUNCTIONS entries that expressions.json still defines."""
+    return {name: expressions_def[name] for name in SYNTAX_FUNCTIONS if name in expressions_def}
+
+
+def _build_syntax_function_page(name: str, info: Dict[str, Any]) -> None:
+    layout = SYNTAX_FUNCTIONS[name]
+    doc = info.get('documentation') or info.get('summary', '')
+
+    lines = [
+        '---',
+        f'title: {name} — Opteryx Function',
+        f'description: {info.get("summary", doc)}',
+        '---\n',
+        f'# {name}\n',
+        doc + '\n',
+        f'**Category:** {layout["category"]}\n',
+        f'`{name}` is SQL syntax rather than a function, so it is documented with the '
+        'expressions; this page is a pointer.\n',
+        '## Syntax\n',
+        '```sql',
+        *info.get('syntax_forms', []),
+        '```\n',
+    ]
+    if info.get('notes'):
+        lines += ['## Notes\n', info['notes'] + '\n']
+    lines.append('## Details\n')
+    for title, href, what in layout['details']:
+        lines.append(f'- [{title}]({href}) — {what}')
+    lines.append('')
+
+    write_md(REF_SQL_DIR / 'functions' / f'{slugify(name)}.md', lines)
+
+
+def build_functions_docs(functions_def: Dict[str, Any], syntax_def: Dict[str, Any]):
     # build index grouped by category
     categories: Dict[str, List[Tuple[str, str]]] = {}
     for name, info in functions_def.items():
@@ -903,6 +959,11 @@ def build_functions_docs(functions_def: Dict[str, Any]):
         summary = info.get('summary') or (overloads[0].get('documentation') if overloads else '')
         category = (overloads[0].get('category') if overloads else 'Other') or 'Other'
         categories.setdefault(category, []).append((name, summary))
+    for name, info in syntax_def.items():
+        categories.setdefault(SYNTAX_FUNCTIONS[name]['category'], []).append(
+            (name, info.get('documentation') or info.get('summary', ''))
+        )
+        _build_syntax_function_page(name, info)
 
     # write index page
     lines = [
@@ -1758,18 +1819,20 @@ def main():
     aggregates_def = load_json(DEFS / 'aggregates.json')
     variables_def = load_json(DEFS / 'variables.json')
 
+    syntax_def = syntax_functions(expressions_def)
+
     # Prune stale entries before regenerating so removed items disappear.
-    _prune_stale(REF_SQL_DIR / 'functions', {slugify(n) for n in functions_def})
+    _prune_stale(REF_SQL_DIR / 'functions', {slugify(n) for n in {**functions_def, **syntax_def}})
     _prune_stale(REF_SQL_DIR / 'operators', {slugify(n) for n in operators_def})
     _prune_stale(REF_SQL_DIR / 'types', {slugify(n) for n in types_def})
 
-    build_functions_docs(functions_def)
+    build_functions_docs(functions_def, syntax_def)
     build_operators_docs(operators_def, unary_ops_def, expressions_def)
     build_types_docs(types_def, operators_def)
     build_aggregates_docs(aggregates_def)
     build_variables_docs(variables_def)
     build_api_docs()
-    update_nav(functions_def, operators_def, types_def)
+    update_nav({**functions_def, **syntax_def}, operators_def, types_def)
     print('docs regenerated')
 
 

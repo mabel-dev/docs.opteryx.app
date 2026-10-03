@@ -35,7 +35,9 @@ When casting a string to this type, the following formats are accepted:
 | from VARCHAR (FORMAT) | `CAST('15-01-2024' AS DATE FORMAT 'DD-MM-YYYY')` | Parses against an explicit SQL-style pattern (tokens: YYYY, YY, MM, DD, HH24, HH12/HH, MI, SS, FF) instead of the YYYY-MM-DD default |
 | from TIMESTAMP | `ts_col::DATE` | Truncates the time component; returns the date portion only |
 | from INTEGER (literal only) | `1::DATE` | An integer *literal* is interpreted as days since the Unix epoch. This does NOT work for an integer column — casting a column raises NotImplementedError; convert via `FROM_UNIXTIME(n)::DATE` instead |
-| to VARCHAR | `date_col::VARCHAR` | Renders as 'YYYY-MM-DD' (ISO 8601). `CAST(date_col AS VARCHAR FORMAT '...')` renders against an explicit pattern instead |
+| to VARCHAR | `date_col::VARCHAR` | Renders as 'YYYY-MM-DD' (ISO 8601) |
+| to VARCHAR (FORMAT) | `CAST(date_col AS VARCHAR FORMAT 'DD/MM/YYYY')` | Renders against an explicit SQL-style pattern, e.g. '15/01/2024'. Uses the same [format elements](../advanced/adv-working-with-timestamps#format-elements) as parsing (YYYY, YY, MM, DD, ...). `FORMAT` is only accepted inside `CAST()`, not with `::` |
+| to VARCHAR (strftime) | `FORMAT_TIMESTAMP('%d/%m/%Y', date_col)` | Function alternative taking strftime codes (`%Y`, `%m`, `%d`) rather than SQL format elements — see [FORMAT_TIMESTAMP](../functions/format_timestamp) |
 
 ## Arithmetic
 

@@ -28,7 +28,7 @@ TIME_BUCKET(magnitude, units, date)
 - **units** `varchar` [constant]
     Unit for the bucket width, such as `minute`, `hour`, or `day`. Must be a constant expression.
 - **date** `temporal`
-    Date, time, or timestamp value to evaluate.
+    Date or timestamp value to evaluate.
 
 ## Returns
 

@@ -41,7 +41,9 @@ When casting a string to this type, the following formats are accepted:
 | from INTEGER (milliseconds) | `epoch_col::TIMESTAMP[ms]` | Milliseconds since Unix epoch |
 | from INTEGER (microseconds) | `epoch_col::TIMESTAMP[us]` | Microseconds since Unix epoch (default scale) |
 | from INTEGER (nanoseconds) | `epoch_col::TIMESTAMP[ns]` | Nanoseconds since Unix epoch |
-| to VARCHAR | `ts_col::VARCHAR` | Renders as 'YYYY-MM-DDTHH:MM:SS.ffffff' (ISO 8601, no offset — timestamps are naive). `CAST(ts_col AS VARCHAR FORMAT '...')` renders against an explicit pattern instead |
+| to VARCHAR | `ts_col::VARCHAR` | Renders as 'YYYY-MM-DDTHH:MM:SS.ffffff' (ISO 8601, no offset — timestamps are naive) |
+| to VARCHAR (FORMAT) | `CAST(ts_col AS VARCHAR FORMAT 'DD/MM/YYYY HH24:MI')` | Renders against an explicit SQL-style pattern, e.g. '15/01/2024 09:30'. Uses the same [format elements](../advanced/adv-working-with-timestamps#format-elements) as parsing (YYYY, MM, DD, HH24, MI, SS, FF, ...). `FORMAT` is only accepted inside `CAST()`, not with `::` |
+| to VARCHAR (strftime) | `FORMAT_TIMESTAMP('%d/%m/%Y %H:%M', ts_col)` | Function alternative taking strftime codes (`%Y`, `%m`, `%d`, `%H`, `%M`) rather than SQL format elements — see [FORMAT_TIMESTAMP](../functions/format_timestamp) |
 
 ## Arithmetic
 

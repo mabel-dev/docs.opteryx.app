@@ -26,7 +26,7 @@ FORMAT_TIMESTAMP(pattern, date)
 - **pattern** `varchar` [constant]
     Format string used to render the temporal value as text. Must be a constant expression.
 - **date** `temporal`
-    Date, time, or timestamp value to evaluate.
+    Date or timestamp value to evaluate.
 
 ## Returns
 

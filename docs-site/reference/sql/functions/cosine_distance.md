@@ -1,6 +1,6 @@
 ---
 title: COSINE_DISTANCE — Opteryx Function
-description: Cosine distance over numeric vectors or semantic text inputs.
+description: Embeds both texts with the active embedding provider and returns 1 - cosine similarity.
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,9 +11,9 @@ description: Cosine distance over numeric vectors or semantic text inputs.
 
 # COSINE_DISTANCE
 
-Cosine distance over numeric vectors or semantic text inputs.
+Embeds both texts with the active embedding provider and returns 1 - cosine similarity.
 
-**Category:** Vector / Embedding Functions
+**Category:** Text Similarity Functions
 
 ## Syntax
 
@@ -23,10 +23,10 @@ COSINE_DISTANCE(arr, vec)
 
 ## Arguments
 
-- **arr** `vector`
-    First vector or text input.
-- **vec** `vector`
-    Second vector or text input.
+- **arr** `varchar`
+    First text input.
+- **vec** `varchar`
+    Second text input.
 
 ## Returns
 

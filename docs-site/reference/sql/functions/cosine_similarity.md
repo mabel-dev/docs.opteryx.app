@@ -1,6 +1,6 @@
 ---
 title: COSINE_SIMILARITY — Opteryx Function
-description: Cosine similarity over numeric vectors or semantic text inputs.
+description: Embeds both texts with the active embedding provider and returns their cosine similarity.
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,9 +11,9 @@ description: Cosine similarity over numeric vectors or semantic text inputs.
 
 # COSINE_SIMILARITY
 
-Cosine similarity over numeric vectors or semantic text inputs.
+Embeds both texts with the active embedding provider and returns their cosine similarity.
 
-**Category:** Vector / Embedding Functions
+**Category:** Text Similarity Functions
 
 ## Syntax
 
@@ -23,10 +23,10 @@ COSINE_SIMILARITY(arr, vec)
 
 ## Arguments
 
-- **arr** `vector`
-    First vector or text input.
-- **vec** `vector`
-    Second vector or text input.
+- **arr** `varchar`
+    First text input.
+- **vec** `varchar`
+    Second text input.
 
 ## Returns
 

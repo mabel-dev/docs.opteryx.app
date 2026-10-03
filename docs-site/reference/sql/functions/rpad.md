@@ -32,4 +32,4 @@ RPAD(string, width, fill)
 
 ## Returns
 
-**VARCHAR** — Returns the computed result as `VARCHAR`.
+**same as `string`** — Returns a value with the same type as `string`.

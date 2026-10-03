@@ -26,9 +26,9 @@ DATEDIFF(part, date, end)
 - **part** `varchar` [constant]
     Unit to measure the difference in, such as `day`, `month`, or `year`. Must be a constant expression.
 - **date** `temporal`
-    Date, time, or timestamp value to evaluate.
+    Date or timestamp value to evaluate.
 - **end** `temporal`
-    Ending date, time, or timestamp value.
+    Ending date or timestamp value.
 
 ## Returns
 

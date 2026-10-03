@@ -262,18 +262,30 @@ There is no `::` shorthand for the try form.
 
 ### Temporal types
 
-When casting to temporal types, a precision unit is required for `TIMESTAMP`:
+`TIMESTAMP` takes an optional precision unit. Without one it is microseconds (`TIMESTAMP[us]`):
 
 | Cast target | Example |
 | :---------- | :------ |
 | `DATE` | `'2024-01-01'::DATE` |
+| `TIMESTAMP` | `'2024-01-01'::TIMESTAMP` |
 | `TIMESTAMP[s]` | `'2024-01-01'::TIMESTAMP[s]` |
 | `TIMESTAMP[ms]` | `'2024-01-01'::TIMESTAMP[ms]` |
 | `TIMESTAMP[us]` | `'2024-01-01'::TIMESTAMP[us]` |
 | `TIMESTAMP[ns]` | `'2024-01-01'::TIMESTAMP[ns]` |
 | `TIMESTAMP[d]` | `'2024-01-01'::TIMESTAMP[d]` |
 
-`TIMESTAMP` without a unit is not supported.
+The unit matters most when casting an integer epoch column, where it says what the number counts.
+
+### Formatting and parsing with a pattern
+
+A plain cast reads and writes ISO-8601 (`2024-01-15`, `2024-01-15T09:30:00`). To use another layout, give the pattern with `FORMAT` - it parses when the target is `DATE` or `TIMESTAMP`, and renders when the target is `VARCHAR`:
+
+~~~sql
+SELECT CAST('15/01/2024' AS DATE FORMAT 'DD/MM/YYYY');            -- parse
+SELECT CAST(event_time AS VARCHAR FORMAT 'DD/MM/YYYY HH24:MI');   -- render: '15/01/2024 09:30'
+~~~
+
+`FORMAT` is only accepted inside `CAST()` (and `TRY_CAST`), not with `::`. See [Parsing and rendering with an explicit format](advanced/adv-working-with-timestamps#parsing-and-rendering-with-an-explicit-format) for the format elements, and [FORMAT_TIMESTAMP](functions/format_timestamp) for the strftime-style alternative.
 
 ### String literals are not implicitly cast to temporal types
 
