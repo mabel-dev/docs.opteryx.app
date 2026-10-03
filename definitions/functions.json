@@ -1467,7 +1467,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     },
                     {
                         "label": "end",
@@ -1482,7 +1485,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ]
             }
@@ -1618,7 +1624,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ],
                 "notes": "Canonical SQL-92 form is `EXTRACT(part FROM date)`. The supported parts are `year`, `quarter`, `month`, `day`, `hour`, `minute`, `second` and `epoch`; each returns an `integer`. `epoch` is whole Unix epoch seconds - `EXTRACT(EPOCH FROM ts)` is the same value as `TO_UNIXTIME(ts)`, and is planned as that call. Sub-day parts require a TIMESTAMP operand."
@@ -1780,7 +1789,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ]
             }
@@ -5901,7 +5913,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     },
                     {
                         "label": "time2",
@@ -5916,7 +5931,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ]
             }
@@ -6029,7 +6047,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ]
             }
@@ -6548,7 +6569,10 @@
                         "maximum": null,
                         "value_format": null,
                         "element_of": null,
-                        "excludes": []
+                        "excludes": [
+                            "TIME",
+                            "INTERVAL"
+                        ]
                     }
                 ]
             }
