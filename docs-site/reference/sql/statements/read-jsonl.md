@@ -14,7 +14,8 @@ directly by path, without registering it as a table in a catalog first. Use it i
 ~~~sql
 FROM READ_JSONL(<path> [, ignore_errors => <boolean>]
                         [, infer_schema => <boolean>]
-                        [, infer_sample_size => <integer>])
+                        [, infer_sample_size => <integer>]
+                        [, credentials => '<workspace>.<secret>'])
 ~~~
 
 ## Parameters
@@ -27,6 +28,10 @@ FROM READ_JSONL(<path> [, ignore_errors => <boolean>]
   type from the sampled values (see `infer_sample_size`).
 - **`infer_sample_size => <integer>`**, default `5` — Number of rows sampled to infer
   each column's type.
+- **`credentials => '<workspace>.<secret>'`** — read a private `gs://` or `s3://`
+  path with a stored [secret](secrets). A string literal naming the secret, qualified
+  with its workspace; never the credential itself. Every file read must fall under the
+  secret's `SCOPE`, and you need `ALTER` on the secret's whole workspace to use it.
 
 ## Examples
 
@@ -55,6 +60,13 @@ SELECT e.id, e.status
  WHERE e.status = 'ok';
 ~~~
 
+### Read a Private Bucket with a Stored Secret
+~~~sql
+SELECT *
+  FROM READ_JSONL('gs://acme-exports/billing/2026-10/*.jsonl',
+                  credentials => 'analytics.billing_reader');
+~~~
+
 ## Notes
 
 - Supported column types are `INTEGER`, `FLOAT`, `BOOLEAN`, `VARCHAR`, and `NULL`. A
@@ -69,15 +81,19 @@ SELECT e.id, e.status
   content is read as one relation. Every matched file's columns and inferred types must
   agree with the first file's — a file whose schema disagrees fails the query rather
   than silently producing mismatched or missing columns.
-- `gs://bucket/object` paths are supported and are always fetched anonymously (a public
-  GCS object is read; a private one fails with an error) — Opteryx never signs a request
-  or uses platform credentials on your behalf for a path given to `READ_JSONL`. Glob
-  patterns are not supported for `gs://` paths, because listing a bucket's contents
-  needs a permission a public, unauthenticated read does not have. Use `gs://`, not
-  `gcs://`.
+- `gs://bucket/object` and `s3://bucket/object` paths are supported. **Without
+  `credentials =>`** they are always fetched anonymously (a public object is read; a
+  private one fails with an error) — Opteryx never signs a request or uses platform
+  credentials on your behalf for a path given to `READ_JSONL`, and never picks a secret
+  from the path. Glob patterns are not supported on the anonymous path, because
+  listing a bucket's contents needs a permission a public, unauthenticated read does
+  not have. **With `credentials =>`** the read is signed with the named
+  [secret](secrets), and globs work: every file the glob expands to is checked against
+  the secret's `SCOPE` before anything is read. Use `gs://`, not `gcs://`.
 
 ## See Also
 
+- [Secrets](secrets)
 - [READ_CSV](read-csv)
 - [READ_PARQUET](read-parquet)
 - [CREATE TABLE](create-table)

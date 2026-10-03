@@ -253,6 +253,9 @@
               "REVOKE": "reference/sql/statements/revoke.md"
             },
             {
+              "SECRETS": "reference/sql/statements/secrets.md"
+            },
+            {
               "SELECT": "reference/sql/statements/select.md"
             },
             {

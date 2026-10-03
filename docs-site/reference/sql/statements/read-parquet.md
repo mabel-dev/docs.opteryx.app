@@ -12,7 +12,7 @@ it in a `FROM` clause wherever a table name is expected.
 ## Syntax
 
 ~~~sql
-FROM READ_PARQUET(<path>)
+FROM READ_PARQUET(<path> [, credentials => '<workspace>.<secret>'])
 ~~~
 
 ## Parameters
@@ -20,7 +20,12 @@ FROM READ_PARQUET(<path>)
 - **`<path>`** — single string literal giving the file path (or glob pattern matching
   multiple files) to read.
 
-`READ_PARQUET` takes no other arguments — Parquet's schema is read straight from the
+- **`credentials => '<workspace>.<secret>'`** — read a private `gs://` or `s3://`
+  path with a stored [secret](secrets). A string literal naming the secret, qualified
+  with its workspace; never the credential itself. Every file read must fall under the
+  secret's `SCOPE`, and you need `ALTER` on the secret's whole workspace to use it.
+
+`READ_PARQUET` takes no other options — Parquet's schema is read straight from the
 file's own footer, so there is nothing to configure the way there is for
 `READ_CSV`/`READ_JSONL`.
 
@@ -58,6 +63,13 @@ SELECT p.name
  WHERE p.active = TRUE;
 ~~~
 
+### Read a Private Bucket with a Stored Secret
+~~~sql
+SELECT *
+  FROM READ_PARQUET('gs://acme-exports/billing/2026-10/*.parquet',
+                    credentials => 'analytics.billing_reader');
+~~~
+
 ## Notes
 
 - Column names and types come directly from the schema embedded in the Parquet file(s);
@@ -68,15 +80,19 @@ SELECT p.name
 - A glob path (containing `*`, `?`, or `[`) matches multiple files; their combined
   content is read as one relation. Non-`.parquet` files matched by a glob are silently
   excluded.
-- `gs://bucket/object` paths are supported and are always fetched anonymously (a public
-  GCS object is read; a private one fails with an error) — Opteryx never signs a request
-  or uses platform credentials on your behalf for a path given to `READ_PARQUET`. Glob
-  patterns are not supported for `gs://` paths, because listing a bucket's contents
-  needs a permission a public, unauthenticated read does not have. Use `gs://`, not
-  `gcs://`.
+- `gs://bucket/object` and `s3://bucket/object` paths are supported. **Without
+  `credentials =>`** they are always fetched anonymously (a public object is read; a
+  private one fails with an error) — Opteryx never signs a request or uses platform
+  credentials on your behalf for a path given to `READ_PARQUET`, and never picks a secret
+  from the path. Glob patterns are not supported on the anonymous path, because
+  listing a bucket's contents needs a permission a public, unauthenticated read does
+  not have. **With `credentials =>`** the read is signed with the named
+  [secret](secrets), and globs work: every file the glob expands to is checked against
+  the secret's `SCOPE` before anything is read. Use `gs://`, not `gcs://`.
 
 ## See Also
 
+- [Secrets](secrets)
 - [READ_CSV](read-csv)
 - [READ_JSONL](read-jsonl)
 - [CREATE TABLE](create-table)

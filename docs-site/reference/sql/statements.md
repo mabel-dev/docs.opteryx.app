@@ -133,6 +133,16 @@ Manage workspaces - the top level of the naming hierarchy:
 
 Workspaces are created through the platform, not through SQL.
 
+## Secrets
+
+Store credentials in a workspace, encrypted and write-only, to read private buckets with `READ_*`:
+
+| Statement | Purpose |
+|-----------|---------|
+| [CREATE SECRET](statements/secrets) | Store a credential, or replace one with `CREATE OR REPLACE` |
+| [DROP SECRET](statements/secrets) | Remove a stored credential |
+| [SHOW SECRETS](statements/secrets) | List a workspace's secrets, never their values |
+
 ## Collection Management
 
 Manage collections - the layer between a workspace and its tables/views:

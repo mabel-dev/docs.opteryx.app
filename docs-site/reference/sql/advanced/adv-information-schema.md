@@ -273,6 +273,31 @@ policy store read once.
 
 ---
 
+## `information_schema.secrets`
+
+The workspace's [secrets](/docs/reference/sql/statements/secrets), one row each, **never
+with their values**. `SHOW SECRETS IN <workspace>` is a read of this table.
+
+| Column          | Type        | Description                                                         |
+|-----------------|-------------|---------------------------------------------------------------------|
+| `secret_catalog`| `VARCHAR`   | The workspace name                                                  |
+| `secret_name`   | `VARCHAR`   | The secret's name                                                   |
+| `secret_type`   | `VARCHAR`   | `gcs_service_account`, `aws_access_key` or `http_endpoint`          |
+| `scope`         | `VARCHAR`   | The `SCOPE` prefix the secret may read under; `NULL` for `http_endpoint` |
+| `created_by`    | `VARCHAR`   | Who created it                                                      |
+| `created_at`    | `TIMESTAMP` | When it was created                                                 |
+| `updated_by`    | `VARCHAR`   | Who created it or last replaced it                                  |
+| `updated_at`    | `TIMESTAMP` | When it was created or last replaced                                |
+| `last_used_at`  | `TIMESTAMP` | Last **attempted** use — a read that was then refused still counts  |
+| `use_count`     | `BIGINT`    | Number of uses                                                      |
+
+```sql
+SELECT secret_name, secret_type, scope, last_used_at
+  FROM analytics.information_schema.secrets;
+```
+
+---
+
 ## Permissions
 
 `information_schema.tables`, `information_schema.columns` and `information_schema.views` only ever show tables and views the querying identity has [read permission](/docs/core-concepts/access-and-permissions) on. A table that isn't readable to you simply doesn't appear in the results — it isn't hidden with an error, and it isn't visible with its schema exposed. This applies row-by-row, so a query against `information_schema` always succeeds even if you have no access to any tables in the workspace; it just returns no rows.
@@ -290,11 +315,16 @@ object — owner authority covering it, the same gate `SHOW GRANTS ON` holds. A 
 owner sees their collection and what is under it; everything else is simply absent, not
 refused.
 
+`information_schema.secrets` is gated as a **whole**, on `ALTER` on the whole workspace
+(owner of `<workspace>.*`) — the right to manage the secrets it lists. Without it the query
+fails with a permission error rather than returning no rows, so an empty result always
+means the workspace has no secrets.
+
 ---
 
 ## Limitations
 
 This is an early implementation. Known gaps:
 
-- `tables`, `columns`, `views`, `schemata`, `triggers`, `tasks`, `column_relationships` and `grants` are implemented. `routines` is not.
+- `tables`, `columns`, `views`, `schemata`, `triggers`, `tasks`, `column_relationships`, `grants` and `secrets` are implemented. `routines` is not.
 - `information_schema.columns` and `information_schema.views` do one catalog round trip per table or view found. Predicate pushdown covers only equality and `IN` on the enumeration key columns (`table_catalog`, `table_schema`, `table_name`, and `table_type` on `tables`) — those are known before any round trip, so filtering on them skips the lookups entirely. Every other predicate is applied after the fact, so an unfiltered query against a workspace with a very large number of tables is proportionally slower.

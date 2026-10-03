@@ -15,7 +15,8 @@ table name is expected.
 FROM READ_CSV(<path> [, separator => <char>]
                       [, has_header_row => <boolean>]
                       [, ignore_errors => <boolean>]
-                      [, infer_sample_size => <integer>])
+                      [, infer_sample_size => <integer>]
+                      [, credentials => '<workspace>.<secret>'])
 ~~~
 
 ## Parameters
@@ -34,6 +35,10 @@ FROM READ_CSV(<path> [, separator => <char>]
 - **`infer_sample_size => <integer>`**, default `5` — Number of non-null values per
   column sampled to infer its type. A larger value reduces the chance of a later type
   mismatch at the cost of a larger upfront sample.
+- **`credentials => '<workspace>.<secret>'`** — read a private `gs://` or `s3://`
+  path with a stored [secret](secrets). A string literal naming the secret, qualified
+  with its workspace; never the credential itself. Every file read must fall under the
+  secret's `SCOPE`, and you need `ALTER` on the secret's whole workspace to use it.
 
 ## Examples
 
@@ -68,6 +73,13 @@ SELECT o.id, o.total
  WHERE o.total > 100;
 ~~~
 
+### Read a Private Bucket with a Stored Secret
+~~~sql
+SELECT *
+  FROM READ_CSV('gs://acme-exports/billing/2026-10/*.csv',
+                credentials => 'analytics.billing_reader');
+~~~
+
 ## Notes
 
 - Supported column types are `INTEGER`, `FLOAT`, `VARCHAR`, and `NULL` — a column
@@ -83,15 +95,19 @@ SELECT o.id, o.total
   content is read as one relation. Every matched file's columns and inferred types must
   agree with the first file's — a file whose schema disagrees fails the query rather
   than silently producing mismatched or missing columns.
-- `gs://bucket/object` paths are supported and are always fetched anonymously (a public
-  GCS object is read; a private one fails with an error) — Opteryx never signs a request
-  or uses platform credentials on your behalf for a path given to `READ_CSV`. Glob
-  patterns are not supported for `gs://` paths, because listing a bucket's contents
-  needs a permission a public, unauthenticated read does not have. Use `gs://`, not
-  `gcs://`.
+- `gs://bucket/object` and `s3://bucket/object` paths are supported. **Without
+  `credentials =>`** they are always fetched anonymously (a public object is read; a
+  private one fails with an error) — Opteryx never signs a request or uses platform
+  credentials on your behalf for a path given to `READ_CSV`, and never picks a secret
+  from the path. Glob patterns are not supported on the anonymous path, because
+  listing a bucket's contents needs a permission a public, unauthenticated read does
+  not have. **With `credentials =>`** the read is signed with the named
+  [secret](secrets), and globs work: every file the glob expands to is checked against
+  the secret's `SCOPE` before anything is read. Use `gs://`, not `gcs://`.
 
 ## See Also
 
+- [Secrets](secrets)
 - [READ_JSONL](read-jsonl)
 - [READ_PARQUET](read-parquet)
 - [CREATE TABLE](create-table)
