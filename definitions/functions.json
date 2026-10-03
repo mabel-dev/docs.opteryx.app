@@ -6531,7 +6531,7 @@
                 "id": "UNIXTIME_default",
                 "label": "UNIXTIME(date)",
                 "category": "Date & Time Functions",
-                "documentation": "Convert TIMESTAMP to Unix epoch seconds.",
+                "documentation": "Converts a DATE or TIMESTAMP to whole Unix epoch seconds as an INTEGER; sub-second detail is discarded. With no argument, gives the epoch seconds at which the query's connection was opened - the same value as UNIXTIME(NOW()).",
                 "related_functions": [
                     "CURRENT_DATE",
                     "CURRENT_TIME",
@@ -6575,6 +6575,36 @@
                         ]
                     }
                 ]
+            },
+            {
+                "id": "UNIXTIME_0",
+                "label": "UNIXTIME()",
+                "category": "Date & Time Functions",
+                "documentation": "Converts a DATE or TIMESTAMP to whole Unix epoch seconds as an INTEGER; sub-second detail is discarded. With no argument, gives the epoch seconds at which the query's connection was opened - the same value as UNIXTIME(NOW()).",
+                "related_functions": [
+                    "CURRENT_DATE",
+                    "CURRENT_TIME",
+                    "CURRENT_TIMESTAMP",
+                    "DATE",
+                    "EXTRACT"
+                ],
+                "return_type": "INTEGER",
+                "returns": {
+                    "type": "INTEGER",
+                    "documentation": "Returns the computed result as `INTEGER`."
+                },
+                "arity": {
+                    "minimum": 0,
+                    "maximum": 0,
+                    "variadic": false
+                },
+                "homogeneous": false,
+                "execution": {
+                    "kernel_id": "zero_arg",
+                    "engine": "draken",
+                    "cost_us_per_million": 1.0
+                },
+                "parameters": []
             }
         ]
     },

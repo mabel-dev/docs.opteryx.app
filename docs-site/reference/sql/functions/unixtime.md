@@ -1,6 +1,6 @@
 ---
 title: UNIXTIME — Opteryx Function
-description: Convert TIMESTAMP to Unix epoch seconds.
+description: Converts a DATE or TIMESTAMP to whole Unix epoch seconds as an INTEGER; sub-second detail is discarded. With no argument, gives the epoch seconds at which the query's connection was opened - the same value as UNIXTIME(NOW()).
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,7 +11,7 @@ description: Convert TIMESTAMP to Unix epoch seconds.
 
 # UNIXTIME
 
-Convert TIMESTAMP to Unix epoch seconds.
+Converts a DATE or TIMESTAMP to whole Unix epoch seconds as an INTEGER; sub-second detail is discarded. With no argument, gives the epoch seconds at which the query's connection was opened - the same value as UNIXTIME(NOW()).
 
 **Category:** Date & Time Functions
 
@@ -19,6 +19,10 @@ Convert TIMESTAMP to Unix epoch seconds.
 
 ```sql
 UNIXTIME(date)
+```
+
+```sql
+UNIXTIME()
 ```
 
 ## Arguments
