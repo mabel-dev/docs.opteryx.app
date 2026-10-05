@@ -61,19 +61,60 @@ That is exactly the problem a medallion architecture is meant to prevent.
 
 For our logs that becomes:
 
-~~~text
-storage bucket, hourly JSONL files
-    │   cron: copy lines, parse nothing
-    ▼
-BRONZE  opteryx.raw_logs.{stdout, requests, stderr, varlog}
-    │   one task per stream, fired by each bronze commit
-    ▼
-SILVER  opteryx.ops.{stdout_log, request_log, stderr_log, varlog}
-    │   tasks fired by each silver commit
-    ▼
-        ops.audit_log, ops.catalog_changes, ops.policy_changes
-GOLD    platform.billing.events → billing relations, priced by the rate card
-~~~
+<figure class="doc-figure">
+<svg viewBox="0 0 680 316" width="100%" role="img" aria-labelledby="medallion-flow-title medallion-flow-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="medallion-flow-title">Bronze, silver and gold for opteryx.app&#x27;s logs</title>
+<desc id="medallion-flow-desc">The log pipeline as layers. A storage bucket of hourly JSONL files is copied by a Python cron, which parses nothing, into BRONZE tables opteryx.raw_logs stdout, requests, stderr and varlog. One SQL task per stream, fired by each bronze commit, writes SILVER tables opteryx.ops stdout_log, request_log, stderr_log and varlog. SQL tasks fired by each silver commit write GOLD, platform.billing.events into billing relations priced by the rate card, and also the derived tables ops.audit_log, ops.catalog_changes and ops.policy_changes. Only the first hop is Python.</desc>
+<rect x="96.0" y="6.0" width="300.0" height="30.0" rx="6" style="fill: var(--panel-2); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="108.0" y="26.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Storage bucket: hourly JSONL files</text>
+<line x1="126.0" y1="36.0" x2="126.0" y2="76.0" style="stroke: var(--opteryx-orange); stroke-width: 1.75; stroke-dasharray: 4 3;"/>
+<polygon points="122.0,76.0 130.0,76.0 126.0,84.0" style="fill: var(--opteryx-orange);"/>
+<rect x="136.0" y="50.0" width="46.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.15;"/>
+<text x="159.0" y="62.0" text-anchor="middle" style="fill: var(--opteryx-orange); font-size: 10px; font-weight: 700; font-family: var(--font-body);">Python</text>
+<text x="190.0" y="62.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-body);">cron copies lines, parses nothing</text>
+<text x="0.0" y="112.0" style="fill: var(--orange-ink); font-size: 12px; font-weight: 700; font-family: var(--font-display);">BRONZE</text>
+<text x="0.0" y="196.0" style="fill: var(--muted); font-size: 12px; font-weight: 700; font-family: var(--font-display);">SILVER</text>
+<text x="0.0" y="282.0" style="fill: var(--gold); font-size: 12px; font-weight: 700; font-family: var(--font-display);">GOLD</text>
+<text x="96.0" y="92.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-mono);">opteryx.raw_logs</text>
+<rect x="96.0" y="98.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="155.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">stdout</text>
+<rect x="222.0" y="98.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="281.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">requests</text>
+<rect x="348.0" y="98.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="407.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">stderr</text>
+<rect x="474.0" y="98.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="533.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">varlog</text>
+<line x1="126.0" y1="124.0" x2="126.0" y2="160.0" style="stroke: var(--opteryx-teal); stroke-width: 1.75;"/>
+<polygon points="122.0,160.0 130.0,160.0 126.0,168.0" style="fill: var(--opteryx-teal);"/>
+<rect x="136.0" y="136.0" width="46.0" height="16.0" rx="8" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.15;"/>
+<text x="159.0" y="148.0" text-anchor="middle" style="fill: var(--opteryx-teal); font-size: 10px; font-weight: 700; font-family: var(--font-body);">SQL</text>
+<text x="190.0" y="148.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-body);">one task per stream, fired by each bronze commit</text>
+<text x="96.0" y="176.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-mono);">opteryx.ops</text>
+<rect x="96.0" y="182.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="155.0" y="199.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">stdout_log</text>
+<rect x="222.0" y="182.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="281.0" y="199.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">request_log</text>
+<rect x="348.0" y="182.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="407.0" y="199.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">stderr_log</text>
+<rect x="474.0" y="182.0" width="118.0" height="26.0" rx="5" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="533.0" y="199.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">varlog</text>
+<line x1="126.0" y1="208.0" x2="126.0" y2="246.0" style="stroke: var(--opteryx-teal); stroke-width: 1.75;"/>
+<polygon points="122.0,246.0 130.0,246.0 126.0,254.0" style="fill: var(--opteryx-teal);"/>
+<rect x="136.0" y="221.0" width="46.0" height="16.0" rx="8" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.15;"/>
+<text x="159.0" y="233.0" text-anchor="middle" style="fill: var(--opteryx-teal); font-size: 10px; font-weight: 700; font-family: var(--font-body);">SQL</text>
+<text x="190.0" y="233.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-body);">tasks fired by each silver commit</text>
+<rect x="96.0" y="262.0" width="250.0" height="46.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="108.0" y="280.0" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">platform.billing.events</text>
+<text x="108.0" y="298.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">→ billing relations → rate card</text>
+<rect x="362.0" y="262.0" width="300.0" height="46.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1; stroke-dasharray: 3 3;"/>
+<text x="374.0" y="280.0" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">ops.audit_log, ops.catalog_changes,</text>
+<text x="374.0" y="298.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">ops.policy_changes, also from silver</text>
+<line x1="126.0" y1="236.0" x2="512.0" y2="236.0" style="stroke: var(--opteryx-teal); stroke-width: 1.75;"/>
+<line x1="512.0" y1="236.0" x2="512.0" y2="254.0" style="stroke: var(--opteryx-teal); stroke-width: 1.75;"/>
+<polygon points="508.0,254.0 516.0,254.0 512.0,262.0" style="fill: var(--opteryx-teal);"/>
+</svg>
+<figcaption>Only the copy into bronze is Python. Every hop after it is a SQL task, fired by a commit.</figcaption>
+</figure>
 
 The silver tables are the ones the old crons wrote, with the same schemas, so nothing downstream had to change.
 
@@ -127,6 +168,52 @@ We used a column instead. Snapshot IDs in Opteryx are epoch milliseconds, alloca
 ~~~text
 parent snapshot  <  ingest_ms  ≤  this commit's snapshot
 ~~~
+
+<figure class="doc-figure">
+<svg viewBox="0 0 680 194" width="100%" role="img" aria-labelledby="medallion-window-title medallion-window-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="medallion-window-title">The commit window as a range of ingest_ms</title>
+<desc id="medallion-window-desc">A time axis with three bronze commits, S1, S2 and S3, each preceded by the rows it appended, stamped with ingest_ms. The run fired by S3 reads rows with ingest_ms greater than S2 and at most S3, which are exactly S3&#x27;s rows. A second axis shows the case where S2&#x27;s run failed: S3&#x27;s run is handed the window from S1 to S3, covering both commits&#x27; rows, so no commit is skipped.</desc>
+<text x="90.0" y="50.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-weight: 600; font-family: var(--font-body);">bronze rows</text>
+<rect x="380.0" y="30.0" width="190.4" height="32.0" rx="4" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.12;"/>
+<line x1="100.0" y1="46.0" x2="660.0" y2="46.0" style="stroke: var(--border-2); stroke-width: 1.5;"/>
+<line x1="200.8" y1="28.0" x2="200.8" y2="64.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="200.8" y="24.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S1</text>
+<line x1="380.0" y1="28.0" x2="380.0" y2="64.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="380.0" y="24.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S2</text>
+<line x1="570.4" y1="28.0" x2="570.4" y2="64.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="570.4" y="24.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S3</text>
+<circle cx="161.6" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="172.8" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="184.0" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="340.8" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="352.0" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="363.2" cy="46.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="531.2" cy="46.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="542.4" cy="46.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="553.6" cy="46.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<text x="570.4" y="78.0" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">S3&#x27;s run reads ingest_ms in (S2, S3]</text>
+<text x="90.0" y="134.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-weight: 600; font-family: var(--font-body);">after a failure</text>
+<rect x="200.8" y="114.0" width="369.6" height="32.0" rx="4" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.12;"/>
+<line x1="100.0" y1="130.0" x2="660.0" y2="130.0" style="stroke: var(--border-2); stroke-width: 1.5;"/>
+<line x1="200.8" y1="112.0" x2="200.8" y2="148.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="200.8" y="108.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S1</text>
+<line x1="380.0" y1="112.0" x2="380.0" y2="148.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="380.0" y="108.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S2</text>
+<line x1="570.4" y1="112.0" x2="570.4" y2="148.0" style="stroke: var(--text-deep); stroke-width: 1.5;"/>
+<text x="570.4" y="108.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 700; font-family: var(--font-body);">S3</text>
+<circle cx="161.6" cy="130.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="172.8" cy="130.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="184.0" cy="130.0" r="4" style="fill: var(--bg); stroke: var(--muted-2); stroke-width: 1.5;"/>
+<circle cx="340.8" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="352.0" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="363.2" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="531.2" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="542.4" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<circle cx="553.6" cy="130.0" r="4" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<text x="570.4" y="162.0" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">S2&#x27;s run failed, so S3&#x27;s run is handed (S1, S3]</text>
+<text x="100.0" y="186.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">Each dot is a bronze row, stamped with ingest_ms just before its commit.</text>
+</svg>
+</figure>
 
 Bronze is sorted on `ingest_ms`, so the filter prunes each run to the one file the commit wrote. Because the window is a column rather than a file, compaction can merge bronze files without breaking it. It holds up under failure too: if a run fails, the next one is handed a window reaching back to the last successful run, so no commit is skipped. The only requirement is one writer per bronze table, which one cron per stream gives us.
 

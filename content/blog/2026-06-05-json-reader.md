@@ -90,15 +90,82 @@ Homogeneity means the prediction almost always hits.
 
 Speedup vs PyArrow across table width and filter selectivity (>1× = faster):
 
-| Query | Skinny (3 cols) | Medium (8 cols) | Wide (25 cols) | Wide (100 cols) |
-|---|---|---|---|---|
-| `SELECT *` | 1.2× | 1.0× | 0.8× | 1.5× |
-| `SELECT first_col` | 1.4× | 1.5× | 1.9× | 6.8× |
-| `SELECT last_col` | 0.9× | 0.9× | 1.3× | 4.9× |
-| `WHERE id < 90%` | 0.7× | 0.5× | 0.5× | 0.6× |
-| `WHERE id < 10%` | 1.2× | 1.0× | 0.7× | 0.6× |
-| `WHERE id < 1%` | 1.3× | 1.5× | 2.0× | 2.7× |
-| `WHERE id < 0.1%` | 1.3× | 1.6× | 2.3× | 7.3× |
+<figure class="doc-figure">
+<svg viewBox="0 0 680 284" width="100%" role="img" aria-labelledby="json-heatmap-title json-heatmap-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="json-heatmap-title">Speedup against PyArrow by table width and query</title>
+<desc id="json-heatmap-desc">Heatmap of speedup against PyArrow; columns are table widths of 3, 8, 25 and 100 columns. SELECT *: 1.2×, 1.0×, 0.8×, 1.5×; SELECT first_col: 1.4×, 1.5×, 1.9×, 6.8×; SELECT last_col: 0.9×, 0.9×, 1.3×, 4.9×; WHERE id &lt; 90%: 0.7×, 0.5×, 0.5×, 0.6×; WHERE id &lt; 10%: 1.2×, 1.0×, 0.7×, 0.6×; WHERE id &lt; 1%: 1.3×, 1.5×, 2.0×, 2.7×; WHERE id &lt; 0.1%: 1.3×, 1.6×, 2.3×, 7.3×. The largest wins are at the bottom right: wide tables with selective filters or single-column projections.</desc>
+<text x="220.0" y="20.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Skinny (3 cols)</text>
+<text x="348.0" y="20.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Medium (8 cols)</text>
+<text x="476.0" y="20.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Wide (25 cols)</text>
+<text x="604.0" y="20.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Wide (100 cols)</text>
+<text x="144.0" y="50.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">SELECT *</text>
+<rect x="157.0" y="31.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.13686444181806762;"/>
+<text x="220.0" y="51.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.2×</text>
+<rect x="285.0" y="31.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.06;"/>
+<text x="348.0" y="51.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.0×</text>
+<rect x="413.0" y="31.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.27959541883016464;"/>
+<text x="476.0" y="51.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">0.8×</text>
+<rect x="541.0" y="31.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.20646089389928746;"/>
+<text x="604.0" y="51.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.5×</text>
+<text x="144.0" y="82.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">SELECT first_col</text>
+<rect x="157.0" y="63.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.18494264232487323;"/>
+<text x="220.0" y="83.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.4×</text>
+<rect x="285.0" y="63.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.20646089389928746;"/>
+<text x="348.0" y="83.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.5×</text>
+<rect x="413.0" y="63.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.28018841220842927;"/>
+<text x="476.0" y="83.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.9×</text>
+<rect x="541.0" y="63.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.6778707963389843;"/>
+<text x="604.0" y="83.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">6.8×</text>
+<text x="144.0" y="114.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">SELECT last_col</text>
+<rect x="157.0" y="95.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.17424191793593102;"/>
+<text x="220.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">0.9×</text>
+<rect x="285.0" y="95.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.17424191793593102;"/>
+<text x="348.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">0.9×</text>
+<rect x="413.0" y="95.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.16182903719285507;"/>
+<text x="476.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.3×</text>
+<rect x="541.0" y="95.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.5756680627661965;"/>
+<text x="604.0" y="115.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4.9×</text>
+<text x="144.0" y="146.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">WHERE id &lt; 90%</text>
+<rect x="157.0" y="127.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.3990353671544501;"/>
+<text x="220.0" y="147.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">0.7×</text>
+<rect x="285.0" y="127.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<text x="348.0" y="147.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.5×</text>
+<rect x="413.0" y="127.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<text x="476.0" y="147.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.5×</text>
+<rect x="541.0" y="127.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.5369186683830478;"/>
+<text x="604.0" y="147.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.6×</text>
+<text x="144.0" y="178.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">WHERE id &lt; 10%</text>
+<rect x="157.0" y="159.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.13686444181806762;"/>
+<text x="220.0" y="179.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.2×</text>
+<rect x="285.0" y="159.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.06;"/>
+<text x="348.0" y="179.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.0×</text>
+<rect x="413.0" y="159.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.3990353671544501;"/>
+<text x="476.0" y="179.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">0.7×</text>
+<rect x="541.0" y="159.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.5369186683830478;"/>
+<text x="604.0" y="179.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.6×</text>
+<text x="144.0" y="210.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">WHERE id &lt; 1%</text>
+<rect x="157.0" y="191.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.16182903719285507;"/>
+<text x="220.0" y="211.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.3×</text>
+<rect x="285.0" y="191.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.20646089389928746;"/>
+<text x="348.0" y="211.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.5×</text>
+<rect x="413.0" y="191.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.2961863260352302;"/>
+<text x="476.0" y="211.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2.0×</text>
+<rect x="541.0" y="191.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.3897862296166426;"/>
+<text x="604.0" y="211.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2.7×</text>
+<text x="144.0" y="242.0" text-anchor="end" style="fill: var(--text-deep); font-size: 11.5px; font-family: var(--font-mono);">WHERE id &lt; 0.1%</text>
+<rect x="157.0" y="223.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.16182903719285507;"/>
+<text x="220.0" y="243.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.3×</text>
+<rect x="285.0" y="223.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.22658987395401037;"/>
+<text x="348.0" y="243.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">1.6×</text>
+<rect x="413.0" y="223.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.3397768096857946;"/>
+<text x="476.0" y="243.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2.3×</text>
+<rect x="541.0" y="223.0" width="126.0" height="30.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<text x="604.0" y="243.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">7.3×</text>
+<text x="156.0" y="276.0" style="fill: var(--opteryx-orange); font-size: 11px; font-weight: 600; font-family: var(--font-body);">◀ slower than PyArrow</text>
+<text x="412.0" y="276.0" text-anchor="middle" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">1× parity</text>
+<text x="668.0" y="276.0" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 11px; font-weight: 600; font-family: var(--font-body);">faster than PyArrow ▶</text>
+</svg>
+</figure>
 
 The 100-column case is the one to watch: real log and event data is wide, and width is where this design pays off hardest.
 

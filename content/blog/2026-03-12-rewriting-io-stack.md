@@ -85,6 +85,106 @@ The time between issuing a request and receiving data was long enough to starve 
 
 The bottleneck was not bandwidth, it was granularity.
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 196" width="100%" role="img" aria-labelledby="io-granularity-title io-granularity-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="io-granularity-title">Large reads arrive in bursts; small ones arrive continuously</title>
+<desc id="io-granularity-desc">Two schematic timelines, each with a network lane and an engine lane. Before: the network issues one large read per file; each waits on latency, then a large chunk arrives in a burst, and only then does the engine work, so the engine sits idle between bursts. After: many small range reads for individual column chunks overlap on the network, and the engine works almost continuously.</desc>
+<text x="0.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Before: one read per file</text>
+<text x="80.0" y="39.0" text-anchor="end" style="fill: var(--muted); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Network</text>
+<line x1="90.0" y1="46.0" x2="670.0" y2="46.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="80.0" y="67.0" text-anchor="end" style="fill: var(--muted); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Engine</text>
+<line x1="90.0" y1="74.0" x2="670.0" y2="74.0" style="stroke: var(--border); stroke-width: 1;"/>
+<rect x="90.0" y="30.0" width="58.0" height="14.0" rx="2" style="fill: none; stroke: var(--muted-2); stroke-width: 1; stroke-dasharray: 2 2;"/>
+<rect x="148.0" y="30.0" width="96.7" height="14.0" rx="2" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="244.7" y="58.0" width="48.3" height="14.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="283.3" y="30.0" width="58.0" height="14.0" rx="2" style="fill: none; stroke: var(--muted-2); stroke-width: 1; stroke-dasharray: 2 2;"/>
+<rect x="341.3" y="30.0" width="96.7" height="14.0" rx="2" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="438.0" y="58.0" width="48.3" height="14.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="476.7" y="30.0" width="58.0" height="14.0" rx="2" style="fill: none; stroke: var(--muted-2); stroke-width: 1; stroke-dasharray: 2 2;"/>
+<rect x="534.7" y="30.0" width="96.7" height="14.0" rx="2" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="631.3" y="58.0" width="48.3" height="14.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<text x="167.3" y="69.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-style: italic; font-family: var(--font-body);">idle</text>
+<text x="365.5" y="69.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-style: italic; font-family: var(--font-body);">idle</text>
+<text x="558.8" y="69.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-style: italic; font-family: var(--font-body);">idle</text>
+<text x="0.0" y="104.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">After: range reads per column chunk</text>
+<text x="80.0" y="129.0" text-anchor="end" style="fill: var(--muted); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Network</text>
+<line x1="90.0" y1="136.0" x2="670.0" y2="136.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="80.0" y="157.0" text-anchor="end" style="fill: var(--muted); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">Engine</text>
+<line x1="90.0" y1="164.0" x2="670.0" y2="164.0" style="stroke: var(--border); stroke-width: 1;"/>
+<rect x="90.0" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="106.9" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="123.8" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="140.8" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="157.7" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="174.6" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="191.5" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="208.4" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="225.3" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="242.3" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="259.2" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="276.1" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="293.0" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="309.9" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="326.8" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="343.8" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="360.7" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="377.6" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="394.5" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="411.4" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="428.3" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="445.2" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="462.2" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="479.1" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="496.0" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="512.9" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="529.8" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="546.7" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="563.7" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="580.6" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="597.5" y="118.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="614.4" y="123.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="631.3" y="128.0" width="43.5" height="5.0" rx="1" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<rect x="138.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="155.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="173.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="190.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="207.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="225.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="242.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="260.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="277.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="294.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="312.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="329.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="347.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="364.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="381.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="399.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="416.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="434.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="451.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="468.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="486.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="503.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="521.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="538.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="555.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="573.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="590.7" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="608.1" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="625.5" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="642.9" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="660.3" y="148.0" width="15.5" height="14.0" rx="1" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="90.0" y="176.0" width="18.0" height="11.0" rx="2" style="fill: none; stroke: var(--muted-2); stroke-width: 1; stroke-dasharray: 2 2;"/>
+<text x="114.0" y="186.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">waiting on latency</text>
+<rect x="250.0" y="176.0" width="18.0" height="11.0" rx="2" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.7;"/>
+<text x="274.0" y="186.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">bytes arriving</text>
+<rect x="390.0" y="176.0" width="18.0" height="11.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<text x="414.0" y="186.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">engine working</text>
+</svg>
+<figcaption>Schematic. The link moves the same bytes in both; what changes is how soon the engine has something to work on.</figcaption>
+</figure>
+
 ## Rewriting the IO Stack
 
 The solution was to redesign the IO subsystem around smaller units of work.

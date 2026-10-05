@@ -109,6 +109,54 @@ Early results suggest we can hit the 4 second bar set by other engines, and as a
 
 ## The Lesson
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 262" width="100%" role="img" aria-labelledby="like-progression-title like-progression-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="like-progression-title">LIKE &#x27;%needle%&#x27; from 93 seconds to 3.8</title>
+<desc id="like-progression-desc">Bar chart of the LIKE &#x27;%needle%&#x27; benchmark by version: 0.19.0 93.27 s, of which about 30 s was I/O; 0.20.0 56.82 s after the I/O stack rewrite; 0.22.0 17.57 s after treating &#x27;%needle%&#x27; as CONTAINS; 0.26.2 7.46 s with direct buffers, Boyer-Moore-Horspool and a sieve; and a lab build at 3.8 s with Volnitsky and Arrow removed, of which 2.8 s is I/O. A dashed line marks DuckDB and ClickHouse at under 4 seconds.</desc>
+<line x1="176.0" y1="26.0" x2="176.0" y2="220.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="176.0" y="234.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">0 s</text>
+<line x1="282.0" y1="26.0" x2="282.0" y2="220.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="282.0" y="234.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">25 s</text>
+<line x1="388.0" y1="26.0" x2="388.0" y2="220.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="388.0" y="234.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">50 s</text>
+<line x1="494.0" y1="26.0" x2="494.0" y2="220.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="494.0" y="234.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">75 s</text>
+<line x1="600.0" y1="26.0" x2="600.0" y2="220.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="600.0" y="234.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">100 s</text>
+<line x1="193.0" y1="16.0" x2="193.0" y2="220.0" style="stroke: var(--opteryx-orange); stroke-width: 1.25; stroke-dasharray: 4 3;"/>
+<text x="198.0" y="14.0" style="fill: var(--opteryx-orange); font-size: 11px; font-weight: 600; font-family: var(--font-body);">DuckDB, ClickHouse: under 4 s</text>
+<text x="164.0" y="45.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.19.0</text>
+<text x="164.0" y="60.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">baseline</text>
+<rect x="176.0" y="38.0" width="127.2" height="20.0" rx="3" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.6;"/>
+<rect x="303.2" y="38.0" width="268.3" height="20.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.9;"/>
+<text x="579.5" y="53.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">93.27 s</text>
+<text x="164.0" y="83.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.20.0</text>
+<text x="164.0" y="98.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">I/O stack rewrite</text>
+<rect x="176.0" y="76.0" width="240.9" height="20.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="424.9" y="91.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">56.82 s</text>
+<text x="164.0" y="121.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.22.0</text>
+<text x="164.0" y="136.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">&#x27;%needle%&#x27; as CONTAINS</text>
+<rect x="176.0" y="114.0" width="74.5" height="20.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="258.5" y="129.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">17.57 s</text>
+<text x="164.0" y="159.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">0.26.2</text>
+<text x="164.0" y="174.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">direct buffers, BMH, sieve</text>
+<rect x="176.0" y="152.0" width="31.6" height="20.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="215.6" y="167.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">7.46 s</text>
+<text x="164.0" y="197.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">lab</text>
+<text x="164.0" y="212.0" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">Volnitsky, Arrow removed</text>
+<rect x="176.0" y="190.0" width="11.9" height="20.0" rx="3" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.6;"/>
+<rect x="187.9" y="190.0" width="4.2" height="20.0" rx="3" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.9;"/>
+<text x="200.1" y="205.0" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">3.8 s</text>
+<rect x="176.0" y="245.0" width="10.0" height="10.0" rx="2" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.6;"/>
+<text x="192.0" y="254.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">I/O</text>
+<rect x="236.0" y="245.0" width="10.0" height="10.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.9;"/>
+<text x="252.0" y="254.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">string search</text>
+<rect x="356.0" y="245.0" width="10.0" height="10.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="372.0" y="254.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">total, split not measured</text>
+</svg>
+<figcaption>Where the I/O share was measured, the bar is split. By the lab build, I/O is most of the time again.</figcaption>
+</figure>
+
 Optimising a substring search operator looks simple in isolation, but the real wins come from:
 
 1. **Fixing fundamentals first** (IO stack). A fast algorithm on slow data is still slow.

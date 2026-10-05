@@ -126,13 +126,61 @@ Rugo yields results as Morsels — batches of rows streamed from the file. Memor
 
 ## The Numbers
 
-| Method | Time | Entries | Avg Response (ms) | Peak Memory |
-|---|---|---|---|---|
-| grep + Python | 6.98s | 899,041 | 1,488.77 | ~42 MB |
-| pandas | 13.37s | 899,041 | 1,488.78 | ~2,500 MB |
-| Rugo | 1.23s | 899,041 | 1,488.77 | ~5 MB |
+<figure class="doc-figure">
+<svg viewBox="0 0 680 310" width="100%" role="img" aria-labelledby="log-bars-title log-bars-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="log-bars-title">Time and peak memory for the three approaches</title>
+<desc id="log-bars-desc">Two bar charts for 1.05 GB of JSONL logs. Time: grep plus Python 6.98 seconds, of which grep is about 0.4 seconds and Python JSON parsing about 6.5; pandas 13.37 seconds; Rugo 1.23 seconds. Peak memory on a log scale: grep plus Python about 42 MB, pandas about 2,500 MB, Rugo about 5 MB.</desc>
+<text x="0.0" y="16.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Time</text>
+<line x1="130.0" y1="26.0" x2="130.0" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="130.0" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">0 s</text>
+<line x1="197.1" y1="26.0" x2="197.1" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="197.1" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">2 s</text>
+<line x1="264.3" y1="26.0" x2="264.3" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="264.3" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">4 s</text>
+<line x1="331.4" y1="26.0" x2="331.4" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="331.4" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">6 s</text>
+<line x1="398.6" y1="26.0" x2="398.6" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="398.6" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">8 s</text>
+<line x1="465.7" y1="26.0" x2="465.7" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="465.7" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">10 s</text>
+<line x1="532.9" y1="26.0" x2="532.9" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="532.9" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">12 s</text>
+<line x1="600.0" y1="26.0" x2="600.0" y2="128.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="600.0" y="142.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">14 s</text>
+<text x="118.0" y="46.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">grep + Python</text>
+<rect x="130.0" y="34.0" width="13.4" height="18.0" rx="2" style="fill: var(--opteryx-navy); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="143.4" y="34.0" width="220.9" height="18.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="372.3" y="47.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-body);">6.98 s: grep ~0.4 s, then ~6.5 s parsing JSON in Python</text>
+<text x="118.0" y="78.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">pandas</text>
+<rect x="130.0" y="66.0" width="448.8" height="18.0" rx="2" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.5;"/>
+<text x="586.8" y="79.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">13.37 s</text>
+<text x="118.0" y="110.0" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">Rugo</text>
+<rect x="130.0" y="98.0" width="41.3" height="18.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.9;"/>
+<text x="179.3" y="111.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">1.23 s</text>
+<text x="0.0" y="178.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Peak memory (log scale)</text>
+<line x1="130.0" y1="188.0" x2="130.0" y2="290.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="130.0" y="304.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">1 MB</text>
+<line x1="247.5" y1="188.0" x2="247.5" y2="290.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="247.5" y="304.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">10 MB</text>
+<line x1="365.0" y1="188.0" x2="365.0" y2="290.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="365.0" y="304.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">100 MB</text>
+<line x1="482.5" y1="188.0" x2="482.5" y2="290.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="482.5" y="304.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">1 GB</text>
+<line x1="600.0" y1="188.0" x2="600.0" y2="290.0" style="stroke: var(--border); stroke-width: 1;"/>
+<text x="600.0" y="304.0" text-anchor="middle" style="fill: var(--muted-2); font-size: 10.5px; font-family: var(--font-body);">10 GB</text>
+<text x="118.0" y="208.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">grep + Python</text>
+<rect x="130.0" y="196.0" width="190.7" height="18.0" rx="2" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.5;"/>
+<text x="328.7" y="209.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">~42 MB</text>
+<text x="118.0" y="240.0" text-anchor="end" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">pandas</text>
+<rect x="130.0" y="228.0" width="399.3" height="18.0" rx="2" style="fill: var(--muted-2); stroke: none; stroke-width: 1; fill-opacity: 0.5;"/>
+<text x="537.3" y="241.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">~2,500 MB</text>
+<text x="118.0" y="272.0" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">Rugo</text>
+<rect x="130.0" y="260.0" width="82.1" height="18.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.9;"/>
+<text x="220.1" y="273.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">~5 MB</text>
+</svg>
+</figure>
 
-All three agree within 0.01 ms for the overall average response time.
+All three return the same 899,041 entries and agree within 0.01 ms on the average response time (1,488.77 ms).
 
 The file: 1.05 GB, 6 million log entries, 15% matching `/api/data`.
 

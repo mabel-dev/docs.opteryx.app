@@ -102,6 +102,52 @@ In theory Arrow supports zero-copy. In practice, null handling and layout differ
 
 So we ended up duplicating and adapting data instead.
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 210" width="100%" role="img" aria-labelledby="memory-tax-title memory-tax-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="memory-tax-title">The conversion tax, before and after Draken</title>
+<desc id="memory-tax-desc">Two pipelines. Before: Parquet to Arrow arrays to NumPy views or copies to Python objects to the operator, with a cost marked at each of the four crossings: copies, null re-handling, or dropping into the interpreter, and the same data held more than once. After: Parquet to Draken vectors to native operators, with no conversions.</desc>
+<text x="0.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Before: data changed shape on the way through</text>
+<rect x="0.0" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="54.4" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Parquet</text>
+<line x1="111.8" y1="50.0" x2="134.8" y2="50.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="132.8,46.0 140.8,50.0 132.8,54.0" style="fill: var(--muted);"/>
+<rect x="98.8" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>
+<text x="125.8" y="88.0" text-anchor="middle" style="fill: var(--orange-ink); font-size: 10px; font-weight: 700; font-family: var(--font-body);">convert</text>
+<rect x="142.8" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="197.2" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Arrow arrays</text>
+<line x1="254.6" y1="50.0" x2="277.6" y2="50.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="275.6,46.0 283.6,50.0 275.6,54.0" style="fill: var(--muted);"/>
+<rect x="241.6" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>
+<text x="268.6" y="88.0" text-anchor="middle" style="fill: var(--orange-ink); font-size: 10px; font-weight: 700; font-family: var(--font-body);">convert</text>
+<rect x="285.6" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="340.0" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">NumPy views or copies</text>
+<line x1="397.4" y1="50.0" x2="420.4" y2="50.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="418.4,46.0 426.4,50.0 418.4,54.0" style="fill: var(--muted);"/>
+<rect x="384.4" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>
+<text x="411.4" y="88.0" text-anchor="middle" style="fill: var(--orange-ink); font-size: 10px; font-weight: 700; font-family: var(--font-body);">convert</text>
+<rect x="428.4" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="482.8" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Python objects</text>
+<line x1="540.2" y1="50.0" x2="563.2" y2="50.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="561.2,46.0 569.2,50.0 561.2,54.0" style="fill: var(--muted);"/>
+<rect x="527.2" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>
+<text x="554.2" y="88.0" text-anchor="middle" style="fill: var(--orange-ink); font-size: 10px; font-weight: 700; font-family: var(--font-body);">convert</text>
+<rect x="571.2" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="625.6" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">operator</text>
+<text x="0.0" y="112.0" style="fill: var(--orange-ink); font-size: 11.5px; font-family: var(--font-body);">Each crossing could copy, re-handle nulls, or drop into the interpreter, and the same data was held more than once.</text>
+<text x="0.0" y="144.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">After: one representation end to end</text>
+<rect x="0.0" y="160.0" width="204.0" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="102.0" y="185.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Parquet</text>
+<line x1="207.0" y1="180.0" x2="230.0" y2="180.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="228.0,176.0 236.0,180.0 228.0,184.0" style="fill: var(--muted);"/>
+<rect x="238.0" y="160.0" width="204.0" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
+<text x="340.0" y="185.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Draken vectors</text>
+<line x1="445.0" y1="180.0" x2="468.0" y2="180.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="466.0,176.0 474.0,180.0 466.0,184.0" style="fill: var(--muted);"/>
+<rect x="476.0" y="160.0" width="204.0" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="578.0" y="185.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">native operators</text>
+</svg>
+</figure>
+
 ## We tried to push Arrow further
 
 Before replacing it, we tried to make it work.
