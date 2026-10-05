@@ -69,7 +69,93 @@ SELECT *
  CROSS JOIN right_relation;
 ~~~
 
-![CROSS JOIN](/images/cross-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="cross-join-title cross-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="cross-join-title">CROSS JOIN of left_relation and right_relation</title>
+<desc id="cross-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The CROSS JOIN pairs every left row with every right row, giving six rows: red with circle, square and triangle, then blue with each.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">CROSS JOIN</text>
+<rect x="404" y="30" width="240" height="194" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 517.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<path d="M518.5 56 V 30.5 H 557.5 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="528" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M558.5 56 V 30.5 H 638.0 Q 643.5 30.5 643.5 36.0 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="568" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="404" y1="56" x2="644" y2="56" style="stroke: var(--border-2);"/>
+<line x1="518" y1="30" x2="518" y2="224" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="568" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="404" y1="84" x2="644" y2="84" style="stroke: var(--border);"/>
+<g><text x="414" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="568" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="404" y1="112" x2="644" y2="112" style="stroke: var(--border);"/>
+<g><text x="414" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="568" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<line x1="404" y1="140" x2="644" y2="140" style="stroke: var(--border);"/>
+<g><text x="414" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text><text x="528" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="568" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="404" y1="168" x2="644" y2="168" style="stroke: var(--border);"/>
+<g><text x="414" y="186" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="186" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text><text x="528" y="186" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="568" y="186" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="404" y1="196" x2="644" y2="196" style="stroke: var(--border);"/>
+<g><text x="414" y="214" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="214" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text><text x="528" y="214" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="568" y="214" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<path d="M162 70 C 282.0 70, 274.0 66, 394 66" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,62 402,66 394,70" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 74, 394 74" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,70 402,74 394,78" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 70 C 282.0 70, 274.0 94, 394 94" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,90 402,94 394,98" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 234 C 282.0 234, 274.0 102, 394 102" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,98 402,102 394,106" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="234" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 70 C 282.0 70, 274.0 122, 394 122" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,118 402,122 394,126" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 262 C 282.0 262, 274.0 130, 394 130" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,126 402,130 394,134" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="262" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 98 C 282.0 98, 274.0 150, 394 150" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,146 402,150 394,154" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 158, 394 158" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,154 402,158 394,162" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 98 C 282.0 98, 274.0 178, 394 178" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,174 402,178 394,182" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 234 C 282.0 234, 274.0 186, 394 186" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,182 402,186 394,190" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="234" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 98 C 282.0 98, 274.0 206, 394 206" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,202 402,206 394,210" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 262 C 282.0 262, 274.0 214, 394 214" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,210 402,214 394,218" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="262" r="2.5" style="fill: var(--opteryx-teal);"/>
+</svg>
+</figure>
 
 ### Notes
 
@@ -174,9 +260,55 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![INNER JOIN](/images/inner-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="inner-join-title inner-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="inner-join-title">INNER JOIN of left_relation and right_relation</title>
+<desc id="inner-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The INNER JOIN returns one row, 1 red 1 circle, because 1 is the only id in both. Blue, square and triangle are faded.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">INNER JOIN</text>
+<rect x="404" y="30" width="240" height="54" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 517.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<path d="M518.5 56 V 30.5 H 557.5 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="528" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M558.5 56 V 30.5 H 638.0 Q 643.5 30.5 643.5 36.0 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="568" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="404" y1="56" x2="644" y2="56" style="stroke: var(--border-2);"/>
+<line x1="518" y1="30" x2="518" y2="84" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="568" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<path d="M162 70 C 282.0 70, 274.0 66, 394 66" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,62 402,66 394,70" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 74, 394 74" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,70 402,74 394,78" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+</svg>
+</figure>
 
-In this example, the blue column is used as the joining column in both relations. Only the value `1` appears in both relations, so the result set contains the combination of rows with `1` from both _left_relation_ and _right_relation_.
+In this example, `id` is the joining column in both relations. Only the value `1` appears in both relations, so the result set contains the combination of rows with `1` from both _left_relation_ and _right_relation_.
 
 ### Notes
 
@@ -218,9 +350,60 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT JOIN](/images/left-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="left-join-title left-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="left-join-title">LEFT JOIN of left_relation and right_relation</title>
+<desc id="left-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The LEFT JOIN returns both left rows: 1 red matched with 1 circle, and 2 blue with null right columns. Square and triangle are faded.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">LEFT JOIN</text>
+<rect x="404" y="30" width="240" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 517.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<path d="M518.5 56 V 30.5 H 557.5 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="528" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M558.5 56 V 30.5 H 638.0 Q 643.5 30.5 643.5 36.0 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="568" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="404" y1="56" x2="644" y2="56" style="stroke: var(--border-2);"/>
+<line x1="518" y1="30" x2="518" y2="112" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="568" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="404" y1="84" x2="644" y2="84" style="stroke: var(--border);"/>
+<g><text x="414" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text><text x="528" y="102" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="568" y="102" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text></g>
+<path d="M162 70 C 282.0 70, 274.0 66, 394 66" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,62 402,66 394,70" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 74, 394 74" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,70 402,74 394,78" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 98 C 282.0 98, 274.0 98, 394 98" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,94 402,98 394,102" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+</svg>
+</figure>
 
-In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Only value `1` appears in both, so that row is returned with columns from both relations. The row with value `2` has no match in _right_relation_, so it is still included but the right relation columns are filled with `null`.
+In this example, `id` is the joining column in both relations. _left_relation_ has ids `1` and `2`; _right_relation_ has ids `1`, `3` and `4`. Only value `1` appears in both, so that row is returned with columns from both relations. The row with value `2` has no match in _right_relation_, so it is still included but the right relation columns are filled with `null`.
 
 ## RIGHT JOIN
 
@@ -248,9 +431,70 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![FULL JOIN](/images/full-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="full-join-title full-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="full-join-title">FULL JOIN of left_relation and right_relation</title>
+<desc id="full-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The FULL JOIN returns four rows: 1 red with 1 circle; 2 blue with null right columns; and 3 square and 4 triangle with null left columns.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">FULL JOIN</text>
+<rect x="404" y="30" width="240" height="138" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 517.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<path d="M518.5 56 V 30.5 H 557.5 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="528" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M558.5 56 V 30.5 H 638.0 Q 643.5 30.5 643.5 36.0 V 56 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="568" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="404" y1="56" x2="644" y2="56" style="stroke: var(--border-2);"/>
+<line x1="518" y1="30" x2="518" y2="168" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text><text x="528" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="568" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="404" y1="84" x2="644" y2="84" style="stroke: var(--border);"/>
+<g><text x="414" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text><text x="528" y="102" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="568" y="102" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text></g>
+<line x1="404" y1="112" x2="644" y2="112" style="stroke: var(--border);"/>
+<g><text x="414" y="130" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="454" y="130" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="528" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="568" y="130" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="404" y1="140" x2="644" y2="140" style="stroke: var(--border);"/>
+<g><text x="414" y="158" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="454" y="158" style="fill: var(--muted-2); font-size: 12.5px; font-style: italic; font-family: var(--font-body);">null</text><text x="528" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="568" y="158" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<path d="M162 70 C 282.0 70, 274.0 66, 394 66" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,62 402,66 394,70" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 74, 394 74" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,70 402,74 394,78" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 98 C 282.0 98, 274.0 98, 394 98" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,94 402,98 394,102" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 234 C 282.0 234, 274.0 126, 394 126" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,122 402,126 394,130" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="234" r="2.5" style="fill: var(--opteryx-teal);"/>
+<path d="M162 262 C 282.0 262, 274.0 154, 394 154" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,150 402,154 394,158" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="262" r="2.5" style="fill: var(--opteryx-teal);"/>
+</svg>
+</figure>
 
-In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Value `1` appears in both and the rows are aligned. Value `2` exists only in _left_relation_ and value `3` exists only in _right_relation_ — both are included in the result, with `null` filling the columns from the absent side.
+In this example, `id` is the joining column in both relations. _left_relation_ has ids `1` and `2`; _right_relation_ has ids `1`, `3` and `4`. Value `1` appears in both and the rows are aligned. Value `2` exists only in _left_relation_, and values `3` and `4` exist only in _right_relation_ — all are included in the result, with `null` filling the columns from the absent side.
 
 ## LEFT SEMI JOIN
 
@@ -270,9 +514,50 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT SEMI JOIN](/images/left-semi-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="left-semi-join-title left-semi-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="left-semi-join-title">LEFT SEMI JOIN of left_relation and right_relation</title>
+<desc id="left-semi-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The LEFT SEMI JOIN returns only 1 red, with only the left relation&#x27;s columns. A dashed line from 1 circle shows the match that let it through, without contributing columns.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">LEFT SEMI JOIN</text>
+<rect x="404" y="30" width="114" height="54" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 512.0 Q 517.5 30.5 517.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="404" y1="56" x2="518" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<path d="M162 70 C 282.0 70, 274.0 70, 394 70" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,66 402,70 394,74" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="70" r="2.5" style="fill: var(--opteryx-orange);"/>
+<path d="M162 206 C 282.0 206, 274.0 76, 394 76" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5; stroke-opacity: 0.85; stroke-dasharray: 4 3;"/>
+<polygon points="394,72 402,76 394,80" style="fill: var(--opteryx-teal);"/>
+<circle cx="162" cy="206" r="2.5" style="fill: var(--opteryx-teal);"/>
+</svg>
+</figure>
 
-In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Only value `1` has a match in _right_relation_, so only that row from _left_relation_ is returned. Value `2` has no match and is excluded. No columns from _right_relation_ appear in the result.
+In this example, `id` is the joining column in both relations. _left_relation_ has ids `1` and `2`; _right_relation_ has ids `1`, `3` and `4`. Only value `1` has a match in _right_relation_, so only that row from _left_relation_ is returned. Value `2` has no match and is excluded. No columns from _right_relation_ appear in the result.
 
 ### RIGHT SEMI JOIN
 
@@ -296,9 +581,47 @@ SELECT *
     ON left_relation.column_name = right_relation.column_name;
 ~~~
 
-![LEFT ANTI JOIN](/images/left-anti-join.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 282" width="100%" role="img" aria-labelledby="left-anti-join-title left-anti-join-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="left-anti-join-title">LEFT ANTI JOIN of left_relation and right_relation</title>
+<desc id="left-anti-join-desc">left_relation has rows (1, red) and (2, blue); right_relation has rows (1, circle), (3, square) and (4, triangle), joined on id. Arrows run from each source row to the result rows it supplies values to; rows that supply nothing are faded. The LEFT ANTI JOIN returns only 2 blue, the left row with no match, with only the left relation&#x27;s columns.</desc>
+<text x="0" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">left_relation</text>
+<rect x="0" y="30" width="156" height="82" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 56 V 36.0 Q 0.5 30.5 6.0 30.5 H 43.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="10" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 56 V 30.5 H 150.0 Q 155.5 30.5 155.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="54" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="0" y1="56" x2="156" y2="56" style="stroke: var(--border-2);"/>
+<g opacity="0.35"><text x="10" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">red</text></g>
+<line x1="0" y1="84" x2="156" y2="84" style="stroke: var(--border);"/>
+<g><text x="10" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="54" y="102" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<text x="0" y="157" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">right_relation</text>
+<rect x="0" y="166" width="156" height="110" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M0.5 192 V 172.0 Q 0.5 166.5 6.0 166.5 H 43.5 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="10" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M44.5 192 V 166.5 H 150.0 Q 155.5 166.5 155.5 172.0 V 192 Z" style="fill: var(--opteryx-teal); fill-opacity: 0.14;"/>
+<text x="54" y="183" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">shape</text>
+<line x1="0" y1="192" x2="156" y2="192" style="stroke: var(--border-2);"/>
+<g opacity="0.35"><text x="10" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">1</text><text x="54" y="210" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">circle</text></g>
+<line x1="0" y1="220" x2="156" y2="220" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">3</text><text x="54" y="238" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">square</text></g>
+<line x1="0" y1="248" x2="156" y2="248" style="stroke: var(--border);"/>
+<g opacity="0.35"><text x="10" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">4</text><text x="54" y="266" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">triangle</text></g>
+<text x="404" y="21" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">LEFT ANTI JOIN</text>
+<rect x="404" y="30" width="114" height="54" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<path d="M404.5 56 V 36.0 Q 404.5 30.5 410.0 30.5 H 443.5 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="414" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">id</text>
+<path d="M444.5 56 V 30.5 H 512.0 Q 517.5 30.5 517.5 36.0 V 56 Z" style="fill: var(--opteryx-orange); fill-opacity: 0.14;"/>
+<text x="454" y="47" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">colour</text>
+<line x1="404" y1="56" x2="518" y2="56" style="stroke: var(--border-2);"/>
+<g><text x="414" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-weight: 600; font-family: var(--font-body);">2</text><text x="454" y="74" style="fill: var(--text-deep); font-size: 12.5px; font-family: var(--font-body);">blue</text></g>
+<path d="M162 98 C 282.0 98, 274.0 70, 394 70" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 1.5; stroke-opacity: 0.85;"/>
+<polygon points="394,66 402,70 394,74" style="fill: var(--opteryx-orange);"/>
+<circle cx="162" cy="98" r="2.5" style="fill: var(--opteryx-orange);"/>
+</svg>
+</figure>
 
-In this example, the blue column is used as the joining column in both relations. _left_relation_ contains values `1` and `2`; _right_relation_ contains values `1` and `3`. Value `1` has a match in _right_relation_ and is therefore excluded. Value `2` has no match, so it is the only row returned. No columns from _right_relation_ appear in the result.
+In this example, `id` is the joining column in both relations. _left_relation_ has ids `1` and `2`; _right_relation_ has ids `1`, `3` and `4`. Value `1` has a match in _right_relation_ and is therefore excluded. Value `2` has no match, so it is the only row returned. No columns from _right_relation_ appear in the result.
 
 ### RIGHT ANTI JOIN
 

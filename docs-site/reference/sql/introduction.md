@@ -70,7 +70,61 @@ A query can be “qualified” by adding a `WHERE` clause that specifies which r
 
 The `SELECT` clause can be thought of as choosing which columns we want from the relation, and the `WHERE` clause as choosing which rows we want from the relation.
 
-![WHERE and SELECT](/images/select-project.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 192" width="100%" role="img" aria-labelledby="select-project-title select-project-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="select-project-title">WHERE chooses rows, SELECT chooses columns</title>
+<desc id="select-project-desc">A table with columns A to E and four rows, where column A holds 1 to 4. WHERE A &lt; 3 picks the first two rows; SELECT C, D picks columns C and D. The four cells where those rows and columns meet are highlighted, and form the result: columns C and D, two rows.</desc>
+<text x="228" y="16" text-anchor="middle" style="fill: var(--opteryx-teal); font-size: 12px; font-weight: 700; font-family: var(--font-mono);">SELECT C, D</text>
+<path d="M192 30 V 24 H 264 V 30" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<text x="104" y="108" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 12px; font-weight: 700; font-family: var(--font-mono);">WHERE A &lt; 3</text>
+<path d="M116 78 H 110 V 130 H 116" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<rect x="120" y="52" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="138" y="69" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">A</text>
+<rect x="156" y="52" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="174" y="69" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">B</text>
+<rect x="192" y="52" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="210" y="69" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">C</text>
+<rect x="228" y="52" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="246" y="69" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">D</text>
+<rect x="264" y="52" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="282" y="69" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">E</text>
+<rect x="120" y="78" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="138" y="95" text-anchor="middle" style="fill: var(--text); font-family: var(--font-mono);">1</text>
+<rect x="156" y="78" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="192" y="78" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="228" y="78" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="264" y="78" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="120" y="104" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="138" y="121" text-anchor="middle" style="fill: var(--text); font-family: var(--font-mono);">2</text>
+<rect x="156" y="104" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="192" y="104" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="228" y="104" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="264" y="104" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="120" y="130" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="138" y="147" text-anchor="middle" style="fill: var(--text); font-family: var(--font-mono);">3</text>
+<rect x="156" y="130" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<rect x="192" y="130" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="228" y="130" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="264" y="130" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<rect x="120" y="156" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="138" y="173" text-anchor="middle" style="fill: var(--text); font-family: var(--font-mono);">4</text>
+<rect x="156" y="156" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<rect x="192" y="156" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="228" y="156" width="36" height="26" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<rect x="264" y="156" width="36" height="26" style="fill: var(--panel); stroke: var(--border-2);"/>
+<path d="M330 104 H 380" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="380,99 390,104 380,109" style="fill: var(--muted);"/>
+<rect x="414" y="65" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="432" y="82" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">C</text>
+<rect x="414" y="91" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="414" y="117" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="450" y="65" width="36" height="26" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="468" y="82" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">D</text>
+<rect x="450" y="91" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<rect x="450" y="117" width="36" height="26" style="fill: var(--opteryx-teal); stroke: var(--opteryx-teal);"/>
+<text x="414" y="57" style="fill: var(--muted); font-size: 12px;">result</text>
+</svg>
+</figure>
 
 For example, the following query returns planets with fewer than 10 moons and a day longer than 24 hours:
 

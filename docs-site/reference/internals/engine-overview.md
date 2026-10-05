@@ -10,7 +10,99 @@ This document walks the path a query takes from SQL text to results.
 
 The engine is a loop. SQL goes down one side, is progressively refined into a runnable plan, executes, and results come back up the other side.
 
-![How Opteryx plans and runs a query: SQL is refined into a plan down the left and across the bottom, then the plan is refined until it runs going up the right, before results return to the user. Python stages are blue, native stages (Parser, Executor) are rust, and the Catalogue is green.](/images/engine-overview.svg)
+<figure class="doc-figure">
+<svg viewBox="0 0 680 518" width="100%" role="img" aria-labelledby="engine-overview-title engine-overview-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="engine-overview-title">How Opteryx plans and runs a query</title>
+<desc id="engine-overview-desc">The path a query takes through Opteryx. SQL from the user goes down the left column: SQL rewriter, Parser (native, Rust), AST rewriter, Logical planner. The plan then moves along the bottom: Plan rewriter, then Binder, which reads schemas and statistics from the Catalogue below it. It then goes up the right column: Optimizer, Physical planner, and finally the Executor, which is native. The physical plan crosses from Python to native code once, from the Physical planner to the Executor, and results return from the Executor to the user. All stages except the Parser and Executor are Python.</desc>
+<rect x="242" y="0" width="196" height="50" rx="8" style="fill: var(--panel-2); stroke: var(--border-2);"/>
+<text x="340" y="22" text-anchor="middle" style="fill: var(--text-deep); font-size: 14px; font-weight: 600; font-family: var(--font-display);">User</text>
+<text x="340" y="39" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">SQL in, results out</text>
+<path d="M292 50 V 72 H 98 V 88" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="93,88 103,88 98,96" style="fill: var(--muted);"/>
+<text x="300" y="68" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">SQL</text>
+<path d="M582 96 V 72 H 388 V 58" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="383,58 393,58 388,50" style="fill: var(--muted);"/>
+<text x="380" y="68" text-anchor="end" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">RESULTS</text>
+<rect x="0" y="96" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="0" y="96" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="16" y="120" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">SQL rewriter</text>
+<text x="16" y="139" style="fill: var(--muted); font-size: 11.5px;">normalises the raw string</text>
+<rect x="0" y="186" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="0" y="186" width="5" height="58" rx="2" style="fill: var(--opteryx-orange);"/>
+<text x="16" y="210" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Parser</text>
+<text x="16" y="229" style="fill: var(--muted); font-size: 11.5px;">sqlparser (Rust) → AST</text>
+<text x="186" y="204" text-anchor="end" style="fill: var(--opteryx-orange); font-size: 9.5px; font-weight: 700; font-family: var(--font-mono);">NATIVE</text>
+<rect x="0" y="276" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="0" y="276" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="16" y="300" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">AST rewriter</text>
+<text x="16" y="319" style="fill: var(--muted); font-size: 11.5px;">substitutes parameters</text>
+<rect x="0" y="366" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="0" y="366" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="16" y="390" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Logical planner</text>
+<text x="16" y="409" style="fill: var(--muted); font-size: 11.5px;">AST → relational plan</text>
+<path d="M98 154 V 180" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="93,178 103,178 98,186" style="fill: var(--muted);"/>
+<text x="106" y="174" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">SQL</text>
+<path d="M98 244 V 270" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="93,268 103,268 98,276" style="fill: var(--muted);"/>
+<text x="106" y="264" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">AST</text>
+<path d="M98 334 V 360" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="93,358 103,358 98,366" style="fill: var(--muted);"/>
+<text x="106" y="354" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">AST</text>
+<rect x="242" y="366" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="242" y="366" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="258" y="390" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Plan rewriter</text>
+<text x="258" y="409" style="fill: var(--muted); font-size: 11.5px;">subqueries, set ops → joins</text>
+<rect x="484" y="366" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="484" y="366" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="500" y="390" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Binder</text>
+<text x="500" y="409" style="fill: var(--muted); font-size: 11.5px;">resolves names and types</text>
+<path d="M196 395 H 234" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="234,390 242,395 234,400" style="fill: var(--muted);"/>
+<text x="219" y="388" text-anchor="middle" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">PLAN</text>
+<path d="M438 395 H 476" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="476,390 484,395 476,400" style="fill: var(--muted);"/>
+<text x="461" y="388" text-anchor="middle" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">PLAN</text>
+<rect x="484" y="276" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="484" y="276" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="500" y="300" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Optimizer</text>
+<text x="500" y="319" style="fill: var(--muted); font-size: 11.5px;">rule- and cost-based passes</text>
+<rect x="484" y="186" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="484" y="186" width="5" height="58" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="500" y="210" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Physical planner</text>
+<text x="500" y="229" style="fill: var(--muted); font-size: 11.5px;">binds operators, hands off</text>
+<rect x="484" y="96" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="484" y="96" width="5" height="58" rx="2" style="fill: var(--opteryx-orange);"/>
+<text x="500" y="120" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Executor</text>
+<text x="500" y="139" style="fill: var(--muted); font-size: 11.5px;">native scheduler, morsels</text>
+<text x="670" y="114" text-anchor="end" style="fill: var(--opteryx-orange); font-size: 9.5px; font-weight: 700; font-family: var(--font-mono);">NATIVE</text>
+<path d="M582 366 V 340" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="577,342 587,342 582,334" style="fill: var(--muted);"/>
+<text x="590" y="354" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">PLAN</text>
+<path d="M582 276 V 250" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="577,252 587,252 582,244" style="fill: var(--muted);"/>
+<text x="590" y="264" style="fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">PLAN</text>
+<path d="M582 186 V 160" style="fill: none; stroke: var(--opteryx-orange); stroke-width: 2.5;"/>
+<polygon points="577,162 587,162 582,154" style="fill: var(--opteryx-orange);"/>
+<text x="590" y="174" style="fill: var(--opteryx-orange); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">PHYSICAL PLAN</text>
+<rect x="484" y="456" width="196" height="58" rx="6" style="fill: var(--surface); stroke: var(--border-2);"/>
+<rect x="484" y="456" width="5" height="58" rx="2" style="fill: var(--opteryx-teal);"/>
+<text x="500" y="480" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Catalogue</text>
+<text x="500" y="499" style="fill: var(--muted); font-size: 11.5px;">schemas and statistics</text>
+<text x="670" y="474" text-anchor="end" style="fill: var(--opteryx-teal); font-size: 9.5px; font-weight: 700; font-family: var(--font-mono);">CATALOGUE</text>
+<path d="M582 456 V 430" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<polygon points="577,432 587,432 582,424" style="fill: var(--opteryx-teal);"/>
+<text x="590" y="444" style="fill: var(--opteryx-teal); font-size: 10px; font-weight: 700; font-family: var(--font-mono);">SCHEMAS, STATS</text>
+<rect x="256" y="140" width="12" height="12" rx="2" style="fill: var(--opteryx-navy);"/>
+<text x="276" y="150" style="fill: var(--text); font-size: 11.5px;">Python: plans and decides</text>
+<rect x="256" y="162" width="12" height="12" rx="2" style="fill: var(--opteryx-orange);"/>
+<text x="276" y="172" style="fill: var(--text); font-size: 11.5px;">Native: parses, and touches data</text>
+<rect x="256" y="184" width="12" height="12" rx="2" style="fill: var(--opteryx-teal);"/>
+<text x="276" y="194" style="fill: var(--text); font-size: 11.5px;">Catalogue: schemas and stats</text>
+<text x="256" y="238" style="fill: var(--muted); font-size: 11.5px;">Python hands native code the</text>
+<text x="256" y="254" style="fill: var(--muted); font-size: 11.5px;">physical plan exactly once.</text>
+</svg>
+</figure>
 
 The left column transforms *text*; the bottom row transforms a *plan*; the right column refines that plan until it can run. Each stage has a single, narrow responsibility.
 
