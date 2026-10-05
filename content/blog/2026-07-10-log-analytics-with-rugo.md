@@ -117,7 +117,7 @@ with jsonl.read_jsonl(
 
 Two things happen before any data is parsed:
 
-1. **Column projection** — only 3 of the 8 columns are read. The other 5 columns (`method`, `status`, `user_agent`, `bytes_sent`) are never parsed.
+1. **Column projection** — only 3 of the 7 columns are read. The other 4 columns (`method`, `status`, `user_agent`, `bytes_sent`) are never parsed.
 2. **Predicate pushdown** — only rows where `url == "/api/data"` are parsed. At ~15% of traffic, that's 85% of the data that never touches a Python object.
 
 Rugo yields results as Morsels — batches of rows streamed from the file. Memory stays bounded because you never hold the whole file. We measured ~5 MB peak RAM for this approach on our test data.
@@ -140,7 +140,7 @@ The file: 1.05 GB, 6 million log entries, 15% matching `/api/data`.
 
 It's not that Rugo parses JSON faster than pandas. It's that Rugo parses **less** JSON.
 
-When your log file has 8 columns and you only need 3, pandas still reads and parses all 8. Rugo skips the other 5 at the parse level — they're never turned into Python objects.
+When your log file has 7 columns and you only need 3, pandas still reads and parses all 7. Rugo skips the other 4 at the parse level — they're never turned into Python objects.
 
 When only 15% of rows match your filter, pandas loads 100% of them first. Rugo's predicate pushdown means 85% of the data is never parsed.
 

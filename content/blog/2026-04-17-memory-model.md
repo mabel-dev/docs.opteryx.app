@@ -1,5 +1,5 @@
 ---
-title: Rewriting the Memory Model Moving Beyond Arrow
+title: "Rewriting the Memory Model: Moving Beyond Arrow"
 description: Why we replaced Arrow in Opteryx to break through a fundamental performance barrier.
 date: 2026-04-16
 author: Justin Joyce

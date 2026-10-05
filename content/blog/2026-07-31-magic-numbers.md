@@ -25,7 +25,7 @@ tags:
 When the optimizer saw `WHERE description LIKE '%needle%'`, it
 had no idea how many rows would match so it just guessed ten percent. That guess
 feeds join ordering, memory reservations, and whether a filter runs early or
-late - and honestly considering the lack of nuance and roundness of the number - it wasn't a terrible - we tested it to have a Mean Average Error of about 14%.
+late - and honestly considering the lack of nuance and roundness of the number - it wasn't terrible - we tested it to have a Mean Absolute Error of about 14%.
 
 The problem is that it treats every text
 column and every needle alike: prose, a templated identifier, and a structured

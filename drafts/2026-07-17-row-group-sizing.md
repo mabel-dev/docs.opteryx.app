@@ -27,7 +27,7 @@ The first result was a regression, not a win:
 | Parquet, 10,000 rows/group | 50 | 1.7 ms |
 | Parquet, 2,000 rows/group | 250 | 1.3 ms |
 
-Same file, same data, same query — a **26x** difference in lookup time depending entirely on one write-time parameter. The default is tuned for scan-heavy analytical workloads, not point lookups, and it shows.
+Same file, same data, same query — a **25x** difference in lookup time depending entirely on one write-time parameter. The default is tuned for scan-heavy analytical workloads, not point lookups, and it shows.
 
 ## The Setup
 

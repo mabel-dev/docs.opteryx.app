@@ -23,7 +23,7 @@ Our REGEXP_REPLACE performance on [ClickBench](https://benchmark.clickhouse.com/
 
 REGEXP_REPLACE was eating our lunch.
 
-I'll be honest, when we first started publishing to [ClickBench](https://benchmark.clickhouse.com/), we were so far from the pack that the performance of one specialized query wasn't going to close that gap.
+I'll be honest, when we first started publishing to [ClickBench](https://benchmark.clickhouse.com/), we were so far from the pack that the performance of one specialised query wasn't going to close that gap.
 
 After many iterations of the engine, performance of queries like Query 28 being ~10x slower than engines like [DuckDB](https://duckdb.org/) stands out like a sore thumb.
 

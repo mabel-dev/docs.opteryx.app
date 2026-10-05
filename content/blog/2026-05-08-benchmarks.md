@@ -47,7 +47,7 @@ A broad correctness harness with a simple, portable format.
 
 We use [SQLLogicTest](https://sqlite.org/sqllogictest/doc/trunk/about.wiki) for correctness and consistency. It’s portable and language‑agnostic, which also makes it useful for cross‑engine checks.
 
-What SQLLogicTest bought us reproducible runs, and as most other benchmarks are focused on timings and not the outputs, it brought us output verification.
+What SQLLogicTest bought us was reproducible runs, and as most other benchmarks are focused on timings and not the outputs, it brought us output verification.
 
 ### 2. H2O db-benchmark — community comparison
 
@@ -67,7 +67,7 @@ It also gives us a rough sense of where we sit on common aggregation and join wo
 
 The dataset is larger, the queries are aggregation and filter heavy, and performance cliffs become obvious quickly.
 
-This exposed aggregation paths that were technically correct but slower than they should have been. We have been using ClickBench to guide our rewrite of the aggregation layer as we rewrote it from scratch having removed Arrow from the system..
+This exposed aggregation paths that were technically correct but slower than they should have been. We have been using ClickBench to guide our rewrite of the aggregation layer as we rewrote it from scratch having removed Arrow from the system.
 
 ### 4. TPC-H — optimiser completeness
 
@@ -100,11 +100,11 @@ You can have a correct optimiser and still produce catastrophically bad plans if
 
 **H2O** — missing aggregates and unsupported features. We’re implementing the gaps as they appear.
 
-**ClickBench** — When the work of the query is a function, we are competitive, but we're still missing some structural optimisations and performance opportunities..
+**ClickBench** — When the work of the query is a function, we are competitive, but we're still missing some structural optimisations and performance opportunities.
 
 **TPC-H** — Weak optimiser heuristics. Current work is around better propagation and mutation of statistics.
 
-**JOB** — Statistics gaps hurting join ordering. Very similar to to TPC-H, but with improvements on how the optimizer uses the statistics to make decisions..
+**JOB** — Statistics gaps hurting join ordering. Very similar to TPC-H, but with improvements on how the optimizer uses the statistics to make decisions.
 
 These findings form a priority queue: correctness → feature parity → optimiser robustness → targeted performance work.
 

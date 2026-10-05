@@ -89,7 +89,7 @@ Results, 0.26.2:
 
 > 7.46 seconds
 
-Now we're only 1.8x slower than the C++ engines. We were pleased with this given at it's heart, Opteryx is mostly written in Python.
+Now we're only 1.8x slower than the C++ engines. We were pleased with this given at its heart, Opteryx is mostly written in Python.
 
 ## Stage 4: Volnitsky & Removing Arrow (Current Work)
 

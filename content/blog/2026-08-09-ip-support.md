@@ -53,7 +53,7 @@ The payoff is what *didn't* get written. Unsigned integer ordering is exactly IP
 - `ip > '10.0.0.0'` — the existing comparison kernel.
 - Statistics, bounds, row-group pruning — all of it already understood uint32.
 
-The only places that need to know an address is an address are the ones where text matters (parsing and rendering) and where prefixes matter (containment, truncation, aggregation). That's four small pieces of code.
+The only places that need to know an address is an address are the ones where text matters (parsing and rendering) and where prefixes matter (containment, truncation, aggregation). That's five small pieces of code.
 
 The canonical bit-order definition lives in one header, `draken/core/ipv4.h`. The renderer, cast kernels, containment check, and `IP_TRUNC` all route through it. A change to parsing rules cannot land selectively — there is only one place to change it.
 
