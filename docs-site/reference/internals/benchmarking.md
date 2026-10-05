@@ -184,6 +184,7 @@ per-suite `fetch_data.py` scripts.
 ## Related
 
 - [Wrenchy Bench results](https://mabel-dev.github.io/wrenchy-bench/) — published summary results
+- [Why Opteryx Is Fast](/docs/introduction/why-opteryx-is-fast) — the techniques, with the published ClickBench, JSONBench and release-over-release figures
 - [Engine overview](engine-overview) — what the numbers are measuring
 - [RISC-V support](riscv-support) — published pass/fail results on one platform
 - [SQL Conformance](/docs/reference/sql/conformance) — what the engine implements

@@ -15,18 +15,16 @@ needed* at the bottom.
 
 ---
 
-## Phase 0 — Decision: do we publish numbers?
+## Phase 0 — Decision: do we publish numbers? (decided: yes)
 
-`reference/internals/benchmarking.md` currently says it "deliberately publishes no timings".
-Phases 1 and 2 depend on reversing that, at least partly.
+We already do, so the pages cite existing public sources rather than new ones:
 
-Proposal: keep that page as-is (methodology only), and publish numbers in **one** place — a
-dated, versioned results page (`/docs/introduction/performance` or a blog post) that states
-hardware, build, date and a rerun command. The marketing site and "why fast" page link to it
-rather than embedding raw numbers that go stale.
+- **ClickBench** — [ClickHouse/ClickBench/opteryx](https://github.com/ClickHouse/ClickBench/tree/main/opteryx), latest run 2026-10-04 on nine AWS machine types. On c6a.4xlarge: all 43 queries complete, no load step, cold total 144.1 s, hot total 41.3 s.
+- **wrenchy-bench** — [mabel-dev.github.io/wrenchy-bench](https://mabel-dev.github.io/wrenchy-bench/), release-over-release on Graviton4. ClickBench (Parquet) 29.44 s → 15.41 s; whole suite 183.7 s → 121.7 s (engine 0.9.155, 2026-10-04).
+- **rugo.dev** — reader footprint and speed vs pyarrow/duckdb/polars (11.6 MB installed, 30 ms cold import; ~9–11× faster than pyarrow on selective JSONL reads).
+- **JSONBench** — [PR #135](https://github.com/ClickHouse/JSONBench/pull/135), open. Stateless, no load step; 100m docs hot 13.8 s.
 
-- [ ] Decide: publish dated numbers yes/no, and where they live
-- [ ] Decide: compare against other engines (DuckDB, DataFusion, Polars) or only against ourselves / against bytes stored
+Framing rule: cite machine, version and date, and link to the source. Don't claim "fastest". On ClickBench c6a.4xlarge Opteryx is mid-pack among Parquet engines: hot geomean behind ClickHouse, DuckDB and DataFusion, ahead of chDB and Sail; cold last of six. Our pitch is no cluster, no load step and bytes-scanned billing. Rate of improvement is the strongest speed story.
 
 ## Phase 1 — Docs: "Why Opteryx is fast and cheap" (highest value)
 
@@ -43,10 +41,11 @@ Outline (draft, adjust to what we can measure):
    **[M]** worked examples in pence.
 5. **How we check it** — link to benchmarking methodology and the results page.
 
-- [ ] Draft outline against existing internals pages (bytecode-engine, draken, rugo, engine-overview)
-- [ ] 3–4 inline SVG diagrams (pruning, pipeline, cost per query)
-- [ ] Fill in measurements **[M]**
-- [ ] Add to `nav.json` under Introduction, link from `what-is-opteryx.md`
+- [x] `introduction/why-opteryx-is-fast.md`, built from the internals pages and public results (ClickBench, wrenchy-bench, JSONBench PR, rugo.dev)
+- [x] Two inline SVG diagrams (scan narrowing, dictionary predicate), theme-aware
+- [x] In nav under Introduction; linked from `what-is-opteryx.md` and `benchmarking.md`
+- [ ] Add a hosted bytes-scanned example to *Reading Less Costs Less* once measured **[M]**
+- [ ] Update the JSONBench section when PR #135 merges
 
 ## Phase 2 — opteryx.app landing page (lives in the opteryx.app repo, not here)
 

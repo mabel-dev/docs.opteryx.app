@@ -55,6 +55,8 @@ A query in Opteryx moves through four broad stages:
 
 Each stage is covered in more detail under [Architecture](../architecture/planner) and [Core Concepts](../core-concepts/execution-model).
 
+[Why Opteryx Is Fast](why-opteryx-is-fast) explains how each stage avoids work, with published benchmark results.
+
 ## What We Guarantee
 
 Before you commit to Opteryx, check where it stops as well as what it does. [Compatibility](/docs/roadmap-guarantees/compatibility) lists the Python versions, platforms and formats verified against the current release. [Known Limits](/docs/roadmap-guarantees/known-limits) covers the architectural gaps, and [SQL Conformance](/docs/reference/sql/conformance) shows which parts of standard SQL are supported.

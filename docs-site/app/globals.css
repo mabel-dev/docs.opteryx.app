@@ -629,6 +629,22 @@ a:hover {
     max-width: 720px;
     padding: 0 0 56px;
 }
+/* Diagrams written inline in markdown. They draw with the colour tokens, so
+   they follow the theme without a second copy. */
+.doc-figure {
+    margin: 24px 0 28px;
+}
+.doc-figure svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.doc-figure figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-caption);
+    color: var(--muted);
+}
+
 /* Tab groups from `<!-- tabs -->` in markdown; see renderMarkdown.ts. */
 .doc-tabs {
     margin: 20px 0 28px;
