@@ -210,6 +210,21 @@ def _schema_default_value(schema: Optional[Dict[str, Any]], schemas: Optional[Di
     return None
 
 
+def _api_prose(text: str) -> str:
+    """Make an OpenAPI description safe to drop into markdown.
+
+    Descriptions use markdown on purpose (`code`, *emphasis*, links), so this is
+    not a blanket escape. It only neutralises what is never meant as markup: a
+    `<` (a placeholder like <method> is otherwise swallowed as an HTML tag) and
+    a glob like Custom.Snapshot.* (two of those in one sentence become italics).
+    Code spans are left alone.
+    """
+    segments = str(text).split('`')
+    for index in range(0, len(segments), 2):
+        segments[index] = segments[index].replace('<', '&lt;').replace('.*', '.\\*')
+    return '`'.join(segments)
+
+
 def _render_parameter_list(lines: List[str], heading: str, parameters: List[Dict[str, Any]]):
     if not parameters:
         return
@@ -226,7 +241,7 @@ def _render_parameter_list(lines: List[str], heading: str, parameters: List[Dict
 
         lines.append(f'- **{name}** `{schema_type}` [{location}; {required}]')
         if description:
-            lines.append(f'  {description}')
+            lines.append(f'  {_api_prose(description)}')
         if allowed_values:
             lines.append(f"  Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
         if default_value is not None:
@@ -262,7 +277,7 @@ def _render_request_body(lines: List[str], request_body: Dict[str, Any], schemas
                 lines.append(f'  - **{field_name}** `{field_type}` [{required_text}]')
                 field_description = field_schema.get('description')
                 if field_description:
-                    lines.append(f'    {field_description}')
+                    lines.append(f'    {_api_prose(field_description)}')
                 if allowed_values:
                     lines.append(f"    Allowed values: {', '.join(f'`{value}`' for value in allowed_values)}")
                 if default_value is not None:
@@ -284,9 +299,9 @@ def _render_responses(lines: List[str], responses: Dict[str, Any]):
             rendered.append(f'`{content_type}` `{_schema_to_type(content_info.get("schema", {}))}`')
 
         if rendered:
-            lines.append(f'- **{status_code}** — {description} ({", ".join(rendered)})')
+            lines.append(f'- **{status_code}** — {_api_prose(description)} ({", ".join(rendered)})')
         else:
-            lines.append(f'- **{status_code}** — {description}')
+            lines.append(f'- **{status_code}** — {_api_prose(description)}')
     lines.append('')
 
 
@@ -872,7 +887,7 @@ def build_api_docs():
                 lines.append('')
 
             if description:
-                lines.append(description)
+                lines.append(_api_prose(description))
                 lines.append('')
 
             parameters = operation.get('parameters', []) or []

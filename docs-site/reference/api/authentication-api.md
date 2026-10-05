@@ -211,7 +211,7 @@ Returns:
   - **scopes** `array<string>` [optional]
     Scopes to grant the credential. Empty grants the caller's default scopes.
   - **permissions** `array<array<string>>` [optional]
-    Resource grants as [pattern, role] pairs, e.g. [['analytics.*', 'reader']]. Roles are 'owner', 'admin', 'writer' or 'reader'.
+    Resource grants as [pattern, role] pairs, e.g. [['analytics.\*', 'reader']]. Roles are 'owner', 'admin', 'writer' or 'reader'.
 
 ### Responses
 
