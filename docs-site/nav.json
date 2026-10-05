@@ -117,6 +117,19 @@
             "Upload": "guides/upload-cli.md"
           }
         ]
+      },
+      {
+        "AI Assistants (MCP)": [
+          {
+            "Using Opteryx from your assistant": "guides/ai-assistants.md"
+          },
+          {
+            "Claude Desktop": "guides/ai-assistants-claude-desktop.md"
+          },
+          {
+            "Claude Code, Cursor and others": "guides/ai-assistants-other-clients.md"
+          }
+        ]
       }
     ]
   },
