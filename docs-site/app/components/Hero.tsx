@@ -33,15 +33,15 @@ export default function Hero() {
           <div>
             <div className="eyebrow">Documentation</div>
             <h1>
-              A SQL engine that
+              Query your data,
               <br />
-              <em>fits in your process.</em>
+              <em>where it lives.</em>
             </h1>
           </div>
           <div className="meta">
-            <strong>Opteryx</strong> is a small, fast SQL engine that runs where
-            your data already is — local files, object storage, dataframes, or a
-            remote service.
+            <strong>Opteryx</strong> is a small, fast SQL engine that reads data
+            in place — files on S3 or GCS, Iceberg tables, PostgreSQL, Firestore,
+            or a dataframe in your process. Nothing to load first.
           </div>
         </section>
 
