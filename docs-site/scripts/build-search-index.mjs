@@ -5,9 +5,8 @@
  * This reads `out/` rather than the markdown sources on purpose. A markdown
  * indexer would have to re-derive two things the renderer already decided:
  * the URL a source file ends up at (nav.json remaps reference pages) and the
- * heading anchor (renderMarkdown slugifies the *rendered* HTML, so a heading
- * of `## \`LEVENSHTEIN\`` anchors as `codelevenshteincode`, not `levenshtein`).
- * Re-implementing either invites drift that shows up as a search result
+ * heading anchor (renderMarkdown slugifies the rendered heading, with its own
+ * rules for dropping markup and duplicates). Re-implementing either invites drift that shows up as a search result
  * scrolling to the top of the page instead of the section. The export already
  * has the answer in the file path and the `id` attribute, so take it from there.
  *

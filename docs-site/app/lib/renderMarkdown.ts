@@ -251,7 +251,11 @@ function addHeadingIdsToHtml(html: string): string {
       return match;
     }
 
+    // Slug the heading's text, not its markup: a heading with inline code
+    // otherwise anchors as "codefiltercode", and "&" as "amp".
     const slug = content
+      .replace(/<[^>]*>/g, "")
+      .replace(/&[a-z0-9#]+;/gi, "")
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
@@ -270,6 +274,21 @@ function addHeadingIdsToHtml(html: string): string {
     seen.set(id, 0);
 
     return `<${tag} id="${id}">${content}</${tag}>`;
+  });
+}
+
+// Inline code in a table cell may only break where a reader would expect it:
+// after a "." or "/" in a dotted name or path. The CSS (overflow-wrap:
+// break-word) then splits inside a segment only when one alone is wider than
+// the column, rather than letting a name like Custom.MaterializedView.* break
+// mid-word. <wbr> is not copied with the text.
+function addCodeBreaksInTableCells(html: string): string {
+  return html.replace(/<(td|th)(\s[^>]*)?>([\s\S]*?)<\/\1>/gi, (_, tag, attrs = "", cell) => {
+    const body = cell.replace(
+      /<code>([^<]*)<\/code>/g,
+      (_m: string, code: string) => `<code>${code.replace(/([./])(?=[^./])/g, "$1<wbr>")}</code>`,
+    );
+    return `<${tag}${attrs}>${body}</${tag}>`;
   });
 }
 
@@ -434,6 +453,8 @@ export async function renderMarkdownToHtml(
     /<div data-tabs-slot="(\d+)"><\/div>/g,
     (_, slot) => groups[Number(slot)] ?? "",
   );
+
+  html = addCodeBreaksInTableCells(html);
 
   if (options.addHeadingIds) {
     html = addHeadingIdsToHtml(html);

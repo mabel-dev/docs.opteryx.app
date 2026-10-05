@@ -196,7 +196,7 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
 
 ## Bootstrap a new workspace's initial policies
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/genesis</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>access/<wbr>workspace/<wbr>{workspace}/<wbr>genesis</code>
 
 **Tags:** Access Control
 
@@ -269,7 +269,7 @@ Create the initial set of access policies for a brand-new workspace, one policy 
 
 ## List Accounts
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts</code>
 
 **Tags:** Accounts
 
@@ -321,7 +321,7 @@ collapsed to a single object.
 
 ## Create Account
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts</code>
 
 **Tags:** Accounts
 
@@ -387,7 +387,7 @@ immediately as an active member (not a pending invite) - see
 
 ## Get Account
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code>
 
 **Tags:** Accounts
 
@@ -448,7 +448,7 @@ happens to know or guess an account id.
 
 ## Update Account
 
-**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/v1/accounts/{account_id}</code>
+**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code>
 
 **Tags:** Accounts
 
@@ -526,7 +526,7 @@ billing_admins of the account may update it.
 
 ## Delete Account
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code>
 
 **Tags:** Accounts
 
@@ -589,7 +589,7 @@ members" state should exist afterward.
 
 ## List Domains
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/domains</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains</code>
 
 **Tags:** Domains
 
@@ -648,7 +648,7 @@ List claimed domains and their verification state.
 
 ## Claim Domain
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/domains</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains</code>
 
 **Tags:** Domains
 
@@ -724,7 +724,7 @@ an unverified claim elsewhere is not an obstacle, since it proves nothing.
 
 ## Release Domain
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/domains/{domain}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains/<wbr>{domain}</code>
 
 **Tags:** Domains
 
@@ -790,7 +790,7 @@ is billing_admin-only and audited.
 
 ## Verify Domain
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/domains/{domain}/verify</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains/<wbr>{domain}/<wbr>verify</code>
 
 **Tags:** Domains
 
@@ -858,7 +858,7 @@ reputation for being flaky.
 
 ## Get Idp Policy
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/idp-policy</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code>
 
 **Tags:** IDP Policy
 
@@ -921,7 +921,7 @@ tickets. Changing them is billing_admin-only.
 
 ## Put Idp Policy
 
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/accounts/{account_id}/idp-policy</code>
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code>
 
 **Tags:** IDP Policy
 
@@ -1034,7 +1034,7 @@ tightening a policy cannot be outlived by sessions that predate it.
 
 ## Delete Idp Policy
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/idp-policy</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code>
 
 **Tags:** IDP Policy
 
@@ -1098,7 +1098,7 @@ what an attacker holding a stale machine credential would want to do.
 
 ## List Denials
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/idp-policy/denials</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy/<wbr>denials</code>
 
 **Tags:** IDP Policy
 
@@ -1180,7 +1180,7 @@ denials" is the normal, healthy state and must not read as an error.
 
 ## Preview Idp Policy
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/idp-policy/preview</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy/<wbr>preview</code>
 
 **Tags:** IDP Policy
 
@@ -1277,7 +1277,7 @@ this on every change and blocks the save button on its result.
 
 ## List Members
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/members</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code>
 
 **Tags:** Members
 
@@ -1340,7 +1340,7 @@ separate sweep job, per api-v2.md.
 
 ## Invite Member
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/members</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code>
 
 **Tags:** Members
 
@@ -1421,7 +1421,7 @@ account* resets the 7-day clock instead of erroring - a fresh
 
 ## Update Member Role
 
-**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/v1/accounts/{account_id}/members/{identity}</code>
+**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}</code>
 
 **Tags:** Members
 
@@ -1495,7 +1495,7 @@ account* resets the 7-day clock instead of erroring - a fresh
 
 ## Remove Member
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/members/{identity}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}</code>
 
 **Tags:** Members
 
@@ -1563,7 +1563,7 @@ always be able to leave their own account).
 
 ## Accept Invite
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/members/{identity}/accept</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}/<wbr>accept</code>
 
 **Tags:** Members
 
@@ -1631,7 +1631,7 @@ invite for this identity on this account.
 
 ## Get Payment Method
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/payment-methods</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code>
 
 **Tags:** Payment Methods
 
@@ -1695,7 +1695,7 @@ free-tier state elsewhere in this design.
 
 ## Attach Payment Method
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/payment-methods</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code>
 
 **Tags:** Payment Methods
 
@@ -1774,7 +1774,7 @@ Stripe's side so it isn't left orphaned there.
 
 ## Detach Payment Method
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/payment-methods</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code>
 
 **Tags:** Payment Methods
 
@@ -1834,7 +1834,7 @@ when nothing is attached is a no-op 204, not an error.
 
 ## Create Payment
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/payments</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payments</code>
 
 **Tags:** Payment Methods
 
@@ -1915,7 +1915,7 @@ successful response; a Stripe failure surfaces as 402.
 
 ## List Service Accounts
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/service-accounts</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts</code>
 
 **Tags:** Service Accounts
 
@@ -1978,7 +1978,7 @@ what the add route actually enforces.
 
 ## Add Service Account
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/service-accounts</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts</code>
 
 **Tags:** Service Accounts
 
@@ -2059,7 +2059,7 @@ being an unlock.
 
 ## Remove Service Account
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/service-accounts/{identity}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts/<wbr>{identity}</code>
 
 **Tags:** Service Accounts
 
@@ -2131,7 +2131,7 @@ bill it runs up.
 
 ## List Account Workspaces
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/workspaces</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>workspaces</code>
 
 **Tags:** Workspaces
 
@@ -2202,7 +2202,7 @@ workspace that no longer exists; it is skipped rather than listed.
 
 ## Test Draft Catalog Connection
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/catalog-connections/test</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>catalog-connections/<wbr>test</code>
 
 **Tags:** Workspace Catalog
 
@@ -2275,7 +2275,7 @@ came from us or from them.
 
 ## Get Catalog Kinds
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/catalog-kinds</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>catalog-kinds</code>
 
 The kind descriptor and this deployment's capabilities.
 
@@ -2325,7 +2325,7 @@ a capability that flips does so on a deploy, not mid-session.
 
 ## List Invoices
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/invoices</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices</code>
 
 **Tags:** Invoices
 
@@ -2373,7 +2373,7 @@ Placeholder: return an empty invoices list.
 
 ## Get Invoice
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/invoices/{invoice_id}</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices/<wbr>{invoice_id}</code>
 
 **Tags:** Invoices
 
@@ -2432,7 +2432,7 @@ Placeholder: return a minimal invoice representation.
 
 ## List notifications
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/notifications</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>notifications</code>
 
 **Tags:** Notifications
 
@@ -2492,7 +2492,7 @@ The caller's own notification feed, newest first, with the unread count.
 
 ## Mark all notifications read
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/read-all</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>read-all</code>
 
 **Tags:** Notifications
 
@@ -2540,7 +2540,7 @@ Marks every unread notification in the caller's feed as read.
 
 ## Dismiss a notification
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/{notification_id}/dismiss</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>{notification_id}/<wbr>dismiss</code>
 
 **Tags:** Notifications
 
@@ -2599,7 +2599,7 @@ Removes one of the caller's own notifications from the feed.
 
 ## Mark a notification read
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/{notification_id}/read</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>{notification_id}/<wbr>read</code>
 
 **Tags:** Notifications
 
@@ -2658,7 +2658,7 @@ Marks one of the caller's own notifications as read.
 
 ## Create Workspace
 
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}</code>
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}</code>
 
 **Tags:** Workspaces
 
@@ -2782,7 +2782,7 @@ no genesis bootstrap attempted.
 
 ## Get Catalog Binding
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/workspaces/{name}/catalog</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code>
 
 **Tags:** Workspace Catalog
 
@@ -2841,7 +2841,7 @@ The workspace's binding, ciphertext redacted; kind "native" if unbound.
 
 ## Put Catalog Binding
 
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}/catalog</code>
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code>
 
 **Tags:** Workspace Catalog
 
@@ -2921,7 +2921,7 @@ for the precondition order and the secret-handling contract.
 
 ## Delete Catalog Binding
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v1/workspaces/{name}/catalog</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code>
 
 **Tags:** Workspace Catalog
 
@@ -2980,7 +2980,7 @@ Remove the binding, reverting the workspace to the native catalog.
 
 ## Sync Catalog Dataset List
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/workspaces/{name}/catalog/sync</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>sync</code>
 
 **Tags:** Workspace Catalog
 
@@ -3057,7 +3057,7 @@ invisible to Excel and Power BI.
 
 ## Test Saved Catalog Connection
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v1/workspaces/{name}/catalog/test</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>test</code>
 
 **Tags:** Workspace Catalog
 
@@ -3120,7 +3120,7 @@ for the probe and never leaves this process.
 
 ## Get Workspace Guard Properties
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v1/workspaces/{name}/properties</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>properties</code>
 
 **Tags:** Workspaces
 

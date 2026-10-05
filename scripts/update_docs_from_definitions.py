@@ -740,7 +740,9 @@ def _heading_slug(text: str) -> str:
     ids, so the slugging logic must stay byte-for-byte identical to the JS —
     diverge here and every link in the table silently 404s to nowhere.
     """
-    slug = text.lower()
+    slug = re.sub(r'<[^>]*>', '', text)
+    slug = re.sub(r'&[a-z0-9#]+;', '', slug, flags=re.IGNORECASE)
+    slug = slug.lower()
     slug = re.sub(r'[^\w\s-]', '', slug, flags=re.ASCII)
     slug = re.sub(r'\s+', '-', slug)
     slug = re.sub(r'-+', '-', slug)
@@ -889,7 +891,9 @@ def build_api_docs():
 
         for route, method, operation in operations:
             summary = _operation_summary(operation, route)
-            description = operation.get('description') or ''
+            # As for parameters: a reader-sized version where the spec's own
+            # description is written for clients that cannot follow a link.
+            description = operation.get('x-docs-summary') or operation.get('description') or ''
             tags = operation.get('tags') or []
 
             lines.append(f'## {summary}')
@@ -897,7 +901,7 @@ def build_api_docs():
             lines.append(
                 '**Request:** '
                 f'<span class="ep-verb ep-verb--{method.lower()}">{method.lower()}</span>'
-                f'<code>{escape(route)}</code>'
+                f'<code>{escape(route).replace("/", "/<wbr>")}</code>'
             )
             lines.append('')
 

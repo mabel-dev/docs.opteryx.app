@@ -113,7 +113,7 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
 
 ## Check a SQL statement without running it
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/check</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>api/<wbr>v1/<wbr>check</code>
 
 **Tags:** Query Check
 
@@ -177,7 +177,7 @@ Resolve and type-check one statement against the catalog, as the caller, and rep
 
 ## Create and execute SQL job
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>api/<wbr>v1/<wbr>jobs</code>
 
 **Tags:** Jobs Management
 
@@ -244,7 +244,7 @@ Submit a SQL job for execution. `:name` placeholders in sql_text are resolved fr
 
 ## Retrieve recent user queries
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>recent</code>
 
 **Tags:** Jobs Management
 
@@ -303,7 +303,7 @@ Get recent user queries.
 
 ## Download job results
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>download</code>
 
 **Tags:** Jobs Management
 
@@ -383,7 +383,7 @@ Download the results of a previously submitted job as CSV, newline-delimited JSO
 
 ## Get job results
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/results</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>results</code>
 
 **Tags:** Jobs Management
 
@@ -462,7 +462,7 @@ Retrieve the results of a previously submitted job.
 
 ## Get job status
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/status</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>status</code>
 
 **Tags:** Jobs Management
 
@@ -521,7 +521,7 @@ Retrieve the execution status of a previously submitted job.
 
 ## List saved variables
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v1/variables</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>variables</code>
 
 **Tags:** Variables
 
@@ -569,7 +569,7 @@ List the caller's saved query-parameter variables.
 
 ## Create or update a saved variable
 
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/api/v1/variables/{name}</code>
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>api/<wbr>v1/<wbr>variables/<wbr>{name}</code>
 
 **Tags:** Variables
 
@@ -644,7 +644,7 @@ Create (or replace) a named query-parameter variable for the caller.
 
 ## Delete a saved variable
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/api/v1/variables/{name}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>api/<wbr>v1/<wbr>variables/<wbr>{name}</code>
 
 **Tags:** Variables
 

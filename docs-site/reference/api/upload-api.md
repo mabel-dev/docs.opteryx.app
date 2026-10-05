@@ -120,7 +120,7 @@ An upload is an agreement, not a transfer. You send a sample of each file and th
 
 ## Negotiate a Contract
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v2/contracts</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts</code>
 
 **Tags:** contracts
 
@@ -172,7 +172,7 @@ caught before anything is sent.
 
 ## Read a Contract
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/v2/contracts/{contract_id}</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code>
 
 **Tags:** contracts
 
@@ -234,7 +234,7 @@ which is what `/inspect` does today for every call.
 
 ## Amend a Proposal
 
-**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/v2/contracts/{contract_id}</code>
+**Request:** <span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code>
 
 **Tags:** contracts
 
@@ -293,7 +293,7 @@ Retype or decline columns. Returns the whole re-planned contract.
 
 ## Abandon a Contract
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/v2/contracts/{contract_id}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code>
 
 **Tags:** contracts
 
@@ -352,7 +352,7 @@ Give up. Nothing written was ever reachable, so nothing has to be undone.
 
 ## Accept a Proposal
 
-**Request:** <span class="ep-verb ep-verb--put">put</span><code>/v2/contracts/{contract_id}/accept</code>
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>accept</code>
 
 **Tags:** contracts
 
@@ -411,7 +411,7 @@ Confirm a proposed schema, echoing the fingerprint you were shown.
 
 ## Commit a Contract
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v2/contracts/{contract_id}/commit</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>commit</code>
 
 **Tags:** contracts
 
@@ -469,7 +469,7 @@ Confirm a proposed schema, echoing the fingerprint you were shown.
 
 ## Write a File
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/v2/contracts/{contract_id}/data</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>data</code>
 
 **Tags:** contracts
 

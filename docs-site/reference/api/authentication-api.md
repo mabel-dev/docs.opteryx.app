@@ -102,7 +102,7 @@ Every other Opteryx API expects a bearer token. Getting one is a two-part conver
 
 ## List Credentials
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/clients/{client_id}/credentials</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials</code>
 
 **Tags:** credentials
 
@@ -169,7 +169,7 @@ Returns:
 
 ## Create Credential
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/clients/{client_id}/credentials</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials</code>
 
 **Tags:** credentials
 
@@ -267,7 +267,7 @@ Returns:
 
 ## Revoke Credential
 
-**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/clients/{client_id}/credentials/{credential_id}</code>
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials/<wbr>{credential_id}</code>
 
 **Tags:** credentials
 
@@ -339,7 +339,7 @@ Returns:
 
 ## Get signing keys
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/jwks</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>jwks</code>
 
 **Tags:** authentication
 
@@ -377,7 +377,7 @@ Returns the JSON Web Key Set used to verify access tokens issued by this service
 
 ## Get current user
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/me</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>me</code>
 
 Validates the bearer token and returns the caller identity, billing account and token scope details.
 
@@ -423,7 +423,7 @@ Validates the bearer token and returns the caller identity, billing account and 
 
 ## Issue an access token
 
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/token</code>
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>token</code>
 
 **Tags:** authentication
 

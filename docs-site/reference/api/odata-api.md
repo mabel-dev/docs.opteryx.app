@@ -40,7 +40,7 @@ OData service discovery, metadata, and dataset query endpoints for compatible cl
 
 ## OData v4 Service Document
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v4/<wbr></code>
 
 **Tags:** OData v4
 
@@ -90,7 +90,7 @@ Returns the OData v4 service document listing all accessible EntitySets grouped 
 
 ## OData v4 Service-wide EDMX Metadata
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/$metadata</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v4/<wbr>$metadata</code>
 
 **Tags:** OData v4
 
@@ -141,7 +141,7 @@ Returns the complete OData v4 EDMX metadata document describing all EntityTypes 
 
 ## Query dataset rows
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/{workstream}/{collection}/{dataset}</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v4/<wbr>{workstream}/<wbr>{collection}/<wbr>{dataset}</code>
 
 **Tags:** OData v4
 
@@ -170,9 +170,9 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 - **$search** `string | null` [query; optional]
   Full-text search (not implemented; returns 501)
 - **$compute** `string | null` [query; optional]
-  Computed properties: comma-separated '&lt;expression> as &lt;name>' clauses, e.g. 'price mul quantity as TotalValue'. The expression uses the same operators and functions as $filter (add/sub/mul/div/mod, contains(), etc.), just producing a value instead of a boolean. The new name is then usable in $select, $orderby, and $filter on the same request, e.g. $compute=price mul quantity as TotalValue&$filter=TotalValue gt 100. Not supported combined with $apply in this version (400).
+  Computed columns, as comma-separated `<expression> as <name>` clauses, e.g. `price mul quantity as TotalValue`. Expressions use the same operators and functions as `$filter`, and the new name can be used in `$select`, `$orderby` and `$filter` on the same request. Can't be combined with `$apply`.
 - **$apply** `string | null` [query; optional]
-  Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with &lt;method> as Alias', where &lt;method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N)).
+  Server-side aggregation, e.g. `groupby((vendor), aggregate(amount with sum as Total, $count as Count))`. Aggregates are `$count as Alias` or `col with <method> as Alias`, where `<method>` is `sum`, `average`, `min` or `max`. Chain steps with `/`, e.g. `filter(price gt 1)/groupby((vendor), aggregate($count as N))`. See [Aggregating with `$apply`](/docs/guides/querying-via-odata#aggregating-with-apply).
 
 ### Header Parameters
 
@@ -256,11 +256,31 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 
 ## Per-dataset OData EDMX metadata
 
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/{workstream}/{collection}/{dataset}/$metadata</code>
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v4/<wbr>{workstream}/<wbr>{collection}/<wbr>{dataset}/<wbr>$metadata</code>
 
 **Tags:** OData v4
 
-Returns OData $metadata (EDMX) for a single dataset, including column types and nullability, plus custom annotations carrying column statistics (Custom.Statistics.Min/Max, Min/MaxPrefix for text columns, DistinctValueCount, NullCount, Distribution, and CIDR for IPv4 columns), the source type name (Custom.OriginalType, Custom.SourceType), the caller's access (Custom.Role, Custom.Policy), dataset and column descriptions (Custom.Description, Custom.LLMDescribed), latest-snapshot metadata (Custom.Snapshot.Id/TotalRecords/TotalDataSize/CommitMessage/Author/ProducedBy, the last naming what made the commit as `kind:name` -- the segment after the colon is a catalog object for `task` and `view`, and a channel for `upload`), physical sort order (Custom.SortOrder.Column/Direction), snapshot tags (Custom.Tags.Count and Custom.Tags, a Collection of Records with Name, SnapshotId and CreatedBy), vector indexes (Custom.VectorIndexes, a Collection of Records with Name, Column, Method and Build), the dataset this one was FORKED from, if any (Custom.Fork, a Record with Upstream, RevisionsBehind, RevisionsAhead, BaseSnapshot, LastSyncMs and ForkedBy -- the two revision figures are UPPER BOUNDS, since a sequence number advances on every commit including maintenance, so render them as "at most N"; zero is exact, and the annotation is absent entirely for a dataset nobody cloned), the standing source list the current content was built from (Custom.Sources.Complete and Custom.Sources, a Collection of Records with Dataset and Visible), the commit receipt of the snapshot described (Custom.ReadSources.Reported, Custom.ReadSources.Truncated and Custom.ReadSources, a Collection of Records with Dataset, SnapshotId, ResolvedBy and Visible), and who READ that version (Custom.Consumers.Truncated and Custom.Consumers, a Collection of Records with Dataset, Visible, SnapshotId - the consumer's own version - Commits and ProducedBy; omitted entirely, flag included, when the lookup could not run, so an empty Collection beside the flag means nothing read it). Both name every source, including datasets the caller holds no grant on - a name is not readable data, and provenance that cannot be followed is not provenance - and Visible says which of those names the caller may actually read, so a client can decline to offer a link that would 403 rather than withholding the citation. Also materialized-view state (Custom.MaterializedView.\*). Annotations are omitted where they do not apply to the dataset kind or are unavailable. The dataset segment may carry a `@{label}` version selector -- `dataset@current`, `dataset@previous`, `dataset@{tag}`, or `dataset@{snapshot_id}` -- and the Custom.Snapshot.\* and Custom.ReadSources.\* annotations describe that version rather than the current one. Custom.Tags and Custom.Sources do NOT: a tag is a pin on the dataset and the source list is a property of its current content, so both are the same on every version's document.
+Returns the OData `$metadata` (EDMX) document for one dataset: column types and nullability, plus the `Custom.*` annotations below. An annotation is left out where it doesn't apply to the dataset's kind or isn't available.
+
+| Annotation | What it carries |
+| --- | --- |
+| `Custom.Statistics.*` | Per-column `Min`/`Max` (`MinPrefix`/`MaxPrefix` for text), `DistinctValueCount`, `NullCount`, `Distribution`, and `CIDR` for IPv4 columns |
+| `Custom.OriginalType`, `Custom.SourceType` | The column's type in its source |
+| `Custom.Role`, `Custom.Policy` | Your access to the dataset |
+| `Custom.Description`, `Custom.LLMDescribed` | Dataset and column descriptions |
+| `Custom.Snapshot.*` | `Id`, `TotalRecords`, `TotalDataSize`, `CommitMessage`, `Author`, and `ProducedBy` - what made the commit, as `kind:name` |
+| `Custom.SortOrder.*` | Physical sort `Column` and `Direction` |
+| `Custom.Tags`, `Custom.Tags.Count` | Snapshot tags: `Name`, `SnapshotId`, `CreatedBy` |
+| `Custom.VectorIndexes` | Vector indexes: `Name`, `Column`, `Method`, `Build` |
+| `Custom.Fork` | The dataset this one was forked from: `Upstream`, `RevisionsBehind`, `RevisionsAhead`, `BaseSnapshot`, `LastSyncMs`, `ForkedBy`. The revision counts are upper bounds (zero is exact). Absent if it isn't a fork |
+| `Custom.Sources`, `Custom.Sources.Complete` | The datasets the current content was built from: `Dataset`, `Visible` |
+| `Custom.ReadSources.*` | What this snapshot's commit read: `Dataset`, `SnapshotId`, `ResolvedBy`, `Visible`, plus `Reported` and `Truncated` flags |
+| `Custom.Consumers.*` | Who read this version: `Dataset`, `SnapshotId`, `Commits`, `ProducedBy`, `Visible`, plus a `Truncated` flag. Absent if the lookup couldn't run; an empty list means nothing read it |
+| `Custom.MaterializedView.*` | Materialized-view state |
+
+Source and consumer lists name every dataset, including ones you can't read; `Visible` says which you can.
+
+Add a `@{label}` version selector (`dataset@previous`, `dataset@{tag}`, `dataset@{snapshot_id}`) to describe another version. `Custom.Snapshot.*` and `Custom.ReadSources.*` follow the label; `Custom.Tags` and `Custom.Sources` always describe the dataset as it is now.
 
 ### Path Parameters
 
