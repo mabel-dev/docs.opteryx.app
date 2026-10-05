@@ -43,6 +43,71 @@ When a string is too long to inline, the slot instead stores a **summary** of it
 
 So even for a long string, the slot alone carries its length and its first four bytes — enough to settle most comparisons without dereferencing into the arena.
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 236" width="100%" role="img" aria-labelledby="string-slot-title string-slot-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="string-slot-title">The two forms of a 16-byte string slot</title>
+<desc id="string-slot-desc">Two 16-byte string slots. The short string &#x27;Sydney&#x27; stores its length, 6, in bytes 0 to 3 and its six characters inline in bytes 4 onward, with the rest zero-padded. The long string &#x27;Melbourne Airport&#x27; stores its length, 17, in bytes 0 to 3, its first four bytes &#x27;Melb&#x27; as a big-endian prefix in bytes 4 to 7, four reserved zero bytes, and an offset into the arena where the full string lives. Bytes 0 to 7 of either slot form the lp_word, which settles most equality checks with one 64-bit compare.</desc>
+<path d="M132 34 V 28 H 404 V 34" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<text x="268" y="20" text-anchor="middle" style="fill: var(--opteryx-teal); font-size: 12px; font-weight: 600;">lp_word: bytes 0–7, settled by one 64-bit compare</text>
+<text x="149" y="48" text-anchor="middle" style="fill: var(--muted-2); font-size: 10px; font-family: var(--font-mono);">0</text>
+<text x="285" y="48" text-anchor="middle" style="fill: var(--muted-2); font-size: 10px; font-family: var(--font-mono);">4</text>
+<text x="421" y="48" text-anchor="middle" style="fill: var(--muted-2); font-size: 10px; font-family: var(--font-mono);">8</text>
+<text x="557" y="48" text-anchor="middle" style="fill: var(--muted-2); font-size: 10px; font-family: var(--font-mono);">12</text>
+<text x="659" y="48" text-anchor="middle" style="fill: var(--muted-2); font-size: 10px; font-family: var(--font-mono);">15</text>
+<text x="0" y="72" style="fill: var(--text-deep); font-weight: 600;">Short</text>
+<text x="0" y="87" style="fill: var(--muted); font-size: 11.5px; font-family: var(--font-mono);">&#x27;Sydney&#x27;</text>
+<rect x="132" y="56" width="136" height="34" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="200" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">6</text>
+<rect x="268" y="56" width="34" height="34" rx="3" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="285" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">S</text>
+<rect x="302" y="56" width="34" height="34" rx="3" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="319" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">y</text>
+<rect x="336" y="56" width="34" height="34" rx="3" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="353" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">d</text>
+<rect x="370" y="56" width="34" height="34" rx="3" style="fill: var(--accent-soft); stroke: var(--border-2);"/>
+<text x="387" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">n</text>
+<rect x="404" y="56" width="34" height="34" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="421" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">e</text>
+<rect x="438" y="56" width="34" height="34" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="455" y="78" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">y</text>
+<rect x="472" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="489" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<rect x="506" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="523" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<rect x="540" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="557" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<rect x="574" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="591" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<rect x="608" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="625" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<rect x="642" y="56" width="34" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="659" y="78" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<text x="200" y="106" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">length</text>
+<text x="472" y="106" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">12 inline bytes, zero-padded</text>
+<text x="0" y="142" style="fill: var(--text-deep); font-weight: 600;">Long</text>
+<text x="0" y="157" style="fill: var(--muted); font-size: 10.5px; font-family: var(--font-mono);">&#x27;Melbourne Airport&#x27;</text>
+<rect x="132" y="126" width="136" height="34" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="200" y="148" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">17</text>
+<text x="200" y="176" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">length</text>
+<rect x="268" y="126" width="136" height="34" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="336" y="148" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">Melb</text>
+<text x="336" y="176" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">prefix, big-endian</text>
+<rect x="404" y="126" width="136" height="34" rx="3" style="fill: var(--bg); stroke: var(--border-2);"/>
+<text x="472" y="148" text-anchor="middle" style="fill: var(--muted-2); font-family: var(--font-mono);">0</text>
+<text x="472" y="176" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">reserved</text>
+<rect x="540" y="126" width="136" height="34" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="608" y="148" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">→ 0</text>
+<text x="608" y="176" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">arena_offset</text>
+<text x="0" y="216" style="fill: var(--text-deep); font-weight: 600;">Arena</text>
+<path d="M654 160 V 196" style="fill: none; stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="649,188 659,188 654,196" style="fill: var(--muted);"/>
+<rect x="404" y="196" width="272" height="32" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="540" y="217" text-anchor="middle" style="fill: var(--text-deep); font-family: var(--font-mono);">Melbourne Airport</text>
+<text x="396" y="217" text-anchor="end" style="fill: var(--muted); font-size: 11px; font-family: var(--font-mono);">offset 0</text>
+</svg>
+<figcaption>Both forms are 16 bytes, so row <em>i</em> is at a fixed offset. The first 8 bytes, length plus first four bytes, decide most comparisons without touching the arena.</figcaption>
+</figure>
+
 ---
 
 ## Why this is fast

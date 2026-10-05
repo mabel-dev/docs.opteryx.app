@@ -29,6 +29,48 @@ cannot reference a column.
 
 > Warning: **Older snapshots are reclaimed, and may be reclaimed at any point.** Time travel reaches back only as far as the snapshots that still exist, which is not something to plan against — see [Snapshot Reclamation](#snapshot-reclamation) below. A timestamp that resolved yesterday may not resolve today. To keep one specific point readable indefinitely, [tag it](#pinning-a-snapshot-with-a-tag).
 
+<figure class="doc-figure">
+<svg viewBox="0 36 680 186" width="100%" role="img" aria-labelledby="time-travel-title time-travel-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="time-travel-title">A table&#x27;s snapshot history</title>
+<desc id="time-travel-desc">Six snapshots of one table, oldest to newest. The oldest has been reclaimed and can no longer be read. The second is tagged report_202602, which holds it from reclamation. The third is an ordinary commit that changed rows. The fourth is a compaction, which changed no rows. The fifth is current, the snapshot a plain read returns. The sixth is newer but was rolled back off: ROLLBACK moved the current pointer back to the fifth, so the sixth is readable by id only. VERSION AS OF PREVIOUS from the current snapshot skips the compaction and lands on the third.</desc>
+<line x1="50" y1="120" x2="510" y2="120" style="stroke: var(--border-2); stroke-width: 2;"/>
+<line x1="510" y1="120" x2="625" y2="120" style="stroke: var(--border-2); stroke-width: 2; stroke-dasharray: 4 4;"/>
+<circle cx="50" cy="120" r="10" style="fill: var(--bg); stroke: var(--muted-2); stroke-dasharray: 3 3;"/>
+<circle cx="165" cy="120" r="10" style="fill: var(--opteryx-navy);"/>
+<circle cx="280" cy="120" r="10" style="fill: var(--opteryx-navy);"/>
+<circle cx="395" cy="120" r="6" style="fill: var(--bg); stroke: var(--muted); stroke-width: 2;"/>
+<circle cx="510" cy="120" r="14" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal); stroke-width: 2;"/>
+<circle cx="510" cy="120" r="8" style="fill: var(--opteryx-teal);"/>
+<circle cx="625" cy="120" r="10" style="fill: var(--panel-2); stroke: var(--muted-2);"/>
+<line x1="165" y1="92" x2="165" y2="110" style="stroke: var(--opteryx-teal);"/>
+<rect x="107" y="70" width="116" height="22" rx="11" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="165" y="85" text-anchor="middle" style="fill: var(--text-deep); font-size: 11px; font-family: var(--font-mono);">&#x27;report_202602&#x27;</text>
+<path d="M510 105 C 510 52, 280 52, 280 106" style="fill: none; stroke: var(--opteryx-teal); stroke-width: 1.5;"/>
+<polygon points="275,98 285,98 280,108" style="fill: var(--opteryx-teal);"/>
+<text x="395" y="50" text-anchor="middle" style="fill: var(--opteryx-teal); font-size: 11px; font-weight: 700; font-family: var(--font-mono);">VERSION AS OF PREVIOUS</text>
+<path d="M625 109 C 625 82, 518 82, 518 104" style="fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 3;"/>
+<polygon points="513,96 523,96 518,105" style="fill: var(--muted);"/>
+<text x="571" y="76" text-anchor="middle" style="fill: var(--muted); font-size: 11px; font-weight: 700; font-family: var(--font-mono);">ROLLBACK</text>
+<text x="50" y="154" text-anchor="middle" style="fill: var(--muted-2); font-weight: 600;">reclaimed</text>
+<text x="50" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">gone from history</text>
+<text x="165" y="154" text-anchor="middle" style="fill: var(--text-deep); font-weight: 600;">tagged</text>
+<text x="165" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">held while tagged</text>
+<text x="280" y="154" text-anchor="middle" style="fill: var(--text-deep); font-weight: 600;">commit</text>
+<text x="280" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">rows changed</text>
+<text x="395" y="154" text-anchor="middle" style="fill: var(--muted); font-weight: 600;">compaction</text>
+<text x="395" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">no rows changed</text>
+<text x="510" y="154" text-anchor="middle" style="fill: var(--opteryx-teal); font-weight: 600;">current</text>
+<text x="510" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">what a plain read sees</text>
+<text x="625" y="154" text-anchor="middle" style="fill: var(--muted); font-weight: 600;">rolled back off</text>
+<text x="625" y="171" text-anchor="middle" style="fill: var(--muted); font-size: 11.5px;">readable by id only</text>
+<line x1="50" y1="196" x2="625" y2="196" style="stroke: var(--border);"/>
+<polygon points="625,192 633,196 625,200" style="fill: var(--border-2);"/>
+<text x="50" y="214" style="fill: var(--muted-2); font-size: 11px;">older</text>
+<text x="625" y="214" text-anchor="end" style="fill: var(--muted-2); font-size: 11px;">newer</text>
+</svg>
+<figcaption>One table's history. <code>PREVIOUS</code> skips the compaction because it changed no rows. A rollback moves the current pointer and copies nothing, and <code>TIMESTAMP AS OF</code> never lands on a snapshot past it. Untagged snapshots are reclaimed over time; the tagged one stays until the tag is dropped.</figcaption>
+</figure>
+
 ## Examples
 
 **Query data as at a specific timestamp:**

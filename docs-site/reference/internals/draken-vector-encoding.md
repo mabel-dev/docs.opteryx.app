@@ -72,4 +72,76 @@ Operators and expressions can also produce new vectors in any shape. A scalar su
 
 From the execution engine's perspective, all three shapes look identical. A single struct describes the data, and reading the value at row `i` is always the same operation regardless of shape: read `data[selection[i]]`. The indirection is always present — dense vectors use an identity mapping (`selection[i] == i`), constants use an all-zero mapping (every row reads the single stored value), and dictionaries use the per-row codes. The difference between shapes is just what `selection` points at and how many entries the data buffer holds.
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 200" width="100%" role="img" aria-labelledby="vector-shapes-title vector-shapes-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="vector-shapes-title">Dense, dictionary and constant vectors share one access rule</title>
+<desc id="vector-shapes-desc">Three panels, each showing a selection array of four entries pointing into a data buffer. Dense: the selection is 0, 1, 2, 3, so each row reads its own value: 7, 3, 9, 4. Dictionary: the data buffer holds AU, GB and NZ, and the selection holds per-row codes 2, 0, 0, 1, so the rows read NZ, AU, AU, GB. Constant: the data buffer holds a single value, APAC, and every selection entry is 0, so all four rows read APAC.</desc>
+<text x="0" y="66" style="fill: var(--muted); font-size: 11.5px; font-family: var(--font-mono);">selection</text>
+<text x="0" y="146" style="fill: var(--muted); font-size: 11.5px; font-family: var(--font-mono);">data</text>
+<text x="0" y="190" style="fill: var(--muted); font-size: 11.5px;">row i reads</text>
+<text x="70" y="22" style="fill: var(--text-deep); font-weight: 600;">Dense</text>
+<text x="70" y="38" style="fill: var(--muted); font-size: 11px;">identity: selection[i] = i</text>
+<rect x="70" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="88" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">7</text>
+<rect x="106" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="124" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">3</text>
+<rect x="142" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="160" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">9</text>
+<rect x="178" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="196" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">4</text>
+<rect x="70" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="88" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="88" y1="77" x2="88" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="106" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="124" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">1</text>
+<line x1="124" y1="77" x2="124" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="142" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="160" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">2</text>
+<line x1="160" y1="77" x2="160" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="178" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="196" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">3</text>
+<line x1="196" y1="77" x2="196" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<text x="70" y="190" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">7 3 9 4</text>
+<text x="270" y="22" style="fill: var(--text-deep); font-weight: 600;">Dictionary</text>
+<text x="270" y="38" style="fill: var(--muted); font-size: 11px;">per-row codes</text>
+<rect x="270" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="288" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">AU</text>
+<rect x="306" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="324" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">GB</text>
+<rect x="342" y="128" width="36" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="360" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">NZ</text>
+<rect x="270" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="288" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">2</text>
+<line x1="288" y1="77" x2="360" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="306" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="324" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="324" y1="77" x2="288" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="342" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="360" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="360" y1="77" x2="288" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="378" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="396" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">1</text>
+<line x1="396" y1="77" x2="324" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<text x="270" y="190" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">NZ AU AU GB</text>
+<text x="470" y="22" style="fill: var(--text-deep); font-weight: 600;">Constant</text>
+<text x="470" y="38" style="fill: var(--muted); font-size: 11px;">all zero</text>
+<rect x="470" y="128" width="58" height="28" rx="3" style="fill: var(--accent-soft-2); stroke: var(--opteryx-teal);"/>
+<text x="499" y="147" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">APAC</text>
+<rect x="470" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="488" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="488" y1="77" x2="499" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="506" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="524" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="524" y1="77" x2="499" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="542" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="560" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="560" y1="77" x2="499" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<rect x="578" y="50" width="36" height="26" rx="3" style="fill: var(--panel); stroke: var(--border-2);"/>
+<text x="596" y="67" text-anchor="middle" style="fill: var(--text); font-size: 12px; font-family: var(--font-mono);">0</text>
+<line x1="596" y1="77" x2="499" y2="127" style="stroke: var(--opteryx-teal); stroke-width: 1.2;"/>
+<text x="470" y="190" style="fill: var(--text-deep); font-size: 12px; font-family: var(--font-mono);">APAC APAC APAC APAC</text>
+</svg>
+<figcaption>One struct, one rule: row <em>i</em> is <code>data[selection[i]]</code>. The shapes differ only in what <code>selection</code> holds and how many values <code>data</code> has.</figcaption>
+</figure>
+
 This means a kernel can be written once against the uniform `data[selection[i]]` access and handle all three shapes correctly. There is no combinatorial explosion of "dense × dense", "dict × constant", and so on for every operation. By default, operators are shape-agnostic and the shape-awareness lives in the struct, not in operator code. A small number of hot kernels (comparisons, predicates, arithmetic) carry architect-approved fast paths that exploit a known shape — for example, evaluating a predicate over a dictionary's unique values once instead of per row — but these are deliberate, audited exceptions, and each one must produce exactly the same answer as the uniform path.

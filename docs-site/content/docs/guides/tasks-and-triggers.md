@@ -50,6 +50,45 @@ A trigger does not just say "the table changed". It binds two values into the ta
 | `:current_version` | The snapshot the firing commit produced |
 | `:parent_version` | The snapshot the table was at before that commit |
 
+<figure class="doc-figure">
+<svg viewBox="0 0 680 150" width="100%" role="img" aria-labelledby="task-window-title task-window-desc" style="font-family: var(--font-body); font-size: 13px;">
+<title id="task-window-title">The window each triggered run is handed</title>
+<desc id="task-window-desc">Four snapshots of my_workspace.raw.events, v1 to v4, joined by three commits. Each commit fires the trigger once, and each run is handed a window: run 1 gets parent_version v1 and current_version v2, run 2 gets v2 and v3, run 3 gets v3 and v4. The windows meet end to end. A retry or a replay with EXECUTE passes the same two ids, so it still means the same commit.</desc>
+<text x="0" y="18" style="fill: var(--muted); font-size: 12px; font-family: var(--font-mono);">my_workspace.raw.events</text>
+<line x1="70" y1="56" x2="610" y2="56" style="stroke: var(--border-2); stroke-width: 2;"/>
+<circle cx="70" cy="56" r="9" style="fill: var(--opteryx-navy);"/>
+<text x="70" y="38" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">v1</text>
+<circle cx="250" cy="56" r="9" style="fill: var(--opteryx-navy);"/>
+<text x="250" y="38" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">v2</text>
+<circle cx="430" cy="56" r="9" style="fill: var(--opteryx-navy);"/>
+<text x="430" y="38" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">v3</text>
+<circle cx="610" cy="56" r="9" style="fill: var(--opteryx-navy);"/>
+<text x="610" y="38" text-anchor="middle" style="fill: var(--text-deep); font-weight: 700; font-family: var(--font-mono);">v4</text>
+<text x="160" y="48" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">commit fires</text>
+<rect x="76" y="82" width="168" height="60" rx="6" style="fill: var(--accent-soft); stroke: var(--accent-soft-3);"/>
+<text x="88" y="102" style="fill: var(--opteryx-teal); font-size: 11px; font-weight: 700;">run 1</text>
+<text x="88" y="119" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:parent_version  = v1</text>
+<text x="88" y="134" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:current_version = v2</text>
+<line x1="70" y1="65" x2="70" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+<line x1="250" y1="65" x2="250" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+<text x="340" y="48" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">commit fires</text>
+<rect x="256" y="82" width="168" height="60" rx="6" style="fill: var(--accent-soft); stroke: var(--accent-soft-3);"/>
+<text x="268" y="102" style="fill: var(--opteryx-teal); font-size: 11px; font-weight: 700;">run 2</text>
+<text x="268" y="119" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:parent_version  = v2</text>
+<text x="268" y="134" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:current_version = v3</text>
+<line x1="250" y1="65" x2="250" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+<line x1="430" y1="65" x2="430" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+<text x="520" y="48" text-anchor="middle" style="fill: var(--muted); font-size: 11px;">commit fires</text>
+<rect x="436" y="82" width="168" height="60" rx="6" style="fill: var(--accent-soft); stroke: var(--accent-soft-3);"/>
+<text x="448" y="102" style="fill: var(--opteryx-teal); font-size: 11px; font-weight: 700;">run 3</text>
+<text x="448" y="119" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:parent_version  = v3</text>
+<text x="448" y="134" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">:current_version = v4</text>
+<line x1="430" y1="65" x2="430" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+<line x1="610" y1="65" x2="610" y2="82" style="stroke: var(--accent-soft-3); stroke-dasharray: 2 2;"/>
+</svg>
+<figcaption>Each commit fires one run, handed the snapshot before it and the snapshot it produced. Consecutive windows meet end to end.</figcaption>
+</figure>
+
 Read the table at both with `VERSION AS OF` and the difference is exactly what the commit did. For an append-only table, the new rows are the ones in the current version that were not in the parent:
 
 ```sql
