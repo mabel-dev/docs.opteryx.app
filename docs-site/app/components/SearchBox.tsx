@@ -49,6 +49,13 @@ export default function SearchBox() {
   const [active, setActive] = useState(0)
   const [open, setOpen] = useState(false)
   const [state, setState] = useState<IndexState>('idle')
+  // Rendered after mount: the server can't know the reader's platform, and
+  // guessing would mismatch on hydration for half of them.
+  const [shortcut, setShortcut] = useState<string | null>(null)
+
+  useEffect(() => {
+    setShortcut(/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K')
+  }, [])
 
   const searchRef = useRef<any>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -104,8 +111,16 @@ export default function SearchBox() {
 
   // `/` to focus is the convention every docs site the reader already uses has
   // trained them on — but not while they are typing into something else.
+  // ⌘K / Ctrl+K is the other one, and works from anywhere: a modifier chord
+  // can't be text the reader meant to type.
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey) {
+        event.preventDefault()
+        inputRef.current?.focus()
+        inputRef.current?.select()
+        return
+      }
       if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return
       const target = event.target as HTMLElement | null
       const tag = target?.tagName
@@ -169,6 +184,7 @@ export default function SearchBox() {
         onChange={(event) => { setQuery(event.target.value); setOpen(true); loadIndex() }}
         onKeyDown={onKeyDown}
       />
+      {shortcut && !query && <kbd className="docs-search-kbd" aria-hidden="true">{shortcut}</kbd>}
       {showPanel && (
         <div className="search-results">
           {state === 'error' && <p className="search-empty">Search is unavailable right now.</p>}

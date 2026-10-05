@@ -53,7 +53,7 @@ export default function Hero() {
               Install with pip, point at a Parquet file, and pull rows back. No
               cluster, no schema upfront — just SQL.
             </p>
-            <Link href="/docs/getting-started/quick-start" className="ed-cta">
+            <Link href="/docs/getting-started/first-query" className="ed-cta">
               Open quickstart <IconArrow />
             </Link>
           </div>

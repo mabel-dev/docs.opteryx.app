@@ -1,0 +1,9 @@
+# What `gcloud builds submit` uploads. This mirrors gcloud's default (skip .git,
+# honour .gitignore), with one exception: last-updated.json is gitignored
+# because it is generated from git history, but the Cloud Build context has no
+# .git to generate it from, so the copy made locally has to travel with the
+# upload. `make deploy-cloudrun` regenerates it first.
+.gcloudignore
+.git
+#!include:.gitignore
+!docs-site/last-updated.json

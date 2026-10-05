@@ -104,7 +104,7 @@ export default async function Page({ params }: Props) {
     const source = readMarkdownFile(candidatePath)
 
     if (source) {
-      return <DocRenderer source={source} />
+      return <DocRenderer source={source} sourcePath={candidatePath} />
     }
   }
 

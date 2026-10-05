@@ -12,6 +12,9 @@
   {
     "Getting Started": [
       {
+        "Your first query": "getting-started/first-query.md"
+      },
+      {
         "Logging in": "getting-started/registration.md"
       },
       {
@@ -326,250 +329,310 @@
           "href": "reference/sql/functions.md",
           "items": [
             {
-              "ABS": "reference/sql/functions/abs.md"
-            },
-            {
-              "BASE64_DECODE": "reference/sql/functions/base64_decode.md"
-            },
-            {
-              "BASE64_ENCODE": "reference/sql/functions/base64_encode.md"
-            },
-            {
-              "BASE85_DECODE": "reference/sql/functions/base85_decode.md"
-            },
-            {
-              "BASE85_ENCODE": "reference/sql/functions/base85_encode.md"
-            },
-            {
-              "CAST": "reference/sql/functions/cast.md"
-            },
-            {
-              "CEILING": "reference/sql/functions/ceiling.md"
-            },
-            {
-              "COALESCE": "reference/sql/functions/coalesce.md"
-            },
-            {
-              "CONCAT": "reference/sql/functions/concat.md"
-            },
-            {
-              "CONCAT_WS": "reference/sql/functions/concat_ws.md"
-            },
-            {
-              "CONNECTION_ID": "reference/sql/functions/connection_id.md"
-            },
-            {
-              "COSINE_DISTANCE": "reference/sql/functions/cosine_distance.md"
-            },
-            {
-              "COSINE_SIMILARITY": "reference/sql/functions/cosine_similarity.md"
-            },
-            {
-              "CURRENT_DATE": "reference/sql/functions/current_date.md"
-            },
-            {
-              "CURRENT_TIME": "reference/sql/functions/current_time.md"
-            },
-            {
-              "CURRENT_TIMESTAMP": "reference/sql/functions/current_timestamp.md"
-            },
-            {
-              "DATABASE": "reference/sql/functions/database.md"
-            },
-            {
-              "DATEDIFF": "reference/sql/functions/datediff.md"
-            },
-            {
-              "E": "reference/sql/functions/e.md"
-            },
-            {
-              "EXTRACT": "reference/sql/functions/extract.md"
-            },
-            {
-              "FLOOR": "reference/sql/functions/floor.md"
-            },
-            {
-              "FORMAT_TIMESTAMP": "reference/sql/functions/format_timestamp.md"
-            },
-            {
-              "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"
-            },
-            {
-              "GENERATE_SERIES": "reference/sql/functions/generate_series.md"
-            },
-            {
-              "GREATEST": "reference/sql/functions/greatest.md"
-            },
-            {
-              "HASH": "reference/sql/functions/hash.md"
-            },
-            {
-              "HEX_DECODE": "reference/sql/functions/hex_decode.md"
-            },
-            {
-              "HEX_ENCODE": "reference/sql/functions/hex_encode.md"
-            },
-            {
-              "HUMANIZE": "reference/sql/functions/humanize.md"
-            },
-            {
-              "IFNOTNULL": "reference/sql/functions/ifnotnull.md"
-            },
-            {
-              "IFNULL": "reference/sql/functions/ifnull.md"
-            },
-            {
-              "IIF": "reference/sql/functions/iif.md"
-            },
-            {
-              "INITCAP": "reference/sql/functions/initcap.md"
-            },
-            {
-              "IP_TRUNC": "reference/sql/functions/ip_trunc.md"
-            },
-            {
-              "JSONB_OBJECT_KEYS": "reference/sql/functions/jsonb_object_keys.md"
-            },
-            {
-              "LEAST": "reference/sql/functions/least.md"
-            },
-            {
-              "LEFT": "reference/sql/functions/left.md"
-            },
-            {
-              "LENGTH": "reference/sql/functions/length.md"
-            },
-            {
-              "LEVENSHTEIN": "reference/sql/functions/levenshtein.md"
-            },
-            {
-              "LOG": "reference/sql/functions/log.md"
-            },
-            {
-              "LOWER": "reference/sql/functions/lower.md"
-            },
-            {
-              "LPAD": "reference/sql/functions/lpad.md"
-            },
-            {
-              "LTRIM": "reference/sql/functions/ltrim.md"
-            },
-            {
-              "MATCH": "reference/sql/functions/match.md"
-            },
-            {
-              "MD5": "reference/sql/functions/md5.md"
-            },
-            {
-              "NORMAL": "reference/sql/functions/normal.md"
-            },
-            {
-              "NULLIF": "reference/sql/functions/nullif.md"
-            },
-            {
-              "OCTET_LENGTH": "reference/sql/functions/octet_length.md"
-            },
-            {
-              "PHI": "reference/sql/functions/phi.md"
-            },
-            {
-              "PI": "reference/sql/functions/pi.md"
-            },
-            {
-              "POSITION": "reference/sql/functions/position.md"
-            },
-            {
-              "POWER": "reference/sql/functions/power.md"
-            },
-            {
-              "RANDOM": "reference/sql/functions/random.md"
-            },
-            {
-              "RANDOM_STRING": "reference/sql/functions/random_string.md"
-            },
-            {
-              "REGEXP_REPLACE": "reference/sql/functions/regexp_replace.md"
-            },
-            {
-              "REPLACE": "reference/sql/functions/replace.md"
-            },
-            {
-              "REVERSE": "reference/sql/functions/reverse.md"
-            },
-            {
-              "RIGHT": "reference/sql/functions/right.md"
-            },
-            {
-              "ROUND": "reference/sql/functions/round.md"
-            },
-            {
-              "RPAD": "reference/sql/functions/rpad.md"
-            },
-            {
-              "RTRIM": "reference/sql/functions/rtrim.md"
-            },
-            {
-              "SHA1": "reference/sql/functions/sha1.md"
-            },
-            {
-              "SHA224": "reference/sql/functions/sha224.md"
-            },
-            {
-              "SHA256": "reference/sql/functions/sha256.md"
-            },
-            {
-              "SHA384": "reference/sql/functions/sha384.md"
-            },
-            {
-              "SHA512": "reference/sql/functions/sha512.md"
-            },
-            {
-              "SIGN": "reference/sql/functions/sign.md"
-            },
-            {
-              "SORT": "reference/sql/functions/sort.md"
-            },
-            {
-              "SOUNDEX": "reference/sql/functions/soundex.md"
-            },
-            {
-              "SPLIT": "reference/sql/functions/split.md"
-            },
-            {
-              "SQRT": "reference/sql/functions/sqrt.md"
-            },
-            {
-              "SUBSTRING": "reference/sql/functions/substring.md"
-            },
-            {
-              "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
-            },
-            {
-              "TIMEDIFF": "reference/sql/functions/timediff.md"
-            },
-            {
-              "TO_ASCII": "reference/sql/functions/to_ascii.md"
-            },
-            {
-              "TO_CHAR": "reference/sql/functions/to_char.md"
-            },
-            {
-              "TRIM": "reference/sql/functions/trim.md"
-            },
-            {
-              "TRUNC": "reference/sql/functions/trunc.md"
-            },
-            {
-              "UNIXTIME": "reference/sql/functions/unixtime.md"
-            },
-            {
-              "UPPER": "reference/sql/functions/upper.md"
-            },
-            {
-              "USER": "reference/sql/functions/user.md"
-            },
-            {
-              "UTC_TIMESTAMP": "reference/sql/functions/utc_timestamp.md"
+              "Array": {
+                "items": [
+                  {
+                    "GREATEST": "reference/sql/functions/greatest.md"
+                  },
+                  {
+                    "LEAST": "reference/sql/functions/least.md"
+                  },
+                  {
+                    "SORT": "reference/sql/functions/sort.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Conversion": {
+                "items": [
+                  {
+                    "CAST": "reference/sql/functions/cast.md"
+                  },
+                  {
+                    "HUMANIZE": "reference/sql/functions/humanize.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Date & Time": {
+                "items": [
+                  {
+                    "CURRENT_DATE": "reference/sql/functions/current_date.md"
+                  },
+                  {
+                    "CURRENT_TIME": "reference/sql/functions/current_time.md"
+                  },
+                  {
+                    "CURRENT_TIMESTAMP": "reference/sql/functions/current_timestamp.md"
+                  },
+                  {
+                    "DATEDIFF": "reference/sql/functions/datediff.md"
+                  },
+                  {
+                    "EXTRACT": "reference/sql/functions/extract.md"
+                  },
+                  {
+                    "FORMAT_TIMESTAMP": "reference/sql/functions/format_timestamp.md"
+                  },
+                  {
+                    "FROM_UNIXTIME": "reference/sql/functions/from_unixtime.md"
+                  },
+                  {
+                    "TIME_BUCKET": "reference/sql/functions/time_bucket.md"
+                  },
+                  {
+                    "TIMEDIFF": "reference/sql/functions/timediff.md"
+                  },
+                  {
+                    "UNIXTIME": "reference/sql/functions/unixtime.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Hash & Encoding": {
+                "items": [
+                  {
+                    "BASE64_DECODE": "reference/sql/functions/base64_decode.md"
+                  },
+                  {
+                    "BASE64_ENCODE": "reference/sql/functions/base64_encode.md"
+                  },
+                  {
+                    "BASE85_DECODE": "reference/sql/functions/base85_decode.md"
+                  },
+                  {
+                    "BASE85_ENCODE": "reference/sql/functions/base85_encode.md"
+                  },
+                  {
+                    "HASH": "reference/sql/functions/hash.md"
+                  },
+                  {
+                    "HEX_DECODE": "reference/sql/functions/hex_decode.md"
+                  },
+                  {
+                    "HEX_ENCODE": "reference/sql/functions/hex_encode.md"
+                  },
+                  {
+                    "MD5": "reference/sql/functions/md5.md"
+                  },
+                  {
+                    "SHA1": "reference/sql/functions/sha1.md"
+                  },
+                  {
+                    "SHA224": "reference/sql/functions/sha224.md"
+                  },
+                  {
+                    "SHA256": "reference/sql/functions/sha256.md"
+                  },
+                  {
+                    "SHA384": "reference/sql/functions/sha384.md"
+                  },
+                  {
+                    "SHA512": "reference/sql/functions/sha512.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Misc": {
+                "items": [
+                  {
+                    "UTC_TIMESTAMP": "reference/sql/functions/utc_timestamp.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Numeric": {
+                "items": [
+                  {
+                    "ABS": "reference/sql/functions/abs.md"
+                  },
+                  {
+                    "CEILING": "reference/sql/functions/ceiling.md"
+                  },
+                  {
+                    "E": "reference/sql/functions/e.md"
+                  },
+                  {
+                    "FLOOR": "reference/sql/functions/floor.md"
+                  },
+                  {
+                    "LOG": "reference/sql/functions/log.md"
+                  },
+                  {
+                    "PHI": "reference/sql/functions/phi.md"
+                  },
+                  {
+                    "PI": "reference/sql/functions/pi.md"
+                  },
+                  {
+                    "POWER": "reference/sql/functions/power.md"
+                  },
+                  {
+                    "ROUND": "reference/sql/functions/round.md"
+                  },
+                  {
+                    "SIGN": "reference/sql/functions/sign.md"
+                  },
+                  {
+                    "SQRT": "reference/sql/functions/sqrt.md"
+                  },
+                  {
+                    "TRUNC": "reference/sql/functions/trunc.md"
+                  }
+                ]
+              }
+            },
+            {
+              "String": {
+                "items": [
+                  {
+                    "CONCAT": "reference/sql/functions/concat.md"
+                  },
+                  {
+                    "CONCAT_WS": "reference/sql/functions/concat_ws.md"
+                  },
+                  {
+                    "INITCAP": "reference/sql/functions/initcap.md"
+                  },
+                  {
+                    "LEFT": "reference/sql/functions/left.md"
+                  },
+                  {
+                    "LENGTH": "reference/sql/functions/length.md"
+                  },
+                  {
+                    "LEVENSHTEIN": "reference/sql/functions/levenshtein.md"
+                  },
+                  {
+                    "LOWER": "reference/sql/functions/lower.md"
+                  },
+                  {
+                    "LPAD": "reference/sql/functions/lpad.md"
+                  },
+                  {
+                    "LTRIM": "reference/sql/functions/ltrim.md"
+                  },
+                  {
+                    "MATCH": "reference/sql/functions/match.md"
+                  },
+                  {
+                    "OCTET_LENGTH": "reference/sql/functions/octet_length.md"
+                  },
+                  {
+                    "POSITION": "reference/sql/functions/position.md"
+                  },
+                  {
+                    "REGEXP_REPLACE": "reference/sql/functions/regexp_replace.md"
+                  },
+                  {
+                    "REPLACE": "reference/sql/functions/replace.md"
+                  },
+                  {
+                    "REVERSE": "reference/sql/functions/reverse.md"
+                  },
+                  {
+                    "RIGHT": "reference/sql/functions/right.md"
+                  },
+                  {
+                    "RPAD": "reference/sql/functions/rpad.md"
+                  },
+                  {
+                    "RTRIM": "reference/sql/functions/rtrim.md"
+                  },
+                  {
+                    "SOUNDEX": "reference/sql/functions/soundex.md"
+                  },
+                  {
+                    "SPLIT": "reference/sql/functions/split.md"
+                  },
+                  {
+                    "SUBSTRING": "reference/sql/functions/substring.md"
+                  },
+                  {
+                    "TO_ASCII": "reference/sql/functions/to_ascii.md"
+                  },
+                  {
+                    "TO_CHAR": "reference/sql/functions/to_char.md"
+                  },
+                  {
+                    "TRIM": "reference/sql/functions/trim.md"
+                  },
+                  {
+                    "UPPER": "reference/sql/functions/upper.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Struct/JSON": {
+                "items": [
+                  {
+                    "JSONB_OBJECT_KEYS": "reference/sql/functions/jsonb_object_keys.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Text Similarity": {
+                "items": [
+                  {
+                    "COSINE_DISTANCE": "reference/sql/functions/cosine_distance.md"
+                  },
+                  {
+                    "COSINE_SIMILARITY": "reference/sql/functions/cosine_similarity.md"
+                  }
+                ]
+              }
+            },
+            {
+              "Utility": {
+                "items": [
+                  {
+                    "COALESCE": "reference/sql/functions/coalesce.md"
+                  },
+                  {
+                    "CONNECTION_ID": "reference/sql/functions/connection_id.md"
+                  },
+                  {
+                    "DATABASE": "reference/sql/functions/database.md"
+                  },
+                  {
+                    "GENERATE_SERIES": "reference/sql/functions/generate_series.md"
+                  },
+                  {
+                    "IFNOTNULL": "reference/sql/functions/ifnotnull.md"
+                  },
+                  {
+                    "IFNULL": "reference/sql/functions/ifnull.md"
+                  },
+                  {
+                    "IIF": "reference/sql/functions/iif.md"
+                  },
+                  {
+                    "IP_TRUNC": "reference/sql/functions/ip_trunc.md"
+                  },
+                  {
+                    "NORMAL": "reference/sql/functions/normal.md"
+                  },
+                  {
+                    "NULLIF": "reference/sql/functions/nullif.md"
+                  },
+                  {
+                    "RANDOM": "reference/sql/functions/random.md"
+                  },
+                  {
+                    "RANDOM_STRING": "reference/sql/functions/random_string.md"
+                  },
+                  {
+                    "USER": "reference/sql/functions/user.md"
+                  }
+                ]
+              }
             }
           ]
         }

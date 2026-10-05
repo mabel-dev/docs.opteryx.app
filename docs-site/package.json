@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-last-updated.mjs",
     "build": "next build && node scripts/build-search-index.mjs",
+    "last-updated": "node scripts/build-last-updated.mjs",
     "start": "next start",
     "lint": "next lint",
     "validate:docs": "node scripts/validate-docs.mjs",

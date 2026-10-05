@@ -14,10 +14,16 @@ export default function TableOfContents() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const extractHeadings = () => {
-      const elements = Array.from(
-        document.querySelectorAll("article h2, article h3"),
+    // Headings inside a tab panel are steps of one tab, not sections of the
+    // page: listed, the outline would show every tab's steps at once, most of
+    // them hidden.
+    const pageHeadings = () =>
+      Array.from(document.querySelectorAll("article h2, article h3")).filter(
+        (elem) => !elem.closest('[role="tabpanel"]'),
       );
+
+    const extractHeadings = () => {
+      const elements = pageHeadings();
       const headingData: Heading[] = elements.map((elem) => ({
         id: elem.id,
         text: elem.textContent || "",
@@ -42,7 +48,7 @@ export default function TableOfContents() {
       { rootMargin: "-100px 0px -66%" },
     );
 
-    const elements = document.querySelectorAll("article h2, article h3");
+    const elements = pageHeadings();
     elements.forEach((elem) => observer.observe(elem));
 
     // The timer is cleared as well as the observer: left pending across a route

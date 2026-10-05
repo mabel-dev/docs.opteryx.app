@@ -98,6 +98,38 @@ const OPTERYX_THEME = {
   ],
 } as const;
 
+// The same scopes as OPTERYX_THEME, with each colour lifted to hold contrast on
+// the dark page background. Emitted alongside the light colours as
+// --shiki-dark custom properties; globals.css swaps them in under
+// [data-theme="dark"].
+const SHIKI_DARK_THEME = "opteryx-dark";
+const DARK_COLOURS: Record<string, string> = {
+  "#3D4A4E": "#C9D4D8",
+  "#1F2E61": "#AAB6EA",
+  "#07797C": "#4CC7C3",
+  "#FE7701": "#FF9A4D",
+  "#FFA503": "#FFC25A",
+  "#C89427": "#B59A5E",
+  "#CB0101": "#FF6B6B",
+  "#FFFFFF": "#162027",
+};
+const OPTERYX_DARK_THEME = {
+  ...OPTERYX_THEME,
+  name: SHIKI_DARK_THEME,
+  type: "dark",
+  colors: {
+    "editor.foreground": DARK_COLOURS["#3D4A4E"],
+    "editor.background": DARK_COLOURS["#FFFFFF"],
+  },
+  tokenColors: OPTERYX_THEME.tokenColors.map((rule) => ({
+    ...rule,
+    settings: {
+      ...rule.settings,
+      foreground: DARK_COLOURS[rule.settings.foreground] ?? rule.settings.foreground,
+    },
+  })),
+};
+
 const SUPPORTED_LANGUAGES = ["sql", "python", "bash", "json"] as const;
 
 const LANGUAGE_ALIASES: Record<string, (typeof SUPPORTED_LANGUAGES)[number]> = {
@@ -112,7 +144,7 @@ let highlighterPromise: Promise<Highlighter> | null = null;
 function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
-      themes: [OPTERYX_THEME as any],
+      themes: [OPTERYX_THEME as any, OPTERYX_DARK_THEME as any],
       langs: [...SUPPORTED_LANGUAGES],
     });
   }
@@ -269,10 +301,82 @@ function transformCalloutBlockquotes(html: string): string {
   );
 }
 
-export async function renderMarkdownToHtml(
+// Tab groups are written with HTML comments, so the markdown still reads as a
+// plain sequence of sections anywhere it isn't rendered by this site:
+//
+//   <!-- tabs -->
+//   <!-- tab: Hosted -->
+//   ...markdown...
+//   <!-- tab: Python -->
+//   ...markdown...
+//   <!-- /tabs -->
+//
+// Every panel is in the HTML (search indexes them all); `DocTabs` hides all but
+// the selected one and remembers the reader's choice across pages.
+const TABS_BLOCK = /^<!--\s*tabs\s*-->\s*\n([\s\S]*?)^<!--\s*\/tabs\s*-->\s*$/gm;
+const TAB_MARKER = /^<!--\s*tab:\s*(.+?)\s*-->\s*$/gm;
+
+function escapeAttribute(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+async function extractTabGroups(
   source: string,
+): Promise<{ source: string; groups: string[] }> {
+  const blocks = [...source.matchAll(TABS_BLOCK)];
+  const groups: string[] = [];
+
+  for (const [index, block] of blocks.entries()) {
+    const body = block[1];
+    const markers = [...body.matchAll(TAB_MARKER)];
+    const tabs = markers.map((marker, i) => ({
+      label: marker[1],
+      markdown: body.slice(
+        marker.index! + marker[0].length,
+        i + 1 < markers.length ? markers[i + 1].index : body.length,
+      ),
+    }));
+
+    const buttons: string[] = [];
+    const panels: string[] = [];
+    for (const [i, tab] of tabs.entries()) {
+      const id = `tabs-${index}-${i}`;
+      const label = escapeAttribute(tab.label);
+      const selected = i === 0;
+      buttons.push(
+        `<button type="button" role="tab" id="${id}-tab" aria-controls="${id}-panel" ` +
+          `aria-selected="${selected}" tabindex="${selected ? 0 : -1}" data-tab-label="${label}">${label}</button>`,
+      );
+      panels.push(
+        `<div class="doc-tabs-panel" role="tabpanel" id="${id}-panel" aria-labelledby="${id}-tab"` +
+          `${selected ? "" : " hidden"}>${await renderMarkdownToHtml(tab.markdown)}</div>`,
+      );
+    }
+
+    groups.push(
+      `<div class="doc-tabs" data-tabs>` +
+        `<div class="doc-tabs-list" role="tablist">${buttons.join("")}</div>` +
+        `${panels.join("")}</div>`,
+    );
+  }
+
+  let count = 0;
+  const replaced = source.replace(
+    TABS_BLOCK,
+    () => `\n<div data-tabs-slot="${count++}"></div>\n`,
+  );
+  return { source: replaced, groups };
+}
+
+export async function renderMarkdownToHtml(
+  rawSource: string,
   options: RenderMarkdownOptions = {},
 ): Promise<string> {
+  const { source, groups } = await extractTabGroups(rawSource);
   const renderer = new Marked({
     gfm: true,
     breaks: false,
@@ -295,7 +399,8 @@ export async function renderMarkdownToHtml(
         const highlighter = await getHighlighter();
         const highlighted = highlighter.codeToHtml(token.text ?? "", {
           lang: language,
-          theme: SHIKI_THEME,
+          themes: { light: SHIKI_THEME, dark: SHIKI_DARK_THEME },
+          defaultColor: "light",
         });
         block = wrapInCodeBlock(highlighted, language);
       } else if (/^[a-z0-9_+-]+$/.test(rawLabel)) {
@@ -325,7 +430,10 @@ export async function renderMarkdownToHtml(
     },
   });
 
-  let html = String(await renderer.parse(source));
+  let html = String(await renderer.parse(source)).replace(
+    /<div data-tabs-slot="(\d+)"><\/div>/g,
+    (_, slot) => groups[Number(slot)] ?? "",
+  );
 
   if (options.addHeadingIds) {
     html = addHeadingIdsToHtml(html);

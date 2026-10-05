@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import SearchBox from './SearchBox'
+import ThemeToggle from './ThemeToggle'
 
 export default function SiteHeader() {
   const pathname = usePathname()
@@ -26,7 +27,7 @@ export default function SiteHeader() {
       <div className="blog-header-inner">
         <Link href="/" className="blog-logo" style={{ textDecoration: 'none' }}>
           <Image src="/opteryx-icon.svg" alt="Opteryx" width={22} height={22} />
-          <span>Opteryx Documentation</span>
+          <span>Opteryx<span className="logo-suffix"> Documentation</span></span>
           <span className="sep">/</span>
           <span className="pill">{section}</span>
         </Link>
@@ -43,6 +44,7 @@ export default function SiteHeader() {
         </nav>
         <span className="header-spacer" />
         <SearchBox />
+        <ThemeToggle />
         <a href="https://opteryx.app" className="blog-cta">Try Opteryx</a>
       </div>
     </header>

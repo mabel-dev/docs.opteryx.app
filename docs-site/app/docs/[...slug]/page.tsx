@@ -55,5 +55,5 @@ export default async function Page({ params }: Props) {
     return notFound()
   }
 
-  return <DocRenderer source={source} />
+  return <DocRenderer source={source} sourcePath={mdPath} />
 }

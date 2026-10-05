@@ -54,3 +54,7 @@ A query in Opteryx moves through four broad stages:
 4. **I/O** — readers fetch only the column chunks and row groups the query actually needs, in parallel with execution.
 
 Each stage is covered in more detail under [Architecture](../architecture/planner) and [Core Concepts](../core-concepts/execution-model).
+
+## What We Guarantee
+
+Before you commit to Opteryx, check where it stops as well as what it does. [Compatibility](/docs/roadmap-guarantees/compatibility) lists the Python versions, platforms and formats verified against the current release. [Known Limits](/docs/roadmap-guarantees/known-limits) covers the architectural gaps, and [SQL Conformance](/docs/reference/sql/conformance) shows which parts of standard SQL are supported.

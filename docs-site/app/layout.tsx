@@ -1,5 +1,6 @@
 import "./globals.css";
 import React from "react";
+import { themeBootScript } from "@/app/lib/themeBoot";
 
 export const metadata = {
   title: "Opteryx Documentation",
@@ -16,7 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the boot script sets data-theme on <html>
+    // before React hydrates, so the attribute legitimately differs.
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         {children}
         {/* Hydrates the "Try it live" cards on the API reference pages. Must be

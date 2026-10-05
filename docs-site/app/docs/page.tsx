@@ -10,6 +10,12 @@ type DocSection = {
 
 const GETTING_STARTED: DocSection[] = [
   {
+    title: "Your first query",
+    description: "A real result in two minutes: in the browser, over OData, or in Python",
+    href: "/docs/getting-started/first-query",
+    icon: "⚡",
+  },
+  {
     title: "Logging in",
     description: "Set up your account and get access to the platform",
     href: "/docs/getting-started/registration",
@@ -41,6 +47,29 @@ const CORE_CONCEPTS: DocSection[] = [
     description: "Learn how costs are calculated",
     href: "/docs/core-concepts/cost-model",
     icon: "💰",
+  },
+];
+
+// Linked from the landing page rather than left at the bottom of the sidebar:
+// what the engine does *not* do is the first thing an evaluator looks for.
+const GUARANTEES: DocSection[] = [
+  {
+    title: "Compatibility",
+    description: "Python versions, platforms and formats, verified against the current release",
+    href: "/docs/roadmap-guarantees/compatibility",
+    icon: "✅",
+  },
+  {
+    title: "Known limits",
+    description: "The architectural gaps worth knowing before you commit",
+    href: "/docs/roadmap-guarantees/known-limits",
+    icon: "🚧",
+  },
+  {
+    title: "SQL conformance",
+    description: "Which parts of standard SQL are supported, and which aren't",
+    href: "/docs/reference/sql/conformance",
+    icon: "📐",
   },
 ];
 
@@ -92,7 +121,7 @@ export default function Page() {
           </p>
           <div className="docs-hero-ctas">
             <Link
-              href="/docs/getting-started/quick-start"
+              href="/docs/getting-started/first-query"
               className="btn-primary"
             >
               Get Started
@@ -156,6 +185,19 @@ export default function Page() {
         </div>
         <div className="card-grid">
           {CORE_CONCEPTS.map((section) => (
+            <DocCard key={section.href} section={section} />
+          ))}
+        </div>
+      </section>
+
+      {/* Guarantees */}
+      <section className="docs-section">
+        <div className="docs-section-header">
+          <h2>What we guarantee</h2>
+          <p>What Opteryx supports today, and where it stops</p>
+        </div>
+        <div className="card-grid">
+          {GUARANTEES.map((section) => (
             <DocCard key={section.href} section={section} />
           ))}
         </div>

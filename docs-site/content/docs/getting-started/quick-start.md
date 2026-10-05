@@ -1,4 +1,4 @@
-# Quick Start: Site Tour
+# Site Tour
 
 This page is a short tour of Opteryx Studio, the web app for [opteryx.app](https://opteryx.app), the hosted Opteryx service — what each part of the workspace is for and how to use it. If you haven't signed in yet, start with [Logging In](registration); Studio drops you straight into an example query, pre-loaded and ready to run, so there's no setup before you see it working.
 

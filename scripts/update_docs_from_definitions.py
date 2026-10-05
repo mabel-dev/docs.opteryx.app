@@ -1654,6 +1654,33 @@ def _populate_nav_items(item: dict, prefix: str, entries: dict, title_fn) -> Non
     node['items'] = [{title: f'{prefix}/{slug}.md'} for title, slug in nav_items]
 
 
+def _function_category(name: str, info: Dict[str, Any]) -> str:
+    if name in SYNTAX_FUNCTIONS:
+        return SYNTAX_FUNCTIONS[name]['category']
+    overloads = info.get('overloads', [])
+    return (overloads[0].get('category') if overloads else None) or 'Other'
+
+
+def _populate_function_nav(item: dict, prefix: str, functions_def: dict) -> None:
+    # Eighty-odd functions in one A-Z list is a wall to scroll; grouped the same
+    # way as the functions index page, the sidebar answers "what string
+    # functions are there" at a glance. Groups carry no href: the category
+    # headings on the index page are the landing pages, one click up.
+    node = item['Functions']
+    if not isinstance(node, dict):
+        return
+    groups: Dict[str, List[Tuple[str, str]]] = {}
+    for name, info in functions_def.items():
+        category = _function_category(name, info)
+        label = category[:-len(' Functions')] if category.endswith(' Functions') else category
+        groups.setdefault(label, []).append((name, slugify(name)))
+    node['items'] = [
+        {label: {'items': [{name: f'{prefix}/{slug}.md'}
+                           for name, slug in sorted(entries, key=lambda x: x[0].lower())]}}
+        for label, entries in sorted(groups.items(), key=lambda x: x[0].lower())
+    ]
+
+
 def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], types_def: Dict[str, Any]):
     nav = load_json(NAV_PATH)
 
@@ -1699,7 +1726,10 @@ def update_nav(functions_def: Dict[str, Any], operators_def: Dict[str, Any], typ
             'Operators':  'reference/sql/operators',
             'Data Types': 'reference/sql/types',
         }[name]
-        _populate_nav_items(item, nav_prefix, entries, title_fn)
+        if name == 'Functions':
+            _populate_function_nav(item, nav_prefix, entries)
+        else:
+            _populate_nav_items(item, nav_prefix, entries, title_fn)
 
     # Trailing newline: without it every regeneration shows nav.json as modified
     # (POSIX "\ No newline at end of file") even when the nav itself is unchanged.

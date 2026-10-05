@@ -31,16 +31,16 @@ See [Running a Query via the API](/docs/guides/running-a-query-via-the-api) for 
 
 ### Try It: Public Sample Datasets
 
-A handful of datasets under the `public` schema are readable with no account or token at all - useful for trying a query before you've loaded anything of your own:
+Datasets under the `public` workspace are readable by anyone signed in - useful for trying a query before you've loaded anything of your own. The `geopolitics` and `security` collections go further and allow anonymous reads over [OData](/docs/guides/querying-via-odata), with no account or token at all; `astronomy` and `sales` need you to be signed in:
 
 | Dataset | Description |
 | --- | --- |
-| `public.astronomy.planets` | Small example table of planets (good for quick queries and demos). |
+| `public.astronomy.planets` | Small example table of planets (good for quick queries and demos). Signed-in only. |
 | `public.geopolitics.countries` | Reference table of countries. |
 | `public.geopolitics.gdelt_events` | GDELT event records, ordered by `date_added`. |
 | `public.github.events` | GitHub event stream samples (event-level rows), ordered by `created_at`. |
-| `public.sales.orders` | Example sales orders table. |
-| `public.sales.sales` | Example sales transactions table. |
+| `public.sales.orders` | Example sales orders table. Signed-in only. |
+| `public.sales.sales` | Example sales transactions table. Signed-in only. |
 | `public.security.cisa_kev` | CISA Known Exploited Vulnerabilities catalog. |
 | `public.security.epss` | Exploit Prediction Scoring System (EPSS) data. |
 | `public.security.exploit_db` | Exploit-DB entries. |

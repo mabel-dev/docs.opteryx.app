@@ -100,6 +100,15 @@
     --danger-soft: rgba(213, 0, 0, 0.08);
     --warning-soft: rgba(255, 165, 3, 0.08);
 
+    /* Surfaces and inks that change with the theme (see [data-theme="dark"]) */
+    --surface: #ffffff;
+    --frost: rgba(255, 255, 255, 0.8);
+    --on-accent: #ffffff;
+    --accent-hover: #086163;
+    --orange-ink: #b45500;
+    --gold-ink: #b6740b;
+    --amber-ink: #8a5a00;
+
     /* Aliases */
     --accent: var(--opteryx-teal);
     --accent-2: var(--opteryx-orange);
@@ -169,6 +178,91 @@
     --t-slow: 200ms ease-in-out;
 }
 
+/* --- Dark theme ---------------------------------------------------- */
+/* The boot script in app/lib/themeBoot.ts resolves "auto" to a concrete
+   value on <html data-theme> before first paint, so this is the only selector
+   needed: no duplicate block under prefers-color-scheme. Without JavaScript
+   the site stays light. Brand teal and orange are lifted so they keep
+   contrast on a dark ground; text on a teal fill flips to dark (--on-accent),
+   since white on the lifted teal falls below 3:1. */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --opteryx-teal: #2aa9a6;
+    --opteryx-orange: #ff8a24;
+    --opteryx-navy: #aab6ea;
+    --opteryx-indigo-line: #8f8fc9;
+    --opteryx-pale-teal: #10292b;
+
+    --bg: #0f161b;
+    --panel: #141d23;
+    --panel-2: #1a252c;
+    --header-surface: #121b21;
+    --muted-surface: #131c22;
+    --text: #c9d4d8;
+    --text-deep: #eef3f5;
+    --muted: #93a1ab;
+    --muted-2: #6b7a86;
+    --border: #25323a;
+    --border-2: #304049;
+    --muted-border: rgba(201, 212, 216, 0.08);
+
+    --success: #4ccf74;
+    --danger: #ff6b6b;
+    --warning: #ffb733;
+    --gold: #e0b04a;
+    --info: #ff8a24;
+
+    --accent-soft: rgba(42, 169, 166, 0.12);
+    --accent-soft-2: rgba(42, 169, 166, 0.18);
+    --accent-soft-3: rgba(42, 169, 166, 0.35);
+    --accent-ring: rgba(42, 169, 166, 0.35);
+    --orange-soft: rgba(255, 138, 36, 0.12);
+    --navy-soft: rgba(170, 182, 234, 0.06);
+    --success-soft: rgba(76, 207, 116, 0.12);
+    --danger-soft: rgba(255, 107, 107, 0.12);
+    --warning-soft: rgba(255, 183, 51, 0.12);
+
+    --surface: #162027;
+    --frost: rgba(15, 22, 27, 0.8);
+    --on-accent: #0b1418;
+    --accent-hover: #35b8b4;
+    --orange-ink: #ff9a4d;
+    --gold-ink: #e0b04a;
+    --amber-ink: #e0b04a;
+
+    --shadow-xs: 0 6px 18px rgba(0, 0, 0, 0.2);
+    --shadow-s: 0 6px 18px rgba(0, 0, 0, 0.25);
+    --shadow-m: 0 8px 24px rgba(0, 0, 0, 0.3);
+    --shadow-l: 0 8px 30px rgba(0, 0, 0, 0.35);
+    --shadow-menu: 0 16px 36px rgba(0, 0, 0, 0.5);
+    --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* With two themes Shiki moves font styles into custom properties too. */
+.shiki span {
+    font-weight: var(--shiki-light-font-weight);
+    font-style: var(--shiki-light-font-style);
+}
+:root[data-theme="dark"] .shiki span {
+    font-weight: var(--shiki-dark-font-weight);
+    font-style: var(--shiki-dark-font-style);
+}
+
+/* Shiki emits the light colours inline and the dark ones as --shiki-dark
+   custom properties (see renderMarkdown.ts); swap them in. */
+:root[data-theme="dark"] .shiki,
+:root[data-theme="dark"] .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Screenshots and diagrams drawn on white would glare on a dark page. */
+:root[data-theme="dark"] .docs-article img:not([src$=".svg"]) {
+    border-radius: var(--r-m);
+    box-shadow: 0 0 0 1px var(--border);
+}
+
 /* --- Base reset ---------------------------------------------------- */
 *,
 *::before,
@@ -234,7 +328,7 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 20;
-    background: #fff;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
 }
 .docs-header-inner {
@@ -312,6 +406,38 @@ a:hover {
 .docs-search input::placeholder {
     color: var(--muted-2);
 }
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-m);
+    background: var(--muted-surface);
+    color: var(--muted);
+    cursor: pointer;
+}
+.theme-toggle:hover {
+    color: var(--text-deep);
+    border-color: var(--border-2);
+}
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--accent-ring);
+    outline-offset: 1px;
+}
+.docs-search-kbd {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xs);
+    padding: 0 5px;
+    line-height: 18px;
+    pointer-events: none;
+}
 
 /* --- search results dropdown ------------------------------------------- */
 /* The panel hangs off .docs-search, which is why that rule sets position:
@@ -383,7 +509,7 @@ a:hover {
 }
 .docs-cta {
     background: var(--opteryx-teal);
-    color: #fff;
+    color: var(--on-accent);
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 13px;
@@ -393,9 +519,9 @@ a:hover {
     white-space: nowrap;
 }
 .docs-cta:hover {
-    background: #086163;
+    background: var(--accent-hover);
     text-decoration: none;
-    color: #fff;
+    color: var(--on-accent);
 }
 
 /* ===========================================================================
@@ -503,6 +629,67 @@ a:hover {
     max-width: 720px;
     padding: 0 0 56px;
 }
+/* Tab groups from `<!-- tabs -->` in markdown; see renderMarkdown.ts. */
+.doc-tabs {
+    margin: 20px 0 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-l);
+    background: var(--bg);
+}
+.doc-tabs-list {
+    display: flex;
+    gap: 4px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: var(--r-l) var(--r-l) 0 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.doc-tabs-list::-webkit-scrollbar {
+    display: none;
+}
+.doc-tabs-list [role="tab"] {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 10px 12px 9px;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.doc-tabs-list [role="tab"]:hover {
+    color: var(--text-deep);
+}
+.doc-tabs-list [role="tab"][aria-selected="true"] {
+    color: var(--opteryx-teal);
+    border-bottom-color: var(--opteryx-teal);
+}
+.doc-tabs-list [role="tab"]:focus-visible {
+    outline: 2px solid var(--accent-ring);
+    outline-offset: -2px;
+    border-radius: var(--r-s);
+}
+.doc-tabs-panel {
+    padding: 4px 20px 8px;
+}
+.doc-tabs-panel > :first-child {
+    margin-top: 16px;
+}
+
+.docs-last-updated {
+    max-width: 720px;
+    margin: -32px 0 48px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+}
 
 .breadcrumbs {
     display: flex;
@@ -605,7 +792,7 @@ kbd {
     display: inline-block;
     font-family: var(--font-mono);
     font-size: 11.5px;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--border-2);
     border-bottom-width: 2px;
     color: var(--text-deep);
@@ -731,7 +918,7 @@ kbd {
 }
 .callout.warning {
     --callout-rule: var(--opteryx-orange);
-    --callout-label: #b6740b;
+    --callout-label: var(--gold-ink);
 }
 .callout.danger {
     --callout-rule: var(--danger);
@@ -907,7 +1094,7 @@ kbd {
 .docs-article .ep-verb--put,
 .docs-article .ep-verb--patch {
     background: rgba(254, 119, 1, 0.14);
-    color: #b45500;
+    color: var(--orange-ink);
 }
 .docs-article .ep-verb--delete {
     background: var(--danger-soft);
@@ -1178,7 +1365,7 @@ kbd {
 .tag.warning {
     background: var(--warning-soft);
     border-color: rgba(255, 165, 3, 0.3);
-    color: #b6740b;
+    color: var(--gold-ink);
 }
 .tag.danger {
     background: var(--danger-soft);
@@ -1235,7 +1422,7 @@ kbd {
 .docs-footer {
     border-top: 1px solid var(--border);
     padding: 20px 0;
-    background: #fff;
+    background: var(--surface);
 }
 .docs-footer-inner {
     max-width: 1360px;
@@ -1364,7 +1551,8 @@ kbd {
     margin-top: 64px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    background: var(--text-deep);
+    /* Literal, not --text-deep: this block stays navy in both themes. */
+    background: #1f2e61;
     border-radius: var(--r-s);
     overflow: hidden;
     color: #e7eaf2;
@@ -1408,7 +1596,7 @@ kbd {
     align-items: center;
     gap: 8px;
     background: #fff;
-    color: var(--text-deep);
+    color: #1f2e61;
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 13.5px;
@@ -1481,7 +1669,7 @@ kbd {
 .lp-ed-tile {
     padding: 32px 28px 28px;
     border: 1px solid var(--border);
-    background: #fff;
+    background: var(--surface);
     border-radius: var(--r-s);
     transition:
         border-color var(--t-fast),
@@ -1569,7 +1757,7 @@ kbd {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #fff;
+    background: var(--surface);
     color: var(--text-deep);
     border: 1px solid var(--border);
     padding: 10px 16px;
@@ -1621,7 +1809,7 @@ kbd {
     position: sticky;
     top: 0;
     z-index: 30;
-    background: #fff;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
 }
 .blog-header-inner {
@@ -1713,7 +1901,7 @@ kbd {
 .blog-search kbd {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--border-2);
     color: var(--muted);
     padding: 1px 5px;
@@ -1724,12 +1912,12 @@ kbd {
     font-weight: 600;
     font-size: 13px;
     background: var(--opteryx-teal);
-    color: #fff;
+    color: var(--on-accent);
     padding: 8px 14px;
     border-radius: var(--r-m);
 }
 .blog-cta:hover {
-    background: #086163;
+    background: var(--accent-hover);
     text-decoration: none;
 }
 
@@ -1796,7 +1984,7 @@ kbd {
 /* ============== Simple footer ==================================== */
 .blog-footer-simple {
     border-top: 1px solid var(--border);
-    background: #fff;
+    background: var(--surface);
     padding: 22px 0;
     margin-top: 24px;
 }
@@ -1833,7 +2021,7 @@ kbd {
     gap: 40px;
     border: 1px solid var(--border);
     border-radius: var(--r-s);
-    background: #fff;
+    background: var(--surface);
     overflow: hidden;
     text-decoration: none;
     transition:
@@ -1870,7 +2058,7 @@ kbd {
 .lead-art-panel {
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--frost);
     border: 1px solid var(--border);
     border-radius: var(--r-xs);
     padding: 16px 18px;
@@ -2016,7 +2204,7 @@ kbd {
 .cat-bar a.rss:hover {
     color: var(--opteryx-teal);
     border-color: rgba(7, 121, 124, 0.3);
-    background: #fff;
+    background: var(--surface);
 }
 
 /* Card grid */
@@ -2041,7 +2229,7 @@ kbd {
     flex-direction: column;
     border: 1px solid var(--border);
     border-radius: var(--r-s);
-    background: #fff;
+    background: var(--surface);
     overflow: hidden;
     text-decoration: none;
     transition:
@@ -2082,7 +2270,7 @@ kbd {
     font-size: 18px;
     letter-spacing: 0.02em;
     color: var(--text-deep);
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--frost);
     border: 1px solid var(--border);
     padding: 7px 14px;
     border-radius: var(--r-xs);
@@ -2309,7 +2497,7 @@ kbd {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--opteryx-teal);
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--frost);
     border: 1px solid var(--border);
     padding: 2px 8px;
     border-radius: var(--r-pill);
@@ -2493,7 +2681,7 @@ kbd {
     padding: 3px 8px;
     border: 1px solid var(--border);
     border-radius: var(--r-pill);
-    background: #fff;
+    background: var(--surface);
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -2834,7 +3022,7 @@ kbd {
 }
 .tag-pills a:hover {
     background: var(--opteryx-teal);
-    color: #fff;
+    color: var(--on-accent);
     border-color: var(--opteryx-teal);
     text-decoration: none;
 }
@@ -2850,7 +3038,7 @@ kbd {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r-m);
     color: var(--muted);
@@ -2950,7 +3138,7 @@ kbd {
 .post-cover .panel {
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.78);
+    background: var(--frost);
     border: 1px solid var(--border);
     border-radius: var(--r-l);
     padding: 16px 20px;
@@ -3213,7 +3401,7 @@ kbd {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #fff;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 6px 10px 6px 14px;
     color: var(--muted);
@@ -3460,7 +3648,7 @@ kbd {
     padding: 16px 18px;
     border: 1px solid var(--border);
     border-radius: var(--r-l);
-    background: #fff;
+    background: var(--surface);
     text-decoration: none;
     transition:
         border-color var(--t-fast),
@@ -3511,7 +3699,7 @@ kbd {
 /* ============== Footer ============================================ */
 .blog-footer {
     border-top: 1px solid var(--border);
-    background: #fff;
+    background: var(--surface);
     padding: 36px 0 40px;
 }
 .blog-footer-inner {
@@ -3625,11 +3813,11 @@ kbd {
 
 .btn-primary {
     background: var(--opteryx-teal);
-    color: #fff;
+    color: var(--on-accent);
 }
 
 .btn-primary:hover {
-    background: #05626f;
+    background: var(--accent-hover);
     text-decoration: none;
 }
 
@@ -3653,7 +3841,7 @@ kbd {
 }
 
 .btn-link:hover {
-    color: #05626f;
+    color: var(--accent-hover);
     text-decoration: none;
 }
 
@@ -3857,7 +4045,7 @@ kbd {
 .api-tryit .t-verb--post,
 .api-tryit .t-verb--put {
     background: rgba(254, 119, 1, 0.14);
-    color: #b45500;
+    color: var(--orange-ink);
 }
 
 .api-tryit .t-verb--delete {
@@ -3995,11 +4183,11 @@ kbd {
 
 .api-tryit .t-send {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
 }
 
 .api-tryit .t-send:hover {
-    background: #066b6e;
+    background: var(--accent-hover);
 }
 
 .api-tryit .t-send:disabled {
@@ -4252,7 +4440,7 @@ kbd {
 
 .api-tryit-modal .tm-go {
     background: var(--danger);
-    color: #fff;
+    color: var(--on-accent);
 }
 
 .api-tryit-modal .tm-go:disabled {
@@ -4478,7 +4666,7 @@ kbd {
     border-color: rgba(213, 0, 0, 0.35);
 }
 .status-incident__impact.is-minor {
-    color: #8a5a00;
+    color: var(--amber-ink);
     border-color: rgba(255, 165, 3, 0.5);
 }
 .status-updates {
@@ -4761,7 +4949,7 @@ kbd {
 
 .cost-calc .cc-pill input:checked + span {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
 }
 
 .cost-calc .cc-pill input:focus-visible + span {
@@ -4908,7 +5096,7 @@ kbd {
 }
 
 .cost-calc .cc-blocked {
-    color: #b45500;
+    color: var(--orange-ink);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -5084,7 +5272,7 @@ kbd {
     padding: 0;
     border: 1px solid var(--border);
     border-radius: var(--r-s);
-    background: #fff;
+    background: var(--surface);
 }
 .docs-article .learn-steps li {
     display: flex;
@@ -5124,7 +5312,7 @@ kbd {
 .learn-steps li.done .learn-check {
     background: var(--opteryx-teal);
     border-color: var(--opteryx-teal);
-    color: #fff;
+    color: var(--on-accent);
 }
 .learn-step-body {
     flex: 1;
@@ -5199,7 +5387,7 @@ kbd {
     border: 1px solid var(--border);
     border-left-width: 4px;
     border-radius: var(--r-s);
-    background: #fff;
+    background: var(--surface);
     text-decoration: none;
     transition:
         border-color var(--t-fast),
@@ -5235,5 +5423,117 @@ kbd {
 @media (max-width: 640px) {
     .learn-next {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ============== Header: narrow viewports ========================== */
+/* Below 880px the nav drops to its own scrollable row so the search, theme
+   toggle and CTA keep the first row. Below 640px the logo loses its suffix
+   and section pill, and search collapses to an icon that expands on focus
+   (the `/` and ⌘K shortcuts focus it too, which expands it the same way). It
+   stays expanded while results are showing, so tapping one — which blurs the
+   input first — doesn't shift the panel out from under the finger. */
+@media (max-width: 880px) {
+    .blog-header-inner {
+        flex-wrap: wrap;
+        column-gap: 12px;
+        row-gap: 0;
+        height: auto;
+        padding: 12px 20px 0;
+    }
+    .blog-nav {
+        order: 10;
+        flex: 0 0 100%;
+        gap: 20px;
+        margin: 8px 0 0;
+        height: 36px;
+        align-items: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .blog-nav::-webkit-scrollbar {
+        display: none;
+    }
+    .blog-nav a {
+        white-space: nowrap;
+    }
+    .blog-header .theme-toggle {
+        margin-left: 0;
+    }
+    .blog-cta {
+        white-space: nowrap;
+    }
+}
+@media (max-width: 640px) {
+    .blog-header-inner {
+        position: relative;
+        column-gap: 8px;
+        padding: 12px 16px 0;
+    }
+    .blog-logo {
+        gap: 8px;
+        min-width: 0;
+    }
+    .blog-logo .logo-suffix,
+    .blog-logo .sep,
+    .blog-logo .pill {
+        display: none;
+    }
+    /* Same 32px height as the icon buttons, so the row doesn't jump when
+       expanded search hides it. */
+    .blog-cta {
+        padding: 7px 12px;
+        line-height: 18px;
+    }
+    .blog-header .docs-search {
+        position: static;
+        flex: 0 0 32px;
+        width: 32px;
+        padding: 0;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .blog-header .docs-search > svg {
+        pointer-events: none;
+    }
+    /* Collapsed, the input still covers the whole icon so a tap focuses it. */
+    .blog-header .docs-search input {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .blog-header .docs-search-kbd {
+        display: none;
+    }
+    .blog-header .docs-search:is(:focus-within, :has(.search-results)) {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        padding: 0 10px;
+        justify-content: flex-start;
+    }
+    .blog-header .docs-search:is(:focus-within, :has(.search-results)) input {
+        position: static;
+        width: auto;
+        min-width: 0;
+        height: auto;
+        margin-left: 8px;
+        opacity: 1;
+        cursor: text;
+    }
+    .blog-header-inner:has(.docs-search:focus-within, .search-results) .header-spacer,
+    .blog-header-inner:has(.docs-search:focus-within, .search-results) .blog-cta {
+        display: none;
+    }
+    /* Anchored to the header row, not the 32px icon, so the panel spans the
+       viewport instead of hanging off its left edge. */
+    .blog-header .search-results {
+        top: 52px;
+        left: 16px;
+        right: 16px;
+        width: auto;
     }
 }

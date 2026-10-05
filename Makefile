@@ -2,7 +2,7 @@
 
 PORT ?= 3000
 
-.PHONY: serve serve-prod build install validate deploy-firebase \
+.PHONY: serve serve-prod build install validate deploy-firebase deploy-cloudrun \
         sql-definitions sql-docs check-sql-definitions check-window-aggregates \
         recordings recordings-refresh
 
@@ -24,6 +24,15 @@ build:
 # release stays rollback-able from the Hosting console.
 deploy-firebase: build
 	@npx --yes firebase-tools deploy --only hosting
+
+# Build on Cloud Build and roll out to Cloud Run, the live front door. Pushing to
+# main deploys nothing; this is the deploy. SHORT_SHA is passed explicitly
+# because Cloud Build only fills it in for trigger builds, and the page dates
+# are regenerated first because the upload carries no .git to read them from.
+deploy-cloudrun:
+	@cd docs-site && node scripts/build-last-updated.mjs
+	@gcloud builds submit --config cloudbuild/cloudbuild.yaml \
+		--substitutions=SHORT_SHA=$$(git rev-parse --short HEAD) .
 
 install:
 	@cd docs-site && npm ci
