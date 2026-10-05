@@ -20,175 +20,175 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
   </thead>
   <tbody>
     <tr>
-      <td><span class="ep-name">Bootstrap a new workspace&#x27;s initial policies</span><span class="ep-verb ep-verb--post">post</span><code>/v1/access/workspace/{workspace}/genesis</code></td>
+      <td><span class="ep-name">Bootstrap a new workspace&#x27;s initial policies</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>access/<wbr>workspace/<wbr>{workspace}/<wbr>genesis</code></td>
       <td class="ep-doc"><a href="#bootstrap-a-new-workspaces-initial-policies">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts</code></td>
+      <td><span class="ep-name">List Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts</code></td>
       <td class="ep-doc"><a href="#list-accounts">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create Account</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts</code></td>
+      <td><span class="ep-name">Create Account</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts</code></td>
       <td class="ep-doc"><a href="#create-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Account</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}</code></td>
+      <td><span class="ep-name">Get Account</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code></td>
       <td class="ep-doc"><a href="#get-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Update Account</span><span class="ep-verb ep-verb--patch">patch</span><code>/v1/accounts/{account_id}</code></td>
+      <td><span class="ep-name">Update Account</span><span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code></td>
       <td class="ep-doc"><a href="#update-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Delete Account</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}</code></td>
+      <td><span class="ep-name">Delete Account</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}</code></td>
       <td class="ep-doc"><a href="#delete-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Domains</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/domains</code></td>
+      <td><span class="ep-name">List Domains</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains</code></td>
       <td class="ep-doc"><a href="#list-domains">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Claim Domain</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/domains</code></td>
+      <td><span class="ep-name">Claim Domain</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains</code></td>
       <td class="ep-doc"><a href="#claim-domain">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Release Domain</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/domains/{domain}</code></td>
+      <td><span class="ep-name">Release Domain</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains/<wbr>{domain}</code></td>
       <td class="ep-doc"><a href="#release-domain">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Verify Domain</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/domains/{domain}/verify</code></td>
+      <td><span class="ep-name">Verify Domain</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>domains/<wbr>{domain}/<wbr>verify</code></td>
       <td class="ep-doc"><a href="#verify-domain">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Idp Policy</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/idp-policy</code></td>
+      <td><span class="ep-name">Get Idp Policy</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code></td>
       <td class="ep-doc"><a href="#get-idp-policy">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Put Idp Policy</span><span class="ep-verb ep-verb--put">put</span><code>/v1/accounts/{account_id}/idp-policy</code></td>
+      <td><span class="ep-name">Put Idp Policy</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code></td>
       <td class="ep-doc"><a href="#put-idp-policy">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Delete Idp Policy</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/idp-policy</code></td>
+      <td><span class="ep-name">Delete Idp Policy</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy</code></td>
       <td class="ep-doc"><a href="#delete-idp-policy">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Denials</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/idp-policy/denials</code></td>
+      <td><span class="ep-name">List Denials</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy/<wbr>denials</code></td>
       <td class="ep-doc"><a href="#list-denials">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Preview Idp Policy</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/idp-policy/preview</code></td>
+      <td><span class="ep-name">Preview Idp Policy</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>idp-policy/<wbr>preview</code></td>
       <td class="ep-doc"><a href="#preview-idp-policy">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Members</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/members</code></td>
+      <td><span class="ep-name">List Members</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code></td>
       <td class="ep-doc"><a href="#list-members">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Invite Member</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/members</code></td>
+      <td><span class="ep-name">Invite Member</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code></td>
       <td class="ep-doc"><a href="#invite-member">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Update Member Role</span><span class="ep-verb ep-verb--patch">patch</span><code>/v1/accounts/{account_id}/members/{identity}</code></td>
+      <td><span class="ep-name">Update Member Role</span><span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}</code></td>
       <td class="ep-doc"><a href="#update-member-role">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Remove Member</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/members/{identity}</code></td>
+      <td><span class="ep-name">Remove Member</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}</code></td>
       <td class="ep-doc"><a href="#remove-member">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Accept Invite</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/members/{identity}/accept</code></td>
+      <td><span class="ep-name">Accept Invite</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members/<wbr>{identity}/<wbr>accept</code></td>
       <td class="ep-doc"><a href="#accept-invite">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Payment Method</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/payment-methods</code></td>
+      <td><span class="ep-name">Get Payment Method</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code></td>
       <td class="ep-doc"><a href="#get-payment-method">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Attach Payment Method</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/payment-methods</code></td>
+      <td><span class="ep-name">Attach Payment Method</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code></td>
       <td class="ep-doc"><a href="#attach-payment-method">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Detach Payment Method</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/payment-methods</code></td>
+      <td><span class="ep-name">Detach Payment Method</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payment-methods</code></td>
       <td class="ep-doc"><a href="#detach-payment-method">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create Payment</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/payments</code></td>
+      <td><span class="ep-name">Create Payment</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payments</code></td>
       <td class="ep-doc"><a href="#create-payment">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Service Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/service-accounts</code></td>
+      <td><span class="ep-name">List Service Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts</code></td>
       <td class="ep-doc"><a href="#list-service-accounts">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Add Service Account</span><span class="ep-verb ep-verb--post">post</span><code>/v1/accounts/{account_id}/service-accounts</code></td>
+      <td><span class="ep-name">Add Service Account</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts</code></td>
       <td class="ep-doc"><a href="#add-service-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Remove Service Account</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/accounts/{account_id}/service-accounts/{identity}</code></td>
+      <td><span class="ep-name">Remove Service Account</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts/<wbr>{identity}</code></td>
       <td class="ep-doc"><a href="#remove-service-account">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Account Workspaces</span><span class="ep-verb ep-verb--get">get</span><code>/v1/accounts/{account_id}/workspaces</code></td>
+      <td><span class="ep-name">List Account Workspaces</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>workspaces</code></td>
       <td class="ep-doc"><a href="#list-account-workspaces">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Test Draft Catalog Connection</span><span class="ep-verb ep-verb--post">post</span><code>/v1/catalog-connections/test</code></td>
+      <td><span class="ep-name">Test Draft Catalog Connection</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>catalog-connections/<wbr>test</code></td>
       <td class="ep-doc"><a href="#test-draft-catalog-connection">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Catalog Kinds</span><span class="ep-verb ep-verb--get">get</span><code>/v1/catalog-kinds</code></td>
+      <td><span class="ep-name">Get Catalog Kinds</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>catalog-kinds</code></td>
       <td class="ep-doc"><a href="#get-catalog-kinds">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List Invoices</span><span class="ep-verb ep-verb--get">get</span><code>/v1/invoices</code></td>
+      <td><span class="ep-name">List Invoices</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices</code></td>
       <td class="ep-doc"><a href="#list-invoices">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Invoice</span><span class="ep-verb ep-verb--get">get</span><code>/v1/invoices/{invoice_id}</code></td>
+      <td><span class="ep-name">Get Invoice</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices/<wbr>{invoice_id}</code></td>
       <td class="ep-doc"><a href="#get-invoice">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List notifications</span><span class="ep-verb ep-verb--get">get</span><code>/v1/notifications</code></td>
+      <td><span class="ep-name">List notifications</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>notifications</code></td>
       <td class="ep-doc"><a href="#list-notifications">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Mark all notifications read</span><span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/read-all</code></td>
+      <td><span class="ep-name">Mark all notifications read</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>read-all</code></td>
       <td class="ep-doc"><a href="#mark-all-notifications-read">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Dismiss a notification</span><span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/{notification_id}/dismiss</code></td>
+      <td><span class="ep-name">Dismiss a notification</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>{notification_id}/<wbr>dismiss</code></td>
       <td class="ep-doc"><a href="#dismiss-a-notification">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Mark a notification read</span><span class="ep-verb ep-verb--post">post</span><code>/v1/notifications/{notification_id}/read</code></td>
+      <td><span class="ep-name">Mark a notification read</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>notifications/<wbr>{notification_id}/<wbr>read</code></td>
       <td class="ep-doc"><a href="#mark-a-notification-read">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create Workspace</span><span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}</code></td>
+      <td><span class="ep-name">Create Workspace</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}</code></td>
       <td class="ep-doc"><a href="#create-workspace">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Catalog Binding</span><span class="ep-verb ep-verb--get">get</span><code>/v1/workspaces/{name}/catalog</code></td>
+      <td><span class="ep-name">Get Catalog Binding</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code></td>
       <td class="ep-doc"><a href="#get-catalog-binding">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Put Catalog Binding</span><span class="ep-verb ep-verb--put">put</span><code>/v1/workspaces/{name}/catalog</code></td>
+      <td><span class="ep-name">Put Catalog Binding</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code></td>
       <td class="ep-doc"><a href="#put-catalog-binding">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Delete Catalog Binding</span><span class="ep-verb ep-verb--delete">delete</span><code>/v1/workspaces/{name}/catalog</code></td>
+      <td><span class="ep-name">Delete Catalog Binding</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog</code></td>
       <td class="ep-doc"><a href="#delete-catalog-binding">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Sync Catalog Dataset List</span><span class="ep-verb ep-verb--post">post</span><code>/v1/workspaces/{name}/catalog/sync</code></td>
+      <td><span class="ep-name">Sync Catalog Dataset List</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>sync</code></td>
       <td class="ep-doc"><a href="#sync-catalog-dataset-list">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Test Saved Catalog Connection</span><span class="ep-verb ep-verb--post">post</span><code>/v1/workspaces/{name}/catalog/test</code></td>
+      <td><span class="ep-name">Test Saved Catalog Connection</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>test</code></td>
       <td class="ep-doc"><a href="#test-saved-catalog-connection">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get Workspace Guard Properties</span><span class="ep-verb ep-verb--get">get</span><code>/v1/workspaces/{name}/properties</code></td>
+      <td><span class="ep-name">Get Workspace Guard Properties</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>properties</code></td>
       <td class="ep-doc"><a href="#get-workspace-guard-properties">View</a></td>
     </tr>
   </tbody>

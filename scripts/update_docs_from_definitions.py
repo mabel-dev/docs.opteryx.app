@@ -857,7 +857,9 @@ def build_api_docs():
                 '      <td>'
                 f'<span class="ep-name">{escape(summary)}</span>'
                 f'<span class="ep-verb ep-verb--{method.lower()}">{method.lower()}</span>'
-                f'<code>{escape(route)}</code>'
+                # Break opportunities after each '/' so a long route wraps at a
+                # segment boundary, not mid-word. <wbr> is not copied with the text.
+                f'<code>{escape(route).replace("/", "/<wbr>")}</code>'
                 '</td>'
             )
             lines.append(

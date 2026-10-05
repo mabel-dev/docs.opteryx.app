@@ -1135,10 +1135,14 @@ kbd {
 }
 /* The route is the one place a long token has to break — the column is
    fixed-width, so nowrap here would push the table past the content area
-   on narrow screens instead of wrapping. */
+   on narrow screens instead of wrapping. The generator puts a <wbr> after
+   each '/', so it wraps at segment boundaries; break-word only splits a
+   segment that is wider than the column on its own. */
 .docs-article .endpoint-index code {
     white-space: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
 }
 /* Out-specifies the blanket underlined-link rule above (0,3,2) — this link
    reads as a control, not prose. */

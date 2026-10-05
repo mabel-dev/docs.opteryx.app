@@ -73,39 +73,39 @@ Jobs run asynchronously: submitting a query returns immediately with an `executi
   </thead>
   <tbody>
     <tr>
-      <td><span class="ep-name">Check a SQL statement without running it</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/check</code></td>
+      <td><span class="ep-name">Check a SQL statement without running it</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>api/<wbr>v1/<wbr>check</code></td>
       <td class="ep-doc"><a href="#check-a-sql-statement-without-running-it">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create and execute SQL job</span><span class="ep-verb ep-verb--post">post</span><code>/api/v1/jobs</code></td>
+      <td><span class="ep-name">Create and execute SQL job</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>api/<wbr>v1/<wbr>jobs</code></td>
       <td class="ep-doc"><a href="#create-and-execute-sql-job">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Retrieve recent user queries</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/recent</code></td>
+      <td><span class="ep-name">Retrieve recent user queries</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>recent</code></td>
       <td class="ep-doc"><a href="#retrieve-recent-user-queries">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Download job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/download</code></td>
+      <td><span class="ep-name">Download job results</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>download</code></td>
       <td class="ep-doc"><a href="#download-job-results">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get job results</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/results</code></td>
+      <td><span class="ep-name">Get job results</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>results</code></td>
       <td class="ep-doc"><a href="#get-job-results">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get job status</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/jobs/{identifier}/status</code></td>
+      <td><span class="ep-name">Get job status</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>jobs/<wbr>{identifier}/<wbr>status</code></td>
       <td class="ep-doc"><a href="#get-job-status">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">List saved variables</span><span class="ep-verb ep-verb--get">get</span><code>/api/v1/variables</code></td>
+      <td><span class="ep-name">List saved variables</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>api/<wbr>v1/<wbr>variables</code></td>
       <td class="ep-doc"><a href="#list-saved-variables">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create or update a saved variable</span><span class="ep-verb ep-verb--put">put</span><code>/api/v1/variables/{name}</code></td>
+      <td><span class="ep-name">Create or update a saved variable</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>api/<wbr>v1/<wbr>variables/<wbr>{name}</code></td>
       <td class="ep-doc"><a href="#create-or-update-a-saved-variable">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Delete a saved variable</span><span class="ep-verb ep-verb--delete">delete</span><code>/api/v1/variables/{name}</code></td>
+      <td><span class="ep-name">Delete a saved variable</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>api/<wbr>v1/<wbr>variables/<wbr>{name}</code></td>
       <td class="ep-doc"><a href="#delete-a-saved-variable">View</a></td>
     </tr>
   </tbody>

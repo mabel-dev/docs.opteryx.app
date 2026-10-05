@@ -88,31 +88,31 @@ An upload is an agreement, not a transfer. You send a sample of each file and th
   </thead>
   <tbody>
     <tr>
-      <td><span class="ep-name">Negotiate a Contract</span><span class="ep-verb ep-verb--post">post</span><code>/v2/contracts</code></td>
+      <td><span class="ep-name">Negotiate a Contract</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts</code></td>
       <td class="ep-doc"><a href="#negotiate-a-contract">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Read a Contract</span><span class="ep-verb ep-verb--get">get</span><code>/v2/contracts/{contract_id}</code></td>
+      <td><span class="ep-name">Read a Contract</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code></td>
       <td class="ep-doc"><a href="#read-a-contract">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Amend a Proposal</span><span class="ep-verb ep-verb--patch">patch</span><code>/v2/contracts/{contract_id}</code></td>
+      <td><span class="ep-name">Amend a Proposal</span><span class="ep-verb ep-verb--patch">patch</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code></td>
       <td class="ep-doc"><a href="#amend-a-proposal">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Abandon a Contract</span><span class="ep-verb ep-verb--delete">delete</span><code>/v2/contracts/{contract_id}</code></td>
+      <td><span class="ep-name">Abandon a Contract</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}</code></td>
       <td class="ep-doc"><a href="#abandon-a-contract">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Accept a Proposal</span><span class="ep-verb ep-verb--put">put</span><code>/v2/contracts/{contract_id}/accept</code></td>
+      <td><span class="ep-name">Accept a Proposal</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>accept</code></td>
       <td class="ep-doc"><a href="#accept-a-proposal">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Commit a Contract</span><span class="ep-verb ep-verb--post">post</span><code>/v2/contracts/{contract_id}/commit</code></td>
+      <td><span class="ep-name">Commit a Contract</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>commit</code></td>
       <td class="ep-doc"><a href="#commit-a-contract">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Write a File</span><span class="ep-verb ep-verb--post">post</span><code>/v2/contracts/{contract_id}/data</code></td>
+      <td><span class="ep-name">Write a File</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v2/<wbr>contracts/<wbr>{contract_id}/<wbr>data</code></td>
       <td class="ep-doc"><a href="#write-a-file">View</a></td>
     </tr>
   </tbody>

@@ -74,27 +74,27 @@ Every other Opteryx API expects a bearer token. Getting one is a two-part conver
   </thead>
   <tbody>
     <tr>
-      <td><span class="ep-name">List Credentials</span><span class="ep-verb ep-verb--get">get</span><code>/clients/{client_id}/credentials</code></td>
+      <td><span class="ep-name">List Credentials</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials</code></td>
       <td class="ep-doc"><a href="#list-credentials">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create Credential</span><span class="ep-verb ep-verb--post">post</span><code>/clients/{client_id}/credentials</code></td>
+      <td><span class="ep-name">Create Credential</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials</code></td>
       <td class="ep-doc"><a href="#create-credential">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Revoke Credential</span><span class="ep-verb ep-verb--delete">delete</span><code>/clients/{client_id}/credentials/{credential_id}</code></td>
+      <td><span class="ep-name">Revoke Credential</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>clients/<wbr>{client_id}/<wbr>credentials/<wbr>{credential_id}</code></td>
       <td class="ep-doc"><a href="#revoke-credential">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get signing keys</span><span class="ep-verb ep-verb--get">get</span><code>/jwks</code></td>
+      <td><span class="ep-name">Get signing keys</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>jwks</code></td>
       <td class="ep-doc"><a href="#get-signing-keys">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Get current user</span><span class="ep-verb ep-verb--get">get</span><code>/me</code></td>
+      <td><span class="ep-name">Get current user</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>me</code></td>
       <td class="ep-doc"><a href="#get-current-user">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Issue an access token</span><span class="ep-verb ep-verb--post">post</span><code>/token</code></td>
+      <td><span class="ep-name">Issue an access token</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>token</code></td>
       <td class="ep-doc"><a href="#issue-an-access-token">View</a></td>
     </tr>
   </tbody>
