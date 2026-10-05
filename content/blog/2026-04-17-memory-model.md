@@ -105,7 +105,7 @@ So we ended up duplicating and adapting data instead.
 <figure class="doc-figure">
 <svg viewBox="0 0 680 210" width="100%" role="img" aria-labelledby="memory-tax-title memory-tax-desc" style="font-family: var(--font-body); font-size: 13px;">
 <title id="memory-tax-title">The conversion tax, before and after Draken</title>
-<desc id="memory-tax-desc">Two pipelines. Before: Parquet to Arrow arrays to NumPy views or copies to Python objects to the operator, with a cost marked at each of the four crossings: copies, null re-handling, or dropping into the interpreter, and the same data held more than once. After: Parquet to Draken vectors to native operators, with no conversions.</desc>
+<desc id="memory-tax-desc">Two pipelines. Before: Parquet to Arrow arrays to NumPy arrays to Python objects to the operator, with a cost marked at each of the four crossings: copies, null re-handling, or dropping into the interpreter, and the same data held more than once. After: Parquet to Draken vectors to native operators, with no conversions.</desc>
 <text x="0.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Before: data changed shape on the way through</text>
 <rect x="0.0" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
 <text x="54.4" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">Parquet</text>
@@ -120,7 +120,7 @@ So we ended up duplicating and adapting data instead.
 <rect x="241.6" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>
 <text x="268.6" y="88.0" text-anchor="middle" style="fill: var(--orange-ink); font-size: 10px; font-weight: 700; font-family: var(--font-body);">convert</text>
 <rect x="285.6" y="30.0" width="108.8" height="40.0" rx="6" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="340.0" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">NumPy views or copies</text>
+<text x="340.0" y="55.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">NumPy arrays</text>
 <line x1="397.4" y1="50.0" x2="420.4" y2="50.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
 <polygon points="418.4,46.0 426.4,50.0 418.4,54.0" style="fill: var(--muted);"/>
 <rect x="384.4" y="76.0" width="54.0" height="16.0" rx="8" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.18;"/>

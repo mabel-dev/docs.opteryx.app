@@ -85,87 +85,87 @@ The linearizer also simulates the stack as it goes, computing the peak depth. Th
 <svg viewBox="0 0 680 239" width="100%" role="img" aria-labelledby="bytecode-linearize-title bytecode-linearize-desc" style="font-family: var(--font-body); font-size: 13px;">
 <title id="bytecode-linearize-title">Linearizing an expression tree into bytecode</title>
 <desc id="bytecode-linearize-desc">Left: the expression tree for event_time &gt; &#x27;2024-01-01&#x27; AND region = &#x27;us-east-1&#x27;, an AND node over a greater-than and an equals, each over a column and a literal, with nodes numbered in postfix order. Right: the seven instructions in that order, LOAD_COLUMN event_time, LOAD_LITERAL &#x27;2024-01-01&#x27;, COMPARE &gt;, LOAD_COLUMN region, LOAD_LITERAL &#x27;us-east-1&#x27;, COMPARE =, AND, with the stack depth after each: 1, 2, 1, 2, 3, 2, 1. The peak depth is 3.</desc>
-<line x1="112.0" y1="52.0" x2="52.0" y2="98.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<line x1="112.0" y1="52.0" x2="172.0" y2="98.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<line x1="52.0" y1="122.0" x2="20.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<line x1="52.0" y1="122.0" x2="84.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<line x1="172.0" y1="122.0" x2="142.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<line x1="172.0" y1="122.0" x2="204.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
-<rect x="92.0" y="28.0" width="40.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
-<text x="112.0" y="44.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">AND</text>
-<circle cx="130.0" cy="27.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="130.0" y="30.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">7</text>
-<rect x="32.0" y="98.0" width="40.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
-<text x="52.0" y="114.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">&gt;</text>
-<circle cx="70.0" cy="97.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="70.0" y="100.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">3</text>
-<rect x="152.0" y="98.0" width="40.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
-<text x="172.0" y="114.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">=</text>
-<circle cx="190.0" cy="97.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="190.0" y="100.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">6</text>
-<rect x="-11.0" y="168.0" width="62.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="20.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10.5px; font-family: var(--font-mono);">event_time</text>
-<circle cx="49.0" cy="167.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="49.0" y="170.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">1</text>
-<rect x="53.0" y="168.0" width="62.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="84.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10.5px; font-family: var(--font-mono);">&#x27;2024-01-01&#x27;</text>
-<circle cx="113.0" cy="167.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="113.0" y="170.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">2</text>
-<rect x="111.0" y="168.0" width="62.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="142.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10.5px; font-family: var(--font-mono);">region</text>
-<circle cx="171.0" cy="167.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="171.0" y="170.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">4</text>
-<rect x="173.0" y="168.0" width="62.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="204.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10.5px; font-family: var(--font-mono);">&#x27;us-east-1&#x27;</text>
-<circle cx="233.0" cy="167.0" r="7.5" style="fill: var(--opteryx-teal);"/>
-<text x="233.0" y="170.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">5</text>
+<line x1="152.0" y1="52.0" x2="76.0" y2="98.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<line x1="152.0" y1="52.0" x2="228.0" y2="98.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<line x1="76.0" y1="122.0" x2="38.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<line x1="76.0" y1="122.0" x2="114.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<line x1="228.0" y1="122.0" x2="190.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<line x1="228.0" y1="122.0" x2="266.0" y2="168.0" style="stroke: var(--border-2); stroke-width: 1.25;"/>
+<rect x="130.0" y="28.0" width="44.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
+<text x="152.0" y="44.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">AND</text>
+<circle cx="178.0" cy="30.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="178.0" y="33.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">7</text>
+<rect x="54.0" y="98.0" width="44.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
+<text x="76.0" y="114.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">&gt;</text>
+<circle cx="102.0" cy="100.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="102.0" y="103.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">3</text>
+<rect x="206.0" y="98.0" width="44.0" height="24.0" rx="12" style="fill: var(--surface); stroke: var(--opteryx-teal); stroke-width: 1;"/>
+<text x="228.0" y="114.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 12px; font-weight: 600; font-family: var(--font-body);">=</text>
+<circle cx="254.0" cy="100.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="254.0" y="103.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">6</text>
+<rect x="1.0" y="168.0" width="74.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="38.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10px; font-family: var(--font-mono);">event_time</text>
+<circle cx="38.0" cy="159.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="38.0" y="162.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">1</text>
+<rect x="77.0" y="168.0" width="74.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="114.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10px; font-family: var(--font-mono);">&#x27;2024-01-01&#x27;</text>
+<circle cx="114.0" cy="159.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="114.0" y="162.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">2</text>
+<rect x="153.0" y="168.0" width="74.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="190.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10px; font-family: var(--font-mono);">region</text>
+<circle cx="190.0" cy="159.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="190.0" y="162.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">4</text>
+<rect x="229.0" y="168.0" width="74.0" height="24.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="266.0" y="184.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 10px; font-family: var(--font-mono);">&#x27;us-east-1&#x27;</text>
+<circle cx="266.0" cy="159.0" r="7.5" style="fill: var(--opteryx-teal);"/>
+<text x="266.0" y="162.5" text-anchor="middle" style="fill: var(--on-accent); font-size: 9.5px; font-weight: 700; font-family: var(--font-body);">5</text>
 <text x="0.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Expression tree</text>
 <text x="0.0" y="222.0" style="fill: var(--muted); font-size: 11px; font-family: var(--font-body);">Numbers are the postfix order</text>
-<line x1="250.0" y1="112.0" x2="282.0" y2="112.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
-<polygon points="282.0,108.0 290.0,112.0 282.0,116.0" style="fill: var(--muted);"/>
-<text x="306.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Bytecode</text>
-<text x="612.0" y="14.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">stack</text>
-<rect x="306.0" y="26.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="42.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">1</text>
-<text x="336.0" y="42.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">LOAD_COLUMN</text>
-<text x="456.0" y="42.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">event_time</text>
-<rect x="588.0" y="30.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="306.0" y="53.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="69.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">2</text>
-<text x="336.0" y="69.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">LOAD_LITERAL</text>
-<text x="456.0" y="69.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">&#x27;2024-01-01&#x27;</text>
-<rect x="588.0" y="57.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="605.0" y="57.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="306.0" y="80.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="96.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">3</text>
-<text x="336.0" y="96.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">COMPARE</text>
-<text x="456.0" y="96.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">&gt;</text>
-<rect x="588.0" y="84.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="306.0" y="107.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="123.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">4</text>
-<text x="336.0" y="123.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">LOAD_COLUMN</text>
-<text x="456.0" y="123.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">region</text>
-<rect x="588.0" y="111.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="605.0" y="111.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="306.0" y="134.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="150.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">5</text>
-<text x="336.0" y="150.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">LOAD_LITERAL</text>
-<text x="456.0" y="150.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">&#x27;us-east-1&#x27;</text>
-<rect x="588.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
-<rect x="605.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
-<rect x="622.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
-<rect x="306.0" y="161.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="177.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">6</text>
-<text x="336.0" y="177.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">COMPARE</text>
-<text x="456.0" y="177.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);">=</text>
-<rect x="588.0" y="165.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="605.0" y="165.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<rect x="306.0" y="188.0" width="268.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
-<text x="316.0" y="204.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">7</text>
-<text x="336.0" y="204.0" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-mono);">AND</text>
-<text x="456.0" y="204.0" style="fill: var(--text); font-size: 11.5px; font-family: var(--font-mono);"></text>
-<rect x="588.0" y="192.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
-<text x="588.0" y="229.0" style="fill: var(--opteryx-orange); font-size: 11px; font-weight: 600; font-family: var(--font-body);">peak depth 3: allocated once, up front</text>
+<line x1="306.0" y1="112.0" x2="316.0" y2="112.0" style="stroke: var(--muted); stroke-width: 1.5;"/>
+<polygon points="316.0,108.0 324.0,112.0 316.0,116.0" style="fill: var(--muted);"/>
+<text x="332.0" y="14.0" style="fill: var(--text-deep); font-size: 13px; font-weight: 600; font-family: var(--font-display);">Bytecode</text>
+<text x="630.0" y="14.0" text-anchor="middle" style="fill: var(--text-deep); font-size: 11.5px; font-weight: 600; font-family: var(--font-body);">stack</text>
+<rect x="332.0" y="26.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="42.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">1</text>
+<text x="358.0" y="42.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">LOAD_COLUMN</text>
+<text x="472.0" y="42.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">event_time</text>
+<rect x="592.0" y="30.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="332.0" y="53.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="69.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">2</text>
+<text x="358.0" y="69.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">LOAD_LITERAL</text>
+<text x="472.0" y="69.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">&#x27;2024-01-01&#x27;</text>
+<rect x="592.0" y="57.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="609.0" y="57.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="332.0" y="80.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="96.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">3</text>
+<text x="358.0" y="96.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">COMPARE</text>
+<text x="472.0" y="96.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">&gt;</text>
+<rect x="592.0" y="84.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="332.0" y="107.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="123.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">4</text>
+<text x="358.0" y="123.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">LOAD_COLUMN</text>
+<text x="472.0" y="123.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">region</text>
+<rect x="592.0" y="111.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="609.0" y="111.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="332.0" y="134.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="150.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">5</text>
+<text x="358.0" y="150.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">LOAD_LITERAL</text>
+<text x="472.0" y="150.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">&#x27;us-east-1&#x27;</text>
+<rect x="592.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="609.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="626.0" y="138.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-orange); stroke: none; stroke-width: 1; fill-opacity: 0.85;"/>
+<rect x="332.0" y="161.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="177.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">6</text>
+<text x="358.0" y="177.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">COMPARE</text>
+<text x="472.0" y="177.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);">=</text>
+<rect x="592.0" y="165.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="609.0" y="165.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<rect x="332.0" y="188.0" width="248.0" height="23.0" rx="4" style="fill: var(--surface); stroke: var(--border-2); stroke-width: 1;"/>
+<text x="341.0" y="204.0" style="fill: var(--muted-2); font-size: 11px; font-family: var(--font-mono);">7</text>
+<text x="358.0" y="204.0" style="fill: var(--text-deep); font-size: 11px; font-weight: 600; font-family: var(--font-mono);">AND</text>
+<text x="472.0" y="204.0" style="fill: var(--text); font-size: 11px; font-family: var(--font-mono);"></text>
+<rect x="592.0" y="192.0" width="14.0" height="15.0" rx="2" style="fill: var(--opteryx-teal); stroke: none; stroke-width: 1; fill-opacity: 0.55;"/>
+<text x="676.0" y="229.0" text-anchor="end" style="fill: var(--opteryx-orange); font-size: 11px; font-weight: 600; font-family: var(--font-body);">peak depth 3: allocated once, up front</text>
 </svg>
 <figcaption>The tree is walked once, at bind time. Instruction names are illustrative; the stack depth is what the linearizer computes to size the stack before execution.</figcaption>
 </figure>
