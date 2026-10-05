@@ -88,7 +88,7 @@ Example:
 
 ~~~sql
 SELECT name, 
-       CASE numberOfMoons 
+       CASE number_of_moons 
             WHEN 0 THEN 'none' 
             WHEN 1 THEN 'one' 
             ELSE 'lots' 
@@ -113,8 +113,8 @@ Example:
 ~~~sql
 SELECT name, 
        CASE
-           WHEN numberOfMoons = 0 THEN 'none' 
-           WHEN numberOfMoons = 1 THEN 'one' 
+           WHEN number_of_moons = 0 THEN 'none' 
+           WHEN number_of_moons = 1 THEN 'one' 
            ELSE 'lots' 
        END as how_many_moons
   FROM $planets;
@@ -143,7 +143,7 @@ SELECT * FROM $planets WHERE name IS DISTINCT FROM 'Earth';
 SELECT * FROM $planets WHERE id IN (1, 2, 3);
 
 -- a subquery
-SELECT * FROM $planets WHERE id IN (SELECT id FROM $planets WHERE numberOfMoons > 0);
+SELECT * FROM $planets WHERE id IN (SELECT id FROM $planets WHERE number_of_moons > 0);
 
 -- the elements of an array
 SELECT * FROM $planets WHERE name IN UNNEST(['Earth', 'Mars']);
@@ -162,7 +162,7 @@ Every element of a constant list must be a constant and they must all share one 
 ~~~sql
 SELECT name
   FROM $planets AS p
- WHERE EXISTS (SELECT 1 FROM $planets AS q WHERE q.id = p.id AND q.numberOfMoons > 0);
+ WHERE EXISTS (SELECT 1 FROM $planets AS q WHERE q.id = p.id AND q.number_of_moons > 0);
 ~~~
 
 The subquery is usually correlated, as above. Opteryx decorrelates it during planning rather than evaluating it once per row.
