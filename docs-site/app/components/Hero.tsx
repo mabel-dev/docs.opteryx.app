@@ -59,14 +59,15 @@ export default function Hero() {
           </div>
           <div className="demo">
             <span className="ln">
-              <span className="com"># pip install opteryx</span>
+              <span className="com"># pip install opteryx-core</span>
             </span>
             <span className="ln">
               <span className="kw">SELECT</span> name, mass
             </span>
             <span className="ln">
               {"  "}
-              <span className="kw">FROM</span> public.astronomy.planets
+              <span className="kw">FROM</span> READ_PARQUET(
+              <span className="str">'planets.parquet'</span>)
             </span>
             <span className="ln">
               {" "}

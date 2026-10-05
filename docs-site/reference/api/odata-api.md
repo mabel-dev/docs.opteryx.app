@@ -57,6 +57,37 @@ Returns the OData v4 service document listing all accessible EntitySets grouped 
 - **406** — Accept header does not admit application/json, the only format this route returns
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/" data-auth-docs="/docs/reference/api/authentication-api" data-token-optional="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## OData v4 Service-wide EDMX Metadata
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/$metadata</code>
@@ -77,6 +108,37 @@ Returns the complete OData v4 EDMX metadata document describing all EntityTypes 
 - **504** — Firestore unavailable; cannot enumerate datasets
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/$metadata" data-auth-docs="/docs/reference/api/authentication-api" data-token-optional="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/$metadata</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Query dataset rows
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/{workstream}/{collection}/{dataset}</code>
@@ -94,7 +156,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 ### Query Parameters
 
 - **$filter** `string | null` [query; optional]
-  OData $filter expression for row filtering. Operators: eq (equal), ne (not equal), lt/le/gt/ge (comparison), and/or/not (logical), contains/startswith/endswith (string), in_subnet (IPv4 CIDR containment). Case-sensitive. in_subnet(ip_column, 'cidr') is an Opteryx extension for IPv4-typed columns, e.g. in_subnet(src_addr, '192.168.4.0/24'); the PostgreSQL &lt;&lt;= operator is not valid OData syntax. Example: vendor eq 'Oracle' and price gt 100. Date/datetime literals must be unquoted per the OData v4 spec, e.g. shipped_date gt 2024-01-01 — a quoted date is compared as a string and raises a type-mismatch error. Type conversion: cast(field, Edm.Type) converts a value before comparing it, e.g. cast(code, Edm.Int32) gt 10 on a number stored as text. Supported targets: Edm.String, Edm.Boolean, Edm.Byte, Edm.SByte, Edm.Int16, Edm.Int32, Edm.Int64, Edm.Single, Edm.Double, Edm.Decimal, Edm.Date, Edm.DateTimeOffset; a value that does not convert becomes null rather than failing the query. Other targets, the one-argument cast(Edm.Type) form and isof() are rejected. Date and time functions: now() (the query's wall clock, evaluated once per query so every row sees the same instant), year(), month(), day(), hour(), minute(), second() (each returns the named component of a date or timestamp as an integer, e.g. year(shipped_date) eq 2024), and date() (narrows a timestamp to its date part, e.g. date(created_at) eq 2024-01-01). The OData functions time(), mindatetime() and maxdatetime() are not implemented and are rejected with a message naming what to write instead. Rolling windows: combine now() with an ISO 8601 duration literal using add or sub, e.g. published_at ge now() sub duration'P30D' for the last 30 days. The duration syntax is duration'PnYnMnDTnHnMnS', optionally signed, e.g. duration'P1Y', duration'P18M', duration'PT12H', duration'-P7D'. Year and month durations are calendar-aware — duration'P1Y' means one calendar year and duration'P1M' one calendar month, so their length depends on the date they are applied to — while day, hour, minute and second durations are fixed spans (duration'P30D' is always exactly 30 × 24 hours).
+  Row filter, e.g. `vendor eq 'Oracle' and price gt 100`. Comparison (`eq`, `ne`, `lt`, `le`, `gt`, `ge`), logical (`and`, `or`, `not`) and string (`contains`, `startswith`, `endswith`) operators, plus `cast()`, date functions, `now()` with durations for rolling windows, and the Opteryx extension `in_subnet(src_addr, '192.168.4.0/24')` for IPv4 columns. Case-sensitive; date literals are unquoted (`shipped_date gt 2024-01-01`). See [Querying via OData](/docs/guides/querying-via-odata#querying-a-dataset) for the full syntax.
 - **$top** `integer | null` [query; optional]
   Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.
 - **$skip** `integer | null` [query; optional]
@@ -127,6 +189,71 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 - **501** — Unsupported query feature: $search or $expand not implemented
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
 
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/{workstream}/{collection}/{dataset}" data-auth-docs="/docs/reference/api/authentication-api" data-token-optional="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/{workstream}/{collection}/{dataset}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workstream<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workstream" placeholder="string">
+        <div class="t-pname">collection<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="collection" placeholder="string">
+        <div class="t-pname">dataset<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="dataset" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">$filter<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$filter" placeholder="string | null">
+        <div class="t-pname">$top<span>integer | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$top" placeholder="integer | null">
+        <div class="t-pname">$skip<span>integer | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$skip" placeholder="integer | null">
+        <div class="t-pname">$orderby<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$orderby" placeholder="string | null">
+        <div class="t-pname">$count<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$count" placeholder="string | null">
+        <div class="t-pname">$select<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$select" placeholder="string | null">
+        <div class="t-pname">$search<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$search" placeholder="string | null">
+        <div class="t-pname">$compute<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$compute" placeholder="string | null">
+        <div class="t-pname">$apply<span>string | null · optional</span></div>
+        <input type="text" class="t-query" data-name="$apply" placeholder="string | null">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Per-dataset OData EDMX metadata
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/api/v4/{workstream}/{collection}/{dataset}/$metadata</code>
@@ -154,3 +281,45 @@ Returns OData $metadata (EDMX) for a single dataset, including column types and 
 - **404** — Dataset not found in catalog, or the @{label} version selector names a tag/snapshot/previous version that does not exist
 - **406** — Accept header does not admit application/xml, the only format this route returns
 - **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/{workstream}/{collection}/{dataset}/$metadata" data-auth-docs="/docs/reference/api/authentication-api" data-token-optional="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/{workstream}/{collection}/{dataset}/$metadata</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workstream<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workstream" placeholder="string">
+        <div class="t-pname">collection<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="collection" placeholder="string">
+        <div class="t-pname">dataset<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="dataset" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>

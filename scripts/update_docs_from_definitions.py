@@ -52,6 +52,11 @@ API_DOC_SPECS = {
         'status': 'Published',
         'base_url': 'https://odata.opteryx.app',
         'summary': 'OData service discovery, metadata, and dataset query endpoints for compatible clients and BI tools.',
+        'try_it_live': True,
+        # Public datasets read anonymously, so the card must not insist on a
+        # token. The spec cannot say this: every service declares its
+        # authorization header optional, whether or not it really is.
+        'token_optional': True,
     },
     'api-opteryx-upload.json': {
         'has_flow': True,
@@ -235,7 +240,14 @@ def _render_parameter_list(lines: List[str], heading: str, parameters: List[Dict
         required = 'required' if param.get('required') else 'optional'
         location = param.get('in', 'query')
         schema_type = _schema_to_type(param.get('schema', {}))
-        description = param.get('description') or param.get('schema', {}).get('description') or ''
+        # x-docs-summary: a reader-sized version of a description written long
+        # for spec consumers (LLMs, BI tools) that cannot follow a link.
+        description = (
+            param.get('schema', {}).get('x-docs-summary')
+            or param.get('description')
+            or param.get('schema', {}).get('description')
+            or ''
+        )
         allowed_values = _schema_allowed_values(param.get('schema', {}))
         default_value = _schema_default_value(param.get('schema', {}))
 
@@ -413,6 +425,7 @@ def _render_try_it_live(
     operation: Dict[str, Any],
     schemas: Dict[str, Any],
     base_url: str,
+    token_optional: bool = False,
 ):
     """Emit a 'Try it live' card for one operation.
 
@@ -438,6 +451,7 @@ def _render_try_it_live(
         f'data-base="{base_url}" data-path="{route}" data-auth-docs="{auth_docs}"'
         + (' data-body-type="form"' if is_form else '')
         + (' data-destructive="1"' if _is_destructive(method) else '')
+        + (' data-token-optional="1"' if needs_token and token_optional else '')
         + '>'
     )
     lines.append('  <summary class="api-tryit__bar">')
@@ -457,14 +471,17 @@ def _render_try_it_live(
     if needs_token:
         lines.append('    <div class="t-field">')
         lines.append(
-            '      <div class="t-label">Bearer token <span class="t-opt">required</span></div>'
+            '      <div class="t-label">Bearer token '
+            f'<span class="t-opt">{"optional" if token_optional else "required"}</span></div>'
         )
         lines.append(
             '      <input type="password" class="t-token" autocomplete="off" '
             'placeholder="paste a token from the Authentication API">'
         )
         lines.append(
-            '      <div class="t-hint">Held in this tab only — never stored or logged. '
+            '      <div class="t-hint">'
+            + ('Leave blank to read public datasets. ' if token_optional else '')
+            + 'Held in this tab only — never stored or logged. '
             f'See the <a href="{auth_docs}">Authentication API</a> for how to get one.</div>'
         )
         lines.append('    </div>')
@@ -904,7 +921,10 @@ def build_api_docs():
             _render_responses(lines, operation.get('responses') or {})
 
             if doc_meta.get('try_it_live'):
-                _render_try_it_live(lines, method, route, operation, schemas, doc_meta['base_url'])
+                _render_try_it_live(
+                    lines, method, route, operation, schemas, doc_meta['base_url'],
+                    token_optional=doc_meta.get('token_optional', False),
+                )
 
         write_md(output_path, lines)
         generated_specs.append({**doc_meta, 'definition': def_name})

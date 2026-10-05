@@ -101,9 +101,17 @@
     return out;
   }
 
+  // Whether a request from this card carries a token: always where one is
+  // required, and only once entered where it is optional (public OData reads).
+  function sendsToken(widget) {
+    var tokenEl = widget.querySelector(".t-token");
+    if (!tokenEl) return false;
+    return !widget.dataset.tokenOptional || !!tokenEl.value.trim();
+  }
+
   function curlFor(widget) {
     var lines = ["curl -X " + widget.dataset.method + " '" + buildURL(widget) + "'"];
-    if (widget.querySelector(".t-token")) {
+    if (sendsToken(widget)) {
       lines.push("  -H 'Authorization: Bearer YOUR_TOKEN'");
     }
 
@@ -145,7 +153,7 @@
       lines.push('url = "' + base + path + '"');
     }
 
-    var hasToken = !!widget.querySelector(".t-token");
+    var hasToken = sendsToken(widget);
     if (hasToken) {
       lines.push('headers = {"Authorization": "Bearer " + TOKEN}');
     }
@@ -315,7 +323,7 @@
     var bodyEl = widget.querySelector(".t-body");
 
     // Absent on endpoints that do not take one — the token endpoint itself.
-    if (tokenEl && !tokenEl.value.trim()) {
+    if (tokenEl && !widget.dataset.tokenOptional && !tokenEl.value.trim()) {
       var authDocs = widget.dataset.authDocs;
       showResponse(widget, {
         ok: false,
@@ -333,7 +341,7 @@
     }
 
     var init = { method: widget.dataset.method, headers: {} };
-    if (tokenEl) {
+    if (sendsToken(widget)) {
       init.headers.Authorization = "Bearer " + tokenEl.value.trim();
     }
 
