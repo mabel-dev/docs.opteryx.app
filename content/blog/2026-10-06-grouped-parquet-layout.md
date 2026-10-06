@@ -224,6 +224,14 @@ Same benchmark, same counting server:
 
 The grouped layout uses slightly *fewer* requests than the old 256k files. We modelled this before writing any code, and the model's request counts came within 5% of the measured ones on all three layouts.
 
+## Why blocks of four?
+
+If putting four row groups' chunks together saves requests, why not eight? We tried it. On the same ClickBench set, blocks of eight cut range GETs by a further 45% (20,995 to 11,481) and read exactly the same bytes. But production reads are limited by bandwidth more than by request count.
+
+Modelled against GCS, eight saves 0.7% IO wait time but bigger blocks also cost something: a block's morsels are released only once the whole block has arrived, so the first one waits longer; `LIMIT` queries over-fetch more; and fetch-ahead, which was tuned on 256k-row fetch units, would switch on only for scans twice as large.
+
+Four is the balance: units of IO small enough for effective work scheduling, and large enough to amortise the round trip. That balance depends on bandwidth and on how fetch-ahead is tuned, so if either changes, it's a setting to revisit, and because it's set when files are written, revisiting it only means rewriting files.
+
 ## Finer pruning
 
 Smaller row groups also mean finer statistics. A 256k row group with one matching row has to be read in full. At 64k, the three quarters of the block without a match can be skipped.
