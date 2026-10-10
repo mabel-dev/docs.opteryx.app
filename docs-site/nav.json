@@ -109,6 +109,19 @@
         ]
       },
       {
+        "Reading Files in Python": [
+          {
+            "Read a Parquet file": "guides/read-a-parquet-file-with-python.md"
+          },
+          {
+            "Read a JSON Lines file": "guides/read-a-json-lines-file-with-python.md"
+          },
+          {
+            "Read an Avro file": "guides/read-an-avro-file-with-python.md"
+          }
+        ]
+      },
+      {
         "Command Line": [
           {
             "Opteryx": "guides/opteryx-cli.md"
