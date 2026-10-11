@@ -51,6 +51,8 @@ It now reads them with Rugo:
 
 To be clear about what's being timed: this is the toll paid *before* the query is planned and before a single byte of the table's data is read. It sits in front of the first query against every snapshot, and on a table with many manifests it's the difference between noticing it and not.
 
+It shows up end to end, too. Our local Iceberg benchmarks exist mainly to test compatibility rather than speed, but with manifests now read by Rugo the suite runs **25% faster**.
+
 The other thing you get is the same answer. The new code makes exactly the decisions PyIceberg's planner makes - which entries are live, which sequence numbers apply, which delete files touch which data files - and it's tested file by file against PyIceberg's own planner across v1 tables, v2 tables, partitioned and unpartitioned tables, and a v1 table upgraded to v2. Tables with merge-on-read deletes are still refused, exactly when PyIceberg would attach a delete, rather than read without them. PyIceberg is still the catalog client - it reads `metadata.json`, snapshots and schemas, which it's genuinely good at.
 
 ## If you have Avro files: query them with SQL
