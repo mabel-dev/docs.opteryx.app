@@ -105,7 +105,7 @@ On a bigger, plainer file - a million rows of 20 columns - the gap is wider stil
 | deflate | all | 0.46 s | 5.85 s | 36.3 s |
 | zstandard | all | 0.47 s | 5.58 s | 37.2 s |
 
-The fair caveats: fastavro and `avro` are smaller installs (3.1 MB and 0.5 MB, against Rugo's 8.1 MB, which also covers Parquet, CSV and JSONL), and they write Avro. Rugo only reads it.
+The fair caveats: fastavro and `avro` are smaller installs (3.1 MB and 0.5 MB, against Rugo's 8.1 MB, which also covers Parquet, CSV and JSONL), and they write Avro. Rugo only reads it, for now - a writer is on the way.
 
 ## Why it's quick
 
@@ -117,6 +117,12 @@ Briefly, because the *what* matters more than the *how*:
 - **Every core helps with one big file**, and compressed files decompress with [libdeflate](https://github.com/ebiggers/libdeflate), one of the fastest deflate decoders there is.
 
 We also didn't take the shortcut of wrapping the Apache project's C++ library, because it drags in Boost - and Opteryx and Rugo install with no dependencies at all. The reader is fuzzed with sanitizers on, and anything it can't read correctly (a handful of rarely-used Avro features) it refuses by name rather than guessing.
+
+## It's new, and it will have rough edges
+
+As at October 2026, Avro support in Rugo and Opteryx is new. It's tested against fastavro and the Apache reader, checked against PyIceberg's planner, and fuzzed - but Avro files in the wild come from a lot of different writers, and some of them will find corners we haven't. Expect rough edges.
+
+We're going to keep battering the reader, and we're adding a writer, and we'll work through what turns up as we go. If you point Rugo or `READ_AVRO` at your own files - especially the odd ones - we'd love to hear how it went, good or bad. [Open an issue](https://github.com/mabel-dev/opteryx-core/issues) and tell us what you were reading and what happened.
 
 ## The honest part
 
