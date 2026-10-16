@@ -40,7 +40,7 @@ pip install rugo opteryx-core pandas pyarrow
 
 Rugo and Opteryx have no dependencies of their own. pandas and PyArrow are only needed for the final step, turning the result into a DataFrame.
 
-The examples use `space_missions.jsonl`, 4,630 orbital launch attempts. To make it, [download the Parquet version](https://raw.githubusercontent.com/mabel-dev/opteryx-core/main/testdata/flat/space_missions/space_missions.parquet) and convert it with the `rugo` command that comes with Rugo:
+The examples use `space_missions.jsonl`, 4,630 orbital launch attempts. To make it, [download the Parquet version](https://raw.githubusercontent.com/mabel-dev/opteryx-core/main/testdata/missions/space_missions.parquet) and convert it with the `rugo` command that comes with Rugo:
 
 ```bash
 rugo convert space_missions.parquet space_missions.jsonl

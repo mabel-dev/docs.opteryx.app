@@ -95,6 +95,9 @@
             "Connectors": "guides/connectors.md"
           },
           {
+            "Querying Iceberg": "guides/querying-iceberg.md"
+          },
+          {
             "Exploratory analysis in notebooks": "guides/exploratory-analysis.md"
           },
           {
