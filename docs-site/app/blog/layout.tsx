@@ -2,7 +2,9 @@ import React from "react";
 import Link from "next/link";
 import SiteHeader from "@/app/components/SiteHeader";
 
-export const metadata = { title: "Engineering Blog — Opteryx" };
+export const metadata = {
+  title: { default: "Engineering Blog — Opteryx", template: "%s — Opteryx Blog" },
+};
 
 export default function BlogLayout({
   children,

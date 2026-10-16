@@ -4,6 +4,7 @@ import DocRenderer from '@/app/components/DocRenderer'
 import { getContentDocsDir } from '@/app/lib/getContentDocsDir'
 import { listMarkdownSlugs } from '@/app/lib/listMarkdownSlugs'
 import { readMarkdownFile } from '@/app/lib/readMarkdownFile'
+import { markdownPageMetadata } from '@/app/lib/pageMetadata'
 
 type Props = {
   params: {
@@ -33,6 +34,14 @@ export function generateStaticParams() {
     .filter((slug) => !(slug.length === 1 && slug[0] === 'index'))
     .filter((slug) => !(slug[0] === 'reference' && slug.length > 1))
     .map((slug) => ({ slug }))
+}
+
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params)
+  const normalizedSlug = normalizeSlug(resolvedParams?.slug)
+  if (normalizedSlug.length === 0) return {}
+
+  return markdownPageMetadata(path.join(getContentDocsDir(), ...normalizedSlug) + '.md')
 }
 
 export default async function Page({ params }: Props) {

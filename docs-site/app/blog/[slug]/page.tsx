@@ -8,6 +8,7 @@ import { listMarkdownSlugs } from "@/app/lib/listMarkdownSlugs";
 import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 import BlogPostTOC from "@/app/blog/BlogPostTOC";
 import CodeCopy from "@/app/components/CodeCopy";
+import { markdownPageMetadata } from "@/app/lib/pageMetadata";
 
 type Props = {
   params: {
@@ -123,11 +124,12 @@ export function generateStaticParams() {
     .map((slug) => ({ slug: slug.join("/") }));
 }
 
-// A post can name another URL as the copy that should own its search ranking,
-// via a `canonical:` frontmatter key. This exists because the rugo log-analytics
-// benchmark is published on both this site and rugo.dev; without a canonical the
-// two copies compete and a search engine picks between them arbitrarily.
-// Posts without the key emit nothing, so behaviour is unchanged for all of them.
+// The post's title and description become its <title> and meta description.
+// A post can also name another URL as the copy that should own its search
+// ranking, via a `canonical:` frontmatter key. This exists because the rugo
+// log-analytics benchmark is published on both this site and rugo.dev; without
+// a canonical the two copies compete and a search engine picks between them
+// arbitrarily. Posts without the key emit no canonical.
 export async function generateMetadata({ params }: Props) {
   const resolvedParams = await Promise.resolve(params);
   const normalizedSlug = normalizeSlug(resolvedParams?.slug);
@@ -136,11 +138,12 @@ export async function generateMetadata({ params }: Props) {
   const mdPath = path.join(getContentBlogDir(), normalizedSlug + ".md");
   if (!fs.existsSync(mdPath)) return {};
 
+  const metadata = markdownPageMetadata(mdPath);
   const { frontmatter } = parseFrontmatter(fs.readFileSync(mdPath, "utf8"));
   const canonical = frontmatter.canonical as string | undefined;
-  if (!canonical) return {};
+  if (!canonical) return metadata;
 
-  return { alternates: { canonical } };
+  return { ...metadata, alternates: { canonical } };
 }
 
 export default async function Page({ params }: Props) {

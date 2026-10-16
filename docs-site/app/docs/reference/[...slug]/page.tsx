@@ -7,6 +7,7 @@ import { getReferenceDir } from '@/app/lib/getReferenceDir'
 import { getReferenceDocsPaths, getReferenceMdPathForDocsPath } from '@/app/lib/docsNav'
 import { listMarkdownSlugs } from '@/app/lib/listMarkdownSlugs'
 import { readMarkdownFile } from '@/app/lib/readMarkdownFile'
+import { markdownPageMetadata } from '@/app/lib/pageMetadata'
 
 type Props = {
   params: {
@@ -72,6 +73,32 @@ export function generateStaticParams() {
     .map((slug) => ({ slug: slug.split('/').filter(Boolean) }))
 }
 
+// Generated pages first. `content/docs/reference/` is the fallback for the
+// hand-written pages that have no generated counterpart; it must never take
+// precedence, or a stale hand-written copy silently buries the real page.
+function referenceCandidates(normalizedSlug: string[]): string[] {
+  const docsPath = `/docs/reference/${normalizedSlug.join('/')}`
+  const mappedRelativePath = getReferenceMdPathForDocsPath(docsPath)
+  const candidates: string[] = []
+
+  if (mappedRelativePath) {
+    candidates.push(path.join(getReferenceDir(), mappedRelativePath))
+  }
+
+  candidates.push(path.join(getReferenceDir(), ...normalizedSlug) + '.md')
+  candidates.push(path.join(getContentDocsDir(), 'reference', ...normalizedSlug) + '.md')
+  return candidates
+}
+
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params)
+  const normalizedSlug = normalizeSlug(resolvedParams?.slug)
+  if (normalizedSlug.length === 0) return {}
+
+  const found = referenceCandidates(normalizedSlug).find((candidate) => fs.existsSync(candidate))
+  return found ? markdownPageMetadata(found) : {}
+}
+
 export default async function Page({ params }: Props) {
   // In Next.js 16, params might be a Promise
   const resolvedParams = await Promise.resolve(params)
@@ -85,22 +112,7 @@ export default async function Page({ params }: Props) {
     return notFound()
   }
 
-  const docsPath = `/docs/reference/${normalizedSlug.join('/')}`
-  const mappedRelativePath = getReferenceMdPathForDocsPath(docsPath)
-
-  // Generated pages first. `content/docs/reference/` is the fallback for the
-  // hand-written pages that have no generated counterpart; it must never take
-  // precedence, or a stale hand-written copy silently buries the real page.
-  const candidates: string[] = []
-
-  if (mappedRelativePath) {
-    candidates.push(path.join(getReferenceDir(), mappedRelativePath))
-  }
-
-  candidates.push(path.join(getReferenceDir(), ...normalizedSlug) + '.md')
-  candidates.push(path.join(getContentDocsDir(), 'reference', ...normalizedSlug) + '.md')
-
-  for (const candidatePath of candidates) {
+  for (const candidatePath of referenceCandidates(normalizedSlug)) {
     const source = readMarkdownFile(candidatePath)
 
     if (source) {

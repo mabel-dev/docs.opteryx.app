@@ -5,7 +5,9 @@ import Breadcrumbs from "@/app/components/Breadcrumbs";
 import TableOfContents from "@/app/components/TableOfContents";
 import Footer from "@/app/components/Footer";
 
-export const metadata = { title: "Docs — Opteryx" };
+export const metadata = {
+  title: { default: "Docs — Opteryx", template: "%s — Opteryx" },
+};
 
 export default function DocsLayout({
   children,
