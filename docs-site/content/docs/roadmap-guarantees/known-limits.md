@@ -15,6 +15,18 @@ Opteryx scales up, not out. It runs as one process on one machine — there is n
 
 There is no `COMMIT`, `ROLLBACK`, `SET TRANSACTION`, or isolation level — a query reads the snapshot it resolves at plan time. Each statement is its own atomic commit and there is no way to group several into one. `INSERT` is experimental and limited to some storage backends; `UPDATE`, `DELETE` and `MERGE` are experimental and need a catalog-backed table. There is no locking: a write built against a version of a table that another writer has since replaced is refused, not queued or retried. Integrity constraints (`PRIMARY KEY`, `FOREIGN KEY`, `CHECK`, `UNIQUE`) are accepted in `CREATE TABLE` syntax but not enforced. See [SQL Conformance](/docs/reference/sql/conformance) for the complete statement-by-statement breakdown.
 
+Catalog-backed tables can still be undone, one table at a time, through snapshots rather than transactions. Tag the table's current snapshot before making changes. If you need to undo them, roll the table back to that tag:
+
+```sql
+ALTER TABLE workspace.collection.orders CREATE TAG before_cleanup;
+
+-- ... UPDATE / DELETE / MERGE statements ...
+
+ALTER TABLE workspace.collection.orders ROLLBACK TO VERSION before_cleanup;
+```
+
+The rollback makes the tagged snapshot current again for every reader, without copying or deleting data. It applies to the whole table, so it also undoes anything other writers committed after the tag. It needs the `owner` role on the table. See [ROLLBACK TO VERSION](/docs/reference/sql/statements/alter-table#rollback-to-version).
+
 ## Storage and file formats
 
 - **Storage backends**: local disk, Google Cloud Storage, Amazon S3, and plain HTTP(S) are implemented. Azure Blob Storage and MinIO are not — despite references to them in test configuration, there is no corresponding connector.
