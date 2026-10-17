@@ -158,7 +158,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 - **$filter** `string | null` [query; optional]
   Row filter, e.g. `vendor eq 'Oracle' and price gt 100`. Comparison (`eq`, `ne`, `lt`, `le`, `gt`, `ge`), logical (`and`, `or`, `not`) and string (`contains`, `startswith`, `endswith`) operators, plus `cast()`, date functions, `now()` with durations for rolling windows, and the Opteryx extension `in_subnet(src_addr, '192.168.4.0/24')` for IPv4 columns. Case-sensitive; date literals are unquoted (`shipped_date gt 2024-01-01`). See [Querying via OData](/docs/guides/querying-via-odata#querying-a-dataset) for the full syntax.
 - **$top** `integer | null` [query; optional]
-  Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.
+  Limit result rows (0-100000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.
 - **$skip** `integer | null` [query; optional]
   Skip N rows for pagination (server-driven). Requires $orderby: without a deterministic row order, paging duplicates some rows and drops others. Example: &$orderby=id asc&$skip=100 to fetch rows 101+. Combine with $top for paging.
 - **$orderby** `string | null` [query; optional]
@@ -181,7 +181,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
 ### Responses
 
 - **200** — Query succeeded; returns rows and pagination metadata (`application/json` `object`)
-- **400** — Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector
+- **400** — Invalid query: malformed $filter, unsupported $top value (not 0-100000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector
 - **401** — Missing or invalid authentication (no bearer token or basic auth)
 - **403** — Forbidden: authenticated but no permission for dataset
 - **404** — Dataset not found, or the @{label} version selector names a tag/snapshot/previous version that does not exist

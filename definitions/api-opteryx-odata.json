@@ -190,10 +190,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.",
+              "description": "Limit result rows (0-100000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.",
               "title": "$Top"
             },
-            "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated."
+            "description": "Limit result rows (0-100000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated."
           },
           {
             "name": "$skip",
@@ -352,7 +352,7 @@
             }
           },
           "400": {
-            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector"
+            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-100000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector"
           },
           "401": {
             "description": "Missing or invalid authentication (no bearer token or basic auth)"
