@@ -9,7 +9,11 @@ Opteryx Core queries [Apache Iceberg](https://iceberg.apache.org/) tables where 
 
 Any catalog [PyIceberg](https://py.iceberg.apache.org/) can load works: REST, SQL, Hive or Glue. The table's files can be in S3, in an S3-compatible store, in Google Cloud Storage or on local disk.
 
-**Tested on.** This guide has been tested end to end on [MinIO AIStor](https://www.min.io/product/aistor), whose built-in Iceberg REST catalog is called **AIStor Tables**, and the examples use it. The engine is also tested against [Apache Polaris](https://polaris.apache.org/) and [Google BigLake](https://cloud.google.com/biglake). Each catalog has its own authentication and warehouse settings. The details for Polaris and BigLake aren't covered here, so check your catalog's PyIceberg documentation for them.
+**Tested on.** Iceberg is an open specification, and it has many implementations. Catalogs, object stores and the engines that write tables each interpret the details a little differently. We test against a range of them so that Opteryx supports the format, not just one vendor's version of it.
+
+This guide has been tested end to end on [MinIO AIStor](https://www.min.io/product/aistor), whose built-in Iceberg REST catalog is called **AIStor Tables**, and the examples use it. The engine is also tested against [Apache Polaris](https://polaris.apache.org/) and [Google BigLake](https://cloud.google.com/biglake), and is regression tested against [Lakekeeper](https://lakekeeper.io/).
+
+Don't assume a catalog is unsupported because it isn't on this list. The list is what we test, not everything that works. If PyIceberg can load your catalog, Opteryx should be able to query its tables, within the limits in [What's Supported](#whats-supported). Each catalog has its own authentication and warehouse settings. The details for Polaris, BigLake and Lakekeeper aren't covered here, so check your catalog's PyIceberg documentation for them.
 
 This guide is for [Opteryx Core](/docs/getting-started/installation), the engine running in your own Python process. To connect a catalog to the hosted service instead, see [Connecting an Iceberg Catalog](/docs/guides/connecting-an-iceberg-catalog).
 
