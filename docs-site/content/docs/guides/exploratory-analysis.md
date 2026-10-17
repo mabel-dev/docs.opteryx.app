@@ -23,8 +23,10 @@ By the end of this page you'll be able to:
 ## Setup
 
 ```bash
-pip install opteryx-core
+pip install opteryx-core pyarrow pandas matplotlib
 ```
+
+`opteryx-core` installs with no dependencies; `pyarrow` is needed for `to_arrow()`, and `pandas` and `matplotlib` for the chart below.
 
 ```python
 import opteryx
@@ -34,7 +36,7 @@ opteryx.register_workspace("data", DiskConnector)
 session = opteryx.session()
 ```
 
-`register_workspace` points the `data` prefix at the current working directory. See [Querying Local Data](/docs/guides/querying-local-data) for how dataset names resolve to folders.
+`register_workspace` maps the `data` prefix to the `./data` folder under the current working directory, so `data.transactions` reads the Parquet files in `./data/transactions/`. See [Querying Local Data](/docs/guides/querying-local-data) for how dataset names resolve to folders.
 
 ## Querying Without Loading Everything
 
@@ -47,7 +49,7 @@ for morsel in session.execute_to_morsels("""
         COUNT(*)     AS n,
         AVG(amount)  AS avg_amount
       FROM data.transactions
-     WHERE ordered_at >= '2024-01-01'
+     WHERE ordered_at >= CAST('2024-01-01' AS TIMESTAMP)
      GROUP BY category
      ORDER BY n DESC
 """):

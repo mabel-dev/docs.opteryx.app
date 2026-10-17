@@ -71,6 +71,7 @@ curl https://odata.opteryx.app/api/v4/
       "url": "public/geopolitics/countries",
       "source": "Table",
       "role": "reader",
+      "policy": "always-allow-public-anonymous",
       "ordered": false,
       "orderBy": null,
       "orderDirection": null
@@ -81,6 +82,7 @@ curl https://odata.opteryx.app/api/v4/
       "url": "public/security/cisa_kev",
       "source": "Table",
       "role": "reader",
+      "policy": "always-allow-public-anonymous",
       "ordered": false,
       "orderBy": null,
       "orderDirection": null
@@ -91,7 +93,7 @@ curl https://odata.opteryx.app/api/v4/
 
 Each entry's `url` is the path to query, shaped `{workspace}/{collection}/{dataset}` - the same three-part addressing used elsewhere on the platform (for example the Upload API's `Target(workspace=..., collection=..., dataset=...)`). So `public/geopolitics/countries` is workspace `public`, collection `geopolitics`, dataset `countries`. One workspace name behaves specially: `personal` resolves `collection` to your own identity rather than a shared collection name.
 
-`role` is the access level your credentials have on that entity set. `source` distinguishes ordinary tables from `View`s and the `Virtual` `information_schema` entities present in every workspace. When `ordered` is `true`, results come back sorted by `orderBy` (in `orderDirection`) rather than in arbitrary order.
+`role` is the access level your credentials have on that entity set, and `policy` names the grant it comes from. `source` distinguishes ordinary tables from `View`s, `MaterializedView`s, `Task`s (scheduled jobs that write to another dataset, whose `$metadata` carries the task's definition), and the `Virtual` `information_schema` entities present in every workspace. When `ordered` is `true`, results come back sorted by `orderBy` (in `orderDirection`) rather than in arbitrary order.
 
 `@odata.context` points at `/api/v4/$metadata`, the CSDL metadata document describing each EntitySet's schema. This is the document Power BI and Excel read to work out column names and types.
 
@@ -105,6 +107,8 @@ curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries?$top=10'
 
 Use **single quotes** around the URL. In `bash` and `zsh`, a double-quoted `"...?$top=10"` makes the shell expand `$top` as a variable and send `?=10` instead.
 
+A URL can't contain a literal space, and curl rejects one before sending anything. For options with spaces in them, such as most `$filter` and `$apply` expressions, pass `-G` and one `--data-urlencode` per option, and curl encodes each for you. An option that contains OData's own single quotes needs double quotes instead, with the `$` escaped as `\$`.
+
 For a dataset that needs a token, add the `Authorization` header:
 
 ```bash
@@ -116,7 +120,7 @@ Supported query options:
 
 | Option | Behaviour |
 | --- | --- |
-| `$top` | Limit rows returned. Defaults to 100, capped at 25,000; a larger value returns `400`. |
+| `$top` | Limit rows returned. Defaults to 100, capped at 100,000; a larger value returns `400`. |
 | `$skip` | Skip this many rows before returning results - used for paging. |
 | `$select` | Return only the named columns. |
 | `$filter` | Restrict rows by an OData filter expression. |
@@ -127,7 +131,10 @@ Supported query options:
 `$search` and `$expand` are not implemented and return `501 Not Implemented`.
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries?$filter=region eq %27Europe%27&$orderby=country_name_common&$top=5'
+curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+  --data-urlencode "\$filter=region eq 'Europe'" \
+  --data-urlencode '$orderby=country_name_common' \
+  --data-urlencode '$top=5'
 ```
 
 ### Paging Through a Full Result Set
@@ -144,7 +151,7 @@ When a query matches more rows than `$top`, the response carries exactly `$top` 
 
 Two details matter if you're writing the paging loop yourself. The link is **relative** - resolve it against `https://odata.opteryx.app` - and the `$` in the query string arrives **percent-encoded as `%24`**, which is equivalent and should be passed through unchanged rather than rewritten.
 
-Keep following `@odata.nextLink` until a response comes back without one; that response is the last page. There's no limit on how far `$skip` can reach, so a result set of any size can be read in full this way. The 25,000 cap applies only to the value of `$top` in a single request - a large result set is paged, never rejected.
+Keep following `@odata.nextLink` until a response comes back without one; that response is the last page. There's no limit on how far `$skip` can reach, so a result set of any size can be read in full this way. The 100,000 cap applies only to the value of `$top` in a single request - a large result set is paged, never rejected.
 
 ### Reading a Snapshot, Tag, or Prior Version
 
@@ -160,19 +167,22 @@ Every request queries current data by default - but a dataset's path segment can
 
 ```bash
 curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@previous?$top=5'
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@release_2026_q1?$top=5'
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@1755000000000?$top=5'
+curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@1791779848300?$top=5'
+curl 'https://odata.opteryx.app/api/v4/acme/security/findings@YOUR_TAG?$top=5' \
+  -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
-Tags and snapshot ids are visible in a dataset's metadata - `Custom.Tags` lists every tag a dataset holds, alongside the snapshot id each one names:
+None of the public datasets carry a tag, so the last line is a placeholder: substitute a dataset of your own and a tag it holds.
+
+A dataset's metadata shows the snapshot it currently resolves to in `Custom.Snapshot.Id`, and how many tags it holds in `Custom.Tags.Count`:
 
 ```bash
 curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries/$metadata'
 ```
 
-Requesting `$metadata` for a labelled dataset (`.../countries@release_2026_q1/$metadata`) describes that version rather than the current one - its `Custom.Snapshot.*` and `Custom.Tags` annotations reflect the snapshot the label resolved to.
+Requesting `$metadata` for a labelled dataset (`.../countries@previous/$metadata`) describes that version rather than the current one - its `Custom.Snapshot.*` annotations reflect the snapshot the label resolved to.
 
-An unknown tag or snapshot id, or `@previous` on a dataset with no earlier version, returns `404`. A malformed selector - `dataset@` with nothing after the `@`, for instance - returns `400`.
+An unknown tag, or `@previous` on a dataset with no earlier version, returns `404`. An unknown snapshot id currently returns `503` with the message `dataset could not be read from storage`, not `404`; its `$metadata` does return `404`. A malformed selector - `dataset@` with nothing after the `@`, for instance - returns `400`.
 
 `@{tag}` and `@{snapshot_id}` are immutable, so paging with `$skip`/`$top` through one is fully consistent from first page to last. `@current` and `@previous` are resolved fresh on every request, so a page fetched partway through a paging loop can reflect a write that landed after the loop started - the same caveat that applies to any live query, not something specific to naming a version.
 
@@ -181,7 +191,9 @@ An unknown tag or snapshot id, or `@previous` on a dataset with no earlier versi
 Date and datetime literals are unquoted ISO 8601, per the OData standard:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/security/cisa_kev?$filter=date_added ge 2025-01-01&$top=5'
+curl -G 'https://odata.opteryx.app/api/v4/public/security/cisa_kev' \
+  --data-urlencode '$filter=date_added ge 2025-01-01' \
+  --data-urlencode '$top=5'
 ```
 
 Quoting the value makes it a string, and comparing a string to a date or timestamp column is rejected rather than silently matching nothing:
@@ -201,22 +213,23 @@ Where the two sides differ in precision, a date is read as midnight UTC on that 
 
 A timezone designator is optional and is honoured when present. `2026-07-01T00:00:00Z`, `2026-07-01T00:00:00+00:00`, `2026-07-01T00:00:00` and `2026-07-01T05:00:00+05:00` all name the same instant and return the same rows.
 
-Fractional seconds are accepted up to five digits. Six or more - which is what Python's `datetime.isoformat()` emits - aren't recognised as a datetime, so the literal is read as a string and rejected on type:
+Fractional seconds are accepted up to six digits, so the output of Python's `datetime.isoformat()` can be used as it is. Seven or more aren't recognised as a datetime, so the literal is read as a string and rejected on type:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories?$filter=published_at ge 2026-07-01T00:00:00.123456Z'
+curl -G 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories' \
+  --data-urlencode '$filter=published_at ge 2026-07-01T00:00:00.1234567Z'
 ```
 
 ```json
 {
   "error": {
     "code": "BadRequest",
-    "message": "Invalid query: Incompatible types for column 'ghsa_advisories.published_at' (TIMESTAMP) and literal '2026-07-01T00:00:00.123456Z' (VARCHAR). Using `CAST(column AS type)` may help resolve."
+    "message": "Invalid query: column *ghsa_advisories.published_at* (`TIMESTAMP[us]`) and literal `2026-07-01T00:00:00.1234567Z` (`VARCHAR`) cannot be compared, because their types do not match. Date and time literals are unquoted in OData v4: write `published_at ge 2024-01-01T00:00:00Z`, not `published_at ge '2024-01-01T00:00:00Z'` -- a quoted literal is a string."
   }
 }
 ```
 
-Truncate to five digits, or drop the fractional part, when building a literal from a machine-generated timestamp.
+Truncate to six digits, or drop the fractional part, when building a literal from a machine-generated timestamp.
 
 ### Date functions and rolling windows
 
@@ -229,7 +242,10 @@ rolling window server-side, which keeps the query correct when it's re-run
 tomorrow:
 
 ```bash
-curl "https://odata.opteryx.app/api/v4/public/security/ghsa_advisories?\$filter=published_at ge now() sub duration'P30D'&\$count=true&\$top=5"
+curl -G 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories' \
+  --data-urlencode "\$filter=published_at ge now() sub duration'P30D'" \
+  --data-urlencode '$count=true' \
+  --data-urlencode '$top=5'
 ```
 
 The duration is ISO 8601: `P<n>D` days, `P<n>M` months, `P<n>Y` years, and
@@ -270,7 +286,9 @@ matches nothing - Afghanistan is stored as `'004'`. Compared as a number, it
 matches:
 
 ```bash
-curl "https://odata.opteryx.app/api/v4/public/geopolitics/countries?\$filter=cast(iso_numeric, Edm.Int32) eq 4&\$select=country_name_common,iso_numeric"
+curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+  --data-urlencode '$filter=cast(iso_numeric, Edm.Int32) eq 4' \
+  --data-urlencode '$select=country_name_common,iso_numeric'
 ```
 
 A value that doesn't convert becomes `null`, as the OData standard defines it,
@@ -307,7 +325,8 @@ compares text, and can't skip files using their stored min/max.
 `$apply` groups and aggregates server-side, so you don't have to pull every row back to count or deduplicate it. `$count`, `sum`, `average`, `min`, `max` and `countdistinct` are available:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries?$apply=groupby((region),aggregate($count as country_count))'
+curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+  --data-urlencode '$apply=groupby((region),aggregate($count as country_count))'
 ```
 
 ```json
@@ -382,12 +401,13 @@ Errors are JSON, shaped `{"error": {"code": ..., "message": ...}}`, with the HTT
 
 | Status | Meaning |
 | --- | --- |
-| `400` | Malformed `$filter`/`$apply` syntax, a type mismatch in a comparison, `$top` above 25,000, or a malformed `@{label}` version selector |
+| `400` | Malformed `$filter`/`$apply` syntax, a type mismatch in a comparison, `$top` above 100,000, or a malformed `@{label}` version selector |
 | `401` | Missing or invalid bearer token |
 | `403` | Authenticated, but not permitted to read that dataset |
-| `404` | No such dataset, or a `@{label}` version selector names a tag, snapshot, or previous version that doesn't exist |
+| `404` | No such dataset, or a `@{label}` version selector names a tag or previous version that doesn't exist |
 | `501` | `$search` or `$expand` - recognised by the standard, not implemented here |
 | `500` | Unexpected server-side error |
+| `503` | The dataset couldn't be read from storage. An unknown `@{snapshot_id}` currently returns this too, rather than `404` |
 
 A failed read is never returned as a `200` with an empty `value` array. An empty `value` means the query ran and matched no rows; anything else is a non-2xx status with an error body. This distinction is guaranteed, so a consumer can safely treat "empty" as a real result rather than having to guess whether the read failed.
 
