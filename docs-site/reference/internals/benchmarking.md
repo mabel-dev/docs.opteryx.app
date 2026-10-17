@@ -119,6 +119,8 @@ moves against its own previous times.
 The data generator is `dsdgen` from the TPC's own toolkit, so the tables are
 regenerated locally rather than shipped in the repository.
 
+> **Try it yourself:** the TPC-DS companion notebook generates the data with `dsdgen`, runs the 99 queries against DuckDB and Opteryx, each reading its own native format, and reports coverage first: how many queries each engine planned and ran, with every failure listed by error. Timings are compared query by query on the ones both engines completed, with no overall ratio. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpcds-duckdb-vs-opteryx.ipynb).
+
 ### RISC-V
 
 [RISC-V Support](riscv-support) carries the one set of published pass/fail
@@ -187,6 +189,7 @@ per-suite `fetch_data.py` scripts.
 
 - [Wrenchy Bench results](https://mabel-dev.github.io/wrenchy-bench/) — published summary results
 - [TPC-H notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) — run DuckDB and Opteryx side by side yourself
+- [TPC-DS notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) — coverage and per-query timings for DuckDB and Opteryx on the 99 TPC-DS queries
 - [Why Opteryx Is Fast](/docs/introduction/why-opteryx-is-fast) — the techniques, with the published ClickBench, JSONBench and release-over-release figures
 - [Engine overview](engine-overview) — what the numbers are measuring
 - [RISC-V support](riscv-support) — published pass/fail results on one platform
