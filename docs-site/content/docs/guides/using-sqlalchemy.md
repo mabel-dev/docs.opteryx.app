@@ -13,6 +13,8 @@ For a notebook or a local script, `opteryx-sqlalchemy` is the recommended way to
 pip install opteryx-sqlalchemy
 ```
 
+> **Try it yourself:** the companion notebook connects with your client ID and secret, queries the public NVD vulnerability dataset into pandas, joins it to CISA's known-exploited list, then runs the same connection against your own datasets. It needs an opteryx.app account, and reads the credentials from Colab Secrets so they stay out of the notebook. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-opteryx-app-with-sqlalchemy.ipynb) or [download the notebook](/notebooks/query-opteryx-app-with-sqlalchemy.ipynb).
+
 ## What You'll Be Able to Do
 
 By the end of this page you'll be able to:
@@ -21,7 +23,8 @@ By the end of this page you'll be able to:
 - run a query with plain SQLAlchemy Core
 - read a result straight into a pandas DataFrame
 - work around the bound-parameter limitation safely, and know why it exists
-- recognise what this dialect won't do — writes, and schema reflection
+- list the schemas, tables and columns your credential can see
+- recognise what this dialect won't do — writes, and key or index reflection
 
 ## Authenticating
 
@@ -99,11 +102,12 @@ with engine.connect() as conn:
 ## Things to Know
 
 - **Read-only.** Opteryx is an analytics engine — `commit()` and `rollback()` are no-ops, and there's no DDL/DML support through this dialect.
-- **Limited introspection.** Column, index, and foreign-key introspection (`get_columns`, `get_indexes`, and similar) return empty results — if you're used to SQLAlchemy's `Table(..., autoload_with=engine)` reflecting real column metadata, that won't work here. Query with `text()` and know your schema up front, or `SELECT * ... LIMIT 0` to inspect a table's shape.
+- **Introspection covers names and columns.** `inspect(engine)` can list schemas (`get_schema_names`), tables (`get_table_names`) and views (`get_view_names`), check `has_table`, and describe columns (`get_columns`). These read opteryx.app's OData metadata, so they don't run a query. Primary keys, foreign keys and indexes always come back empty, because Opteryx doesn't have them.
 - **Dataset names are the same as everywhere else** — dot-separated names like `opteryx.test.planets`, resolved through whatever policies your client credential grants. See [Access and Permissions](/docs/core-concepts/access-and-permissions).
 
 ## Related
 
+- [SQLAlchemy notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-opteryx-app-with-sqlalchemy.ipynb) — query the public NVD dataset, then your own data
 - [Running a Query via the API](/docs/guides/running-a-query-via-the-api)
 - [Authentication API](/docs/reference/api/authentication-api)
 - [Load and Query Data](/docs/getting-started/reading-data)
