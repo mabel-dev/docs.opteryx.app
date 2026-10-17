@@ -7,6 +7,8 @@ description: Use Opteryx Core for exploratory data analysis in Jupyter notebooks
 
 Opteryx Core fits the notebook workflow well: it installs with `pip`, runs in the same process as your notebook kernel, and streams results in a form you can hand straight to pandas or a plotting library. It is a good fit when a Parquet dataset is larger than you want to load whole, but you still want to explore it interactively.
 
+> **Try it yourself:** the companion notebook runs every example on this page in order, against a public dataset of 4,630 orbital launches in place of `transactions`: aggregate in SQL, take a first look, chart a yearly summary with pandas, and iterate rows. It needs no account. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/exploratory-analysis-with-opteryx.ipynb) or [download the notebook](/notebooks/exploratory-analysis-with-opteryx.ipynb).
+
 ## What You'll Be Able to Do
 
 By the end of this page you'll be able to:
@@ -124,5 +126,6 @@ for morsel in session.execute_to_morsels(
 
 ## Related
 
+- [Exploratory analysis notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/exploratory-analysis-with-opteryx.ipynb) — run this page's examples against a public launch dataset
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [Troubleshooting Queries](/docs/guides/troubleshooting)

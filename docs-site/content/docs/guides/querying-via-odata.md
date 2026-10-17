@@ -13,6 +13,8 @@ OData here is read-only - no `INSERT`/`UPDATE`/`DELETE`.
 
 The query syntax used below is defined by the standard, not by Opteryx. For the full grammar see [OData v4.01 Part 2: URL Conventions](https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html), and for `$apply` see the [Data Aggregation extension](https://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/odata-data-aggregation-ext-v4.0.html).
 
+> **Try it yourself:** the companion notebook works through this page in Python with `requests` and pandas: it discovers the public datasets, reads a schema from `$metadata`, filters, sorts and counts the NVD vulnerability data, pages with `@odata.nextLink`, and aggregates CISA's known-exploited list with `$apply`. It needs no account or token. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-public-data-with-odata.ipynb) or [download the notebook](/notebooks/query-public-data-with-odata.ipynb).
+
 ## What You'll Be Able to Do
 
 By the end of this page you'll be able to:
@@ -393,6 +395,7 @@ Queries are executed by the Opteryx SQL engine, and some messages it raises are 
 
 ## Related
 
+- [OData notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-public-data-with-odata.ipynb) - query the public NVD and CISA KEV datasets with no account
 - [Load and Query Data](/docs/getting-started/reading-data)
 - [Running a Query via the API](/docs/guides/running-a-query-via-the-api)
 - [Connecting via Arrow Flight SQL](/docs/guides/connecting-via-flight-sql)
