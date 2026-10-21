@@ -312,6 +312,9 @@
               "SHOW GRANTS ON": "reference/sql/statements/show-grants-on.md"
             },
             {
+              "SHOW LINEAGE FOR": "reference/sql/statements/show-lineage.md"
+            },
+            {
               "SHOW MANIFEST FOR": "reference/sql/statements/show-manifest.md"
             },
             {
@@ -319,6 +322,9 @@
             },
             {
               "SHOW SNAPSHOTS FOR": "reference/sql/statements/show-snapshots.md"
+            },
+            {
+              "SHOW SOURCES FOR": "reference/sql/statements/show-sources.md"
             },
             {
               "SHOW TRIGGERS FOR": "reference/sql/statements/show-triggers.md"

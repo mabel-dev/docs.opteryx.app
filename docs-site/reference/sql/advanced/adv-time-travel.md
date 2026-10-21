@@ -219,8 +219,8 @@ it, and a `VERSION AS OF` naming it directly (including `PREVIOUS`, if the recla
 was the parent) errors instead. Its data files are then released, passing through a
 quarantine period before deletion.
 
-Reclamation is not configurable per table, and there is no way to query how long a given
-snapshot will survive. Treat *untagged* history as **best-effort**: it exists until
+How long untagged snapshots are kept is set by the platform's maintenance policy, not by a
+SQL setting, and there is no way to query how long a given snapshot will survive. Treat *untagged* history as **best-effort**: it exists until
 maintenance runs. A [tagged](#pinning-a-snapshot-with-a-tag) snapshot is the exception, and
 the only one — it is held until the tag is dropped.
 
@@ -291,8 +291,11 @@ SELECT current.id
     ON previous.id = current.id;
 ```
 
-Both sides are subject to reclamation: if the older timestamp reaches past the oldest
-surviving snapshot, the join silently compares against that snapshot rather than failing.
+Both sides are subject to reclamation: if the older timestamp is earlier than the oldest
+surviving snapshot, the query fails with an error naming the first snapshot that still exists.
+It does not fall back to that snapshot, and it does not return an empty side. A timestamp later
+than the newest snapshot is not an error; it reads the newest snapshot, the same as a read
+with no clause.
 
 ## Limitations
 
