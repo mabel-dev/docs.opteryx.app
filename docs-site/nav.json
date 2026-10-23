@@ -133,6 +133,9 @@
             "Rugo": "guides/rugo-cli.md"
           },
           {
+            "Convert Avro to Parquet": "guides/convert-avro-to-parquet.md"
+          },
+          {
             "Upload": "guides/upload-cli.md"
           }
         ]

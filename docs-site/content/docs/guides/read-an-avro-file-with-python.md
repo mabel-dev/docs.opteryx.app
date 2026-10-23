@@ -11,8 +11,6 @@ Being row-oriented shapes how you read it. Parquet stores each column separately
 
 This page uses **[Rugo](/docs/guides/rugo-standalone)**, the file reader inside Opteryx, published on its own. It hands results over as Arrow, which pandas converts directly.
 
-> **Experimental:** Rugo's Avro reader is new and arrives in the next `rugo` and `opteryx-core` releases. The API on this page is the one shipping; details may still change. SQL over Avro files (a `READ_AVRO` table function) isn't available yet — [convert to Parquet](#query-with-sql-convert-to-parquet) to query Avro data with Opteryx.
-
 > **Try it yourself:** every example on this page runs in the companion notebook. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-an-avro-file-with-python.ipynb) or [download the notebook](/notebooks/read-an-avro-file-with-python.ipynb).
 
 ## What You'll Be Able to Do
@@ -23,7 +21,7 @@ By the end of this page you'll be able to:
 - load an Avro file into a pandas DataFrame with Rugo
 - read only the fields you need, including fields inside nested records
 - read a file through a reader schema, to rename, drop or add fields
-- convert Avro to Parquet and query it with SQL
+- query Avro with SQL, or convert it to Parquet first when you'll query it again and again
 
 ## Install
 
@@ -124,7 +122,7 @@ df = pd.concat(parts, ignore_index=True)
 # 25 rows
 ```
 
-`read_avro` reads the file into memory before decoding it, so the file itself has to fit. If you'll filter the same data again and again, [convert it to Parquet](#query-with-sql-convert-to-parquet) and let the reader skip what it doesn't need.
+`read_avro` reads the file into memory before decoding it, so the file itself has to fit. If you'll filter the same data again and again, [convert it to Parquet](/docs/guides/convert-avro-to-parquet) and let the reader skip what it doesn't need.
 
 ## Read Through a Reader Schema
 
@@ -162,11 +160,39 @@ Fields left out of the reader schema are dropped. A field the file doesn't have 
 - **Codecs:** null, deflate, snappy and zstandard. bzip2 and xz are refused by name.
 - **Types:** all primitive types, enums, fixed, `date`, `time-*`, `timestamp-millis`/`-micros` (as UTC), decimals up to 38 digits, and arrays of scalars. Records, maps and arrays of nested values come back as JSON text.
 - **Not supported:** unions other than `["null", T]`, recursive types, `uuid`, `timestamp-nanos`, `local-timestamp-*` and `duration`.
-- **Reading only:** Rugo doesn't write Avro.
+- **Writing:** Rugo can also write Avro — `write_avro` and `open_avro_writer` in `rugo.avro`, or `rugo convert data.parquet data.avro` from the [command line](/docs/guides/rugo-cli).
 
-## Query with SQL: Convert to Parquet
+## Query with SQL
 
-Until Opteryx can read Avro directly, convert it once. Rugo reads the Avro and writes the Parquet, with the types from the Avro schema carried across:
+Opteryx reads Avro directly with `READ_AVRO`, which takes a file path or a wildcard. As with the Python reader, the nested `Rocket` record is JSON text, and `->>` pulls a field out of it:
+
+```python
+import opteryx
+import pyarrow
+
+morsels = opteryx.session().execute_to_morsels("""
+    SELECT Company, COUNT(*) AS launches
+      FROM READ_AVRO('space_missions.avro')
+     WHERE Rocket->>'Status' = 'Active'
+     GROUP BY Company
+     ORDER BY launches DESC
+     LIMIT 5
+""")
+df = pyarrow.concat_tables(m.to_arrow() for m in morsels).to_pandas()
+```
+
+```text
+       Company  launches
+0         CASC       281
+1  Arianespace       128
+2       SpaceX       120
+3          ULA        83
+4     Northrop        69
+```
+
+## Convert to Parquet for Repeated Queries
+
+`READ_AVRO` has the same limits as any Avro reader: there are no statistics to skip data with, so a filter reads every row. If you'll query the data more than once, convert it once and query the Parquet copy. Rugo reads the Avro and writes the Parquet, with the types from the Avro schema carried across:
 
 ```python
 from rugo import parquet
@@ -179,7 +205,7 @@ with read_avro("space_missions.avro") as reader:
                 writer.write_row_group(morsel)
 ```
 
-Then query it with [Opteryx](/docs/guides/querying-local-data). The nested `Rocket` record is JSON text in the Parquet file, and `->>` pulls a field out of it:
+From the shell it is one command, `rugo convert space_missions.avro space_missions.parquet` — see [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet) for batch conversion and how types come across. Then query the Parquet file with [Opteryx](/docs/guides/querying-local-data); the nested `Rocket` record is still JSON text:
 
 ```python
 import opteryx
@@ -215,7 +241,8 @@ From here, everything in [How to read a Parquet file with Python](/docs/guides/r
 | Load a file into pandas | `read_avro` |
 | Read some fields, including nested ones | `read_avro` with `columns` (dotted names for nested fields) |
 | Read old and new schema versions together | `read_avro` with a `reader_schema` |
-| Aggregate, join or filter repeatedly | Convert to Parquet with Rugo, then query with Opteryx |
+| Query it once with SQL | `READ_AVRO` in Opteryx |
+| Aggregate, join or filter repeatedly | Convert to Parquet with `rugo convert`, then query with Opteryx |
 
 ## Try It in a Notebook
 
@@ -226,7 +253,9 @@ The companion notebook downloads `space_missions.avro` and runs every example on
 
 ## Related
 
+- [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet)
 - [How to read a Parquet file with Python](/docs/guides/read-a-parquet-file-with-python)
 - [How to read a JSON Lines file with Python](/docs/guides/read-a-json-lines-file-with-python)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
+- [The Rugo Command Line](/docs/guides/rugo-cli)
 - [Compatibility](/docs/roadmap-guarantees/compatibility)

@@ -1,11 +1,11 @@
 ---
-title: The Rugo Command Line - Inspect and Convert Parquet, CSV and JSONL
-description: Inspect, preview, convert, merge and split Parquet, CSV and JSONL files from the shell with the rugo command. JSON output throughout for scripting.
+title: The Rugo Command Line - Inspect and Convert Parquet, Avro, CSV and JSONL
+description: Inspect, preview, convert, merge and split Parquet, Avro, CSV and JSONL files from the shell with the rugo command. JSON output throughout for scripting.
 ---
 
 # The Rugo Command Line
 
-Installing [Rugo](/docs/guides/rugo-standalone) puts a `rugo` command on your `PATH` — the same reader and writer the engine uses, driven from the shell. It answers the questions you have about a file before you query it: what's in it, how big is it, what do the first rows look like — and converts between Parquet, CSV and JSONL without any Python in between.
+Installing [Rugo](/docs/guides/rugo-standalone) puts a `rugo` command on your `PATH` — the same reader and writer the engine uses, driven from the shell. It answers the questions you have about a file before you query it: what's in it, how big is it, what do the first rows look like — and converts between Parquet, Avro, CSV and JSONL without any Python in between.
 
 ## What You'll Be Able to Do
 
@@ -14,7 +14,7 @@ By the end of this page you'll be able to:
 - find a file's format, size and shape before you query it
 - preview rows and read per-column statistics
 - compare the schemas of two files
-- convert between Parquet, CSV and JSONL, and merge or split files
+- convert between Parquet, Avro, CSV and JSONL, and merge or split files
 - take JSON output from any verb and use it in a script
 
 ```bash
@@ -58,7 +58,23 @@ Mission         varchar        True
 Mission_Status  varchar        True
 ```
 
-The format is detected from the file, so all of these work equally on `.csv` and `.jsonl`. CSV and JSONL carry no type information, so every column in those comes back as `string`.
+The format is detected from the file, so all of these work equally on `.avro`, `.csv` and `.jsonl`. CSV and JSONL carry no type information, so every column in those comes back as `string`. Avro keeps its types in the schema in the file header, so they come through.
+
+A field inside a nested Avro record is addressed with a dotted name, so `preview` can project it as an ordinary column:
+
+```bash
+rugo preview -n 3 -c Company,Rocket.Name,Rocket.Status space_missions.avro
+```
+
+```
+Company    Rocket.Name     Rocket.Status
+---------  --------------  -------------
+RVSN USSR  Sputnik 8K71PS  Retired
+RVSN USSR  Sputnik 8K71PS  Retired
+US Navy    Vanguard        Retired
+```
+
+Without the projection the whole `Rocket` record is shown as one JSON text column.
 
 ## Previewing Rows
 
@@ -113,7 +129,7 @@ Lauched_at      int64          timestamp[us]  127                         False 
 
 Row group count and size is what determines how much of a file the engine can skip; if a filter isn't pruning as much as you expected, this is where to look.
 
-`describe`, `stats` and `inspect` are Parquet-only — they read the footer, and CSV and JSONL don't have one. Pointed at anything else they fail with a clear message rather than returning empty results.
+`describe`, `stats` and `inspect` are Parquet-only — they read the footer, and CSV, JSONL and Avro don't have one. Pointed at anything else they fail with a clear message rather than returning empty results. If you want statistics for an Avro file, [convert it to Parquet](/docs/guides/convert-avro-to-parquet) and run `describe` on that.
 
 ## Comparing Schemas
 
@@ -140,6 +156,8 @@ rugo diff expected_schema.parquet incoming.parquet || echo "schema drift — sto
 
 This is metadata only. It tells you the shape changed, not that the rows did.
 
+Compare like with like. Avro and Parquet spell the same types differently (`VARCHAR` and `varchar`), so `diff` between an Avro file and a Parquet file reports every column as changed. Compare two Avro files, or two Parquet files.
+
 ## Converting, Merging and Splitting
 
 `convert` moves a file between formats, inferring both ends from the extensions:
@@ -152,7 +170,13 @@ rugo convert space_missions.parquet space_missions.jsonl
 space_missions.parquet (parquet, 4630 rows) -> space_missions.jsonl (jsonl)
 ```
 
-Going to CSV or JSONL loses the type information Parquet carries — a `float64` column read back out of JSONL is a string. Converting *to* Parquet is the direction that gains you something, and it's how you get CSV or JSONL data into a shape Opteryx can query.
+Going to CSV or JSONL loses the type information Parquet carries — a `float64` column read back out of JSONL is a string. Converting *to* Parquet is the direction that gains you something, and it's how you get CSV, JSONL or Avro data into a shape Opteryx can query quickly.
+
+Avro works at either end. Converting Avro to Parquet gives you column statistics and a layout a query can skip through; see [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet) for batch conversion and how nested records come across. Converting Parquet to Avro writes the schema into the file header, with columns that contain nulls as `["null", T]`:
+
+```bash
+rugo convert space_missions.parquet space_missions.avro
+```
 
 `merge` concatenates files into one. Schemas have to match on column names, order and types; a mismatch fails loudly rather than coercing or filling with nulls:
 
@@ -198,7 +222,7 @@ This is the form to script against — the text tables are laid out for reading 
 | `describe` / `stats` | Per-column nulls, min/max, distinct *(Parquet only)* |
 | `inspect` | Footer, row group and encoding dump *(Parquet only)* |
 | `diff` | Compare two schemas; exits `1` when they differ |
-| `convert` | Convert between Parquet, CSV and JSONL |
+| `convert` | Convert between Parquet, Avro, CSV and JSONL |
 | `merge` | Concatenate schema-identical files into one |
 | `split` | Split into row-count-bounded parts (`--rows`, `--format`) |
 
@@ -210,6 +234,7 @@ The standalone `rugo` wheel reads and writes the local filesystem and nothing el
 
 ## Related
 
+- [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
 - [The Opteryx Command Line](/docs/guides/opteryx-cli)
 - [Rugo — the file engine](/docs/reference/internals/rugo)
