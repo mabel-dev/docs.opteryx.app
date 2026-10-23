@@ -112,7 +112,7 @@
         ]
       },
       {
-        "Reading Files in Python": [
+        "File Formats": [
           {
             "Read a Parquet file": "guides/read-a-parquet-file-with-python.md"
           },
@@ -121,6 +121,9 @@
           },
           {
             "Read an Avro file": "guides/read-an-avro-file-with-python.md"
+          },
+          {
+            "Convert Avro to Parquet": "guides/convert-avro-to-parquet.md"
           }
         ]
       },
@@ -131,9 +134,6 @@
           },
           {
             "Rugo": "guides/rugo-cli.md"
-          },
-          {
-            "Convert Avro to Parquet": "guides/convert-avro-to-parquet.md"
           },
           {
             "Upload": "guides/upload-cli.md"
