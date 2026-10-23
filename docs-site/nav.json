@@ -123,7 +123,31 @@
             "Read an Avro file": "guides/read-an-avro-file-with-python.md"
           },
           {
+            "Convert CSV to Parquet": "guides/convert-csv-to-parquet.md"
+          },
+          {
+            "Convert JSON Lines to Parquet": "guides/convert-jsonl-to-parquet.md"
+          },
+          {
             "Convert Avro to Parquet": "guides/convert-avro-to-parquet.md"
+          },
+          {
+            "Convert Parquet to CSV": "guides/convert-parquet-to-csv.md"
+          },
+          {
+            "Convert Parquet to JSON Lines": "guides/convert-parquet-to-jsonl.md"
+          },
+          {
+            "Combine and split Parquet files": "guides/combine-and-split-parquet-files.md"
+          },
+          {
+            "Combine and split CSV files": "guides/combine-and-split-csv-files.md"
+          },
+          {
+            "Combine and split JSON Lines files": "guides/combine-and-split-jsonl-files.md"
+          },
+          {
+            "Combine and split Avro files": "guides/combine-and-split-avro-files.md"
           }
         ]
       },

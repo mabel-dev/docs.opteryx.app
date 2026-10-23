@@ -172,7 +172,7 @@ space_missions.parquet (parquet, 4630 rows) -> space_missions.jsonl (jsonl)
 
 Going to CSV or JSONL loses the type information Parquet carries — a `float64` column read back out of JSONL is a string. Converting *to* Parquet is the direction that gains you something, and it's how you get CSV, JSONL or Avro data into a shape Opteryx can query quickly.
 
-Avro works at either end. Converting Avro to Parquet gives you column statistics and a layout a query can skip through; see [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet) for batch conversion and how nested records come across. Converting Parquet to Avro writes the schema into the file header, with columns that contain nulls as `["null", T]`:
+Avro works at either end. Converting Avro to Parquet gives you column statistics and a layout a query can skip through; see [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet) for batch conversion and how nested records come across. The other directions each have a page: [CSV to Parquet](/docs/guides/convert-csv-to-parquet), [JSON Lines to Parquet](/docs/guides/convert-jsonl-to-parquet), [Parquet to CSV](/docs/guides/convert-parquet-to-csv) and [Parquet to JSON Lines](/docs/guides/convert-parquet-to-jsonl). Converting Parquet to Avro writes the schema into the file header, with columns that contain nulls as `["null", T]`:
 
 ```bash
 rugo convert space_missions.parquet space_missions.avro
@@ -197,6 +197,8 @@ space_missions.part0002.parquet  (630 rows)
 ```
 
 Outputs are named from the input's stem with a zero-padded part number, and land beside it. `--format` writes the parts in a different format than the input.
+
+There is a page for each format with its own wrinkles — headers in CSV, type inference in JSONL, nested records in Avro: [Parquet](/docs/guides/combine-and-split-parquet-files), [CSV](/docs/guides/combine-and-split-csv-files), [JSON Lines](/docs/guides/combine-and-split-jsonl-files) and [Avro](/docs/guides/combine-and-split-avro-files).
 
 ## JSON Output
 
@@ -235,6 +237,8 @@ The standalone `rugo` wheel reads and writes the local filesystem and nothing el
 ## Related
 
 - [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet)
+- [Convert CSV to Parquet](/docs/guides/convert-csv-to-parquet)
+- [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
 - [The Opteryx Command Line](/docs/guides/opteryx-cli)
 - [Rugo — the file engine](/docs/reference/internals/rugo)
