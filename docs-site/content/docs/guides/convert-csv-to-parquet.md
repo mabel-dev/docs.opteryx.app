@@ -17,6 +17,7 @@ By the end of this page you'll be able to:
 - see which types were chosen, and why
 - fix a column that came out as the wrong type
 - convert a CSV with a different delimiter or no header row
+- combine many CSV files into one Parquet file, or split one into several
 
 ## Convert One File
 
@@ -111,7 +112,57 @@ A shell loop converts each file beside the original:
 for f in exports/*.csv; do rugo convert "$f" "${f%.csv}.parquet"; done
 ```
 
-Each file is typed on its own, so two files can disagree — one whose first rows are whole numbers and another with decimals will come out as `int64` and `float64`. Check the schemas before combining the results; [Combine and split CSV files](/docs/guides/combine-and-split-csv-files) shows what that looks like and how to avoid it. Declaring the types, as above, makes every file come out the same.
+Each file is typed on its own, so two files can disagree — one whose first rows are whole numbers and another with decimals will come out as `int64` and `float64`. `rugo merge` refuses files whose types differ (see [the schema rule](/docs/guides/combine-and-split-parquet-files#the-schema-rule)), so check the schemas before combining the results. Declaring the types, as above, makes every file come out the same.
+
+## Combine Many CSV Files into One Parquet File
+
+`merge` takes any number of inputs and writes whatever format the output name asks for, so combining a folder of CSVs into a single Parquet file is one command. The last name is the output:
+
+```bash
+rugo merge space_missions.part000*.csv space_missions.parquet
+```
+
+```text
+merged 3 files (4630 rows) -> space_missions.parquet
+```
+
+Rows come out in the order the files were given. Every CSV must have the same column names in the same order. Types are worked out per file, so if two files disagree about a column — whole numbers at the top of one, decimals in the other — the merge fails:
+
+```text
+ValueError: concat: all inputs must share one type for 'Price' - found INT64 (1 part), FLOAT64 (1 part)
+```
+
+To make the files agree, declare the types and write every file through one Parquet writer. Each input becomes its own row group:
+
+```python
+import glob
+from rugo import parquet
+from rugo.csv import read_csv
+
+SCHEMA = {"Price": "DOUBLE", "Lauched_at": "TIMESTAMP"}
+
+with open("space_missions.parquet", "wb") as f, parquet.open_parquet_writer(f.write) as writer:
+    for path in sorted(glob.glob("exports/*.csv")):
+        with read_csv(path, explicit_schema=SCHEMA) as reader:
+            for morsel in reader:
+                writer.write_row_group(morsel)
+```
+
+## Split One CSV into Several Parquet Files
+
+`split` goes the other way, in parts of a fixed number of rows. `--format` chooses what to write:
+
+```bash
+rugo split space_missions.csv --rows 2000 --format parquet
+```
+
+```text
+space_missions.part0000.parquet  (2000 rows)
+space_missions.part0001.parquet  (2000 rows)
+space_missions.part0002.parquet  (630 rows)
+```
+
+Parts land beside the input and are numbered so a wildcard lists them in order. See [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files) for more on both verbs.
 
 ## Large Files
 
@@ -135,5 +186,5 @@ Opteryx can also query a CSV directly with `READ_CSV('...')`, which is fine for 
 
 - [How to Read a Parquet File with Python](/docs/guides/read-a-parquet-file-with-python)
 - [Convert JSON Lines to Parquet](/docs/guides/convert-jsonl-to-parquet)
-- [Combine and split CSV files](/docs/guides/combine-and-split-csv-files)
+- [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files)
 - [The Rugo Command Line](/docs/guides/rugo-cli)

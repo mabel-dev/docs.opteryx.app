@@ -141,12 +141,6 @@
             "Combine and split Parquet files": "guides/combine-and-split-parquet-files.md"
           },
           {
-            "Combine and split CSV files": "guides/combine-and-split-csv-files.md"
-          },
-          {
-            "Combine and split JSON Lines files": "guides/combine-and-split-jsonl-files.md"
-          },
-          {
             "Combine and split Avro files": "guides/combine-and-split-avro-files.md"
           }
         ]

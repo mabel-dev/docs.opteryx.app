@@ -99,5 +99,4 @@ The standalone `rugo` command reads and writes the local filesystem. Copy files 
 
 - [The Rugo Command Line](/docs/guides/rugo-cli)
 - [How to Read a Parquet File with Python](/docs/guides/read-a-parquet-file-with-python)
-- [Combine and split CSV files](/docs/guides/combine-and-split-csv-files)
 - [Combine and split Avro files](/docs/guides/combine-and-split-avro-files)

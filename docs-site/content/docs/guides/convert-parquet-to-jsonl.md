@@ -14,6 +14,7 @@ By the end of this page you'll be able to:
 - convert a Parquet file to JSONL with one command
 - know what each line looks like — nulls, numbers, timestamps
 - write only some of the columns
+- split one Parquet file into several JSONL files, or combine many into one
 - know what is lost, and what happens when the JSONL is read back
 
 ## Convert One File
@@ -66,6 +67,38 @@ with parquet.read_parquet(
 
 Reading Parquet by column is also where the filtering options live — see [How to Read a Parquet File with Python](/docs/guides/read-a-parquet-file-with-python) for `predicates`, which let you write only the matching rows.
 
+## Split One Parquet File into Several JSONL Files
+
+`split` cuts by number of rows, and `--format` chooses what to write. To get four files, divide the row count by four, rounding up:
+
+```bash
+rows=$(( ($(rugo count space_missions.parquet) + 3) / 4 ))
+rugo split space_missions.parquet --rows $rows --format jsonl
+```
+
+```text
+space_missions.part0000.jsonl  (1158 rows)
+space_missions.part0001.jsonl  (1158 rows)
+space_missions.part0002.jsonl  (1158 rows)
+space_missions.part0003.jsonl  (1156 rows)
+```
+
+Parts land beside the input and are numbered so a wildcard lists them in order. Every part holds exactly `--rows` rows except the last. This splits by position, not by value: it can't give you one file per company or per month.
+
+## Combine Many Parquet Files into One JSONL File
+
+The last name on the line is the output, and its extension picks the format:
+
+```bash
+rugo merge space_missions.part000*.parquet space_missions.jsonl
+```
+
+```text
+merged 3 files (4630 rows) -> space_missions.jsonl
+```
+
+Every input must have the same column names, in the same order, with the same types; see [the schema rule](/docs/guides/combine-and-split-parquet-files#the-schema-rule).
+
 ## Large Files
 
 `rugo convert` builds the whole result in memory before writing it. The Python route above writes one batch at a time, so the JSONL can be larger than memory.
@@ -74,5 +107,5 @@ Reading Parquet by column is also where the filtering options live — see [How 
 
 - [Convert Parquet to CSV](/docs/guides/convert-parquet-to-csv)
 - [Convert JSON Lines to Parquet](/docs/guides/convert-jsonl-to-parquet)
-- [Combine and split JSON Lines files](/docs/guides/combine-and-split-jsonl-files)
+- [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files)
 - [The Rugo Command Line](/docs/guides/rugo-cli)

@@ -17,6 +17,7 @@ By the end of this page you'll be able to:
 - check the result without opening it
 - convert a folder of Avro files, and merge them into one
 - know how Avro types and nested records come across
+- split one Avro file into several Parquet files
 - convert from Python when you need streaming output
 
 ## Convert One File
@@ -125,6 +126,22 @@ Schemas must match on column names, order and types; a mismatch fails rather tha
 ```bash
 rugo merge events/*.avro events.parquet
 ```
+
+## Split One Avro File into Several Parquet Files
+
+`split` writes parts of a fixed number of rows, and `--format` chooses what to write:
+
+```bash
+rugo split space_missions.avro --rows 2000 --format parquet
+```
+
+```text
+space_missions.part0000.parquet  (2000 rows)
+space_missions.part0001.parquet  (2000 rows)
+space_missions.part0002.parquet  (630 rows)
+```
+
+Parts land beside the input and are numbered so a wildcard lists them in order. See [Combine and split Avro files](/docs/guides/combine-and-split-avro-files) and [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files) for more on both verbs.
 
 ## Convert from Python
 

@@ -17,6 +17,7 @@ By the end of this page you'll be able to:
 - explain why a numeric column can come out as text
 - declare types so the result is the same every time
 - decide what happens to a malformed line
+- combine many JSONL files into one Parquet file, or split one into several
 
 ## Convert One File
 
@@ -95,7 +96,49 @@ By default a line that isn't valid JSON fails the read, naming the line number a
 for f in logs/*.jsonl; do rugo convert "$f" "${f%.jsonl}.parquet"; done
 ```
 
-Each file is typed from its own first records, so two files can disagree about a column. Declare the types with `explicit_schema` and every file comes out the same. [Combine and split JSON Lines files](/docs/guides/combine-and-split-jsonl-files) covers putting the results together.
+Each file is typed from its own first records, so two files can disagree about a column. Declare the types with `explicit_schema` and every file comes out the same. [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files) covers putting the results together.
+
+## Combine Many JSONL Files into One Parquet File
+
+`merge` takes any number of inputs and writes whatever format the output name asks for, so combining a folder of JSONL files into a single Parquet file is one command. The last name is the output:
+
+```bash
+rugo merge space_missions.part000*.jsonl space_missions.parquet
+```
+
+```text
+merged 3 files (4630 rows) -> space_missions.parquet
+```
+
+Rows come out in the order the files were given. Types are worked out per file, from each file's first 5 records, and the merge is refused if two files disagree about a column. Here the files agree — but only because all of them read `Price` as text, which is the problem from earlier. To combine with the right types, declare them and write every file through one Parquet writer. Each input becomes its own row group:
+
+```python
+import glob
+from rugo import parquet
+from rugo.jsonl import read_jsonl
+
+SCHEMA = {"Price": "DOUBLE", "Lauched_at": "TIMESTAMP"}
+
+with open("space_missions.parquet", "wb") as f, parquet.open_parquet_writer(f.write) as writer:
+    for path in sorted(glob.glob("logs/*.jsonl")):
+        with read_jsonl(path, explicit_schema=SCHEMA) as reader:
+            for morsel in reader:
+                writer.write_row_group(morsel)
+```
+
+## Split One JSONL File into Several Parquet Files
+
+```bash
+rugo split space_missions.jsonl --rows 2000 --format parquet
+```
+
+```text
+space_missions.part0000.parquet  (2000 rows)
+space_missions.part0001.parquet  (2000 rows)
+space_missions.part0002.parquet  (630 rows)
+```
+
+Each part is typed from its own first records, so parts can disagree about a column. If you will combine them again, declare the types first. See [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files) for more on both verbs.
 
 ## Large Files
 
@@ -109,5 +152,5 @@ Opteryx reads JSONL directly with [`READ_JSONL`](/docs/reference/sql/statements/
 
 - [How to Read a JSON Lines File with Python](/docs/guides/read-a-json-lines-file-with-python)
 - [Convert CSV to Parquet](/docs/guides/convert-csv-to-parquet)
-- [Combine and split JSON Lines files](/docs/guides/combine-and-split-jsonl-files)
+- [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files)
 - [The Rugo Command Line](/docs/guides/rugo-cli)

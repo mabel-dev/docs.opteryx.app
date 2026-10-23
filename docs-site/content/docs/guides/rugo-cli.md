@@ -198,7 +198,7 @@ space_missions.part0002.parquet  (630 rows)
 
 Outputs are named from the input's stem with a zero-padded part number, and land beside it. `--format` writes the parts in a different format than the input.
 
-There is a page for each format with its own wrinkles — headers in CSV, type inference in JSONL, nested records in Avro: [Parquet](/docs/guides/combine-and-split-parquet-files), [CSV](/docs/guides/combine-and-split-csv-files), [JSON Lines](/docs/guides/combine-and-split-jsonl-files) and [Avro](/docs/guides/combine-and-split-avro-files).
+There are pages for [Parquet](/docs/guides/combine-and-split-parquet-files) and [Avro](/docs/guides/combine-and-split-avro-files), the latter covering what happens to nested records.
 
 ## JSON Output
 
