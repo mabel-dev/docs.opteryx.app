@@ -1,7 +1,7 @@
 ---
 title: How a Python SQL Engine Got to the Top of ClickBench
 description: Opteryx's planner is Python and its execution is native. How we measure performance, A/B test across architectures, try ideas to see if they work, and tune every layer from file layout to cache lines to cost estimates.
-date: 2026-10-16
+date: 2026-10-24
 author: Justin Joyce
 role: Opteryx Engineering
 tags:
@@ -16,27 +16,25 @@ tags:
 
 ## TL;DR
 
-* The title is a little bit clickbait. [Opteryx](https://opteryx.app) plans queries in Python, but the work on the data is done in native code: Cython, C++ and a little Rust.
-* "The top" needs a footnote too. On [ClickBench](https://benchmark.clickhouse.com/), with the storage filter set to Parquet, Opteryx 0.9.167 is [first of 41 entries on `c6a.large`](https://benchmark.clickhouse.com/#machine=+c6a.large&storage=+parquet&metric=combined), for both the hot and the combined score (14 October 2026). On bigger machines it's [third](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=combined), and further down on cold runs.
+* [Opteryx](https://opteryx.app) plans queries in Python. The work on the data is done in native code: Cython, C++ and a little Rust.
+* On [ClickBench](https://benchmark.clickhouse.com/), with the storage filter set to Parquet, Opteryx 0.9.167 is [first of 41 entries on `c6a.large`](https://benchmark.clickhouse.com/#machine=+c6a.large&storage=+parquet&metric=combined), for both the hot and the combined score (14 October 2026). On bigger machines it's [third](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=combined), and further down on cold runs.
 * We didn't get there with one trick. We got there by measuring everything, re-running the same tests on different CPUs, trying ideas just to see what happens, and working on every layer of the engine.
 
-## First, the clickbait
+## Python plans, native code runs
 
 Opteryx is a Python package. You `pip install opteryx-core`, `import opteryx`, and give it SQL. Parsing, binding and optimizing the query all run in Python.
 
 After that, Python steps aside. The planner hands the physical plan to the native executor once, and the executor never calls back into Python to make a decision. Readers, vectors, expressions, joins and aggregations are all native code. Operators run on worker threads with the interpreter lock released. A query that touches 100 million rows spends almost no time in Python, because there's very little Python left on that path.
 
-So "a Python SQL engine" is accurate in the way "a Python machine learning library" is accurate. Python is the part you see and use. It isn't the part doing the arithmetic.
-
-We split it this way on purpose. Planning is where the engine makes decisions: which join order to use, which estimate to trust, whether a filter can move below a join. It's branchy, full of special cases, and changes every week. It's also the least deterministic part of the engine, so being able to follow what it did matters. Python is easy to read and easy to reason about. When the planner makes an odd choice, you can read the code and see why.
+We split it this way on purpose. Planning is where the engine makes decisions: which join order to use, which estimate to trust, whether a filter can move below a join. It's branchy, full of special cases, and the least deterministic part of the engine. It's also where a lot of our speed experiments happen: a new rewrite rule or a better estimate changes how much work execution has to do. Python is faster to reason about. When the planner makes an odd choice, it's quick to work out why, and quick to try something different.
 
 Moving data is the opposite: the same few operations, billions of times, where every byte and branch counts. C++ is good at being fast, so that's where it goes.
 
 It turns out the planning cost is small. On ClickBench's hot runs, on both `c6a.large` and `c6a.4xlarge`, several of the simplest queries finish in 3 to 4 milliseconds, Python planning included.
 
-## Second, the footnote on "top"
+## Where Opteryx ranks
 
-ClickBench is a lot of benchmarks in one. There are nine machine types, three scores (cold, hot and combined), and filters for how the data is stored. You can't be "top of ClickBench" without naming the view, so here's ours:
+ClickBench is a lot of benchmarks in one. There are nine machine types, three scores (cold, hot and combined), and filters for how the data is stored. The result depends on which of those you pick. This is the view where Opteryx comes first:
 
 | | |
 | --- | --- |
@@ -45,14 +43,18 @@ ClickBench is a lot of benchmarks in one. There are nine machine types, three sc
 | Entry | Opteryx, `opteryx-core` 0.9.167, 14 October 2026 |
 | Position | [1st of 41 on combined](https://benchmark.clickhouse.com/#machine=+c6a.large&storage=+parquet&metric=combined), [1st of 43 on hot](https://benchmark.clickhouse.com/#machine=+c6a.large&storage=+parquet&metric=hot) |
 
-And here's what that table leaves out:
+![ClickBench combined scores on c6a.large with the storage filter set to Parquet. Opteryx is first of 41 entries at ×1.97, ahead of DuckDB (Parquet, single) at ×2.33 and DuckDB (Parquet, partitioned) at ×2.46. Lower is better.](/blog/2026-10-24-python-top-of-clickbench-ranking.png)
 
-* **That entry rewrites the data first.** The load step rewrites ClickBench's Parquet files using Opteryx's own Parquet writer, sorted by the primary key the rules allow, and that time counts as load time. Our other entry reads the files as shipped, and on the same view it comes seventh.
+*ClickBench, `c6a.large`, storage filter Parquet, combined score, captured 24 October 2026. Lower is better. The leaderboard changes as entries are re-run; [the live view](https://benchmark.clickhouse.com/#machine=+c6a.large&storage=+parquet&metric=combined) shows where things stand today.*
+
+Some context for that result:
+
+* **That entry rewrites the data first.** The load step rewrites ClickBench's Parquet files using Opteryx's own Parquet writer, sorted by the primary key the rules allow, and that time counts as load time. Our other entry reads the files as shipped, and on the same view it comes ninth.
 * **The score is a geometric mean of per-query ratios.** That rewards being quick on most queries more than it punishes being terrible on a few, and we benefit from that here. On 4 GB of RAM, four of the heaviest `GROUP BY` queries spill to swap, and their hot runs take between 16 and 51 minutes. DuckDB, reading the same Parquet, finishes each of them in 21 to 31 seconds.
 * **Results are snapshots.** Entries get re-run at different times. The two DuckDB entries just behind us on that machine were last run in May.
-* **Bigger machines are harder.** On [`c6a.4xlarge`](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=combined), `c6a.2xlarge` and [`c8g.4xlarge`](https://benchmark.clickhouse.com/#machine=+c8g.4xlarge&storage=+parquet&metric=combined) we're third, behind both Pivotlake entries. On the Graviton metal machine we're fifth, and on the two AMD metal machines [eighth or ninth](https://benchmark.clickhouse.com/#machine=+c7a.metal-48xl&storage=+parquet&metric=combined). On [cold runs](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=cold) we're mid-pack everywhere.
+* **Bigger machines are harder.** On [`c6a.4xlarge`](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=combined), `c6a.2xlarge` and [`c8g.4xlarge`](https://benchmark.clickhouse.com/#machine=+c8g.4xlarge&storage=+parquet&metric=combined) we're third, behind both Pivotlake entries. On the Graviton metal machine we're fifth, and on the two AMD metal machines [eighth to tenth](https://benchmark.clickhouse.com/#machine=+c7a.metal-48xl&storage=+parquet&metric=combined). On [cold runs](https://benchmark.clickhouse.com/#machine=+c6a.4xlarge&storage=+parquet&metric=cold) we're mid-pack everywhere.
 
-So the honest headline is this: on a small machine, an engine with a Python front end is faster than every other Parquet engine on most of the queries. That surprised us as much as anyone. The rest of this post is about how it happened.
+On a small machine, an engine with a Python front end is faster than every other Parquet engine on most of the queries. That surprised us as much as anyone. The rest of this post is about how it happened.
 
 ## We measure everything, all the time
 
@@ -149,6 +151,6 @@ All of those came from the same habits that got us this far. We'll keep measurin
 * **Test on the machines your users run.** Your laptop isn't one of them.
 * **Try things cheaply, and write down the failures.**
 * **Work every layer.** The big speedups are usually lots of small ones stacked together.
-* **Say which view you're "top" in.** Then show the parts that look worse.
+* **Name the machine and the view with every result.** Show the slow queries too.
 
 — Justin
