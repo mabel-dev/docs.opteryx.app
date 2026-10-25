@@ -28,7 +28,7 @@ Returns true when the left operand does not match any element in the right-hand 
 
 ## Parameters
 
-- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 - **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. Accepts [`array`](../types/array).
 
 ## Returns
@@ -56,6 +56,7 @@ Jupiter
 - `integer NOT IN array` → boolean
 - `nvarchar NOT IN array` → boolean
 - `timestamp NOT IN array` → boolean
+- `uuid NOT IN array` → boolean
 - `varbinary NOT IN array` → boolean
 - `varchar NOT IN array` → boolean
 

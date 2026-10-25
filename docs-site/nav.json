@@ -868,6 +868,9 @@
               "TIMESTAMP": "reference/sql/types/timestamp.md"
             },
             {
+              "UUID": "reference/sql/types/uuid.md"
+            },
+            {
               "VARBINARY": "reference/sql/types/varbinary.md"
             },
             {

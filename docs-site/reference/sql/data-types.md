@@ -51,6 +51,10 @@ The following data types are supported by Opteryx.  Click a name for details.
 
 - [IPV4](types/ipv4) — An IPv4 address. Stored as an unsigned 32-bit integer and displayed in dotted-decimal notation. Because the storage is numeric, ordering, grouping, joining and comparison all operate on the underlying integer — and unsigned integer order is exactly IPv4 address order.
 
+## Identifier types
+
+- [UUID](types/uuid) — A universally unique identifier (RFC 9562). Stored as its 16 bytes in network order, so ordering, grouping, joining and comparison work on the bytes and byte order is the same as the order of the canonical text.
+
 ## Null type
 
 - [NULL](types/null) — The absence of a value. NULL is not a type you declare — it appears when a column has no value or an expression produces no result.

@@ -27,8 +27,8 @@ Returns true when both operands compare equal.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Numeric types compare across the family, so `1 = 1.0` is true. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
-- **`<right>`** — The value to compare it against. It must be type-compatible with the left - a number and a string are rejected rather than coerced. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<left>`** — The value to compare. Numeric types compare across the family, so `1 = 1.0` is true. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. It must be type-compatible with the left - a number and a string are rejected rather than coerced. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
@@ -72,6 +72,7 @@ false | true | NULL
 - `nvarchar = varchar` → boolean
 - `timestamp = date` → boolean
 - `timestamp = timestamp` → boolean
+- `uuid = uuid` → boolean
 - `varbinary = nvarchar` → boolean
 - `varbinary = varbinary` → boolean
 - `varbinary = varchar` → boolean

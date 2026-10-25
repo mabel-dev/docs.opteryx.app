@@ -1,6 +1,6 @@
 ---
 title: COSINE_DISTANCE — Opteryx Function
-description: Embeds both texts with the active embedding provider and returns 1 - cosine similarity.
+description: Embeds both texts with the active embedding provider and returns 1 - cosine similarity. As the leading ORDER BY key, rows whose distance is NULL (no text, so no embedding) are not returned. `ORDER BY COSINE_DISTANCE(col, 'query') LIMIT k` on a column with a vector index is answered through the index - exactly, unless the `nprobe` variable is set, when only that many clusters per file are searched (approximate).
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,7 +11,7 @@ description: Embeds both texts with the active embedding provider and returns 1 
 
 # COSINE_DISTANCE
 
-Embeds both texts with the active embedding provider and returns 1 - cosine similarity.
+Embeds both texts with the active embedding provider and returns 1 - cosine similarity. As the leading ORDER BY key, rows whose distance is NULL (no text, so no embedding) are not returned. `ORDER BY COSINE_DISTANCE(col, 'query') LIMIT k` on a column with a vector index is answered through the index - exactly, unless the `nprobe` variable is set, when only that many clusters per file are searched (approximate).
 
 **Category:** Text Similarity Functions
 

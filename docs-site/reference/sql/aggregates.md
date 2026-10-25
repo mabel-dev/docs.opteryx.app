@@ -72,7 +72,11 @@ Aggregates combine multiple rows into single summary values and are typically us
 - **MEDIAN** — Computes the exact median (middle value) of the input values.
   - SQL forms: `MEDIAN(expr)`, `MEDIAN(DISTINCT expr)`
   - Support: global, grouped, strict_grouped
-  - Notes: Buffers all non-null values per group and selects the middle. Even-count inputs interpolate; result type is FLOAT. Buffering is bounded by a global 512MB memory budget — exceeding it raises an error. Decimal inputs must be CAST to FLOAT.
+  - Notes: Buffers all non-null values per group and selects the middle; identical to PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY expr). Even-count inputs interpolate; result type is FLOAT. NULL for a group with no non-null values. Buffering is bounded by a global memory budget shared with PERCENTILE_CONT (see @@median_memory_budget_bytes) — exceeding it raises an error. Decimal inputs must be CAST to FLOAT.
+- **PERCENTILE_CONT** — Computes the exact percentile of the input values, interpolating between neighbours.
+  - SQL forms: `PERCENTILE_CONT(fraction) WITHIN GROUP (ORDER BY expr [ASC|DESC])`
+  - Support: global, grouped, strict_grouped
+  - Notes: The SQL-standard ordered-set aggregate. The argument is the fraction, a numeric literal between 0 and 1; the values come from WITHIN GROUP (ORDER BY expr), ascending or DESC. Linear interpolation between the two nearest ranks (position fraction * (n - 1)), matching PostgreSQL and DuckDB. Result type is FLOAT; NULLs are ignored and a group with no non-null values is NULL. Exact: buffers every non-null value, bounded by the global memory budget shared with MEDIAN (see @@median_memory_budget_bytes). Several percentiles of the same column in one query share a single buffer. Decimal inputs must be CAST to FLOAT; PERCENTILE_DISC is not supported.
 - **STDDEV** — Computes the population standard deviation of the input values.
   - SQL forms: `STDDEV(expr)`, `STDDEV(DISTINCT expr)`
   - Support: global, grouped, strict_grouped

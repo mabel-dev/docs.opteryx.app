@@ -28,7 +28,7 @@ Returns true when the left operand matches any element in the right-hand list or
 
 ## Parameters
 
-- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 - **`<list>`** — The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list, NULL included, is rejected at plan time rather than being silently skipped. Accepts [`array`](../types/array).
 
 ## Returns
@@ -63,6 +63,7 @@ true | false
 - `integer IN array` → boolean
 - `nvarchar IN array` → boolean
 - `timestamp IN array` → boolean
+- `uuid IN array` → boolean
 - `varbinary IN array` → boolean
 - `varchar IN array` → boolean
 

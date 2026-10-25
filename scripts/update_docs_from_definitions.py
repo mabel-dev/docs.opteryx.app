@@ -1430,6 +1430,7 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
         'nested',
         'vector',
         'network',
+        'identifier',
         'null',
         'other',
     ]
@@ -1444,6 +1445,7 @@ def build_types_docs(types_def: Dict[str, Any], ops_def: Dict[str, Any]):
         'nested': 'Collection types',
         'vector': 'Vector types',
         'network': 'Network types',
+        'identifier': 'Identifier types',
         'null': 'Null type',
         'other': 'Other types',
     }

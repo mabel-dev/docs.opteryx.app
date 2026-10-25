@@ -114,7 +114,7 @@ The following functions are supported by Opteryx.  Click a name for details.
 - [COALESCE](functions/coalesce) — Return first non-null argument.
 - [CONNECTION_ID](functions/connection_id) — Current connection identifier.
 - [DATABASE](functions/database) — Current database name.
-- [GENERATE_SERIES](functions/generate_series) — Build an array of evenly spaced integers.
+- [GENERATE_SERIES](functions/generate_series) — Build an array of evenly spaced integers or timestamps.
 - [IFNOTNULL](functions/ifnotnull) — Return second argument if first is not null.
 - [IFNULL](functions/ifnull) — Return value if not null, else default.
 - [IIF](functions/iif) — Inline if: return second or third arg based on condition.

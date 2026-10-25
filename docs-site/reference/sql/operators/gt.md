@@ -27,8 +27,8 @@ Returns true when the left operand is greater than the right operand.
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Strings order byte-by-byte, so uppercase sorts before lowercase. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
-- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<left>`** — The value to compare. Strings order byte-by-byte, so uppercase sorts before lowercase. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 
@@ -66,6 +66,7 @@ Neptune
 - `nvarchar > varchar` → boolean
 - `timestamp > date` → boolean
 - `timestamp > timestamp` → boolean
+- `uuid > uuid` → boolean
 - `varbinary > nvarchar` → boolean
 - `varbinary > varbinary` → boolean
 - `varbinary > varchar` → boolean

@@ -65,6 +65,52 @@
         "default": "utf8",
         "default_source": "literal"
     },
+    "chunk_cache_admit": {
+        "name": "chunk_cache_admit",
+        "type": "BOOL",
+        "owner": "USER",
+        "visibility": "UNRESTRICTED",
+        "settable": true,
+        "requires_entitlement": null,
+        "set_by": "any session",
+        "default": true,
+        "default_source": "literal"
+    },
+    "chunk_cache_budget_bytes": {
+        "name": "chunk_cache_budget_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": 36936718745,
+        "default_source": "literal"
+    },
+    "chunk_cache_memory_percent": {
+        "name": "chunk_cache_memory_percent",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "CHUNK_CACHE_MEMORY_PERCENT"
+    },
+    "chunk_cache_reserve_bytes": {
+        "name": "chunk_cache_reserve_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "CHUNK_CACHE_RESERVE_BYTES"
+    },
     "cidr_agg_emit_budget_bytes": {
         "name": "cidr_agg_emit_budget_bytes",
         "type": "INT64",
@@ -299,18 +345,6 @@
         "default_source": "environment",
         "environment_key": "OPTERYX_HTTP_TIMEOUT_FLOOR_MS"
     },
-    "instrument_engine": {
-        "name": "instrument_engine",
-        "type": "BOOL",
-        "owner": "SERVER",
-        "visibility": "RESTRICTED",
-        "settable": false,
-        "requires_entitlement": null,
-        "set_by": "not settable via SQL",
-        "default": null,
-        "default_source": "environment",
-        "environment_key": "OPTERYX_INSTRUMENT_ENGINE"
-    },
     "kvstore_key_prefix": {
         "name": "kvstore_key_prefix",
         "type": "VARCHAR",
@@ -475,6 +509,17 @@
         "default": null,
         "default_source": "host"
     },
+    "nprobe": {
+        "name": "nprobe",
+        "type": "INT64",
+        "owner": "USER",
+        "visibility": "UNRESTRICTED",
+        "settable": true,
+        "requires_entitlement": null,
+        "set_by": "any session",
+        "default": 0,
+        "default_source": "literal"
+    },
     "operating_system": {
         "name": "operating_system",
         "type": "VARCHAR",
@@ -485,6 +530,28 @@
         "set_by": "not settable via SQL",
         "default": null,
         "default_source": "host"
+    },
+    "opteryx_access_version": {
+        "name": "opteryx_access_version",
+        "type": "VARCHAR",
+        "owner": "SERVER",
+        "visibility": "RESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "literal"
+    },
+    "opteryx_catalog_version": {
+        "name": "opteryx_catalog_version",
+        "type": "VARCHAR",
+        "owner": "SERVER",
+        "visibility": "RESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "literal"
     },
     "opteryx_debug": {
         "name": "opteryx_debug",
@@ -498,6 +565,17 @@
         "default_source": "environment",
         "environment_key": "OPTERYX_DEBUG"
     },
+    "opteryx_iceberg_version": {
+        "name": "opteryx_iceberg_version",
+        "type": "VARCHAR",
+        "owner": "SERVER",
+        "visibility": "RESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "literal"
+    },
     "parquet_gcs_io_workers": {
         "name": "parquet_gcs_io_workers",
         "type": "INT64",
@@ -509,6 +587,18 @@
         "default": null,
         "default_source": "environment",
         "environment_key": "PARQUET_GCS_IO_WORKERS"
+    },
+    "parquet_io_coalesce_gap_bytes": {
+        "name": "parquet_io_coalesce_gap_bytes",
+        "type": "INT64",
+        "owner": "USER",
+        "visibility": "RESTRICTED",
+        "settable": true,
+        "requires_entitlement": "platform_admin",
+        "set_by": "platform_admin only",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "PARQUET_IO_COALESCE_GAP_BYTES"
     },
     "parquet_io_coalesce_max_bytes": {
         "name": "parquet_io_coalesce_max_bytes",
@@ -698,6 +788,30 @@
         "default": null,
         "default_source": "environment",
         "environment_key": "SKENE_LATE_MATERIALIZATION_MIN_DEFERRED_COLUMNS"
+    },
+    "slab_pool_budget_bytes": {
+        "name": "slab_pool_budget_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SLAB_POOL_BUDGET_BYTES"
+    },
+    "slab_pool_prefault_bytes": {
+        "name": "slab_pool_prefault_bytes",
+        "type": "INT64",
+        "owner": "SERVER",
+        "visibility": "UNRESTRICTED",
+        "settable": false,
+        "requires_entitlement": null,
+        "set_by": "not settable via SQL",
+        "default": null,
+        "default_source": "environment",
+        "environment_key": "SLAB_POOL_PREFAULT_BYTES"
     },
     "spill_ceiling_bytes": {
         "name": "spill_ceiling_bytes",
