@@ -81,6 +81,8 @@ con.close()
 DuckDB's Parquet export is a general-purpose interchange file. Opteryx reads Parquet written by its own writer, rugo, faster than that, so this step rewrites each table with it: one file per table, zstd, 65,536-row row groups written in blocks of 4. `rugo.parquet.read_parquet` streams the exported file as draken `Morsel`s, which are combined and handed to `rugo.parquet.write_parquet`. The row count of each rewritten file is checked against what was read.
 """
 
+import shutil
+
 from draken.morsels.morsel import Morsel
 from rugo.parquet import read_metadata, read_parquet, write_parquet
 from opteryx.connectors import DiskConnector
@@ -91,7 +93,8 @@ os.makedirs(DATA_ROOT, exist_ok=True)
 
 for t in TABLES:
     table_dir = os.path.join(DATA_ROOT, t)
-    os.makedirs(table_dir, exist_ok=True)
+    shutil.rmtree(table_dir, ignore_errors=True)   # a dataset folder must hold one format only
+    os.makedirs(table_dir)
     out_path = os.path.join(table_dir, f"{t}.parquet")
     with read_parquet(os.path.join(PARQUET_DIR, f"{t}.parquet")) as reader:
         morsels = list(reader)
