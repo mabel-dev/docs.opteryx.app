@@ -146,6 +146,13 @@
         ]
       },
       {
+        "Notebooks": [
+          {
+            "Run the notebooks in Colab": "guides/notebooks.md"
+          }
+        ]
+      },
+      {
         "Command Line": [
           {
             "Opteryx": "guides/opteryx-cli.md"
