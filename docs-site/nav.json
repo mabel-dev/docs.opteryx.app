@@ -27,6 +27,9 @@
         "Load and query data": "getting-started/reading-data.md"
       },
       {
+        "Connect your bucket": "getting-started/connect-your-bucket.md"
+      },
+      {
         "Your first table": "getting-started/your-first-table.md"
       }
     ]
