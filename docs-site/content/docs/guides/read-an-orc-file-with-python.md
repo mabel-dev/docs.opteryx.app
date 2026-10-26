@@ -11,6 +11,8 @@ Being column-oriented shapes how you read it. The footer is at the end of the fi
 
 This page uses **[Rugo](/docs/guides/rugo-standalone)**, the file reader inside Opteryx, published on its own. It hands results over as Arrow, which pandas converts directly.
 
+> **Try it yourself:** every example on this page runs in the companion notebook. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-an-orc-file-with-python.ipynb) or [download the notebook](/notebooks/read-an-orc-file-with-python.ipynb).
+
 ## What You'll Be Able to Do
 
 By the end of this page you'll be able to:
@@ -210,6 +212,13 @@ From here, everything in [How to read a Parquet file with Python](/docs/guides/r
 | Read some columns | `read_orc` with `columns` |
 | Query it once with SQL | `READ_ORC` in Opteryx |
 | Aggregate, join or filter repeatedly | Convert to Parquet, then query with Opteryx |
+
+## Try It in a Notebook
+
+The companion notebook downloads `space_missions.orc` and runs every example on this page.
+
+- [Open in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-an-orc-file-with-python.ipynb)
+- [Download the notebook (.ipynb)](/notebooks/read-an-orc-file-with-python.ipynb)
 
 ## Related
 

@@ -1,6 +1,6 @@
 ---
 title: Run the Opteryx Notebooks in Google Colab
-description: Every Opteryx companion notebook in one place. Open them in Google Colab or download them to run locally, from reading Parquet, JSONL and Avro with Python to benchmarking Opteryx against DuckDB.
+description: Every Opteryx companion notebook in one place. Open them in Google Colab or download them to run locally, from reading Parquet, JSONL, Avro and ORC with Python to benchmarking Opteryx against DuckDB.
 ---
 
 # Run the Opteryx Notebooks
@@ -11,17 +11,19 @@ Each notebook installs what it needs in its first cell, so there is nothing to s
 
 ## Reading Files with Python
 
-These three load a file into pandas with [Rugo](/docs/guides/rugo-standalone), then query the same file with SQL using Opteryx. Each downloads a small public dataset of orbital launches, so you don't need any data of your own.
+These four load a file into pandas with [Rugo](/docs/guides/rugo-standalone), then query the same file with SQL using Opteryx. Each downloads a small public dataset of orbital launches, so you don't need any data of your own.
 
 | Notebook | What it covers | Guide |
 |---|---|---|
 | **Read a Parquet file** | Load into pandas, select columns, filter rows while reading, inspect a file before reading it, query with SQL | [Read a Parquet file](/docs/guides/read-a-parquet-file-with-python) |
 | **Read a JSON Lines file** | Load into pandas, fix column types, filter while reading, handle malformed lines, query with SQL | [Read a JSON Lines file](/docs/guides/read-a-json-lines-file-with-python) |
 | **Read an Avro file** | Read the schema, select nested fields, read through a reader schema, convert to Parquet | [Read an Avro file](/docs/guides/read-an-avro-file-with-python) |
+| **Read an ORC file** | Read the footer, select columns, take fields out of a nested struct, convert to Parquet | [Read an ORC file](/docs/guides/read-an-orc-file-with-python) |
 
 - Parquet: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-a-parquet-file-with-python.ipynb) · [Download](/notebooks/read-a-parquet-file-with-python.ipynb)
 - JSON Lines: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-a-json-lines-file-with-python.ipynb) · [Download](/notebooks/read-a-json-lines-file-with-python.ipynb)
 - Avro: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-an-avro-file-with-python.ipynb) · [Download](/notebooks/read-an-avro-file-with-python.ipynb)
+- ORC: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/read-an-orc-file-with-python.ipynb) · [Download](/notebooks/read-an-orc-file-with-python.ipynb)
 
 ## Analysing Data
 
