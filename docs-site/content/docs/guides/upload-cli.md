@@ -1,6 +1,6 @@
 ---
 title: The Upload Command Line - Load Data From a Shell or a Terminal App
-description: Load Parquet, CSV and NDJSON into Opteryx from the shell with opteryx-upload, or from a full-screen terminal app that shows the column types before anything is sent.
+description: Load Parquet, Avro, ORC, CSV and NDJSON into Opteryx from the shell with opteryx-upload, or from a full-screen terminal app that shows the column types before anything is sent.
 ---
 
 # The Upload Command Line
@@ -23,7 +23,7 @@ argparse and curses — so neither pulls anything extra into your environment.
 By the end of this page you'll be able to:
 
 - authenticate the upload client from environment variables
-- push a Parquet, CSV or NDJSON file into a table, and append to one that already exists
+- push a Parquet, Avro, ORC, CSV or NDJSON file into a table, and append to one that already exists
 - inspect what would be sent, and the column types agreed, without uploading anything
 - use the command in a shell pipeline
 - do the same from the full-screen terminal app, and find the commands and options you need
@@ -111,8 +111,9 @@ opteryx-upload plan data/*.parquet --to acme.security.findings --json
 
 This is the cheap way to find out what a folder of exports will become. It costs
 a few megabytes of sample whatever the files weigh, because a text file is
-sampled from the front and a Parquet file from its footer, which is where its
-schema lives.
+sampled from the front, a Parquet file from its footer, which is where its
+schema lives, an Avro file from its header and first blocks, and an ORC file
+in full (ORC files over 64 MB can't be negotiated yet).
 
 ## In a Pipeline
 
