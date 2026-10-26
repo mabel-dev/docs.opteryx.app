@@ -27,8 +27,8 @@ Returns true when the left operand is greater than or equal to the right operand
 
 ## Parameters
 
-- **`<left>`** — The value to compare. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
-- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<left>`** — The value to compare. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`uuid`](../types/uuid), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<right>`** — The value to compare it against. Accepts [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`uuid`](../types/uuid), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 
 ## Returns
 

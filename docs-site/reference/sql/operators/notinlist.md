@@ -28,7 +28,7 @@ Returns true when the left operand does not match any element in the right-hand 
 
 ## Parameters
 
-- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), `uuid`, [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
+- **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`uuid`](../types/uuid), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
 - **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. Accepts [`array`](../types/array).
 
 ## Returns
