@@ -254,6 +254,7 @@ The companion notebook downloads `space_missions.avro` and runs every example on
 ## Related
 
 - [Convert Avro to Parquet](/docs/guides/convert-avro-to-parquet)
+- [How to read an ORC file with Python](/docs/guides/read-an-orc-file-with-python)
 - [How to read a Parquet file with Python](/docs/guides/read-a-parquet-file-with-python)
 - [How to read a JSON Lines file with Python](/docs/guides/read-a-json-lines-file-with-python)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)

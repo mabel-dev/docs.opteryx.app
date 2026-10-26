@@ -20,7 +20,7 @@ The internal memory model is purpose-built for the engine rather than borrowed f
 
 Opteryx queries data across a range of sources from a single SQL surface:
 
-- Parquet, JSONL, and Skene (the engine's own native format) as dataset formats; CSV, JSONL and Parquet files by path through the `READ_*` table functions
+- Parquet, JSONL, and Skene (the engine's own native format) as dataset formats; CSV, JSONL, Parquet, Avro and ORC files by path through the `READ_*` table functions
 - Object storage (Google Cloud Storage, Amazon S3), plain HTTP(S), and local disk
 - In-process Python data structures (lists of dicts, pandas, Polars, PyArrow)
 - A growing set of operational stores accessed through connectors

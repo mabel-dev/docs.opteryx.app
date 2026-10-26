@@ -213,6 +213,7 @@ The companion notebook downloads `space_missions.parquet` and runs every example
 
 - [How to read a JSON Lines file with Python](/docs/guides/read-a-json-lines-file-with-python)
 - [How to read an Avro file with Python](/docs/guides/read-an-avro-file-with-python)
+- [How to read an ORC file with Python](/docs/guides/read-an-orc-file-with-python)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
 - [READ_PARQUET](/docs/reference/sql/statements/read-parquet)
 - [Querying Local Data](/docs/guides/querying-local-data)

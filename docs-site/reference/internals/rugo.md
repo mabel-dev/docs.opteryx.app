@@ -1,8 +1,8 @@
 # Rugo — the file engine
 
-[Rugo](https://rugo.dev) is the part of Opteryx that turns files on disk (or in object storage) into columns the engine can compute over. It reads and writes **Parquet, CSV, and JSONL**, and it does so without PyArrow, without NumPy, and without any heavy runtime dependency — the compression codecs it needs are vendored into the source tree, so a built Rugo has nothing else to install.
+[Rugo](https://rugo.dev) is the part of Opteryx that turns files on disk (or in object storage) into columns the engine can compute over. It reads **Parquet, CSV, JSONL, Avro, and ORC** and writes **Parquet, CSV, JSONL, and Avro**, and it does so without PyArrow, without NumPy, and without any heavy runtime dependency — the compression codecs it needs are vendored into the source tree, so a built Rugo has nothing else to install.
 
-Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL I/O without the SQL engine on top. Both packagings bundle [Draken](draken), the columnar vector library Rugo emits into.
+Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL/Avro/ORC I/O without the SQL engine on top. Both packagings bundle [Draken](draken), the columnar vector library Rugo emits into.
 
 ---
 
@@ -26,7 +26,7 @@ A naive reader decodes the whole file and lets the engine throw most of it away.
 
 **Dictionary-aware skipping.** A dictionary-encoded column carries a small table of its distinct values. Rugo can evaluate an equality or membership predicate against that *dictionary* — a few hundred comparisons — before decoding the per-row codes. If no dictionary entry satisfies the predicate, the column's data pages are skipped entirely.
 
-**Materialisation last.** Across all three formats, projection and predicate evaluation happen *before* typed columns are built, so only the rows and columns that survive are ever parsed into vectors. The expensive step — turning bytes into typed values — runs on the smallest possible amount of data.
+**Materialisation last.** Across the formats, projection and predicate evaluation happen *before* typed columns are built, so only the rows and columns that survive are ever parsed into vectors. The expensive step — turning bytes into typed values — runs on the smallest possible amount of data.
 
 ---
 
@@ -48,11 +48,23 @@ The CSV and JSONL readers are built for throughput too: each uses a SIMD structu
 
 ---
 
+## Avro and ORC
+
+The two newer formats follow the same rules: native decode straight into Draken vectors, projection before materialisation, no PyArrow.
+
+**Avro** is row-oriented, so there is nothing to prune: a file is a header holding the writer schema followed by compressed blocks of whole records. Rugo decodes batches of whole blocks on several threads at once and yields them in file order, and reads only the fields it is asked for, including fields inside nested records. It can also read a file through a *reader schema* — renaming, dropping or defaulting fields, and widening numbers — matching by field ID where the schema carries one, as Iceberg's do. Codecs are null, deflate, snappy, zstandard and bzip2.
+
+**ORC** is columnar and is read one stripe at a time. Streams for columns that are not projected are skipped without being decoded, and the codecs are none, zlib, snappy, lz4 and zstandard. Rugo does not yet prune stripes from the statistics in the footer, so unlike Parquet a filter on ORC decodes every stripe it touches. Like Avro, an ORC file is read into memory whole before decoding.
+
+For both, nested values that have no flat Draken shape — an Avro record, map, or array of nested values, an ORC struct or map — arrive as JSON text, which is how Parquet's nested columns arrive too. See [How to read an Avro file with Python](/docs/guides/read-an-avro-file-with-python) and [How to read an ORC file with Python](/docs/guides/read-an-orc-file-with-python).
+
+---
+
 ## Writing, too
 
-Rugo is a full round-trip engine, not just a reader. It writes all three formats natively from Draken morsels — Parquet (with optional bloom filters and the usual compression codecs), RFC 4180 CSV, and one-JSON-object-per-row JSONL — without Arrow anywhere in the path. The same vendored codecs that decompress on the way in compress on the way out.
+Rugo is a full round-trip engine, not just a reader. It writes four formats natively from Draken morsels — Parquet (with optional bloom filters and the usual compression codecs), RFC 4180 CSV, one-JSON-object-per-row JSONL, and Avro — without Arrow anywhere in the path. ORC is read-only. The same vendored codecs that decompress on the way in compress on the way out.
 
-Those three are the *interchange* formats, and what a Parquet round trip cannot preserve is Draken's own refinements — logical types, vector flags, the dictionary as written. Where the engine is writing vectors for itself rather than for anyone else, it uses [Skene](skene) instead. The two are deliberately parallel and disjoint: neither imports the other, and both sit directly on Draken.
+Those are the *interchange* formats, and what a Parquet round trip cannot preserve is Draken's own refinements — logical types, vector flags, the dictionary as written. Where the engine is writing vectors for itself rather than for anyone else, it uses [Skene](skene) instead. The two are deliberately parallel and disjoint: neither imports the other, and both sit directly on Draken.
 
 ---
 

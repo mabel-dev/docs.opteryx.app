@@ -1,11 +1,11 @@
 ---
-title: Using Rugo Standalone - Dependency-Free Parquet, CSV, JSONL I/O
-description: Rugo is Opteryx's native file engine, available on its own. A fast, dependency-free reader and writer for Parquet, CSV, and JSONL without PyArrow or SQL.
+title: Using Rugo Standalone - Dependency-Free Parquet, CSV, JSONL, Avro and ORC I/O
+description: Rugo is Opteryx's native file engine, available on its own. A fast, dependency-free reader and writer for Parquet, CSV, JSONL and Avro, and a reader for ORC, without PyArrow or SQL.
 ---
 
 # Using Rugo Standalone
 
-[Rugo](https://rugo.dev) is the file engine inside Opteryx — the part that turns Parquet, CSV, and JSONL files into columns the engine computes over. It is also published on its own, as a plain reader/writer library with no SQL layer on top.
+[Rugo](https://rugo.dev) is the file engine inside Opteryx — the part that turns Parquet, CSV, JSONL, Avro and ORC files into columns the engine computes over. It is also published on its own, as a plain reader/writer library with no SQL layer on top.
 
 ```bash
 pip install rugo
@@ -27,7 +27,7 @@ By the end of this page you'll be able to:
 
 These are two different things worth keeping straight:
 
-- **Rugo** reads and writes Parquet, CSV, and JSONL directly — you call its functions, get Draken morsels back, and work with them in Python. There is no SQL here.
+- **Rugo** reads and writes Parquet, CSV, JSONL and Avro, and reads ORC, directly — you call its functions, get Draken morsels back, and work with them in Python. There is no SQL here.
 - **Opteryx** is the SQL engine built on top of Rugo. Querying a dataset with SQL — `SELECT ... FROM data.table` — works against **Parquet**, **JSONL** and **Skene** folders.
 
 CSV is not a dataset format. To query a CSV with SQL, either read it by path with `READ_CSV('...')`, or use Rugo to convert it to Parquet first (below).

@@ -35,17 +35,19 @@ A **dataset** — the thing `SELECT ... FROM workspace.dataset` resolves to — 
 
 A dataset is single-format by decree: format is a property of the dataset, not of individual files, and a folder whose data files disagree is a hard error at discovery rather than a silent drop of the minority files.
 
-**CSV** is not a dataset format, but it is still queryable — as are Parquet and JSONL — through the file-reading table functions, which take a path directly (there is no `READ_SKENE`):
+**CSV** is not a dataset format, but it is still queryable — as are Parquet, JSONL, Avro and ORC — through the file-reading table functions, which take a path directly (there is no `READ_SKENE`):
 
 ```sql
 SELECT * FROM READ_CSV('/path/to/file.csv');
 SELECT * FROM READ_JSONL('/path/to/file.jsonl');
 SELECT * FROM READ_PARQUET('/path/to/file.parquet');
+SELECT * FROM READ_AVRO('/path/to/file.avro');
+SELECT * FROM READ_ORC('/path/to/file.orc');
 ```
 
-Rugo also reads and writes Parquet, CSV, and JSONL as a standalone library — see [Using Rugo Standalone](/docs/guides/rugo-standalone).
+Rugo also reads and writes Parquet, CSV, and JSONL as a standalone library, and reads Avro and ORC — see [Using Rugo Standalone](/docs/guides/rugo-standalone).
 
-ORC and Avro are not supported — there's no reader for either in the engine or in Rugo.
+Rugo can write Avro but not ORC, so ORC is an input format only. Both have limits on the types they read — unions other than `["null", T]` for Avro, union columns and nanosecond timestamps for ORC — and a file using one is refused with an error naming the problem. See [How to Read an Avro File with Python](/docs/guides/read-an-avro-file-with-python#what-rugo-reads) and [How to Read an ORC File with Python](/docs/guides/read-an-orc-file-with-python#what-rugo-reads).
 
 ## Storage Backends
 

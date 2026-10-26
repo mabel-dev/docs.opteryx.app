@@ -126,6 +126,9 @@
             "Read an Avro file": "guides/read-an-avro-file-with-python.md"
           },
           {
+            "Read an ORC file": "guides/read-an-orc-file-with-python.md"
+          },
+          {
             "Convert CSV to Parquet": "guides/convert-csv-to-parquet.md"
           },
           {
@@ -133,6 +136,9 @@
           },
           {
             "Convert Avro to Parquet": "guides/convert-avro-to-parquet.md"
+          },
+          {
+            "Convert ORC to Parquet": "guides/convert-orc-to-parquet.md"
           },
           {
             "Convert Parquet to CSV": "guides/convert-parquet-to-csv.md"

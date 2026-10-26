@@ -219,5 +219,6 @@ The companion notebook builds `space_missions.jsonl` and runs every example on t
 
 - [How to read a Parquet file with Python](/docs/guides/read-a-parquet-file-with-python)
 - [How to read an Avro file with Python](/docs/guides/read-an-avro-file-with-python)
+- [How to read an ORC file with Python](/docs/guides/read-an-orc-file-with-python)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
 - [READ_JSONL](/docs/reference/sql/statements/read-jsonl)

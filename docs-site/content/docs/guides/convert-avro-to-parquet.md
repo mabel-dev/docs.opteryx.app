@@ -183,6 +183,7 @@ Convert when you will query the same data more than once. You pay for the conver
 ## Related
 
 - [How to Read an Avro File with Python](/docs/guides/read-an-avro-file-with-python)
+- [Convert ORC to Parquet](/docs/guides/convert-orc-to-parquet)
 - [How to Read a Parquet File with Python](/docs/guides/read-a-parquet-file-with-python)
 - [The Rugo Command Line](/docs/guides/rugo-cli)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)

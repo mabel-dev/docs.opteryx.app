@@ -1,6 +1,6 @@
 # Upload
 
-The Python client for the [Upload API](/docs/reference/api/upload-api), the hosted service for ingesting Parquet, CSV and NDJSON files into Opteryx tables. It ships a library, a command line and a full-screen terminal app; for the last two see [The Upload Command Line](/docs/guides/upload-cli).
+The Python client for the [Upload API](/docs/reference/api/upload-api), the hosted service for ingesting Parquet, Avro, ORC, CSV and NDJSON files into Opteryx tables. It ships a library, a command line and a full-screen terminal app; for the last two see [The Upload Command Line](/docs/guides/upload-cli).
 
 ## Install
 
@@ -160,7 +160,7 @@ Commit is idempotent on `idempotency_key`: a retry after a lost response returns
 
 ## Formats
 
-Files are typed from their extension: `.parquet`/`.pq`, `.csv`, `.ndjson`/`.jsonl`. Anything else is refused by name rather than guessed at. Parquet is sampled from its footer and text from its front, so negotiating costs the same few megabytes either way.
+The service accepts Parquet, Avro, ORC, CSV and NDJSON, and stores every one of them as Parquet. Files are typed from their extension: `.parquet`/`.pq`, `.avro`, `.orc`, `.csv`, `.ndjson`/`.jsonl`. Anything else is refused by name rather than guessed at. Parquet is sampled from its footer, Avro from its header and first blocks, and text from its front, so negotiating costs the same few megabytes for each. ORC is the exception: its schema cannot be read from a footer alone, so the whole file is the sample, and an ORC file over 64 MB cannot be negotiated yet.
 
 `UploadClient` and the `/v1/upload` session endpoints still work for existing callers, but they are no longer documented and no longer where new work should start: they infer types from the data and report what they found after the upload rather than before it.
 

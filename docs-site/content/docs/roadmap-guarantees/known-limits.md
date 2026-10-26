@@ -30,7 +30,7 @@ The rollback makes the tagged snapshot current again for every reader, without c
 ## Storage and file formats
 
 - **Storage backends**: local disk, Google Cloud Storage, Amazon S3, and plain HTTP(S) are implemented. Azure Blob Storage and MinIO are not — despite references to them in test configuration, there is no corresponding connector.
-- **File formats**: Parquet, JSONL, and Skene (the engine's own native format) are supported as dataset formats; CSV is queryable through `READ_CSV` but is not a dataset format. ORC and Avro are not supported at all.
+- **File formats**: Parquet, JSONL, and Skene (the engine's own native format) are supported as dataset formats; CSV is queryable through `READ_CSV` but is not a dataset format. Avro and ORC are queryable by path through `READ_AVRO` and `READ_ORC`; ORC can be read but not written.
 
 See [Compatibility](compatibility) for the full list, including platform and Python version support.
 
