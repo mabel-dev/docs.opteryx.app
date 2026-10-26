@@ -257,7 +257,7 @@ You can specify an `INNER JOIN` using the full `INNER JOIN` keyword or the short
 SELECT *
   FROM left_relation
  INNER JOIN right_relation
-    ON left_relation.column_name = right_relation.column_name;
+    ON left_relation.id = right_relation.id;
 ~~~
 
 <figure class="doc-figure">
@@ -347,7 +347,7 @@ A `LEFT JOIN` returns all rows from the left relation. For rows with matching va
 SELECT *
   FROM left_relation
   LEFT JOIN right_relation
-    ON left_relation.column_name = right_relation.column_name;
+    ON left_relation.id = right_relation.id;
 ~~~
 
 <figure class="doc-figure">
@@ -428,7 +428,7 @@ The `FULL JOIN` (also called `FULL OUTER JOIN`) returns all rows from both the l
 SELECT *
   FROM left_relation
   FULL OUTER JOIN right_relation
-    ON left_relation.column_name = right_relation.column_name;
+    ON left_relation.id = right_relation.id;
 ~~~
 
 <figure class="doc-figure">
@@ -511,7 +511,7 @@ A `LEFT SEMI JOIN` returns rows from the left relation that have at least one ma
 SELECT *
   FROM left_relation
   LEFT SEMI JOIN right_relation
-    ON left_relation.column_name = right_relation.column_name;
+    ON left_relation.id = right_relation.id;
 ~~~
 
 <figure class="doc-figure">
@@ -578,7 +578,7 @@ The `LEFT ANTI JOIN` returns rows from the left relation that do **not** have ma
 SELECT *
   FROM left_relation
   LEFT ANTI JOIN right_relation
-    ON left_relation.column_name = right_relation.column_name;
+    ON left_relation.id = right_relation.id;
 ~~~
 
 <figure class="doc-figure">
