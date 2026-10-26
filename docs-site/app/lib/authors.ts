@@ -2,6 +2,7 @@ export type AuthorProfile = {
   name: string;
   photo?: string;
   bio?: string;
+  github?: string;
 };
 
 // Profiles keyed by the `author:` frontmatter value. A post whose author is
@@ -10,7 +11,8 @@ const AUTHORS: Record<string, AuthorProfile> = {
   "Justin Joyce": {
     name: "Justin Joyce",
     photo: "/authors/justin-joyce.jpg",
-    bio: "Building Opteryx — a read-only SQL engine for analytical workloads on object storage.",
+    bio: "Building Opteryx — a SQL engine that queries your data where it lives, from object storage to Iceberg and PostgreSQL.",
+    github: "joocer",
   },
 };
 

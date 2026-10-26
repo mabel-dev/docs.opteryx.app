@@ -226,6 +226,17 @@ export default async function Page({ params }: Props) {
                 <div className="name">{author.name}</div>
                 <div className="role">{authorRole}</div>
                 {author.bio && <p className="bio">{author.bio}</p>}
+                {author.github && (
+                  <div className="links">
+                    <a
+                      href={`https://github.com/${author.github}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      github.com/{author.github}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
             {showLatest && (
