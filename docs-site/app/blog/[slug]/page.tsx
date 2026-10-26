@@ -9,6 +9,8 @@ import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 import BlogPostTOC from "@/app/blog/BlogPostTOC";
 import CodeCopy from "@/app/components/CodeCopy";
 import { markdownPageMetadata } from "@/app/lib/pageMetadata";
+import { getAuthor } from "@/app/lib/authors";
+import AuthorAvatar from "@/app/components/AuthorAvatar";
 
 type Props = {
   params: {
@@ -171,6 +173,8 @@ export default async function Page({ params }: Props) {
   // for the metadata and use `source` as the body.
   const { frontmatter } = parseFrontmatter(fs.readFileSync(mdPath, "utf8"));
   const postDate = frontmatter.date as string | undefined;
+  const author = getAuthor(frontmatter.author as string | undefined);
+  const authorRole = (frontmatter.role as string | undefined) || "Maintainer";
   const html = await renderMarkdownToHtml(source, {
     addHeadingIds: true,
     transformCallouts: true,
@@ -191,10 +195,10 @@ export default async function Page({ params }: Props) {
           <div className="meta-block">
             <div className="label">Author</div>
             <div className="meta-author">
-              <span className="author-avatar">JJ</span>
+              <AuthorAvatar author={author} />
               <div className="who">
-                <div className="name">Justin Joyce</div>
-                <div className="role">Maintainer</div>
+                <div className="name">{author.name}</div>
+                <div className="role">{authorRole}</div>
               </div>
             </div>
           </div>
@@ -217,14 +221,11 @@ export default async function Page({ params }: Props) {
               }. Later releases may have changed the behaviour described here.`}
             </p>
             <div className="post-author-card">
-              <span className="author-avatar">JJ</span>
+              <AuthorAvatar author={author} />
               <div className="who">
-                <div className="name">Justin Joyce</div>
-                <div className="role">Maintainer, Opteryx</div>
-                <p className="bio">
-                  Building Opteryx — a read-only SQL engine for analytical
-                  workloads on object storage.
-                </p>
+                <div className="name">{author.name}</div>
+                <div className="role">{authorRole}</div>
+                {author.bio && <p className="bio">{author.bio}</p>}
               </div>
             </div>
             {showLatest && (

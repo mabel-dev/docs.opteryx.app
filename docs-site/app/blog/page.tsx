@@ -3,6 +3,8 @@ import path from "path";
 import fs from "fs";
 import { readMarkdownFile } from "@/app/lib/readMarkdownFile";
 import { getContentDocsDir } from "@/app/lib/getContentDocsDir";
+import { getAuthor } from "@/app/lib/authors";
+import AuthorAvatar from "@/app/components/AuthorAvatar";
 
 function parseFrontmatter(source: string) {
   const match = source.match(/^---\n([\s\S]*?)\n---\n/);
@@ -31,6 +33,7 @@ type PostMeta = {
   description?: string;
   date?: string;
   image?: string;
+  author?: string;
 };
 
 export default function Page() {
@@ -63,8 +66,9 @@ export default function Page() {
       const description = frontmatter.description as string | undefined;
       const date = frontmatter.date as string | undefined;
       const image = frontmatter.image as string | undefined;
+      const author = frontmatter.author as string | undefined;
 
-      posts.push({ slug, title, description, date, image });
+      posts.push({ slug, title, description, date, image, author });
     }
   } catch (err) {
     // ignore if dir missing
@@ -118,8 +122,8 @@ export default function Page() {
               <h2>{firstPost.title}</h2>
               {firstPost.description && <p>{firstPost.description}</p>}
               <div className="lead-foot">
-                <span className="author-avatar">JJ</span>
-                <span className="who">Justin Joyce</span>
+                <AuthorAvatar author={getAuthor(firstPost.author)} />
+                <span className="who">{getAuthor(firstPost.author).name}</span>
                 {firstPost.date && (
                   <>
                     <span className="sep">·</span>
