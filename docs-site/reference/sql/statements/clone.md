@@ -45,7 +45,7 @@ CREATE TABLE personal.alice.lineitem CLONE samples.tpch_sf1.lineitem;
 
 ### Fork a whole collection
 ~~~sql
-CREATE COLLECTION personal.tpch_sandbox CLONE samples.tpch_sf1;
+CREATE COLLECTION personal.alice CLONE samples.tpch_sf1;
 ~~~
 
 Refused wholesale if any one dataset would be refused — the membership is read and every

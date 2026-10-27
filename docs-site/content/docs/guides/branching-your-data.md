@@ -32,19 +32,22 @@ This guide walks through them in the order you would use them, on the TPC-H samp
 ## 1. Take a Copy
 
 ```sql
-CREATE COLLECTION personal.tpch_sandbox CLONE samples.tpch_sf1;
+CREATE COLLECTION personal.alice CLONE samples.tpch_sf1;
 ```
 
-That one statement forks every table in `samples.tpch_sf1` into a new collection,
-`tpch_sandbox`, in the `personal` workspace. No
-data is copied: each new table's first snapshot lists the same files its source's current
-snapshot lists. The fork occupies no storage of its own until you write to it, and you are
-billed only for what you add.
+That one statement forks every table in `samples.tpch_sf1` into your personal collection —
+`personal.alice` here, with `alice` standing in for your username. No data is copied: each
+new table's first snapshot lists the same files its source's current snapshot lists. The
+fork occupies no storage of its own until you write to it, and you are billed only for what
+you add.
+
+If your collection already holds a table with any of the incoming names, the whole clone is
+refused before anything is created, so you are never left with half a copy.
 
 To fork a single table instead of the whole collection, use the table form:
 
 ```sql
-CREATE TABLE personal.tpch_sandbox.lineitem CLONE samples.tpch_sf1.lineitem;
+CREATE TABLE personal.alice.lineitem CLONE samples.tpch_sf1.lineitem;
 ```
 
 A fork is an **ordinary table**, not a branch held inside the source. You query it, write to
@@ -54,7 +57,7 @@ storage — the source, and every other fork of it, never see them.
 ## 2. Mark a Known-Good Point
 
 ```sql
-ALTER TABLE personal.tpch_sandbox.lineitem
+ALTER TABLE personal.alice.lineitem
 CREATE TAG before_cleanup;
 ```
 
@@ -65,7 +68,7 @@ Take one before any change you might want to undo.
 ## 3. Make the Change
 
 ```sql
-DELETE FROM personal.tpch_sandbox.lineitem
+DELETE FROM personal.alice.lineitem
  WHERE l_quantity < 5;
 ```
 
@@ -78,8 +81,8 @@ it can sit in the same query:
 
 ```sql
 SELECT
-    (SELECT COUNT(*) FROM personal.tpch_sandbox.lineitem) AS after_cleanup,
-    (SELECT COUNT(*) FROM personal.tpch_sandbox.lineitem VERSION AS OF 'before_cleanup') AS before_cleanup;
+    (SELECT COUNT(*) FROM personal.alice.lineitem) AS after_cleanup,
+    (SELECT COUNT(*) FROM personal.alice.lineitem VERSION AS OF 'before_cleanup') AS before_cleanup;
 ```
 
 `VERSION AS OF PREVIOUS` reads the version of the data before the current one without a tag
@@ -89,7 +92,7 @@ or an id, and `TIMESTAMP AS OF` reads the table as it was at a point in time —
 To see the history itself:
 
 ```sql
-SHOW SNAPSHOTS FOR personal.tpch_sandbox.lineitem;
+SHOW SNAPSHOTS FOR personal.alice.lineitem;
 ```
 
 Each row is a commit, with its id, time, author and operation; the `tags` column shows which
@@ -100,7 +103,7 @@ snapshots a tag is holding.
 If the change was wrong:
 
 ```sql
-ALTER TABLE personal.tpch_sandbox.lineitem
+ALTER TABLE personal.alice.lineitem
 ROLLBACK TO VERSION before_cleanup;
 ```
 
@@ -118,7 +121,7 @@ While you worked, the source may have moved on. To make the fork equal its sourc
 contents again:
 
 ```sql
-ALTER TABLE personal.tpch_sandbox.lineitem RESYNC;
+ALTER TABLE personal.alice.lineitem RESYNC;
 ```
 
 Like the clone, this borrows the source's current files and copies nothing. If the fork has
@@ -134,7 +137,7 @@ is a [materialized view](/docs/guides/when-a-materialized-view-replaces-a-pipeli
 A source cannot be dropped or renamed while forks of it exist. To make a fork stand alone:
 
 ```sql
-ALTER TABLE personal.tpch_sandbox.lineitem DETACH;
+ALTER TABLE personal.alice.lineitem DETACH;
 ```
 
 This is the one statement in this guide that **moves data**: the files the fork's current
