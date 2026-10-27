@@ -187,6 +187,37 @@ per-suite `fetch_data.py` scripts.
 
 > **Try it yourself:** the companion notebook runs the 22 TPC-H queries against DuckDB and Opteryx, with each engine reading its own native format, and charts the results on whatever machine runs it. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpch-duckdb-vs-opteryx.ipynb).
 
+## Attributions
+
+The suites above are third-party benchmarks. Their queries and data keep the
+terms of their upstream sources, not the Opteryx licence. The engine
+repository's `THIRD_PARTY_BENCHMARKS.md` lists the files each one covers and
+what has been changed.
+
+| Benchmark | Source | Terms |
+|:--|:--|:--|
+| TPC-H, TPC-DS | [Transaction Processing Performance Council](https://www.tpc.org/) | [TPC fair use policy](https://www.tpc.org/TPC_Documents_Current_Versions/pdf/Fair_Use_Quick_Reference_v1.0.0.pdf) |
+| ClickBench | [ClickHouse, Inc.](https://github.com/ClickHouse/ClickBench) | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
+| JSONBench | [ClickHouse, Inc.](https://github.com/ClickHouse/JSONBench); data is Bluesky events collected with Jetstream | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
+| Join Order Benchmark (JOB) | Leis et al., VLDB 2015; data from [IMDb](https://www.imdb.com) | IMDb [non-commercial terms](https://help.imdb.com/article/imdb/general-information/can-i-use-imdb-data-in-my-software/G5JTRESSHJBBHTGX) |
+| H2O db-benchmark | [H2O.ai](https://github.com/h2oai/db-benchmark), now maintained by [DuckDB Labs](https://github.com/duckdblabs/db-benchmark) | [MPL-2.0](https://www.mozilla.org/MPL/2.0/) |
+| Medicare1 | The [Public BI Benchmark](https://github.com/cwida/public_bi_benchmark) from CWI | Upstream terms |
+| sqllogictest | [SQLite](https://sqlite.org/sqllogictest/doc/trunk/about.wiki) | Public domain |
+
+**TPC-H and TPC-DS.** Nothing on this page, in the companion notebooks, or in
+the published results is a TPC result. The queries and data are derived from
+TPC-H and TPC-DS, the runs are not audited or reviewed by the TPC, and the
+numbers are not comparable with published TPC results. The names are used only
+to identify the workloads the material derives from. The TPC-H and TPC-DS
+specifications and their copyright are the TPC's.
+
+**Join Order Benchmark.** Viktor Leis, Andrey Gubichev, Atanas Mirchev, Peter
+Boncz, Alfons Kemper and Thomas Neumann. "How Good Are Query Optimizers,
+Really?" *Proceedings of the VLDB Endowment* 9(3), 2015. The queries are taken
+from [gregrahn/join-order-benchmark](https://github.com/gregrahn/join-order-benchmark).
+The IMDb data is downloaded for local use and not redistributed. Information
+courtesy of IMDb (https://www.imdb.com). Used with permission.
+
 ## Related
 
 - [Wrenchy Bench results](https://mabel-dev.github.io/wrenchy-bench/) — published summary results
@@ -205,4 +236,7 @@ per-suite `fetch_data.py` scripts.
 ---
 
 TPC, TPC Benchmark, TPC-H, and TPC-DS are trademarks of the Transaction
-Processing Performance Council. ClickHouse is a registered trademark of ClickHouse, Inc.
+Processing Performance Council. ClickHouse is a registered trademark of
+ClickHouse, Inc. DuckDB is a trademark of the DuckDB Foundation. IMDb is a
+trademark of IMDb.com, Inc. All other trademarks are the property of their
+respective owners.
