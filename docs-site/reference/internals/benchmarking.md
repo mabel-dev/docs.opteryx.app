@@ -183,8 +183,6 @@ themselves live in the engine repository under `tests/performance/`, each with
 its own data fetcher — `make jsonbench-data`, `make medicare1-fetch`, and the
 per-suite `fetch_data.py` scripts.
 
-> **Try it yourself:** the ClickBench companion notebook downloads a subset of the partitioned `hits` Parquet files (10 of the 100 by default, which fits a free Colab runtime), and sets each engine up the way its ClickBench entry does. DuckDB reads the files as downloaded. Opteryx reads them after they are rewritten by its own Parquet writer, rugo, as its `opteryx-parquet` entry does. The notebook then runs the 43 queries, cross-checks row counts and charts the results. A subset on a Colab runtime cannot be compared with the official 100M-row ClickBench results. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/clickbench-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/clickbench-duckdb-vs-opteryx.ipynb).
-
 > **Try it yourself:** the companion notebook runs the 22 TPC-H queries against DuckDB and Opteryx, with both engines reading the same Parquet files exported by DuckDB, and charts the results on whatever machine runs it. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpch-duckdb-vs-opteryx.ipynb).
 
 ## Attributions
@@ -223,7 +221,6 @@ courtesy of IMDb (https://www.imdb.com). Used with permission.
 - [Wrenchy Bench results](https://mabel-dev.github.io/wrenchy-bench/) — published summary results
 - [TPC-H notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) — run DuckDB and Opteryx side by side yourself
 - [TPC-DS notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) — coverage and per-query timings for DuckDB and Opteryx on the 99 TPC-DS queries
-- [ClickBench notebook in Google Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/clickbench-duckdb-vs-opteryx.ipynb) — the 43 ClickBench queries on DuckDB and Opteryx over a subset of the `hits` Parquet files
 - [Why Opteryx Is Fast](/docs/introduction/why-opteryx-is-fast) — the techniques, with the published ClickBench, JSONBench and release-over-release figures
 - [Engine overview](engine-overview) — what the numbers are measuring
 - [RISC-V support](riscv-support) — published pass/fail results on one platform
