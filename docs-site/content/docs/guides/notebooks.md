@@ -45,26 +45,28 @@ Both of these read the public National Vulnerability Database (NVD) dataset on [
 
 ## Benchmarks: DuckDB vs Opteryx
 
-These three run a standard benchmark suite against DuckDB and Opteryx side by side, on whatever machine runs the notebook. Each one generates or downloads the data, rewrites it for Opteryx with Rugo's Parquet writer, runs every query on both engines in fresh processes, cross-checks row counts, and charts the result.
+These two run workloads derived from the [TPC-H](https://www.tpc.org/tpch/) and [TPC-DS](https://www.tpc.org/tpcds/) benchmarks against DuckDB and Opteryx side by side, on whatever machine runs the notebook. Each one generates the data, rewrites it for Opteryx with Rugo's Parquet writer, runs every query on both engines in fresh processes, cross-checks row counts, and charts the result.
 
 | Notebook | Queries | Data |
 |---|---|---|
-| **TPC-H** | The 22 standard queries | Generated with DuckDB's `dbgen`, scale factor 1 by default |
+| **TPC-H** | The 22 TPC-H queries | Generated with DuckDB's `dbgen`, scale factor 1 by default |
 | **TPC-DS** | The 99 queries, reporting coverage first: how many each engine plans and runs | Generated with DuckDB's `dsdgen`, scale factor 1 by default |
-| **ClickBench** | The 43 queries | The first 10 of the 100 published `hits` Parquet partitions by default |
 
 - TPC-H: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) · [Download](/notebooks/tpch-duckdb-vs-opteryx.ipynb)
 - TPC-DS: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) · [Download](/notebooks/tpcds-duckdb-vs-opteryx.ipynb)
-- ClickBench: [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/clickbench-duckdb-vs-opteryx.ipynb) · [Download](/notebooks/clickbench-duckdb-vs-opteryx.ipynb)
 
-A Colab runtime is small and shared, so compare the two engines with each other, not with figures published anywhere else. The ClickBench notebook in particular runs a subset of the data and times it differently, so it cannot be compared with the official ClickBench results. [Benchmarking](/docs/reference/internals/benchmarking) explains the method and what the numbers are and are not.
+A Colab runtime is small and shared, so compare the two engines with each other, not with figures published anywhere else. These runs are not audited TPC benchmark results and are not comparable with published TPC results. [Benchmarking](/docs/reference/internals/benchmarking) explains the method and what the numbers are and are not.
 
 ## Running a Notebook Locally
 
-Download the `.ipynb` file and open it in Jupyter or VS Code. The notebooks install their packages with `%pip` and write their files into the notebook's working folder, so they run unchanged. The three benchmark notebooks use a `tpch_bench`, `tpcds_bench` or `clickbench` folder next to the notebook when they are not on Colab. They are also the heavy ones: for a quick check, lower `SCALE_FACTOR` to `0.1` in the TPC-H and TPC-DS notebooks, or `NUM_FILES` in the ClickBench notebook.
+Download the `.ipynb` file and open it in Jupyter or VS Code. The notebooks install their packages with `%pip` and write their files into the notebook's working folder, so they run unchanged. The two benchmark notebooks use a `tpch_bench` or `tpcds_bench` folder next to the notebook when they are not on Colab. They are also the heavy ones: for a quick check, lower `SCALE_FACTOR` to `0.1`.
 
 ## Related
 
 - [Exploratory analysis in notebooks](/docs/guides/exploratory-analysis)
 - [Using Rugo standalone](/docs/guides/rugo-standalone)
 - [Benchmarking](/docs/reference/internals/benchmarking)
+
+---
+
+TPC, TPC Benchmark, TPC-H, and TPC-DS are trademarks of the Transaction Processing Performance Council.
