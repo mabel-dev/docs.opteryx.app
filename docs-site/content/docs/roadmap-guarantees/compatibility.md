@@ -56,7 +56,7 @@ Storage is reached through one generic `FileSystemConnector`, which picks a file
 - **Local disk** — a bare path, or `file://`.
 - **Google Cloud Storage** — `gs://` or `gcs://`, authenticating through Google's own OAuth-based service account credentials.
 - **HTTP / HTTPS** — `http://` and `https://`, via range requests.
-- **Amazon S3** — `s3://`, via SigV4-signed range requests.
+- **Amazon S3** — `s3://`, via SigV4-signed range requests. Set `AWS_S3_ENDPOINT` to point at an S3-compatible store such as MinIO AIStor; requests then use path-style addressing. See [Querying Iceberg](/docs/guides/querying-iceberg) for a worked AIStor setup.
 
 `DiskConnector` and `GcpCloudStorageConnector` still work as names, but they are backwards-compatible aliases for `FileSystemConnector` rather than separate implementations.
 
@@ -64,7 +64,7 @@ One exception worth knowing: the `READ_*` table functions are bare dataset funct
 
 The complete set of protocols the engine will resolve is `file`, `gs`, `gcs`, `s3`, `http`, `https`, and a bare path; anything else is refused at plan time with `Unsupported storage protocol`.
 
-Azure Blob Storage and MinIO are not implemented. Test configuration in CI references MinIO and Azure environment variables for mocking purposes, but no corresponding connector code exists in the engine — don't take that as a sign they're supported.
+Azure Blob Storage is not implemented. Test configuration in CI references Azure environment variables for mocking purposes, but no corresponding connector code exists in the engine — don't take that as a sign it's supported.
 
 ## SQL Dialect
 
