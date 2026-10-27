@@ -3677,6 +3677,9 @@ kbd {
     flex-wrap: wrap;
 }
 .post-author-card .who .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     white-space: nowrap;
 }
 
