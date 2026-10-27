@@ -63,6 +63,9 @@
             "Tasks and triggers": "guides/tasks-and-triggers.md"
           },
           {
+            "Branching your data": "guides/branching-your-data.md"
+          },
+          {
             "Markdown in comments and descriptions": "core-concepts/markdown-in-descriptions.md"
           }
         ]
