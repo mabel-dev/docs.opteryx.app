@@ -16,7 +16,7 @@ export default function SiteHeader() {
       : 'Docs'
 
   const navLinks = [
-    { label: 'Home',     href: '/' },
+    { label: 'Home',     href: 'https://opteryx.app/' },
     { label: 'Docs',     href: '/docs' },
     { label: 'Learn',    href: '/learn' },
     { label: 'Blog',     href: '/blog' },
@@ -25,22 +25,26 @@ export default function SiteHeader() {
   return (
     <header className="blog-header">
       <div className="blog-header-inner">
-        <Link href="/" className="blog-logo" style={{ textDecoration: 'none' }}>
+        <a href="https://docs.opteryx.app/" className="blog-logo" style={{ textDecoration: 'none' }}>
           <Image src="/opteryx-icon.svg" alt="Opteryx" width={22} height={22} />
           <span>Opteryx<span className="logo-suffix"> Documentation</span></span>
           <span className="sep">/</span>
           <span className="pill">{section}</span>
-        </Link>
+        </a>
         <nav className="blog-nav">
-          {navLinks.map(({ label, href }) => (
-            <Link
-              key={href}
-              href={href}
-              className={pathname === href || (href !== '/' && pathname.startsWith(href)) ? 'active' : ''}
-            >
-              {label}
-            </Link>
-          ))}
+          {navLinks.map(({ label, href }) =>
+            href.startsWith('http') ? (
+              <a key={href} href={href}>{label}</a>
+            ) : (
+              <Link
+                key={href}
+                href={href}
+                className={pathname.startsWith(href) ? 'active' : ''}
+              >
+                {label}
+              </Link>
+            )
+          )}
         </nav>
         <span className="header-spacer" />
         <SearchBox />
