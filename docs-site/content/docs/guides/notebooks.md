@@ -45,7 +45,7 @@ Both of these read the public National Vulnerability Database (NVD) dataset on [
 
 ## Benchmarks: DuckDB vs Opteryx
 
-These two run workloads derived from the [TPC-H](https://www.tpc.org/tpch/) and [TPC-DS](https://www.tpc.org/tpcds/) benchmarks against DuckDB and Opteryx side by side, on whatever machine runs the notebook. Each one generates the data, rewrites it for Opteryx with Rugo's Parquet writer, runs every query on both engines in fresh processes, cross-checks row counts, and charts the result.
+These two run workloads derived from the [TPC-H](https://www.tpc.org/tpch/) and [TPC-DS](https://www.tpc.org/tpcds/) benchmarks against DuckDB and Opteryx side by side, on whatever machine runs the notebook. Each one generates the data, exports it to Parquet with DuckDB so both engines read the same files, runs every query on both engines in fresh processes, cross-checks row counts, and charts the result.
 
 | Notebook | Queries | Data |
 |---|---|---|

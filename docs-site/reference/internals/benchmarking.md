@@ -119,7 +119,7 @@ moves against its own previous times.
 The data generator is `dsdgen` from the TPC's own toolkit, so the tables are
 regenerated locally rather than shipped in the repository.
 
-> **Try it yourself:** the TPC-DS companion notebook generates the data with `dsdgen`, runs the 99 queries against DuckDB and Opteryx, each reading its own native format, and reports coverage first: how many queries each engine planned and ran, with every failure listed by error. Timings are compared query by query on the ones both engines completed, with no overall ratio. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpcds-duckdb-vs-opteryx.ipynb).
+> **Try it yourself:** the TPC-DS companion notebook generates the data with `dsdgen`, runs the 99 queries against DuckDB and Opteryx, with both engines reading the same Parquet files exported by DuckDB, and reports coverage first: how many queries each engine planned and ran, with every failure listed by error. Timings are compared query by query on the ones both engines completed, with no overall ratio. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpcds-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpcds-duckdb-vs-opteryx.ipynb).
 
 ### RISC-V
 
@@ -185,7 +185,7 @@ per-suite `fetch_data.py` scripts.
 
 > **Try it yourself:** the ClickBench companion notebook downloads a subset of the partitioned `hits` Parquet files (10 of the 100 by default, which fits a free Colab runtime), and sets each engine up the way its ClickBench entry does. DuckDB reads the files as downloaded. Opteryx reads them after they are rewritten by its own Parquet writer, rugo, as its `opteryx-parquet` entry does. The notebook then runs the 43 queries, cross-checks row counts and charts the results. A subset on a Colab runtime cannot be compared with the official 100M-row ClickBench results. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/clickbench-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/clickbench-duckdb-vs-opteryx.ipynb).
 
-> **Try it yourself:** the companion notebook runs the 22 TPC-H queries against DuckDB and Opteryx, with each engine reading its own native format, and charts the results on whatever machine runs it. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpch-duckdb-vs-opteryx.ipynb).
+> **Try it yourself:** the companion notebook runs the 22 TPC-H queries against DuckDB and Opteryx, with both engines reading the same Parquet files exported by DuckDB, and charts the results on whatever machine runs it. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/tpch-duckdb-vs-opteryx.ipynb) or [download the notebook](/notebooks/tpch-duckdb-vs-opteryx.ipynb).
 
 ## Attributions
 
