@@ -1,0 +1,4 @@
+opteryx-core
+pyarrow
+pandas
+streamlit

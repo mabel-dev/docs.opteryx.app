@@ -107,6 +107,9 @@
             "Exploratory analysis in notebooks": "guides/exploratory-analysis.md"
           },
           {
+            "Building a Streamlit app": "guides/streamlit.md"
+          },
+          {
             "Embedding in a service": "guides/embedding-in-a-service.md"
           },
           {
