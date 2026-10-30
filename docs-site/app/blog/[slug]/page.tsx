@@ -178,6 +178,7 @@ export default async function Page({ params }: Props) {
   const html = await renderMarkdownToHtml(source, {
     addHeadingIds: true,
     transformCallouts: true,
+    transformTldr: true,
   });
 
   const posts = readBlogPosts(blogDir);

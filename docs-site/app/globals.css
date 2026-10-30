@@ -41,6 +41,13 @@
     font-display: swap;
 }
 @font-face {
+    font-family: "IBM Plex Serif";
+    src: url("/fonts/ibm-plex-serif-400-italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
     font-family: "JetBrains Mono";
     src: url("/fonts/jetbrains-mono-400.woff2") format("woff2");
     font-weight: 400;
@@ -3281,6 +3288,38 @@ kbd {
     margin-bottom: 14px;
     border-radius: 2px;
 }
+/* The blog TL/DR: a small label and the summary in italic serif, between
+   hairlines, so it reads as a standfirst rather than the first section. */
+.prose .post-tldr {
+    margin: 8px 0 8px;
+    padding: 18px 0 4px;
+    border-top: 1px solid var(--border-2);
+    border-bottom: 1px solid var(--border-2);
+}
+.prose .post-tldr h2 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--opteryx-teal);
+}
+.prose .post-tldr h2::before {
+    display: none;
+}
+.prose .post-tldr p {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-deep);
+    margin-bottom: 14px;
+}
+.prose .post-tldr strong {
+    font-weight: 400;
+    color: var(--opteryx-teal);
+}
+
 .prose h3 {
     font-family: var(--font-display);
     font-weight: 600;

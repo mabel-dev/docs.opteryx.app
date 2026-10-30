@@ -4,6 +4,7 @@ import { createHighlighter, type Highlighter } from "shiki";
 type RenderMarkdownOptions = {
   addHeadingIds?: boolean;
   transformCallouts?: boolean;
+  transformTldr?: boolean;
 };
 
 const SHIKI_THEME = "opteryx-light";
@@ -320,6 +321,17 @@ function transformCalloutBlockquotes(html: string): string {
   );
 }
 
+// Blog posts open with a "## TL;DR" section. It is wrapped, up to the next h2,
+// so it can be set apart from the body, and its heading is shown as "TL/DR".
+// The heading stays an h2 so the post's table of contents still lists it.
+function transformTldrSection(html: string): string {
+  return html.replace(
+    /<h2(\s[^>]*)?>TL;DR<\/h2>([\s\S]*?)(?=<h2[\s>]|$)/,
+    (_, attrs = "", body) =>
+      `<section class="post-tldr"><h2${attrs}>TL/DR</h2>${body}</section>`,
+  );
+}
+
 // Tab groups are written with HTML comments, so the markdown still reads as a
 // plain sequence of sections anywhere it isn't rendered by this site:
 //
@@ -462,6 +474,10 @@ export async function renderMarkdownToHtml(
 
   if (options.transformCallouts) {
     html = transformCalloutBlockquotes(html);
+  }
+
+  if (options.transformTldr) {
+    html = transformTldrSection(html);
   }
 
   return html;
