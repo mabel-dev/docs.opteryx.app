@@ -54,6 +54,9 @@
             "Connecting an Iceberg catalog": "guides/connecting-an-iceberg-catalog.md"
           },
           {
+            "Iceberg in Power BI and Excel": "guides/iceberg-in-power-bi-and-excel.md"
+          },
+          {
             "Connecting a PostgreSQL database": "guides/connecting-a-postgres-database.md"
           },
           {

@@ -51,7 +51,9 @@ Requests carry a bearer token, the same as the rest of the hosted service:
 Authorization: Bearer <token>
 ```
 
-This must be a JWT access token - see the [Authentication API](/docs/reference/api/authentication-api) for how to mint one. A raw Personal Access Token isn't accepted here: if you hold a PAT (a `client_id`/`client_secret` pair, as used by `opteryx_upload`'s `PATAuthenticator`), exchange it for an access token at that endpoint first. [Access and Permissions](/docs/core-concepts/access-and-permissions) covers how workspace policies decide what a token can see.
+A bearer token must be a JWT access token - see the [Authentication API](/docs/reference/api/authentication-api) for how to mint one. A raw Personal Access Token isn't accepted as a bearer token: if you hold a PAT (a `client_id`/`client_secret` pair, as used by `opteryx_upload`'s `PATAuthenticator`), exchange it for an access token at that endpoint first. [Access and Permissions](/docs/core-concepts/access-and-permissions) covers how workspace policies decide what a token can see.
+
+Clients that can only store a user name and password - Power BI and Excel among them - can use HTTP Basic authentication instead, with the `client_id` as the user name and the PAT as the password. The service exchanges them for an access token on each request. [Iceberg in Power BI and Excel](/docs/guides/iceberg-in-power-bi-and-excel#step-2-create-a-credential-for-power-bi-and-excel) walks through it.
 
 ## Discovering Datasets
 
