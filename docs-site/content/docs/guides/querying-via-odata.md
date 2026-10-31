@@ -324,7 +324,7 @@ compares text, and can't skip files using their stored min/max.
 
 ### Aggregating with `$apply`
 
-`$apply` groups and aggregates server-side, so you don't have to pull every row back to count or deduplicate it. `$count`, `sum`, `average`, `min`, `max` and `countdistinct` are available:
+`$apply` groups and aggregates server-side, so you don't have to pull every row back to count or deduplicate it. `$count`, `sum`, `average`, `min` and `max` are available:
 
 ```bash
 curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
@@ -347,7 +347,7 @@ curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
 
 For a distinct list of values, group by the column without aggregating it further - that returns one row per distinct value, rather than every underlying row for you to deduplicate.
 
-Note that `$apply` combined with `$orderby` on an aggregate alias is not currently supported; sort the aggregated result client-side.
+`$orderby` can name an aggregate alias, so `$orderby=country_count desc` sorts the result above by its count.
 
 ## Try It
 

@@ -28,7 +28,7 @@ Connected catalogs are **read-only**.
 | `SELECT`, joins, aggregates, `EXPLAIN` | `CREATE`, `INSERT`, `UPDATE`, `DELETE`, `DROP` |
 | Predicate pushdown and file pruning from Iceberg statistics | Materialized views, triggers, webhooks on these tables |
 | Datasets listed in Studio and over [OData](/docs/guides/querying-via-odata) | Iceberg views |
-| Cross-workspace joins against your Opteryx-hosted data | Nested types — `struct`, `map`, `list` columns |
+| Cross-workspace joins against your Opteryx-hosted data | A few nested column shapes — see [What's Supported](/docs/guides/querying-iceberg#whats-supported) |
 
 A query that writes to a connected workspace is refused when it is planned, so nothing runs half-way; it does not fall back to Opteryx storage.
 
@@ -309,7 +309,7 @@ Query and processing charges are the same as for any workspace — see the [Cost
 
 **Queries fail with an authorization error after a rotation at your catalog.** The stored secret is no longer valid. Publish the new one through the Catalog settings panel — the fix is a binding write, not a redeploy.
 
-**A column is missing or a table won't open.** Iceberg `struct`, `map`, and `list` columns aren't read today. A table whose schema is entirely unreadable shows in the list with no columns and fails at query time.
+**A column is missing or a table won't open.** Most nested columns are read: `struct` and `map` columns as JSON text, and lists of plain values as arrays. A `map` with non-string keys, a list of lists, and a list of dates, timestamps or other non-basic types aren't. A table whose schema is entirely unreadable shows in the list with no columns and fails at query time.
 
 **Everything worked and then a whole namespace vanished from the tree.** Refresh the dataset list — the tree shows the last projection, not live state.
 

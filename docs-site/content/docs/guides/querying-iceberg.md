@@ -221,13 +221,15 @@ Iceberg support is read-only.
 |---|---|
 | `SELECT`, joins, aggregates, `EXPLAIN` | Writes: `CREATE`, `INSERT`, `UPDATE`, `DELETE`, `DROP` |
 | File pruning from manifest bounds, row-group pruning from Parquet footers | Tables with merge-on-read delete files |
-| Iceberg v1 and v2 tables, partitioned or not | Tables with any nested column: `struct`, `map`, `list` |
-| Time travel, `SHOW SNAPSHOTS`, `SHOW MANIFEST`, `information_schema` | Data files in a format other than Parquet |
-| Schema evolution across snapshots | Iceberg views, and vended credentials |
+| Iceberg v1 and v2 tables, partitioned or not | A few nested column shapes (below) |
+| Parquet, Avro and ORC data files | Iceberg views, and vended credentials |
+| Time travel, `SHOW SNAPSHOTS`, `SHOW MANIFEST`, `information_schema` | |
+| Schema evolution across snapshots | |
+| Nested `struct`, `map` and `list` columns | |
 
 A table with merge-on-read delete files is **refused rather than read**, because reading it without applying the deletes would return deleted rows. PyIceberg never writes them. Spark, Flink and Trino can, so this is the limitation you're most likely to meet on a table they wrote.
 
-A table with a nested column can't be read even by a query that touches only its other columns.
+A `struct`, a `map`, and a list of structs or maps are read as JSON text. A list of booleans, numbers or strings is read as an array. Three shapes aren't read: a `map` whose keys aren't strings, a list of lists, and a list of any other type, such as dates. A table with one of those columns can't be read, even by a query that touches only its other columns.
 
 ### Already have Parquet files?
 

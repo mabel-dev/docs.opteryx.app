@@ -95,7 +95,7 @@ Do the filtering in Power Query instead. Filtering rows, removing columns, sorti
 https://odata.opteryx.app/api/v4/analytics/sales/orders?$apply=groupby((region),aggregate(amount with sum as total_amount))
 ```
 
-This returns one row per region, with no rows of detail. `$count`, `sum`, `average`, `min`, `max` and `countdistinct` are available. [Aggregating with `$apply`](/docs/guides/querying-via-odata#aggregating-with-apply) has the full syntax.
+This returns one row per region, with no rows of detail. `$count`, `sum`, `average`, `min` and `max` are available. [Aggregating with `$apply`](/docs/guides/querying-via-odata#aggregating-with-apply) has the full syntax.
 
 ## Scheduled Refresh in the Power BI Service
 
@@ -122,7 +122,7 @@ Rotating the credential your Iceberg catalog uses has nothing to do with this. T
 
 - **Import mode only.** Power BI's OData connector doesn't support DirectQuery, so the data is loaded into the model and kept as current as your refresh schedule.
 - **Read-only.** OData is read-only, and so is a workspace bound to your Iceberg catalog.
-- **No nested columns.** Iceberg `struct`, `map` and `list` columns aren't read, so they don't appear in the Navigator.
+- **Nested columns arrive as JSON text or lists.** A `struct` or `map` column arrives as JSON text, which Power Query's **Parse → JSON** turns back into fields. A list of plain values arrives as a list column for you to expand. A few nested shapes can't be read at all: see [What's Supported](/docs/guides/querying-iceberg#whats-supported).
 - **New tables need a listing refresh.** See [Step 1](#step-1-make-the-tables-visible).
 - **Schema changes need a model refresh.** If a column is added in Iceberg, refresh the dataset list in Opteryx, then refresh the query's preview in Power Query, so that the model picks up the new column.
 
