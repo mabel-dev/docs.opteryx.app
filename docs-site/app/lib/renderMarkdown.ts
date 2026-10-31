@@ -323,12 +323,14 @@ function transformCalloutBlockquotes(html: string): string {
 
 // Blog posts open with a "## TL;DR" section. It is wrapped, up to the next h2,
 // so it can be set apart from the body, and its heading is shown as "TL/DR".
-// The heading stays an h2 so the post's table of contents still lists it.
+// The heading stays an h2 so the post's table of contents still lists it. A
+// "---" closing the section is dropped: the block sets itself apart already.
 function transformTldrSection(html: string): string {
   return html.replace(
     /<h2(\s[^>]*)?>TL;DR<\/h2>([\s\S]*?)(?=<h2[\s>]|$)/,
     (_, attrs = "", body) =>
-      `<section class="post-tldr"><h2${attrs}>TL/DR</h2>${body}</section>`,
+      `<section class="post-tldr"><h2${attrs}>TL/DR</h2>` +
+      `${body.replace(/<hr\s*\/?>\s*$/, "")}</section>\n`,
   );
 }
 

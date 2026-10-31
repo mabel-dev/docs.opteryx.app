@@ -3288,13 +3288,12 @@ kbd {
     margin-bottom: 14px;
     border-radius: 2px;
 }
-/* The blog TL/DR: a small label and the summary in italic serif, between
-   hairlines, so it reads as a standfirst rather than the first section. */
+/* The blog TL/DR: a small label and the summary in italic serif under a
+   hairline, so it reads as a standfirst rather than the first section. */
 .prose .post-tldr {
-    margin: 8px 0 8px;
-    padding: 18px 0 4px;
+    margin: 8px 0 0;
+    padding-top: 18px;
     border-top: 1px solid var(--border-2);
-    border-bottom: 1px solid var(--border-2);
 }
 .prose .post-tldr h2 {
     margin: 0 0 8px;
@@ -3307,17 +3306,40 @@ kbd {
 .prose .post-tldr h2::before {
     display: none;
 }
-.prose .post-tldr p {
+.prose .post-tldr p,
+.prose .post-tldr li {
     font-family: "IBM Plex Serif", Georgia, serif;
     font-style: italic;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.6;
     color: var(--text-deep);
+}
+.prose .post-tldr p {
     margin-bottom: 14px;
+}
+.prose .post-tldr ul,
+.prose .post-tldr ol {
+    margin-bottom: 14px;
+}
+.prose .post-tldr li {
+    padding: 2px 0;
+}
+.prose .post-tldr li::marker {
+    color: var(--opteryx-teal);
 }
 .prose .post-tldr strong {
     font-weight: 400;
     color: var(--opteryx-teal);
+}
+.prose .post-tldr em {
+    font-style: normal;
+}
+.prose .post-tldr code {
+    font-style: normal;
+    font-size: 0.78em;
+}
+.prose .post-tldr table {
+    margin-bottom: 14px;
 }
 
 .prose h3 {
