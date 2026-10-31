@@ -1,0 +1,2 @@
+opteryx-core
+mcp>=2

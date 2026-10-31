@@ -113,6 +113,9 @@
             "Building a Streamlit app": "guides/streamlit.md"
           },
           {
+            "Local AI with Ollama": "guides/local-ai-with-ollama.md"
+          },
+          {
             "Embedding in a service": "guides/embedding-in-a-service.md"
           },
           {
