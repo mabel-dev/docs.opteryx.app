@@ -98,6 +98,9 @@
             "Installing Opteryx Core": "getting-started/installation.md"
           },
           {
+            "Hardware and building from source": "guides/hardware-and-building-from-source.md"
+          },
+          {
             "Querying local data": "guides/querying-local-data.md"
           },
           {
