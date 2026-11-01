@@ -45,6 +45,47 @@ SELECT name
 
 Also empty — `!= null` is exactly as undefined as `= null`.
 
+## IN and NOT IN
+
+`IN` is shorthand for a chain of `=` joined by `OR`, and `NOT IN` for a chain of `!=` joined by `AND`. A `NULL` in the list, or as the value being looked for, follows from that expansion:
+
+```sql
+x IN (1, NULL)      -- x = 1  OR  x = NULL
+x NOT IN (1, NULL)  -- x != 1 AND x != NULL
+```
+
+`x = NULL` and `x != NULL` are both `NULL`. A match still decides `IN`, because `true OR NULL` is `true`, but any other row gets `NULL`, because `false OR NULL` is `NULL`:
+
+```sql
+SELECT 1 IN (1, NULL), 2 IN (1, NULL), NULL IN (1, NULL);
+```
+
+```
+ true | null | null
+```
+
+`NOT IN` turns that around. A match gives `false`, because `false AND NULL` is `false`. Every other row gets `NULL`, because `true AND NULL` is `NULL`, so `NOT IN` with a `NULL` in the list is never `true`:
+
+```sql
+SELECT 1 NOT IN (1, NULL), 2 NOT IN (1, NULL), NULL NOT IN (1, NULL);
+```
+
+```
+ false | null | null
+```
+
+So in a `WHERE` clause, `IN` with a `NULL` in the list keeps the same rows as it would without the `NULL`. `NOT IN` with a `NULL` in the list keeps no rows at all:
+
+```sql
+SELECT name
+  FROM $planets
+ WHERE id NOT IN (1, 2, NULL);
+```
+
+Returns an empty set. The same holds when the list comes from a subquery that returns a `NULL`. To exclude values while ignoring missing ones, filter the `NULL`s out of the list. For a subquery, write `NOT IN (SELECT col FROM t WHERE col IS NOT NULL)`.
+
+A typed `NULL` such as `CAST(NULL AS INTEGER)` is allowed in the list, but like any other element it must have the same type as the rest of the list.
+
 ## Testing for NULL
 
 Because `NULL = NULL` is itself `NULL` (not `true`), an equality test can never find `NULL` rows. Use `IS NULL` / `IS NOT NULL` instead:

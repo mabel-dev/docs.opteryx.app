@@ -29,7 +29,7 @@ Returns true when the left operand matches any element in the right-hand list or
 ## Parameters
 
 - **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`uuid`](../types/uuid), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
-- **`<list>`** — The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list, NULL included, is rejected at plan time rather than being silently skipped. Accepts [`array`](../types/array).
+- **`<list>`** — The values to look in - a parenthesised list, or an array-valued expression. Every element must share one type; a mixed list is rejected at plan time rather than being silently skipped. A NULL element is allowed (see Notes). Accepts [`array`](../types/array).
 
 ## Returns
 
@@ -54,6 +54,14 @@ SELECT 2 IN (1, 2, 3), 9 IN (1, 2, 3);
 true | false
 ```
 
+```sql
+SELECT 1 IN (1, NULL), 2 IN (1, NULL), NULL IN (1, NULL);
+```
+
+```
+true | NULL | NULL
+```
+
 ## Signatures
 
 - `boolean IN array` → boolean
@@ -69,7 +77,7 @@ true | false
 
 ## Notes
 
-IN is a shorthand for a chain of `=`, and inherits its rules: the comparison is exact and case-sensitive. A list mixing types - `IN (NULL, 2)` among them - is an error, not a match against the elements that do share a type.
+IN is a shorthand for a chain of `=` joined by OR, and inherits its rules: the comparison is exact and case-sensitive, and a list mixing types is an error, not a match against the elements that do share a type. A NULL element is the comparison `= NULL`, which is NULL: `x IN (1, NULL)` is `x = 1 OR x = NULL`, so it is true when `x` is 1 and NULL otherwise - never false. A NULL left operand gives NULL.
 
 ## See Also
 

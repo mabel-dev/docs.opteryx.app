@@ -29,7 +29,7 @@ Returns true when the left operand does not match any element in the right-hand 
 ## Parameters
 
 - **`<value>`** — The value to look for. Accepts [`boolean`](../types/boolean), [`date`](../types/date), [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`nvarchar`](../types/nvarchar), [`timestamp`](../types/timestamp), [`uuid`](../types/uuid), [`varbinary`](../types/varbinary), [`varchar`](../types/varchar).
-- **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. Accepts [`array`](../types/array).
+- **`<list>`** — The values to look in. Every element must share one type; a mixed list is rejected at plan time. A NULL element is allowed (see Notes). Accepts [`array`](../types/array).
 
 ## Returns
 
@@ -47,6 +47,14 @@ Venus
 Jupiter
 ```
 
+```sql
+SELECT 1 NOT IN (1, NULL), 2 NOT IN (1, NULL), NULL NOT IN (1, NULL);
+```
+
+```
+false | NULL | NULL
+```
+
 ## Signatures
 
 - `boolean NOT IN array` → boolean
@@ -62,7 +70,7 @@ Jupiter
 
 ## Notes
 
-Like `!=`, a row whose value is NULL answers NULL rather than true, so it does not survive a WHERE clause.
+NOT IN is a chain of `!=` joined by AND. Like `!=`, a row whose value is NULL answers NULL rather than true, so it does not survive a WHERE clause. A NULL element is the comparison `!= NULL`, which is NULL: `x NOT IN (1, NULL)` is `x != 1 AND x != NULL`, so it is false when `x` is 1 and NULL otherwise - never true. A NOT IN list holding a NULL therefore keeps no rows in a WHERE clause.
 
 ## See Also
 
