@@ -480,7 +480,7 @@ def _render_try_it_live(
         )
         lines.append(
             '      <div class="t-hint">'
-            + ('Leave blank to read public datasets. ' if token_optional else '')
+            + ('Leave blank to read the demo workspace, which needs no token. ' if token_optional else '')
             + 'Held in this tab only — never stored or logged. '
             f'See the <a href="{auth_docs}">Authentication API</a> for how to get one.</div>'
         )

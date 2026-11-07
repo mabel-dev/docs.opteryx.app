@@ -50,25 +50,25 @@ The status bar under the results shows the row count, how long the query took an
 
 <!-- tab: No account (OData) -->
 
-### 1. Query a public dataset
+### 1. Query a demo dataset
 
-The datasets under `public.geopolitics` and `public.security` are open to anonymous reads over [OData](/docs/guides/querying-via-odata). This query lists the three largest European countries by area:
+The `demo` workspace is open to anonymous reads over [OData](/docs/guides/querying-via-odata) - no account, no token. This query lists the three largest European countries by area:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries?$select=country_name_common,capital,area_km2&$filter=region%20eq%20%27Europe%27&$orderby=area_km2%20desc&$top=3'
+curl 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries?$select=country_name_common,capital,area_km2&$filter=region%20eq%20%27Europe%27&$orderby=area_km2%20desc&$top=3'
 ```
 
 Keep the URL in **single quotes**. In double quotes, the shell would expand `$top` and `$filter` as variables.
 
 ```json
 {
-  "@odata.context": "/api/v4/$metadata#public_geopolitics_countries",
+  "@odata.context": "/api/v4/$metadata#demo_geopolitics_countries",
   "value": [
     { "country_name_common": "Russia", "capital": "Moscow", "area_km2": 17098242.0 },
     { "country_name_common": "Ukraine", "capital": "Kyiv", "area_km2": 603500.0 },
     { "country_name_common": "France", "capital": "Paris", "area_km2": 551695.0 }
   ],
-  "@odata.nextLink": "/api/v4/public/geopolitics/countries?%24select=...&%24skip=3"
+  "@odata.nextLink": "/api/v4/demo/geopolitics/countries?%24select=...&%24skip=3"
 }
 ```
 
@@ -76,7 +76,7 @@ The `@odata.nextLink` points to the next page of results.
 
 ### 2. See what else is open
 
-The service root lists every dataset you can read. Without a token, that's the anonymous ones:
+The service root lists every dataset you can read. Without a token, that's the `demo` workspace:
 
 ```bash
 curl 'https://odata.opteryx.app/api/v4/'

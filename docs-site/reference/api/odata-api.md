@@ -69,7 +69,7 @@ Returns the OData v4 service document listing all accessible EntitySets grouped 
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+      <div class="t-hint">Leave blank to read the demo workspace, which needs no token. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-actions">
       <button type="button" class="t-btn t-send">Send request</button>
@@ -120,7 +120,7 @@ Returns the complete OData v4 EDMX metadata document describing all EntityTypes 
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+      <div class="t-hint">Leave blank to read the demo workspace, which needs no token. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-actions">
       <button type="button" class="t-btn t-send">Send request</button>
@@ -201,7 +201,7 @@ Retrieve data from a dataset with OData v4 query parameters ($filter, $select, $
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+      <div class="t-hint">Leave blank to read the demo workspace, which needs no token. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>
@@ -314,7 +314,7 @@ Add a `@{label}` version selector (`dataset@previous`, `dataset@{tag}`, `dataset
     <div class="t-field">
       <div class="t-label">Bearer token <span class="t-opt">optional</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Leave blank to read public datasets. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+      <div class="t-hint">Leave blank to read the demo workspace, which needs no token. Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
     </div>
     <div class="t-field">
       <div class="t-label">Path parameters</div>

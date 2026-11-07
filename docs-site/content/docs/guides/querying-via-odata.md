@@ -13,7 +13,7 @@ OData here is read-only - no `INSERT`/`UPDATE`/`DELETE`.
 
 The query syntax used below is defined by the standard, not by Opteryx. For the full grammar see [OData v4.01 Part 2: URL Conventions](https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html), and for `$apply` see the [Data Aggregation extension](https://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/odata-data-aggregation-ext-v4.0.html).
 
-> **Try it yourself:** the companion notebook works through this page in Python with `requests` and pandas: it discovers the public datasets, reads a schema from `$metadata`, filters, sorts and counts the NVD vulnerability data, pages with `@odata.nextLink`, and aggregates CISA's known-exploited list with `$apply`. It needs no account or token. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-public-data-with-odata.ipynb) or [download the notebook](/notebooks/query-public-data-with-odata.ipynb).
+> **Try it yourself:** the companion notebook works through this page in Python with `requests` and pandas: it discovers the `demo` datasets, reads a schema from `$metadata`, filters, sorts and counts the NVD vulnerability data, pages with `@odata.nextLink`, and aggregates CISA's known-exploited list with `$apply`. It needs no account or token. [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-public-data-with-odata.ipynb) or [download the notebook](/notebooks/query-public-data-with-odata.ipynb).
 
 ## What You'll Be Able to Do
 
@@ -45,7 +45,7 @@ Clients that implement server-driven paging follow `@odata.nextLink` for you, so
 
 ## Authentication
 
-Requests carry a bearer token, the same as the rest of the hosted service:
+Requests carry a bearer token, the same as the rest of the hosted service - with one exception. The `demo` workspace is readable by anyone, with no token at all: it's what the examples on this page query, so every `curl` here works as written. Everything else, including the `public` workspace, needs a token.
 
 ```
 Authorization: Bearer <token>
@@ -68,23 +68,23 @@ curl https://odata.opteryx.app/api/v4/
   "@odata.context": "/api/v4/$metadata",
   "value": [
     {
-      "name": "public.geopolitics.countries",
+      "name": "demo.geopolitics.countries",
       "kind": "EntitySet",
-      "url": "public/geopolitics/countries",
+      "url": "demo/geopolitics/countries",
       "source": "Table",
       "role": "reader",
-      "policy": "always-allow-public-anonymous",
+      "policy": "always-allow-read-global-unauthenticated",
       "ordered": false,
       "orderBy": null,
       "orderDirection": null
     },
     {
-      "name": "public.security.cisa_kev",
+      "name": "demo.security.cisa_kev",
       "kind": "EntitySet",
-      "url": "public/security/cisa_kev",
+      "url": "demo/security/cisa_kev",
       "source": "Table",
       "role": "reader",
-      "policy": "always-allow-public-anonymous",
+      "policy": "always-allow-read-global-unauthenticated",
       "ordered": false,
       "orderBy": null,
       "orderDirection": null
@@ -93,9 +93,9 @@ curl https://odata.opteryx.app/api/v4/
 }
 ```
 
-Each entry's `url` is the path to query, shaped `{workspace}/{collection}/{dataset}` - the same three-part addressing used elsewhere on the platform (for example the Upload API's `Target(workspace=..., collection=..., dataset=...)`). So `public/geopolitics/countries` is workspace `public`, collection `geopolitics`, dataset `countries`. One workspace name behaves specially: `personal` resolves `collection` to your own identity rather than a shared collection name.
+Each entry's `url` is the path to query, shaped `{workspace}/{collection}/{dataset}` - the same three-part addressing used elsewhere on the platform (for example the Upload API's `Target(workspace=..., collection=..., dataset=...)`). So `demo/geopolitics/countries` is workspace `demo`, collection `geopolitics`, dataset `countries`. One workspace name behaves specially: `personal` resolves `collection` to your own identity rather than a shared collection name.
 
-`role` is the access level your credentials have on that entity set, and `policy` names the grant it comes from. `source` distinguishes ordinary tables from `View`s, `MaterializedView`s, `Task`s (scheduled jobs that write to another dataset, whose `$metadata` carries the task's definition), and the `Virtual` `information_schema` entities present in every workspace. When `ordered` is `true`, results come back sorted by `orderBy` (in `orderDirection`) rather than in arbitrary order.
+`role` is the access level your credentials have on that entity set, and `policy` names the grant it comes from - `always-allow-read-global-unauthenticated` for `demo`, readable by anyone, and `always-allow-read-any-authenticated-user` for `public`, readable by any signed-in account. `source` distinguishes ordinary tables from `View`s, `MaterializedView`s, `Task`s (scheduled jobs that write to another dataset, whose `$metadata` carries the task's definition), and the `Virtual` `information_schema` entities present in every workspace. When `ordered` is `true`, results come back sorted by `orderBy` (in `orderDirection`) rather than in arbitrary order.
 
 `@odata.context` points at `/api/v4/$metadata`, the CSDL metadata document describing each EntitySet's schema. This is the document Power BI and Excel read to work out column names and types.
 
@@ -104,7 +104,7 @@ Each entry's `url` is the path to query, shaped `{workspace}/{collection}/{datas
 Combine the base URL with an entry's `url` from the service document:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries?$top=10'
+curl 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries?$top=10'
 ```
 
 Use **single quotes** around the URL. In `bash` and `zsh`, a double-quoted `"...?$top=10"` makes the shell expand `$top` as a variable and send `?=10` instead.
@@ -133,7 +133,7 @@ Supported query options:
 `$search` and `$expand` are not implemented and return `501 Not Implemented`.
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries' \
   --data-urlencode "\$filter=region eq 'Europe'" \
   --data-urlencode '$orderby=country_name_common' \
   --data-urlencode '$top=5'
@@ -147,7 +147,7 @@ When a query matches more rows than `$top`, the response carries exactly `$top` 
 {
   "@odata.context": "/api/v4/$metadata#public_geopolitics_countries",
   "value": [ "..." ],
-  "@odata.nextLink": "/api/v4/public/geopolitics/countries?%24top=2&%24skip=2"
+  "@odata.nextLink": "/api/v4/demo/geopolitics/countries?%24top=2&%24skip=2"
 }
 ```
 
@@ -168,21 +168,21 @@ Every request queries current data by default - but a dataset's path segment can
 | `dataset@{snapshot_id}` | A specific snapshot, by id |
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@previous?$top=5'
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries@1791779848300?$top=5'
+curl 'https://odata.opteryx.app/api/v4/demo/geopolitics/gdelt_daily_topic@previous?$top=5'
+curl 'https://odata.opteryx.app/api/v4/demo/geopolitics/gdelt_daily_topic@1794067860939?$top=5'
 curl 'https://odata.opteryx.app/api/v4/acme/security/findings@YOUR_TAG?$top=5' \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
-None of the public datasets carry a tag, so the last line is a placeholder: substitute a dataset of your own and a tag it holds.
+A snapshot id is only good for as long as that snapshot is retained, so the second line may need an id from the dataset's `$metadata` (below) by the time you run it. None of the `demo` datasets carry a tag, so the last line is a placeholder: substitute a dataset of your own and a tag it holds.
 
 A dataset's metadata shows the snapshot it currently resolves to in `Custom.Snapshot.Id`, and how many tags it holds in `Custom.Tags.Count`:
 
 ```bash
-curl 'https://odata.opteryx.app/api/v4/public/geopolitics/countries/$metadata'
+curl 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries/$metadata'
 ```
 
-Requesting `$metadata` for a labelled dataset (`.../countries@previous/$metadata`) describes that version rather than the current one - its `Custom.Snapshot.*` annotations reflect the snapshot the label resolved to.
+Requesting `$metadata` for a labelled dataset (`.../gdelt_daily_topic@previous/$metadata`) describes that version rather than the current one - its `Custom.Snapshot.*` annotations reflect the snapshot the label resolved to.
 
 An unknown tag, or `@previous` on a dataset with no earlier version, returns `404`. An unknown snapshot id currently returns `503` with the message `dataset could not be read from storage`, not `404`; its `$metadata` does return `404`. A malformed selector - `dataset@` with nothing after the `@`, for instance - returns `400`.
 
@@ -193,7 +193,7 @@ An unknown tag, or `@previous` on a dataset with no earlier version, returns `40
 Date and datetime literals are unquoted ISO 8601, per the OData standard:
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/security/cisa_kev' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/security/cisa_kev' \
   --data-urlencode '$filter=date_added ge 2025-01-01' \
   --data-urlencode '$top=5'
 ```
@@ -215,10 +215,10 @@ Where the two sides differ in precision, a date is read as midnight UTC on that 
 
 A timezone designator is optional and is honoured when present. `2026-07-01T00:00:00Z`, `2026-07-01T00:00:00+00:00`, `2026-07-01T00:00:00` and `2026-07-01T05:00:00+05:00` all name the same instant and return the same rows.
 
-Fractional seconds are accepted up to six digits, so the output of Python's `datetime.isoformat()` can be used as it is. Seven or more aren't recognised as a datetime, so the literal is read as a string and rejected on type:
+Fractional seconds are accepted up to six digits, so the output of Python's `datetime.isoformat()` can be used as it is. Seven or more are rejected:
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/security/nvd_vulnerabilities' \
   --data-urlencode '$filter=published_at ge 2026-07-01T00:00:00.1234567Z'
 ```
 
@@ -226,7 +226,7 @@ curl -G 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories' \
 {
   "error": {
     "code": "BadRequest",
-    "message": "Invalid query: column *ghsa_advisories.published_at* (`TIMESTAMP[us]`) and literal `2026-07-01T00:00:00.1234567Z` (`VARCHAR`) cannot be compared, because their types do not match. Date and time literals are unquoted in OData v4: write `published_at ge 2024-01-01T00:00:00Z`, not `published_at ge '2024-01-01T00:00:00Z'` -- a quoted literal is a string."
+    "message": "Invalid query: Invalid datetime literal `2026-07-01T00:00:00.1234567Z`: at most 6 fractional-second digits (microseconds) are supported."
   }
 }
 ```
@@ -244,7 +244,7 @@ rolling window server-side, which keeps the query correct when it's re-run
 tomorrow:
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/security/ghsa_advisories' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/security/nvd_vulnerabilities' \
   --data-urlencode "\$filter=published_at ge now() sub duration'P30D'" \
   --data-urlencode '$count=true' \
   --data-urlencode '$top=5'
@@ -288,7 +288,7 @@ matches nothing - Afghanistan is stored as `'004'`. Compared as a number, it
 matches:
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries' \
   --data-urlencode '$filter=cast(iso_numeric, Edm.Int32) eq 4' \
   --data-urlencode '$select=country_name_common,iso_numeric'
 ```
@@ -327,7 +327,7 @@ compares text, and can't skip files using their stored min/max.
 `$apply` groups and aggregates server-side, so you don't have to pull every row back to count or deduplicate it. `$count`, `sum`, `average`, `min` and `max` are available:
 
 ```bash
-curl -G 'https://odata.opteryx.app/api/v4/public/geopolitics/countries' \
+curl -G 'https://odata.opteryx.app/api/v4/demo/geopolitics/countries' \
   --data-urlencode '$apply=groupby((region),aggregate($count as country_count))'
 ```
 
@@ -351,12 +351,12 @@ For a distinct list of values, group by the column without aggregating it furthe
 
 ## Try It
 
-This queries `public.geopolitics.countries` live - 250 rows. Edit the options and the request URL updates as you type.
+This queries `demo.geopolitics.countries` live - 250 rows, no token needed. Edit the options and the request URL updates as you type.
 
-<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/public/geopolitics/countries">
+<details class="api-tryit" data-method="GET" data-base="https://odata.opteryx.app" data-path="/api/v4/demo/geopolitics/countries">
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/public/geopolitics/countries</span>
+    <span class="t-url"><span class="t-host">https://odata.opteryx.app</span>/api/v4/demo/geopolitics/countries</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">

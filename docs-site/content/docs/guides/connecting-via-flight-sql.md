@@ -140,7 +140,7 @@ Connection parameters, regardless of client:
 - **Read-only.** No writes, no `DoPut` ingestion, no transactions in this release — the same scope as the OData service, just a different transport.
 - **No prepared statements yet.** Every query is a one-shot `CommandStatementQuery`; there's no `PREPARE`/execute-with-parameters step.
 - **Dataset names are the same as everywhere else** — dot-separated names like `opteryx.test.planets`, resolved through whatever policies your token grants. See [Access and Permissions](/docs/core-concepts/access-and-permissions).
-- **No anonymous access, unlike the OData service.** `odata.opteryx` lets a couple of specific public datasets through with no credentials at all; the Flight SQL endpoint doesn't — every call, including a metadata call like `GetTableTypes`, needs a valid bearer token.
+- **No anonymous access, unlike the OData service.** `odata.opteryx` lets the `demo` workspace through with no credentials at all; the Flight SQL endpoint doesn't — every call, including a metadata call like `GetTableTypes`, needs a valid bearer token.
 
 ## Related
 
