@@ -1,70 +1,85 @@
 ---
-title: System Variables — Opteryx Reference
-description: Every Opteryx system variable, its type, and who is permitted to set it.
+title: Variables — Opteryx Reference
+description: User and system variables in Opteryx — how to set them, read them, and give them defaults.
 ---
 
-<!-- GENERATED FILE - DO NOT EDIT.
-     Regenerate with `make sql-docs` from the docs repo root.
-     To change what this page says, change the source it is generated from
-     (a registrar in opteryx-core, or a service's own OpenAPI description)
-     and re-export - a hand edit here is silently overwritten. -->
+# Variables
 
-# System Variables
+A session has two kinds of variable:
 
-Opteryx exposes 34 system variables that a session can read. Use [SHOW VARIABLES](statements/show-variables) to list them, and [SET](statements/set) to change the ones you are permitted to change.
-
-> Be Aware: Most system variables are **not** settable from SQL. A session runs at the `USER` tier, so only `USER`-owned variables are reachable by `SET` at all. Everything else is fixed by the server or stamped per session.
-
-> Note: This page lists the variables a session can see. An embedded build of `opteryx-core` may display additional variables that are internal to the hosted service and not part of the documented SQL surface.
-
-## Settable by any session
-
-| Variable | Type | Default |
+| Written as | Kind | Who may set it |
 |---|---|---|
-| `chunk_cache_admit` | BOOL | `True` |
-| `disable_runtime_minmax_join_filter` | BOOL | `False` |
-| `disable_statistics_coverage` | BOOL | env `DISABLE_STATISTICS_COVERAGE` |
-| `disable_topn_runtime_boundary` | BOOL | env `DISABLE_TOPN_RUNTIME_BOUNDARY` |
-| `like_selectivity_decay` | FLOAT64 | env `LIKE_SELECTIVITY_DECAY` |
-| `match_threshold` | FLOAT64 | env `MATCH_THRESHOLD` |
-| `nprobe` | INT64 | `0` |
-| `trace` | BOOL | env `OPTERYX_TRACE` |
-| `write_coalesce_rows` | INT64 | env `WRITE_COALESCE_ROWS` |
+| `@name` | User variable — yours to define, carries no meaning to the engine | Anyone |
+| `@@name` | System variable — describes or changes engine behaviour | Depends on the variable |
 
-## Not settable from SQL
+Variables belong to the session. A new connection starts from the engine defaults, and nothing set in one session is seen by another.
 
-Read-only from a session. Server-owned values are fixed when the server starts; session-identity values are stamped from the connection.
+Use [SHOW VARIABLES](statements/show-variables) to list the variables visible to your session, with each one's value, type, owner and visibility.
 
-| Variable | Type | Default |
-|---|---|---|
-| `array_agg_memory_budget_bytes` | INT64 | `536870912` |
-| `billing_account` | VARCHAR | _per session_ |
-| `build` | INT64 | _from the build_ |
-| `character_set_client` | VARCHAR | `utf8` |
-| `chunk_cache_budget_bytes` | INT64 | `36936718745` |
-| `chunk_cache_memory_percent` | INT64 | env `CHUNK_CACHE_MEMORY_PERCENT` |
-| `chunk_cache_reserve_bytes` | INT64 | env `CHUNK_CACHE_RESERVE_BYTES` |
-| `cidr_agg_emit_budget_bytes` | INT64 | `536870912` |
-| `cidr_agg_state_budget_bytes` | INT64 | `536870912` |
-| `default_storage_engine` | VARCHAR | `rugo-parquet` |
-| `external_user` | VARCHAR | _per session_ |
-| `max_execution_time` | INT64 | `1200` |
-| `max_sql_length` | INT64 | `256000` |
-| `median_memory_budget_bytes` | INT64 | `2147483648` |
-| `result_retention_days` | INT64 | `10` |
-| `slab_pool_budget_bytes` | INT64 | env `SLAB_POOL_BUDGET_BYTES` |
-| `slab_pool_prefault_bytes` | INT64 | env `SLAB_POOL_PREFAULT_BYTES` |
-| `spill_ceiling_bytes` | INT64 | `1073741824` |
-| `spill_flush_bytes` | INT64 | `536870912` |
-| `sql_mode` | VARCHAR | `opteryx` |
-| `sql_select_limit` | INT64 | `1073741824` |
-| `system_time_zone` | VARCHAR | `UTC` |
-| `user_entitlements` | ARRAY<VARIANT> | _per session_ |
-| `user_memberships` | ARRAY<VARCHAR> | _per session_ |
-| `version` | VARCHAR | _from the build_ |
+## Reading a variable
 
-## Where defaults come from
+A variable can be used anywhere a value can:
 
-- **`env KEY`** — read from that environment variable when the server starts. The shipped fallback lives in the engine's configuration, not here: recording a value generated on one machine would describe that machine rather than the product.
-- **detected from the host** — derived at startup (CPU count, memory limits, platform).
-- **per session** — identity asserted by the connecting service, not configuration. See [SHOW USER](statements/show-user) and [SHOW GRANTS](statements/show-grants).
+~~~sql
+SELECT @@version;
+
+SELECT * FROM orders WHERE created_at >= @cutoff;
+~~~
+
+Reading a user variable that has not been set is an error, not `NULL`, so a misspelt name is caught rather than quietly matching nothing.
+
+## Setting a variable
+
+Use [SET](statements/set):
+
+~~~sql
+SET @cutoff = '2026-01-01'::TIMESTAMP;
+~~~
+
+The value is worked out once, when the `SET` runs, and the result is what the variable holds. It can be an expression over constants and other variables:
+
+~~~sql
+SET @limit = 10 * 1000;
+SET @started = NOW();   -- the time the SET ran, not the time it is read
+~~~
+
+> Be Aware: A value that cannot be reduced to a single value when the `SET` runs is refused — for example `SET @r = RANDOM()`. Column references are not allowed, as a `SET` has no table to read them from.
+
+### Setting a default
+
+Inside its own `SET`, a user variable that has not been set yet reads as `NULL`. That makes `COALESCE` a "set this only if it is not already set" statement:
+
+~~~sql
+SET @ip = COALESCE(@ip, '192.168.4.80'::IPV4);
+~~~
+
+If `@ip` already has a value it is kept; otherwise it becomes `192.168.4.80`.
+
+> Note: This applies only to the variable being assigned. Any other unset variable in the value is still an error, so `SET @ip = COALESCE(@other, ...)` fails if `@other` has not been set.
+
+### Counters
+
+A variable can be updated from its own value:
+
+~~~sql
+SET @counter = COALESCE(@counter, 0) + 1;
+~~~
+
+The `COALESCE` matters the first time. Without it, an unset `@counter` reads as `NULL`, `NULL + 1` is `NULL`, and the counter never starts counting.
+
+## System variables
+
+Most system variables are **not** settable from SQL — they report a limit or setting fixed by the server, or identity stamped onto the session. `SHOW VARIABLES` shows each one's owner; only `USER`-owned variables can be changed, and setting one you are not permitted to change is refused rather than quietly ignored.
+
+A system variable is set by its bare name:
+
+~~~sql
+SET nprobe = 4;
+
+SELECT @@nprobe;
+~~~
+
+## See Also
+
+- [SET](statements/set)
+- [SHOW VARIABLES](statements/show-variables)

@@ -62,7 +62,6 @@ SOURCES = {
     "aggregates.json": "aggregates.json",
     "operators.json": "operators.json",
     "types.json": "types.json",
-    "variables.json": "variables.json",
     # The statement / join / unary-operator surface. These lagged behind the
     # five above: the engine generates all eight catalogs and web.opteryx's
     # query editor already consumed all eight, but the docs took only five. So

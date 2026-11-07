@@ -907,7 +907,7 @@
         }
       },
       {
-        "System Variables": "reference/sql/variables.md"
+        "Variables": "reference/sql/variables.md"
       },
       {
         "Virtual Datasets": "reference/sql/virtual-datasets.md"

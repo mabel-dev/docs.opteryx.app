@@ -74,4 +74,4 @@ the caller, or with `LIMIT`.
 - Retention settings (`result_retention_days`, `job_retention_days`) are platform
   concerns handled outside the query engine, not query-time limits.
 - Concurrency and worker counts are tuning parameters rather than limits — see
-  [System Variables](variables).
+  [Variables](variables).
