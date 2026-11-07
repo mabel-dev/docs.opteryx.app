@@ -71,9 +71,10 @@ The `COALESCE` matters the first time. Without it, an unset `@counter` reads as 
 
 Most system variables are **not** settable from SQL — they report a limit or setting fixed by the server, or identity stamped onto the session. `SHOW VARIABLES` shows each one's owner; only `USER`-owned variables can be changed, and setting one you are not permitted to change is refused rather than quietly ignored.
 
-A system variable is set by its bare name:
+A system variable is set by name, with or without the `@@`:
 
 ~~~sql
+SET @@nprobe = 4;
 SET nprobe = 4;
 
 SELECT @@nprobe;
