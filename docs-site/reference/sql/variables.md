@@ -50,10 +50,10 @@ SET @started = NOW();   -- the time the SET ran, not the time it is read
 Inside its own `SET`, a user variable that has not been set yet reads as `NULL`. That makes `COALESCE` a "set this only if it is not already set" statement:
 
 ~~~sql
-SET @ip = COALESCE(@ip, '192.168.4.80'::IPV4);
+SET @ip = COALESCE(@ip, '192.168.0.1'::IPV4);
 ~~~
 
-If `@ip` already has a value it is kept; otherwise it becomes `192.168.4.80`.
+If `@ip` already has a value it is kept; otherwise it becomes `192.168.0.1`.
 
 > Note: This applies only to the variable being assigned. Any other unset variable in the value is still an error, so `SET @ip = COALESCE(@other, ...)` fails if `@other` has not been set.
 
