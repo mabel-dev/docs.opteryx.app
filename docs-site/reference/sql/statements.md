@@ -57,6 +57,7 @@ Inspect schemas, definitions, session state, and dataset metadata:
 |-----------|---------|
 | [SHOW COLUMNS](statements/show-columns) | List a dataset's columns, types, and nullability |
 | [SHOW CREATE](statements/show-create) | Show the DDL that creates a table, view, materialized view, task or trigger |
+| [SHOW FUNCTIONS](statements/show-functions) | List the scalar, aggregate and window functions a query can call |
 | [SHOW LINEAGE FOR](statements/show-lineage) | List what each commit to a table was built from: the source tables and the snapshot of each |
 | [SHOW MANIFEST FOR](statements/show-manifest) | Inspect a dataset's file-level manifest and per-file statistics |
 | [SHOW SNAPSHOTS FOR](statements/show-snapshots) | List a table's commit history, newest first |

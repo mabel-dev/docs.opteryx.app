@@ -358,6 +358,9 @@
               "SHOW CREATE": "reference/sql/statements/show-create.md"
             },
             {
+              "SHOW FUNCTIONS": "reference/sql/statements/show-functions.md"
+            },
+            {
               "SHOW GRANTS": "reference/sql/statements/show-grants.md"
             },
             {
