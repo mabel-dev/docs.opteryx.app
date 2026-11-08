@@ -48,6 +48,20 @@ Uranus       5
 
 The status bar under the results shows the row count, how long the query took and the **bytes scanned**. Bytes scanned is what Opteryx meters, so you can see what each query costs as you go. See [Cost Model](/docs/core-concepts/cost-model).
 
+### 4. Share it
+
+Press **Share**, beside Run, for a link to the query in your editor. Whoever opens it gets the same SQL in their own editor, not yet run, and runs it with their own access, signing in first if they need to. The link shares the query, not your results, and only a single `SELECT` can be shared. The chart goes with it if you've set one up.
+
+The same dialog gives you an **Open in Opteryx** badge as Markdown or HTML, for a README or a blog post:
+
+```text
+[![Open in Opteryx](https://opteryx.app/img/open-in-opteryx.svg)](https://opteryx.app/studio/?q=…)
+```
+
+The `?q=` part is the SQL compressed, so chat apps and Markdown editors leave the link intact. It isn't hidden: anyone can decode it, so keep secrets out of a query you share.
+
+`SQL` examples in these docs that you can run as written have an **Open in Studio** button for the same reason: it opens that example in your editor, ready to run. Examples that use placeholder names like `my_workspace` don't, since they need your own names first.
+
 <!-- tab: No account (OData) -->
 
 ### 1. Query a demo dataset

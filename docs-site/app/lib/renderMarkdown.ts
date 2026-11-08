@@ -1,5 +1,6 @@
 import { Marked } from "marked";
 import { createHighlighter, type Highlighter } from "shiki";
+import { studioLinkFor } from "./studioLink";
 
 type RenderMarkdownOptions = {
   addHeadingIds?: boolean;
@@ -224,16 +225,29 @@ const COPY_BUTTON =
 // every block. Only fences with a language we highlight get a button: the rest
 // are mostly query output and console transcripts, which are there to be read
 // rather than run.
+// "Open in Studio" beside Copy on a SQL example that can run as written —
+// see studioLink.ts for which ones qualify and how the link is built.
+function studioButton(href: string): string {
+  return (
+    `<a class="copy-btn studio-btn" href="${escapeAttribute(href)}" target="_blank" rel="noopener">` +
+    `<svg class="copy-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13 -8z" /></svg>` +
+    `<span class="copy-btn-label">Open in Studio</span>` +
+    `</a>`
+  );
+}
+
 function wrapInCodeBlock(
   highlighted: string,
   language: string,
-  { copyButton = true }: { copyButton?: boolean } = {},
+  { copyButton = true, studioHref = null }: { copyButton?: boolean; studioHref?: string | null } = {},
 ): string {
+  const actions =
+    (studioHref ? studioButton(studioHref) : "") + (copyButton ? COPY_BUTTON : "");
   return (
     `<div class="code-block" data-code-block>` +
     `<div class="code-block-header">` +
     `<span class="code-block-lang">${languageIcon(language)}${language}</span>` +
-    (copyButton ? COPY_BUTTON : "") +
+    (actions ? `<span class="code-block-actions">${actions}</span>` : "") +
     `</div>${highlighted}</div>`
   );
 }
@@ -435,7 +449,9 @@ export async function renderMarkdownToHtml(
           themes: { light: SHIKI_THEME, dark: SHIKI_DARK_THEME },
           defaultColor: "light",
         });
-        block = wrapInCodeBlock(highlighted, language);
+        block = wrapInCodeBlock(highlighted, language, {
+          studioHref: language === "sql" ? studioLinkFor(token.text ?? "") : null,
+        });
       } else if (/^[a-z0-9_+-]+$/.test(rawLabel)) {
         // A fence labeled with a language we don't highlight still gets the
         // header with its icon and name — just no copy button, and the code

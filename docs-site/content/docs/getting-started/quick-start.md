@@ -13,7 +13,7 @@ Once you're signed in, Studio opens as a single screen — everything below happ
 Working across the screenshot above:
 
 - **Catalog** (left) — everything you can query, split into `personal` (your own uploads) and `public` (shared sample data), grouped by schema. Click a table, like `astronomy.exoplanets` here, and its row count, size, and columns appear in the **Details** panel underneath.
-- **SQL editor** (top center) — write your query here. **Format** cleans up whitespace, **Run** (⌘↵ / Ctrl+Enter) executes.
+- **SQL editor** (top center) — write your query here. **Format** cleans up whitespace, **Run** (⌘↵ / Ctrl+Enter) executes, and **Share** gives you a link that opens the query in someone else's editor (see [Your First Query](first-query#4-share-it)).
 - **Results** (below the editor) — rows land here once the query finishes. **Details**, **Chart**, and **Execution plan** sit alongside it, showing timing and bytes scanned, a plot of any numeric columns, and how Opteryx executed the query.
 - **Reference panel** (right, toggled with the graduation-cap icon) — SQL basics and a searchable function list, handy while you're still learning the dialect.
 - Along the bottom, **Datasets** and **Recent queries** toggle the catalog and query-history panels. **Settings** — including the API tokens for programmatic access — live under your avatar in the top-right corner (see [Logging In](registration)).

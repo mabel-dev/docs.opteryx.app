@@ -3553,6 +3553,15 @@ kbd {
 .code-block-header .copy-btn:hover {
     background: var(--accent-soft);
 }
+/* Open in Studio (renderMarkdown.ts studioButton) sits left of Copy. */
+.code-block-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.code-block-header .studio-btn {
+    text-decoration: none;
+}
 .code-block pre {
     margin: 0;
     padding: 14px 16px;
