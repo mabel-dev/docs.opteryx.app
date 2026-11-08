@@ -115,5 +115,6 @@ export function studioLinkFor(sql: string): string | null {
   if (!isReadOnlySelect(text) || PLACEHOLDER.test(text)) return null;
   if (!readsOnlyRunnableTables(text)) return null;
   const q = deflateRawSync(Buffer.from(text, "utf8"), { level: 9 }).toString("base64url");
-  return `${STUDIO_URL}?q=${q}`;
+  // from=docs: opteryx.app's attribution.js records where the visit came from.
+  return `${STUDIO_URL}?q=${q}&from=docs`;
 }
