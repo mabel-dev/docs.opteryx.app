@@ -1878,35 +1878,33 @@ kbd {
     padding: 0 28px;
     height: 60px;
 }
+/* The shared Opteryx wordmark: mark, "Opteryx" in Space Grotesk 600 navy,
+   then the product (here the section: docs / learn / blog) lowercase in
+   IBM Plex Sans 400 muted. Notebooks and Studio use the same form. */
 .blog-logo {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 15px;
+    font-size: 17px;
+    line-height: 1;
     color: var(--text-deep);
+    white-space: nowrap;
 }
 .blog-logo img {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     display: block;
+    flex: none;
 }
-.blog-logo .sep {
-    color: var(--muted-2);
-    margin: 0 2px;
-    font-weight: 400;
-}
-.blog-logo .pill {
+.blog-logo .logo-name {
     font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--opteryx-teal);
-    padding: 2px 8px;
-    border-radius: var(--r-pill);
-    background: var(--accent-soft);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.blog-logo .logo-sub {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--muted);
 }
 .blog-nav {
     display: flex;
@@ -5604,9 +5602,7 @@ kbd {
         gap: 8px;
         min-width: 0;
     }
-    .blog-logo .logo-suffix,
-    .blog-logo .sep,
-    .blog-logo .pill {
+    .blog-logo .logo-sub {
         display: none;
     }
     /* Same 32px height as the icon buttons, so the row doesn't jump when

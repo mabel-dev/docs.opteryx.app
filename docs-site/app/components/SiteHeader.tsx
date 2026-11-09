@@ -26,10 +26,11 @@ export default function SiteHeader() {
     <header className="blog-header">
       <div className="blog-header-inner">
         <a href="https://docs.opteryx.app/" className="blog-logo" style={{ textDecoration: 'none' }}>
-          <Image src="/opteryx-icon.svg" alt="Opteryx" width={22} height={22} />
-          <span>Opteryx<span className="logo-suffix"> Documentation</span></span>
-          <span className="sep">/</span>
-          <span className="pill">{section}</span>
+          <Image src="/opteryx-icon.svg" alt="" width={24} height={24} />
+          <span>
+            <span className="logo-name">Opteryx</span>{' '}
+            <span className="logo-sub">{section.toLowerCase()}</span>
+          </span>
         </a>
         <nav className="blog-nav">
           {navLinks.map(({ label, href }) =>
