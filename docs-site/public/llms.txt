@@ -1,0 +1,23 @@
+# Opteryx
+
+> Opteryx is a SQL query engine for data where it lives: Parquet and other files on disk or in S3 and GCS, Iceberg catalogs, PostgreSQL and Firestore. Opteryx Core is the open-source engine, embedded in Python; Opteryx Studio (opteryx.app) is the hosted platform. Opteryx SQL is close to PostgreSQL but is not the same dialect.
+
+Before writing Opteryx SQL, read the SQL guide for agents. Every example in it is executed against Opteryx Core before it is published.
+
+## SQL guides for agents
+
+- [Opteryx SQL Guide for Agents](https://docs.opteryx.app/opteryx-sql-guide.md): naming datasets, quoting and identifiers, supported statements and functions, differences from PostgreSQL and ANSI SQL, time travel, common errors with fixes, and copy-paste examples (about 5,000 tokens)
+- [Opteryx SQL: Short Guide](https://docs.opteryx.app/opteryx-sql-guide-short.md): the same rules condensed to about 1,200 tokens, for small models and system prompts
+
+## Using Opteryx with AI assistants
+
+- [Asking Questions of Local Data with Ollama](https://docs.opteryx.app/docs/guides/local-ai-with-ollama): a local model, a local MCP server and Opteryx Core, with no account and no network
+- [Using Opteryx from Your AI Assistant](https://docs.opteryx.app/docs/guides/ai-assistants): the hosted Opteryx MCP server
+
+## Docs
+
+- [What is Opteryx](https://docs.opteryx.app/docs/introduction/what-is-opteryx)
+- [Querying Local Data](https://docs.opteryx.app/docs/guides/querying-local-data): Opteryx Core over local Parquet folders
+- [SQL Reference](https://docs.opteryx.app/docs/reference/sql/introduction)
+- [Functions](https://docs.opteryx.app/docs/reference/sql/functions)
+- [Time Travel](https://docs.opteryx.app/docs/reference/sql/advanced/adv-time-travel)

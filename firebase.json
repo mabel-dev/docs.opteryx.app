@@ -23,7 +23,7 @@
         ]
       },
       {
-        "source": "**/*.@(html|txt|json)",
+        "source": "**/*.@(html|txt|json|md)",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" }
         ]

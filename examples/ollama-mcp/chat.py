@@ -2,11 +2,14 @@
 
 Ollama models can call tools but Ollama doesn't connect to MCP servers itself,
 so this script does it: it starts server.py, gives its tools to the model, and
-runs each tool call the model makes until the model answers.
+runs each tool call the model makes until the model answers. It also reads the
+server's condensed SQL guide resource into the system prompt, so the model
+knows how Opteryx SQL differs from the SQL it learned elsewhere.
 
 Run with:
     python chat.py "which is the largest planet?"
     python chat.py                                   # ask questions interactively
+    python chat.py --guide full "..."                # use the full SQL guide instead
 """
 
 import argparse
@@ -14,6 +17,7 @@ import asyncio
 import json
 import os
 import sys
+import urllib.error
 import urllib.request
 
 from mcp import ClientSession
@@ -27,14 +31,29 @@ SYSTEM = (
     "call list_datasets, then describe_dataset, then run_sql. Opteryx SQL is "
     "close to PostgreSQL. Base your answer only on the query results."
 )
+GUIDES = {"short": "opteryx://sql/guide-short", "full": "opteryx://sql/guide"}
 MAX_STEPS = 10
+
+
+class OllamaError(Exception):
+    """Ollama is not running, or refused the request."""
 
 
 def ollama_chat(model, messages, tools):
     body = json.dumps({"model": model, "messages": messages, "tools": tools, "stream": False})
     request = urllib.request.Request(OLLAMA_URL, body.encode(), {"Content-Type": "application/json"})
-    with urllib.request.urlopen(request) as response:
-        return json.loads(response.read())["message"]
+    try:
+        with urllib.request.urlopen(request) as response:
+            return json.loads(response.read())["message"]
+    except urllib.error.HTTPError as err:
+        # Ollama explains itself in the body, for example "model 'x' not found".
+        detail = json.loads(err.read() or b"{}").get("error", err.reason)
+        raise OllamaError(f"Ollama returned an error: {detail}") from err
+    except urllib.error.URLError as err:
+        raise OllamaError(
+            f"Could not reach Ollama at {OLLAMA_URL} ({err.reason}). "
+            "Start the Ollama app, or run `ollama serve`, and try again."
+        ) from err
 
 
 async def ask(session, model, tools, messages, question):
@@ -60,6 +79,7 @@ async def ask(session, model, tools, messages, question):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="qwen3.5:9b", help="an Ollama model that supports tool calling")
+    parser.add_argument("--guide", choices=["short", "full", "none"], default="short", help="the SQL guide to give the model")
     parser.add_argument("question", nargs="?")
     args = parser.parse_args()
 
@@ -74,7 +94,12 @@ async def main():
                 }
                 for t in (await session.list_tools()).tools
             ]
-            messages = [{"role": "system", "content": SYSTEM}]
+            system = SYSTEM
+            if args.guide != "none":
+                guide = await session.read_resource(GUIDES[args.guide])
+                text = "\n".join(c.text for c in guide.contents if hasattr(c, "text"))
+                system += f" Write SQL that follows this guide:\n\n{text}"
+            messages = [{"role": "system", "content": system}]
             if args.question:
                 print(await ask(session, args.model, tools, messages, args.question))
                 return
@@ -83,4 +108,11 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except* OllamaError as group:
+        # The MCP client runs inside nested task groups, which wrap the error; print just its message.
+        error = group
+        while isinstance(error, BaseExceptionGroup):
+            error = error.exceptions[0]
+        sys.exit(str(error))

@@ -205,6 +205,28 @@
     ]
   },
   {
+    "Integrations": [
+      {
+        "Overview": "integrations.md"
+      },
+      {
+        "Apache Superset": "integrations/superset.md"
+      },
+      {
+        "Grafana": "integrations/grafana.md"
+      },
+      {
+        "Jupyter": "integrations/jupyter.md"
+      },
+      {
+        "marimo": "integrations/marimo.md"
+      },
+      {
+        "Streamlit": "guides/streamlit.md"
+      }
+    ]
+  },
+  {
     "SQL Language Reference": [
       {
         "Introduction to SQL": "reference/sql/introduction.md"
