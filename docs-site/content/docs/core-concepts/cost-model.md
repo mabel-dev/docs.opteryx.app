@@ -14,7 +14,7 @@ off when you reach it.
 |---|---|---|
 | Storage | 5 GB at any one time | 25 GB at any one time |
 | Queries | 100 a day | 500 a day |
-| Data queried | 167 MB a day (about 5 GB a month) | 835 MB a day (about 25 GB a month) |
+| Data queried | 1 GB a day (about 30 GB a month) | 5 GB a day (about 150 GB a month) |
 
 **Your allowance resets every day, and doesn't roll over.** A quiet day doesn't
 earn you a bigger allowance tomorrow. Each day is counted on its own, so a
@@ -59,10 +59,10 @@ the one in the tables above.
      data-price-data="0.004"
      data-free-storage="5"
      data-free-queries="100"
-     data-free-data="0.167"
+     data-free-data="1"
      data-paid-storage="25"
      data-paid-queries="500"
-     data-paid-data="0.835">
+     data-paid-data="5">
   <noscript>The calculator needs JavaScript. The prices and allowances it works
   from are in the tables above.</noscript>
 </div>

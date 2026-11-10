@@ -40,13 +40,13 @@
           label: "without billing set up",
           storage: attr(root, "freeStorage", 5),
           queries: attr(root, "freeQueries", 100),
-          data: attr(root, "freeData", 0.167),
+          data: attr(root, "freeData", 1),
         },
         paid: {
           label: "with billing set up",
           storage: attr(root, "paidStorage", 25),
           queries: attr(root, "paidQueries", 500),
-          data: attr(root, "paidData", 0.835),
+          data: attr(root, "paidData", 5),
         },
       },
     };
@@ -69,8 +69,8 @@
     return Math.round(value).toLocaleString("en-GB");
   }
 
-  // Sizes are shown in whichever unit reads smallest, so a 167 MB allowance
-  // never appears as 0.167 GB.
+  // Sizes are shown in whichever unit reads smallest, so a 500 MB figure
+  // never appears as 0.5 GB.
   function fmtSize(gb) {
     if (gb <= 0) return "0 GB";
     if (gb < 1) return trim(gb * 1000, 1) + " MB";
