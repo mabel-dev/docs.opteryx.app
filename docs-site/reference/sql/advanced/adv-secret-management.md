@@ -81,11 +81,14 @@ Bind each value as a named parameter and send it in the `parameters` of
 ~~~json
 {
   "sql_text": "CREATE SECRET lake_reader IN analytics (TYPE 'aws_access_key', ACCESS_KEY_ID :key_id, SECRET_ACCESS_KEY :secret, SCOPE 's3://acme-lake/exports/')",
-  "parameters": { "key_id": "AKIA...", "secret": "..." }
+  "parameters": {
+    "key_id": { "type": "VARCHAR", "value": "AKIA..." },
+    "secret": { "type": "VARCHAR", "value": "..." }
+  }
 }
 ~~~
 
-Parameters must be named (`:name`, not `?` or `$1`) and string-valued. Names starting
+Parameters must be named (`:name`, not `?` or `$1`) and typed `VARCHAR`. Names starting
 `redacted_` are reserved.
 
 ### What Opteryx Does Not Control
