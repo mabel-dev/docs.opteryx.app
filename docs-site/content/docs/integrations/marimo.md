@@ -171,7 +171,7 @@ With the default minimum of 50, the table lists Jupiter, Saturn, Neptune and Ura
 ## Known Limitations and Troubleshooting
 
 - **Opteryx Core isn't a `mo.sql` engine.** `mo.sql` needs a SQLAlchemy engine or another engine marimo supports, and Opteryx Core has neither. Query local files from Python cells with a helper like `query()` above.
-- **Bound parameters don't work against opteryx.app yet**, so the hosted example formats the value into the SQL. Only do that with values coerced to a known type, as `int(min_mass.value)` is here, and never with free text from a widget. See [Parameterising Queries](/docs/guides/using-sqlalchemy#parameterising-queries). Opteryx Core's `?` parameters work normally.
+- **`mo.sql` takes the query as a single string**, with no separate parameters, so the hosted example formats the value into the SQL. Only do that with values coerced to a known type, as `int(min_mass.value)` is here, and never with free text from a widget. For free text, run the query from a Python cell with bound parameters instead, as in [Parameterising Queries](/docs/guides/using-sqlalchemy#parameterising-queries).
 - **Every change reruns the query.** A slider can fire many queries while it's being dragged. Keep queries aggregated, or put the widget in a `mo.ui.form` so the query runs only when it's submitted.
 - **`Authentication error: Missing bearer token`** means the engine URL has no credentials. Check that both environment variables are set in the shell you started marimo from.
 - **``Dataset `data.missions` cannot be found``** means marimo was started from a different folder. Run `marimo edit` from the folder that contains `data/`.

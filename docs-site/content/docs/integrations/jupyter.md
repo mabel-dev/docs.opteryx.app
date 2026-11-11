@@ -138,7 +138,6 @@ result.DataFrame()
 ## Known Limitations and Troubleshooting
 
 - **Aggregate before you pull.** Opteryx can scan more data than fits in memory, but a DataFrame can't. Group and filter in SQL so only the summary reaches the notebook. [Exploratory Analysis in Notebooks](/docs/guides/exploratory-analysis) covers this pattern in more depth.
-- **Bound parameters don't work against opteryx.app yet.** `text("... WHERE mass > :m")` with a params dict fails server-side. The `?` parameters in the Opteryx Core examples work. For the hosted service, see [Parameterising Queries](/docs/guides/using-sqlalchemy#parameterising-queries).
 - **Read-only.** The SQLAlchemy dialect doesn't support writes.
 - **`Authentication error: Missing bearer token`** means the engine URL has no credentials. Check that both environment variables are set in the environment Jupyter was started from.
 - **``Dataset `data.missions` cannot be found``** means the kernel's working directory isn't the folder that contains `data/`. Check it with `import os; os.getcwd()`.

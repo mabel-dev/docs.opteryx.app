@@ -84,20 +84,21 @@ print(df)
 
 ## Parameterising Queries
 
-SQLAlchemy's usual bound-parameter mechanism — `text("... WHERE mass > :min_mass")` with a params dict — does not currently work end to end against the hosted service; the query fails server-side with an unresolved-parameter error regardless of what you pass. This isn't specific to the SQLAlchemy dialect — it's a current limitation of the Jobs API underneath it, also covered in [Running a Query via the API](/docs/guides/running-a-query-via-the-api).
-
-Until that's fixed, declare the value with `SET` ahead of the query, in the same statement:
+Pass values as bound parameters rather than formatting them into the SQL:
 
 ```python
 with engine.connect() as conn:
-    result = conn.execute(text(
-        "SET @min_mass = 100; SELECT name FROM opteryx.test.planets WHERE mass > @min_mass;"
-    ))
+    result = conn.execute(
+        text("SELECT name FROM opteryx.test.planets WHERE mass > :min_mass"),
+        {"min_mass": 100},
+    )
     for row in result:
         print(row)
 ```
 
-> Warning: This embeds the value directly into the SQL text, so only do it with values your own code has coerced to a known scalar type (an `int`, a `float`, a validated date) — never with raw, unescaped user input. It's a stopgap for a feature that isn't fully wired up yet, not a substitute for real bound parameters.
+This returns Jupiter, Saturn and Neptune. The dialect sends the SQL text unchanged and the values separately, and the server binds them, so a value can never change the statement. Positional `?` placeholders work too, for example `conn.exec_driver_sql("... WHERE mass > ?", (100,))`.
+
+Each value is typed from its Python type. `int`, `float`, `Decimal`, `bool`, `str`, `date`, `datetime`, `time` and `None` are supported, and any other type raises `NotSupportedError`.
 
 ## Things to Know
 
