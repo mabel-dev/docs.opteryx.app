@@ -7,7 +7,7 @@ description: Every Opteryx companion notebook in one place. Open them in Google 
 
 Several pages in these docs have a companion notebook that runs the page's examples for you. This page lists all of them in one place. Each opens in [Google Colab](https://colab.research.google.com/) with one click, or you can download the `.ipynb` file and run it in Jupyter on your own machine.
 
-Each notebook installs what it needs in its first cell, so there is nothing to set up first. Only one needs an account: the SQLAlchemy notebook connects to [opteryx.app](https://opteryx.app).
+Each notebook installs what it needs in its first cell, so there is nothing to set up first. Two need an account: the SQLAlchemy and dbt notebooks connect to [opteryx.app](https://opteryx.app).
 
 ## Reading Files with Python
 
@@ -33,7 +33,7 @@ These four load a file into pandas with [Rugo](/docs/guides/rugo-standalone), th
 
 ## Querying Opteryx.app
 
-Both of these read the public National Vulnerability Database (NVD) dataset on [opteryx.app](https://opteryx.app).
+These read the public National Vulnerability Database (NVD) dataset on [opteryx.app](https://opteryx.app).
 
 **Query public data with OData** uses only `requests` and pandas. It discovers the public datasets, reads a schema from `$metadata`, filters, sorts and counts, pages with `@odata.nextLink`, and aggregates CISA's known-exploited list. It needs no account. The guide is [Querying via OData](/docs/guides/querying-via-odata).
 
@@ -42,6 +42,10 @@ Both of these read the public National Vulnerability Database (NVD) dataset on [
 **Query Opteryx.app with SQLAlchemy** connects with the `opteryx-sqlalchemy` dialect, queries the NVD dataset into pandas, joins it to CISA's known-exploited list, then runs the same connection against your own datasets. It **needs an opteryx.app account** and a client ID and secret. The guide is [Using SQLAlchemy from a notebook](/docs/guides/using-sqlalchemy).
 
 [Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/query-opteryx-app-with-sqlalchemy.ipynb) · [Download](/notebooks/query-opteryx-app-with-sqlalchemy.ipynb)
+
+**Build dbt models on Opteryx.app** writes a small dbt project over NVD and CISA's known-exploited list, then runs it with the `dbt-opteryx` adapter: staging views, two tables, data tests and a unit test. It reads the tables it built back into pandas, and drops them at the end. It **needs an opteryx.app account** and a client ID and secret, and builds the models in your personal space. The guide is [dbt](/docs/integrations/dbt).
+
+[Open in Colab](https://colab.research.google.com/github/mabel-dev/docs.opteryx.app/blob/main/docs-site/public/notebooks/build-models-with-dbt-on-opteryx-app.ipynb) · [Download](/notebooks/build-models-with-dbt-on-opteryx-app.ipynb)
 
 ## Benchmarks: DuckDB vs Opteryx
 

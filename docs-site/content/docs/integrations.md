@@ -1,6 +1,6 @@
 ---
 title: Integrations - Opteryx
-description: Use Opteryx from BI, dashboard and notebook tools - Apache Superset, Grafana, Jupyter, marimo and Streamlit - with the connection method each one uses and what it supports.
+description: Use Opteryx from BI, dashboard and notebook tools - Apache Superset, dbt, Grafana, Jupyter, marimo and Streamlit - with the connection method each one uses and what it supports.
 ---
 
 # Integrations
@@ -17,6 +17,7 @@ Opteryx comes in two forms, and a tool can use one or both:
 | Tool | What it's for | Opteryx Core | opteryx.app connection |
 |---|---|---|---|
 | [Apache Superset](/docs/integrations/superset) | Shared BI dashboards and SQL exploration | — | `opteryx-sqlalchemy` |
+| [dbt](/docs/integrations/dbt) | Building tested, documented models in SQL | — | `dbt-opteryx` adapter |
 | [Grafana](/docs/integrations/grafana) | Time-series dashboards | — | OData, through the Infinity plugin |
 | [Jupyter](/docs/integrations/jupyter) | Interactive analysis in notebooks | Yes | `opteryx-sqlalchemy`, with pandas or `%sql` |
 | [marimo](/docs/integrations/marimo) | Reactive notebooks and small apps | Yes | `opteryx-sqlalchemy`, with `mo.sql` |
@@ -26,7 +27,6 @@ Power BI and Excel connect through OData: see [Iceberg in Power BI and Excel](/d
 
 ## Not Supported Yet
 
-- **dbt** needs a dbt adapter, and there isn't one for Opteryx. The SQLAlchemy dialect and the Flight SQL endpoint can't stand in for one: dbt doesn't use SQLAlchemy, and both are read-only.
 - **Metabase** has no driver that reaches Opteryx. opteryx.app has no PostgreSQL-compatible endpoint, and Metabase doesn't read OData.
 
 ## Choosing a Connection
@@ -35,4 +35,6 @@ Power BI and Excel connect through OData: see [Iceberg in Power BI and Excel](/d
 - **Tools that read JSON over HTTP** (Grafana, Power BI, Excel) use the OData service. The `demo` workspace is readable without credentials. Other workspaces accept HTTP Basic authentication with the client ID and secret.
 - **Arrow-native tools** can use [Flight SQL](/docs/guides/connecting-via-flight-sql), which streams results as Arrow record batches.
 
-All of these are read-only, and all of them only see the datasets your credential's policies grant. See [Access and Permissions](/docs/core-concepts/access-and-permissions).
+- **dbt** uses the [`dbt-opteryx`](/docs/integrations/dbt) adapter, which runs statements through the opteryx.app jobs API with the same client ID and secret.
+
+All of these except dbt are read-only, and all of them only see the datasets your credential's policies grant. See [Access and Permissions](/docs/core-concepts/access-and-permissions).

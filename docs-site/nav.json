@@ -213,6 +213,9 @@
         "Apache Superset": "integrations/superset.md"
       },
       {
+        "dbt": "integrations/dbt.md"
+      },
+      {
         "Grafana": "integrations/grafana.md"
       },
       {
