@@ -52,6 +52,8 @@ An interval is a (months, microseconds) pair: years and months are stored as mon
 - The value must be quoted: `INTERVAL 1 DAY` is rejected.
 - A number divided by an interval, an interval times an interval, and `%` on an interval are not operations.
 - CAST(literal AS INTERVAL) is rejected. INTERVAL can only be cast TO VARCHAR (see cast_to above); it cannot be cast FROM another type.
+- Written to Parquet - a saved table, or a query result returned by the jobs API - an interval keeps millisecond precision: anything below a millisecond is dropped. This is Parquet's own INTERVAL resolution; within a query intervals are exact to the microsecond.
+- A negative interval cannot be written to Parquet: Parquet stores an interval's months, days and milliseconds as unsigned numbers, so writing one is an error. Negative intervals work within a query; to save or return one, negate it (`-x`) or cast it to VARCHAR, which keeps the sign: `(INTERVAL '-90' MINUTE)::VARCHAR` is '-PT1H30M'.
 
 ## See Also
 
