@@ -251,7 +251,7 @@
             ],
             "notes": "Precision 1\u201318 uses 64-bit integer storage. Precision 19\u201338 uses 128-bit integer storage. Precision above 38 is not supported. Arithmetic result precision follows SQL Server rules: addition/subtraction scales as `max(s1,s2)` with precision `max(p1-s1, p2-s2) + max(s1,s2) + 1`; multiplication gives `p1+p2` precision and `s1+s2` scale; division gives `p1+6` precision and `max(s1+6, 6)` scale. FLOAT \u2192 DECIMAL casts round half-away-from-zero, not banker's rounding. Unlike INTEGER, DECIMAL arithmetic overflow (result too wide for the storage tier) raises an error rather than wrapping silently.",
             "limitations": [
-                "MEDIAN does not support DECIMAL columns \u2014 cast to FLOAT/DOUBLE first: `MEDIAN(col::DOUBLE)`. SUM, AVG, MIN, and MAX all support DECIMAL natively and preserve exactness (SUM/MIN/MAX stay DECIMAL; AVG returns DOUBLE)."
+                "MEDIAN does not support DECIMAL columns \u2014 cast to FLOAT first: `MEDIAN(col::FLOAT)`. SUM, AVG, MIN, and MAX all support DECIMAL natively and preserve exactness (SUM/MIN/MAX stay DECIMAL; AVG returns FLOAT64)."
             ]
         },
         "parameterized_forms": [
@@ -269,11 +269,13 @@
     "float": {
         "canonical_name": "FLOAT",
         "aliases": [
-            "double"
+            "float32",
+            "float64"
         ],
         "accepted_spellings": [
-            "double",
-            "float"
+            "float",
+            "float32",
+            "float64"
         ],
         "family": "numeric",
         "flags": {
@@ -283,7 +285,7 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `DOUBLE` in SQL \u2014 they are equivalent.",
+            "description": "64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `FLOAT64` in SQL \u2014 they are equivalent.",
             "example": "3.14",
             "min": -1.7976931348623157e+308,
             "max": 1.7976931348623157e+308,
@@ -338,13 +340,25 @@
     "integer": {
         "canonical_name": "INTEGER",
         "aliases": [
-            "bigint",
-            "int"
+            "int16",
+            "int32",
+            "int64",
+            "int8",
+            "uint16",
+            "uint32",
+            "uint64",
+            "uint8"
         ],
         "accepted_spellings": [
-            "bigint",
-            "int",
-            "integer"
+            "int16",
+            "int32",
+            "int64",
+            "int8",
+            "integer",
+            "uint16",
+            "uint32",
+            "uint64",
+            "uint8"
         ],
         "family": "numeric",
         "flags": {
@@ -354,7 +368,7 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "Signed 64-bit integer. Write `INTEGER`, `INT`, or `BIGINT` in SQL \u2014 they are all equivalent.",
+            "description": "Signed 64-bit integer. Write `INTEGER` or `INT64` in SQL \u2014 they are equivalent.",
             "example": "42",
             "min": -9223372036854775808,
             "max": 9223372036854775807,
@@ -429,7 +443,7 @@
             "parameterized": false
         },
         "metadata": {
-            "description": "A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `DAY`, `MONTH`, `YEAR`, `HOUR`, `MINUTE`, `SECOND`, or `MICROSECOND`.",
+            "description": "A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `YEAR`, `MONTH`, `WEEK`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `MILLISECOND` or `MICROSECOND` (plurals such as `DAYS` are accepted). A range such as `INTERVAL '1 3' MONTH TO DAY` takes one value per unit, filled from the leading unit.",
             "example": "INTERVAL '7' DAY",
             "cast_to": [
                 {
@@ -461,18 +475,42 @@
                     "expr": "ts_col - INTERVAL '30' MINUTE",
                     "result": "TIMESTAMP",
                     "desc": "Shift a timestamp back"
+                },
+                {
+                    "expr": "ts_col - other_ts_col",
+                    "result": "INTERVAL",
+                    "desc": "Elapsed time between two timestamps"
+                },
+                {
+                    "expr": "INTERVAL '1' MONTH * n",
+                    "result": "INTERVAL",
+                    "desc": "Scale by a number (either side); `ts + INTERVAL '1' MONTH * n` steps n months"
+                },
+                {
+                    "expr": "INTERVAL '1' MONTH / 2",
+                    "result": "INTERVAL",
+                    "desc": "Divide by a number: 15 days - a fractional month spills into days at 30 days per month"
+                },
+                {
+                    "expr": "-INTERVAL '1' DAY",
+                    "result": "INTERVAL",
+                    "desc": "Negate (same as `INTERVAL '-1' DAY`)"
                 }
             ],
-            "notes": "Sub-month components (days, hours, minutes, seconds, microseconds) are stored as a microsecond count. Month and year components are stored separately and applied calendar-accurately during arithmetic. You cannot mix month-based and sub-month intervals in a single expression.",
+            "notes": "An interval is a (months, microseconds) pair: years and months are stored as months and applied calendar-accurately (months first, clamped to the month's last day, so Jan 31 + 1 month is Feb 29 in a leap year), then everything from weeks down is applied as an exact microsecond count. In a range, WEEK only counts when it is named as an end: `MONTH TO DAY` is months then days. Multiplying or dividing by an integer is exact; by a float it goes through double precision, as in PostgreSQL, and can be off by a microsecond. Dividing by zero, or any result too large to hold, is an error. Comparisons between intervals count a month as 30 days, so `INTERVAL '1' MONTH = INTERVAL '30' DAY` is true.",
             "limitations": [
-                "There is no INTERVAL literal that combines months and days in one expression (e.g. '1 month 3 days' is not supported). Use separate additions.",
+                "The value takes numbers only: `INTERVAL '1 month 3 days'` and `INTERVAL '1-3' YEAR TO MONTH` are rejected. Write `INTERVAL '1 3' MONTH TO DAY` instead.",
+                "The value must be quoted: `INTERVAL 1 DAY` is rejected.",
+                "A number divided by an interval, an interval times an interval, and `%` on an interval are not operations.",
                 "CAST(literal AS INTERVAL) is rejected. INTERVAL can only be cast TO VARCHAR (see cast_to above); it cannot be cast FROM another type."
             ]
         },
         "parameterized_forms": [],
         "ingestion_mappings": {
             "parquet_physical": [],
-            "parquet_logical": [],
+            "parquet_logical": [
+                "interval"
+            ],
             "jsonl": []
         }
     },
@@ -529,9 +567,7 @@
     "null": {
         "canonical_name": "NULL",
         "aliases": [],
-        "accepted_spellings": [
-            "null"
-        ],
+        "accepted_spellings": [],
         "family": "null",
         "flags": {
             "numeric": false,
@@ -858,13 +894,8 @@
     },
     "varbinary": {
         "canonical_name": "VARBINARY",
-        "aliases": [
-            "blob",
-            "bytes"
-        ],
+        "aliases": [],
         "accepted_spellings": [
-            "blob",
-            "bytes",
             "varbinary"
         ],
         "family": "binary",
@@ -918,13 +949,8 @@
     },
     "varchar": {
         "canonical_name": "VARCHAR",
-        "aliases": [
-            "string",
-            "text"
-        ],
+        "aliases": [],
         "accepted_spellings": [
-            "string",
-            "text",
             "varchar"
         ],
         "family": "text",
@@ -994,9 +1020,7 @@
     "variant": {
         "canonical_name": "VARIANT",
         "aliases": [],
-        "accepted_spellings": [
-            "variant"
-        ],
+        "accepted_spellings": [],
         "family": "nested",
         "flags": {
             "numeric": false,

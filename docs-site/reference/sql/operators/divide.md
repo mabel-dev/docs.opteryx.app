@@ -1,6 +1,6 @@
 ---
 title: Division — Opteryx Operator
-description: Returns the quotient of two numeric operands. Symbol: /
+description: Returns the quotient of two numeric operands, or divides an INTERVAL by a number. Symbol: /
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,7 +11,7 @@ description: Returns the quotient of two numeric operands. Symbol: /
 
 # Division
 
-Returns the quotient of two numeric operands.
+Returns the quotient of two numeric operands, or divides an INTERVAL by a number.
 
 **Category:** binary
 
@@ -27,12 +27,12 @@ Returns the quotient of two numeric operands.
 
 ## Parameters
 
-- **`<dividend>`** — The value to divide. Two integers still divide to a FLOAT - use `DIV` for integer division. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
-- **`<divisor>`** — The value to divide by. Dividing by zero yields infinity rather than raising, because the result is floating point. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
+- **`<dividend>`** — The value to divide: a number or an INTERVAL. Two integers still divide to a FLOAT - use `DIV` for integer division. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer), [`interval`](../types/interval).
+- **`<divisor>`** — The number to divide by. Dividing a number by zero yields infinity rather than raising, because the result is floating point; dividing an INTERVAL by zero is an error. A number cannot be divided by an INTERVAL. Accepts [`decimal`](../types/decimal), [`float`](../types/float), [`integer`](../types/integer).
 
 ## Returns
 
-[`decimal`](../types/decimal), [`float`](../types/float)
+[`decimal`](../types/decimal), [`float`](../types/float), [`interval`](../types/interval)
 
 ## Examples
 
@@ -52,6 +52,14 @@ SELECT CAST(1 AS DECIMAL(10,2)) / 3;
 0.33333333
 ```
 
+```sql
+SELECT CAST('2026-01-01' AS TIMESTAMP) + INTERVAL '1' MONTH / 2;
+```
+
+```
+2026-01-16 00:00:00+00:00
+```
+
 ## Signatures
 
 - `decimal / decimal` → decimal
@@ -63,10 +71,12 @@ SELECT CAST(1 AS DECIMAL(10,2)) / 3;
 - `integer / decimal` → decimal
 - `integer / float` → float
 - `integer / integer` → float
+- `interval / float` → interval
+- `interval / integer` → interval
 
 ## Notes
 
-`/` is true division: `5 / 2` is 2.5, never 2. A DECIMAL operand keeps the result DECIMAL; every other combination gives FLOAT, and `1 / 0` is therefore `inf` rather than an error.
+`/` is true division: `5 / 2` is 2.5, never 2. A DECIMAL operand keeps the result DECIMAL; every other numeric combination gives FLOAT, and `1 / 0` is therefore `inf` rather than an error. An INTERVAL divided by a number is an INTERVAL: whole months divide, and the remainder spills into days at 30 days per month, so `INTERVAL '1' MONTH / 2` is 15 days and `INTERVAL '2' YEAR / 3` is 8 months.
 
 ## See Also
 

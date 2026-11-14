@@ -149,11 +149,14 @@ Examples:
 INTERVAL '1' YEAR
 INTERVAL '1' DAY
 INTERVAL '1 1' DAY TO HOUR
+INTERVAL '1 3' MONTH TO DAY
 INTERVAL '30' MINUTE
 INTERVAL '45' SECOND
 ```
 
-Supported units: `YEAR`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`
+Supported units: `YEAR`, `MONTH`, `WEEK`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `MILLISECOND`, `MICROSECOND`, and their plurals (`DAYS` means `DAY`).
+
+A range takes one number per unit, filled from the leading unit. `WEEK` only counts when it is named as an end of the range, so `INTERVAL '1 3' MONTH TO DAY` is 1 month and 3 days.
 
 ### Current Date and Time
 
@@ -266,6 +269,9 @@ timestamp - interval → timestamp
 timestamp - timestamp → interval
 interval + interval → interval
 interval - interval → interval
+interval * number → interval   (or number * interval)
+interval / number → interval
+-interval → interval
 ```
 
 Examples:
@@ -273,7 +279,13 @@ Examples:
 ```sql
 SELECT event_time + INTERVAL '1' YEAR FROM events;
 SELECT end_time - start_time AS duration FROM events;
+SELECT start_date + INTERVAL '1' MONTH * installment_number FROM payments;
+SELECT (end_time - start_time) / 2 AS half_way FROM events;
 ```
+
+Months are applied first and clamped to the end of the month, then the rest is added as an exact time: `CAST('2024-01-31' AS TIMESTAMP) + INTERVAL '1 1' MONTH TO DAY` is March 1st (Feb 29, then one day). Adding one month twice is not the same as adding two months once - Jan 31 + 1 month + 1 month is March 29, but Jan 31 + 2 months is March 31.
+
+Multiplying or dividing an interval by a number scales the months and the time separately; a fractional month spills into days at 30 days per month, as in PostgreSQL. `INTERVAL '1' MONTH * 1.5` is 1 month 15 days, and `INTERVAL '1' MONTH / 2` is 15 days. Integer factors are exact; dividing an interval by zero is an error.
 
 Timestamps cannot be added together (`timestamp + timestamp` is an error).
 
@@ -302,25 +314,20 @@ Both `start` and `end` must be `TIMESTAMP` (cast DATE values explicitly):
 SELECT DATEDIFF('day', '2024-01-01'::TIMESTAMP, '2024-12-31'::TIMESTAMP);
 ```
 
-> Be Aware: An INTERVAL produced by subtracting one timestamp from another carries its whole magnitude in the sub-day component — its month and day fields are zero, and the elapsed time is a nanosecond count. Adding `INTERVAL '1' MONTH` to it sets the month field alongside that count rather than folding into it, so the two never combine into a single elapsed figure.
+> Be Aware: An INTERVAL produced by subtracting one timestamp from another has no months in it: the whole elapsed time is a microsecond count. Adding `INTERVAL '1' MONTH` to it sets the month part alongside that count rather than folding into it, so the two never combine into a single elapsed figure.
 
-### Intervals cannot be compared to each other
+### Comparing intervals
 
-`interval > interval` is **not supported in any unit** — not just for `YEAR`. Both of these
-fail, and they fail with an internal error rather than a clean planning message:
+Intervals compare with `=`, `<`, `>` and the rest, including an interval worked out from two timestamps:
 
 ```sql
--- unsupported
-SELECT * FROM people WHERE death - birth > INTERVAL '100' YEAR;
 SELECT * FROM people WHERE death - birth > INTERVAL '30' DAY;
 ```
 
-Rearrange so the comparison is between two **timestamps**, which is supported:
+For comparison a month counts as 30 days and a year as 360, so `INTERVAL '1' MONTH = INTERVAL '30' DAY` is true, and `death - birth > INTERVAL '100' YEAR` is really "more than 36,000 days". When the calendar matters, compare two timestamps instead:
 
 ```sql
--- supported
 SELECT * FROM people WHERE birth + INTERVAL '100' YEAR < death;
-SELECT * FROM people WHERE birth + INTERVAL '30' DAY  < death;
 ```
 
 Or compare a `DATEDIFF` result, which is a number:

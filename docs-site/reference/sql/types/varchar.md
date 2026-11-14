@@ -13,8 +13,6 @@ description: VARCHAR
 
 A variable-length ASCII text string. Use VARCHAR for columns that contain only ASCII characters. For text with accented characters, emoji, or any non-ASCII content, use NVARCHAR instead.
 
-**Aliases:** `STRING`, `TEXT`
-
 ## Example
 
 ```sql

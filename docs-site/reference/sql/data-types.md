@@ -16,8 +16,8 @@ The following data types are supported by Opteryx.  Click a name for details.
 ## Numeric types
 
 - [DECIMAL](types/decimal) — Exact fixed-point number with declared precision and scale: `DECIMAL(precision, scale)`. Precision is the total number of significant digits (1–38); scale is the number of digits after the decimal point (0–precision). For example, `DECIMAL(10, 2)` holds values up to 99999999.99.
-- [FLOAT](types/float) — 64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `DOUBLE` in SQL — they are equivalent.
-- [INTEGER](types/integer) — Signed 64-bit integer. Write `INTEGER`, `INT`, or `BIGINT` in SQL — they are all equivalent.
+- [FLOAT](types/float) — 64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `FLOAT64` in SQL — they are equivalent.
+- [INTEGER](types/integer) — Signed 64-bit integer. Write `INTEGER` or `INT64` in SQL — they are equivalent.
 
 ## Temporal types
 
@@ -27,7 +27,7 @@ The following data types are supported by Opteryx.  Click a name for details.
 
 ## Interval types
 
-- [INTERVAL](types/interval) — A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `DAY`, `MONTH`, `YEAR`, `HOUR`, `MINUTE`, `SECOND`, or `MICROSECOND`.
+- [INTERVAL](types/interval) — A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `YEAR`, `MONTH`, `WEEK`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `MILLISECOND` or `MICROSECOND` (plurals such as `DAYS` are accepted). A range such as `INTERVAL '1 3' MONTH TO DAY` takes one value per unit, filled from the leading unit.
 
 ## Text types
 

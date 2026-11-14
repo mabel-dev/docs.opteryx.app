@@ -215,9 +215,14 @@ An array literal is an **operand**, not a projectable value: it can appear on th
 ~~~sql
 SELECT NOW() - INTERVAL '1' DAY;
 SELECT INTERVAL '1 3' YEAR TO MONTH;
+SELECT INTERVAL '1 3' MONTH TO DAY;
 ~~~
 
-Units are `YEAR`, `MONTH`, `DAY`, `HOUR`, `MINUTE` and `SECOND`. The compound form spans a contiguous run of them starting at the leading unit.
+Units are `YEAR`, `MONTH`, `WEEK`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `MILLISECOND` and `MICROSECOND`, and each plural (`DAYS`, `MONTHS`, …) means the same as its singular.
+
+The range form `<unit> TO <unit>` takes one whole number per unit, separated by spaces and filled from the leading unit: `INTERVAL '1 3' YEAR TO MONTH` is 15 months. `WEEK` only counts when it is named as an end of the range, so `MONTH TO DAY` is months then days, and `WEEK TO DAY` is weeks then days. Each number can carry its own sign, and fewer numbers than units is fine; more is an error.
+
+A minus sign in front negates an interval: `-INTERVAL '1' DAY` is the same as `INTERVAL '-1' DAY`.
 
 Intervals are carried as a months-and-microseconds pair — the two components that cannot be converted into one another without a calendar.
 

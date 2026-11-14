@@ -1,6 +1,6 @@
 ---
 title: Subtraction — Opteryx Operator
-description: Returns the difference between two numeric, date, timestamp, or interval-compatible operands. Symbol: -
+description: Returns the difference between two numeric, date, timestamp, or interval-compatible operands. As a prefix, `-x` negates a number or an INTERVAL. Symbol: -
 ---
 
 <!-- GENERATED FILE - DO NOT EDIT.
@@ -11,7 +11,7 @@ description: Returns the difference between two numeric, date, timestamp, or int
 
 # Subtraction
 
-Returns the difference between two numeric, date, timestamp, or interval-compatible operands.
+Returns the difference between two numeric, date, timestamp, or interval-compatible operands. As a prefix, `-x` negates a number or an INTERVAL.
 
 **Category:** binary
 
@@ -23,6 +23,7 @@ Returns the difference between two numeric, date, timestamp, or interval-compati
 
 ```sql
 <left> - <right>
+-<value>
 ```
 
 ## Parameters
@@ -54,6 +55,14 @@ SELECT CAST('2026-03-01' AS TIMESTAMP) - INTERVAL '1' MONTH;
 2026-02-01 00:00:00+00:00
 ```
 
+```sql
+SELECT CAST('2026-03-01' AS TIMESTAMP) + -INTERVAL '1' DAY;
+```
+
+```
+2026-02-28 00:00:00+00:00
+```
+
 ## Signatures
 
 - `date - date` → interval
@@ -68,16 +77,14 @@ SELECT CAST('2026-03-01' AS TIMESTAMP) - INTERVAL '1' MONTH;
 - `integer - decimal` → decimal
 - `integer - float` → float
 - `integer - integer` → integer
-- `interval - date` → timestamp
 - `interval - interval` → interval
-- `interval - timestamp` → timestamp
 - `timestamp - date` → interval
 - `timestamp - interval` → timestamp
 - `timestamp - timestamp` → interval
 
 ## Notes
 
-Unlike addition, subtraction is not symmetric across types: a timestamp minus an interval is a timestamp, but an interval minus a timestamp is not accepted.
+Unlike addition, subtraction is not symmetric across types: a timestamp minus an interval is a timestamp, but an interval minus a timestamp is not accepted. `-INTERVAL '1' DAY` is the same interval as `INTERVAL '-1' DAY`, and negating a computed interval such as `-(end_ts - start_ts)` works too.
 
 ## See Also
 

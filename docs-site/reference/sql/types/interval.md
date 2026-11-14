@@ -11,7 +11,7 @@ description: INTERVAL
 
 # INTERVAL
 
-A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `DAY`, `MONTH`, `YEAR`, `HOUR`, `MINUTE`, `SECOND`, or `MICROSECOND`.
+A duration or period of time. Written as `INTERVAL 'value' UNIT` where UNIT is one of `YEAR`, `MONTH`, `WEEK`, `DAY`, `HOUR`, `MINUTE`, `SECOND`, `MILLISECOND` or `MICROSECOND` (plurals such as `DAYS` are accepted). A range such as `INTERVAL '1 3' MONTH TO DAY` takes one value per unit, filled from the leading unit.
 
 ## Example
 
@@ -33,6 +33,10 @@ SELECT INTERVAL '7' DAY;
 | `INTERVAL '1' DAY + INTERVAL '2' HOUR` | INTERVAL | Add two intervals |
 | `date_col + INTERVAL '1' MONTH` | TIMESTAMP | Shift a date forward |
 | `ts_col - INTERVAL '30' MINUTE` | TIMESTAMP | Shift a timestamp back |
+| `ts_col - other_ts_col` | INTERVAL | Elapsed time between two timestamps |
+| `INTERVAL '1' MONTH * n` | INTERVAL | Scale by a number (either side); `ts + INTERVAL '1' MONTH * n` steps n months |
+| `INTERVAL '1' MONTH / 2` | INTERVAL | Divide by a number: 15 days - a fractional month spills into days at 30 days per month |
+| `-INTERVAL '1' DAY` | INTERVAL | Negate (same as `INTERVAL '-1' DAY`) |
 
 ## Comparisons
 
@@ -40,11 +44,13 @@ Can be compared (using `=`, `<`, `>`, etc.) with: `INTERVAL`.
 
 ## Notes
 
-Sub-month components (days, hours, minutes, seconds, microseconds) are stored as a microsecond count. Month and year components are stored separately and applied calendar-accurately during arithmetic. You cannot mix month-based and sub-month intervals in a single expression.
+An interval is a (months, microseconds) pair: years and months are stored as months and applied calendar-accurately (months first, clamped to the month's last day, so Jan 31 + 1 month is Feb 29 in a leap year), then everything from weeks down is applied as an exact microsecond count. In a range, WEEK only counts when it is named as an end: `MONTH TO DAY` is months then days. Multiplying or dividing by an integer is exact; by a float it goes through double precision, as in PostgreSQL, and can be off by a microsecond. Dividing by zero, or any result too large to hold, is an error. Comparisons between intervals count a month as 30 days, so `INTERVAL '1' MONTH = INTERVAL '30' DAY` is true.
 
 ## Limitations
 
-- There is no INTERVAL literal that combines months and days in one expression (e.g. '1 month 3 days' is not supported). Use separate additions.
+- The value takes numbers only: `INTERVAL '1 month 3 days'` and `INTERVAL '1-3' YEAR TO MONTH` are rejected. Write `INTERVAL '1 3' MONTH TO DAY` instead.
+- The value must be quoted: `INTERVAL 1 DAY` is rejected.
+- A number divided by an interval, an interval times an interval, and `%` on an interval are not operations.
 - CAST(literal AS INTERVAL) is rejected. INTERVAL can only be cast TO VARCHAR (see cast_to above); it cannot be cast FROM another type.
 
 ## See Also

@@ -37,4 +37,4 @@ Precision 1–18 uses 64-bit integer storage. Precision 19–38 uses 128-bit int
 
 ## Limitations
 
-- MEDIAN does not support DECIMAL columns — cast to FLOAT/DOUBLE first: `MEDIAN(col::DOUBLE)`. SUM, AVG, MIN, and MAX all support DECIMAL natively and preserve exactness (SUM/MIN/MAX stay DECIMAL; AVG returns DOUBLE).
+- MEDIAN does not support DECIMAL columns — cast to FLOAT first: `MEDIAN(col::FLOAT)`. SUM, AVG, MIN, and MAX all support DECIMAL natively and preserve exactness (SUM/MIN/MAX stay DECIMAL; AVG returns FLOAT64).

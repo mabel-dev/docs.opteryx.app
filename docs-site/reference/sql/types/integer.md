@@ -11,9 +11,9 @@ description: INTEGER
 
 # INTEGER
 
-Signed 64-bit integer. Write `INTEGER`, `INT`, or `BIGINT` in SQL — they are all equivalent.
+Signed 64-bit integer. Write `INTEGER` or `INT64` in SQL — they are equivalent.
 
-**Aliases:** `BIGINT`, `INT`
+**Aliases:** `INT16`, `INT32`, `INT64`, `INT8`, `UINT16`, `UINT32`, `UINT64`, `UINT8`
 
 ## Example
 

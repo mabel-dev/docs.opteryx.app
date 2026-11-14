@@ -13,8 +13,6 @@ description: VARBINARY
 
 Raw binary data (arbitrary bytes). Use for hashes, encoded payloads, or any non-text binary content.
 
-**Aliases:** `BLOB`, `BYTES`
-
 ## Example
 
 ```sql

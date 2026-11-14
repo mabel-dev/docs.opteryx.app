@@ -11,9 +11,9 @@ description: FLOAT
 
 # FLOAT
 
-64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `DOUBLE` in SQL — they are equivalent.
+64-bit IEEE 754 double-precision floating-point number. Write `FLOAT` or `FLOAT64` in SQL — they are equivalent.
 
-**Aliases:** `DOUBLE`
+**Aliases:** `FLOAT32`, `FLOAT64`
 
 ## Example
 
