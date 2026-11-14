@@ -135,6 +135,27 @@ Opteryx does not infer temporal types as eagerly as some other engines.
 
 ---
 
+## Column names in results
+
+A column written with its table name or alias takes the column's own name, as in standard SQL: `SELECT p.name FROM $planets AS p` returns a column called `name`.
+
+Where two columns in one result would share a name, Opteryx keeps the table prefix on those columns only. Standard SQL returns duplicate names, which clients can tell apart only by position.
+
+Each planet joined to the next one out, `FROM $planets AS p JOIN $planets AS q ON q.id = p.id + 1`:
+
+| Select list | Result columns |
+|---|---|
+| `SELECT p.id, q.name` | `id`, `name` |
+| `SELECT p.name, q.name, q.mass` | `p.name`, `q.name`, `mass` |
+| `SELECT p.name AS planet, q.name` | `planet`, `name` |
+| `SELECT *` | `p.id`, `p.name`, … `q.id`, `q.name`, … |
+
+Writing the same column twice, such as `SELECT p.id, p.id`, is refused: give one a different name with `AS`.
+
+`CREATE TABLE ... AS`, `CREATE VIEW`, `ALTER VIEW` and materialized views don't store a prefixed name. If a query would store one, including through `SELECT *` over a join of tables that share a column name, the statement is refused with an error asking for a distinct name with `AS`.
+
+---
+
 ## Ordering and `LIMIT`
 
 ### Tie-breaking among equal sort keys is unspecified

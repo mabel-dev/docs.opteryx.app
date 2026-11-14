@@ -111,6 +111,7 @@ Run `dbt debug` to check the connection.
 - **No temporary tables.** dbt's `__dbt_tmp` intermediate tables are real tables. dbt drops them when a model succeeds, but a failed model can leave one behind.
 - **Views** are built with `CREATE OR REPLACE VIEW`, not dbt's rename swap.
 - **Snapshots aren't supported.** dbt's snapshot SQL uses `SELECT *, ...`, and Opteryx doesn't accept `*` alongside other columns unless the star is qualified (`SELECT t.*, ...`).
+- **A table model can't store two columns with the same name.** A model that joins tables sharing a column name, such as `SELECT o.id, c.id` or `SELECT *` across the join, is refused with an error asking for distinct names. Name one side with `AS`, for example `c.id AS customer_id`. A view model is refused the same way.
 - **A bare boolean column isn't a filter.** Write `WHERE active IS TRUE` or `WHERE active = true`, not `WHERE active`.
 - **Model contracts are refused.** The adapter doesn't enforce them yet, and ignoring one would claim a guarantee it doesn't keep.
 - **Queries can't be cancelled** from dbt.
