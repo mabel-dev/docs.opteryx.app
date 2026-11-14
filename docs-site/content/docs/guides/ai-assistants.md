@@ -5,7 +5,12 @@ description: Register the Opteryx MCP server with Claude Desktop, Claude Code, C
 
 # Using Opteryx from Your AI Assistant
 
-Opteryx Studio has its own AI Assistant, which runs on a provider key you add under **Settings → AI Providers**. If you already work in an AI tool, you don't need it. You can register the Opteryx MCP server with that tool instead and ask questions about your data there. MCP (Model Context Protocol) is how tools such as Claude Desktop, Claude Code and Cursor connect to outside systems.
+Opteryx doesn't provide an AI model or run an AI agent for you. Every AI feature is bring your own AI:
+
+- **In Studio**, the AI Assistant runs on a provider key you add under **Settings → AI Providers**. Usage is billed by that provider to you, not by Opteryx.
+- **In your own AI tool**, which is what this page covers, you register the Opteryx MCP server and the tool's model does the work. It runs under your subscription to that tool and its terms.
+
+In both cases Opteryx supplies the tools the model calls, such as dataset search and queries, and runs them as you. MCP (Model Context Protocol) is how tools such as Claude Desktop, Claude Code, Cursor and Grok connect to outside systems.
 
 ## What You'll Be Able to Do
 
