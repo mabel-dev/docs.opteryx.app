@@ -10,7 +10,7 @@ Opteryx doesn't provide an AI model or run an AI agent for you. Every AI feature
 - **In Studio**, the AI Assistant runs on a provider key you add under **Settings → AI Providers**. Usage is billed by that provider to you, not by Opteryx.
 - **In your own AI tool**, which is what this page covers, you register the Opteryx MCP server and the tool's model does the work. It runs under your subscription to that tool and its terms.
 
-In both cases Opteryx supplies the tools the model calls, such as dataset search and queries, and runs them as you. MCP (Model Context Protocol) is how tools such as Claude Desktop, Claude Code, Cursor and Grok connect to outside systems.
+In both cases Opteryx supplies the tools the model calls, such as dataset search and queries, and runs them as you. MCP (Model Context Protocol) is how tools such as Claude Desktop, Claude Code, Cursor, ChatGPT and Grok connect to outside systems.
 
 ## What You'll Be Able to Do
 
@@ -70,6 +70,7 @@ On Windows and Linux, set the token as `OPTERYX_TOKEN` in your tool's config ins
 
 - [Claude Desktop](/docs/guides/ai-assistants-claude-desktop)
 - [Claude Code, Cursor and other MCP clients](/docs/guides/ai-assistants-other-clients)
+- [ChatGPT](/docs/guides/ai-assistants-chatgpt), which signs in with your Opteryx account and doesn't need any of the steps above
 - [Grok](/docs/guides/ai-assistants-grok), which connects to the server directly and doesn't need steps 2 or 3
 
 ## When Your Token Expires

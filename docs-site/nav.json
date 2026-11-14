@@ -201,6 +201,9 @@
             "Claude Code, Cursor and others": "guides/ai-assistants-other-clients.md"
           },
           {
+            "ChatGPT": "guides/ai-assistants-chatgpt.md"
+          },
+          {
             "Grok": "guides/ai-assistants-grok.md"
           }
         ]
