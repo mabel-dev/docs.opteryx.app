@@ -199,6 +199,9 @@
           },
           {
             "Claude Code, Cursor and others": "guides/ai-assistants-other-clients.md"
+          },
+          {
+            "Grok": "guides/ai-assistants-grok.md"
           }
         ]
       }

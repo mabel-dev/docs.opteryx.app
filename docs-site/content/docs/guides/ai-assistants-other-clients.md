@@ -55,6 +55,6 @@ If the client can't find `uvx`, give its full path. `which uvx` prints it on mac
 
 ## Why a Local Bridge
 
-The MCP endpoint at `https://agent.opteryx.app/mcp/` takes a bearer token, and Opteryx access tokens last five minutes. A client configured with a fixed header would be disconnected almost straight away. `opteryx-mcp` holds your personal access token and fetches a fresh access token a minute before each one expires. If the server forgets your session, it reconnects without the client noticing.
+The MCP endpoint at `https://agent.opteryx.app/mcp/` takes a bearer token, and Opteryx access tokens last five minutes. A client configured with a fixed access token would be disconnected almost straight away. (A client that sends your personal access token as `Bearer <user>:<token>` works too, because the server does the exchange. See [Connecting Grok](/docs/guides/ai-assistants-grok). The bridge is for clients that launch local servers rather than connect to remote ones.) `opteryx-mcp` holds your personal access token and fetches a fresh access token a minute before each one expires. If the server forgets your session, it reconnects without the client noticing.
 
 Generic bridges such as `mcp-remote` send one fixed header for the life of the process. Once that token expires they fail, typically with `does not support dynamic client registration`, an error that doesn't point to the real cause.

@@ -42,7 +42,7 @@ A few limits shape how the tools behave:
 
 In Studio, open **Settings → Access Tokens** and generate a token. It looks like `opt_..._01`, lasts 90 days by default, and is shown once.
 
-The bridge exchanges this token for short-lived access tokens as it needs them. Opteryx access tokens expire after five minutes, so a token pasted straight into a tool's config would stop working almost immediately.
+The bridge exchanges this token for short-lived access tokens as it needs them. Opteryx access tokens expire after five minutes, so an access token pasted straight into a tool's config would stop working almost immediately. Tools that connect to remote MCP servers and let you set a header, such as Grok, can send the personal access token itself instead. See [Connecting Grok](/docs/guides/ai-assistants-grok).
 
 ### 2. Install and log in
 
@@ -65,6 +65,7 @@ On Windows and Linux, set the token as `OPTERYX_TOKEN` in your tool's config ins
 
 - [Claude Desktop](/docs/guides/ai-assistants-claude-desktop)
 - [Claude Code, Cursor and other MCP clients](/docs/guides/ai-assistants-other-clients)
+- [Grok](/docs/guides/ai-assistants-grok), which connects to the server directly and doesn't need steps 2 or 3
 
 ## When Your Token Expires
 
