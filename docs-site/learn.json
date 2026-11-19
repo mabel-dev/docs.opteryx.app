@@ -28,7 +28,7 @@
       { "title": "Window functions", "href": "/docs/reference/sql/statements/window-functions", "kind": "Reference", "minutes": 10, "why": "Rankings and running totals without collapsing rows." },
       { "title": "Working with timestamps", "href": "/docs/reference/sql/advanced/working-with-timestamps", "kind": "Reference", "minutes": 10, "why": "Dates are where most analyst SQL goes wrong. Extraction, truncation and arithmetic." },
       { "title": "Troubleshooting queries", "href": "/docs/guides/troubleshooting", "kind": "Guide", "minutes": 10, "why": "EXPLAIN, and the handful of changes that fix most slow queries." },
-      { "title": "Cost model", "href": "/docs/core-concepts/cost-model", "kind": "Concept", "minutes": 5, "why": "What a query costs and why selecting fewer columns is cheaper." },
+      { "title": "Cost model", "href": "/docs/core-concepts/cost-model", "kind": "Concept", "minutes": 5, "why": "What you're charged for (data stored and data processed) and why selecting fewer columns is cheaper." },
       { "title": "Querying via OData", "href": "/docs/guides/querying-via-odata", "kind": "Guide", "minutes": 10, "optional": true, "why": "Read Opteryx tables from Excel or Power BI with no code." }
     ],
     "exercise": "analyst.md",

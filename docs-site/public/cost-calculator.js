@@ -17,9 +17,6 @@
 
   var HOURS_PER_DAY = 24;
 
-  // 1 GB = 1,000,000,000 bytes, the same decimal units the page bills in.
-  var UNITS = { MB: 0.001, GB: 1, TB: 1000 };
-
   var seq = 0;
 
   function attr(root, name, fallback) {
@@ -32,20 +29,17 @@
       days: attr(root, "days", 30),
       price: {
         storage: attr(root, "priceStorage", 0.00003), // per GB per hour
-        query: attr(root, "priceQuery", 0.1), // per 1,000 queries
         data: attr(root, "priceData", 0.004), // per GB
       },
       plans: {
         free: {
           label: "without billing set up",
           storage: attr(root, "freeStorage", 5),
-          queries: attr(root, "freeQueries", 100),
           data: attr(root, "freeData", 1),
         },
         paid: {
           label: "with billing set up",
           storage: attr(root, "paidStorage", 25),
-          queries: attr(root, "paidQueries", 500),
           data: attr(root, "paidData", 5),
         },
       },
@@ -65,16 +59,10 @@
     return Number(value.toFixed(places)).toLocaleString("en-GB");
   }
 
-  function fmtCount(value) {
-    return Math.round(value).toLocaleString("en-GB");
-  }
-
-  // Sizes are shown in whichever unit reads smallest, so a 500 MB figure
-  // never appears as 0.5 GB.
+  // Every size is in decimal GB (1 GB = 1,000,000,000 bytes), the unit the page bills in.
   function fmtSize(gb) {
     if (gb <= 0) return "0 GB";
-    if (gb < 1) return trim(gb * 1000, 1) + " MB";
-    if (gb >= 1000) return trim(gb / 1000, 2) + " TB";
+    if (gb < 1) return gb.toLocaleString("en-GB", { maximumSignificantDigits: 3 }) + " GB";
     return trim(gb, 2) + " GB";
   }
 
@@ -115,7 +103,6 @@
     var each = scale === "month" ? " a month" : " a day";
 
     var storage = ceilUnit(usage.storage - allowance.storage);
-    var queries = ceilUnit(usage.queries - allowance.queries);
     var data = ceilUnit(usage.data - allowance.data);
 
     var lines = [
@@ -128,14 +115,6 @@
         billable: storage > 0 ? fmtSize(storage) : "none",
         over: storage > 0,
         cost: storage * cfg.price.storage * HOURS_PER_DAY * per,
-      },
-      {
-        label: "Queries",
-        usage: fmtCount(usage.queries * per) + each,
-        allowance: fmtCount(allowance.queries * per) + each,
-        billable: queries > 0 ? fmtCount(queries * per) + each : "none",
-        over: queries > 0,
-        cost: queries * (cfg.price.query / 1000) * per,
       },
       {
         label: "Data queried",
@@ -170,28 +149,12 @@
     var name = "cc-plan-" + id;
     var scaleName = "cc-scale-" + id;
 
-    function field(key, label, sub, value, step, units) {
-      var unitControl = units
-        ? '<select class="cc-unit" data-unit="' +
-          key +
-          '" aria-label="' +
-          label +
-          ' unit">' +
-          units
-            .map(function (unit) {
-              return (
-                '<option value="' +
-                unit.value +
-                '"' +
-                (unit.selected ? " selected" : "") +
-                ">" +
-                unit.value +
-                "</option>"
-              );
-            })
-            .join("") +
-          "</select>"
-        : '<span class="cc-unit cc-unit--fixed" data-each>a day</span>';
+    // `perDay` fields are rates, so their unit carries the scale ("GB a day").
+    function field(key, label, sub, value, step, perDay) {
+      var unitControl =
+        '<span class="cc-unit">GB' +
+        (perDay ? "<span data-each>a day</span>" : "") +
+        "</span>";
 
       return (
         '<div class="cc-field">' +
@@ -249,16 +212,8 @@
       "</div>" +
       '<div class="cc-body">' +
       '<div class="cc-fields">' +
-      field("storage", "Storage held", "Across all your workspaces.", 40, 1, [
-        { value: "GB", selected: true },
-        { value: "TB" },
-      ]) +
-      field("queries", "Queries", "", 2000, 100) +
-      field("data", "Data queried", "", 5, 0.1, [
-        { value: "MB" },
-        { value: "GB", selected: true },
-        { value: "TB" },
-      ]) +
+      field("storage", "Storage held", "Across all your workspaces.", 40, 1, false) +
+      field("data", "Data queried", "", 5, 0.1, true) +
       "</div>" +
       '<div class="cc-out" aria-live="polite"></div>' +
       '<p class="cc-foot"></p>' +
@@ -379,7 +334,7 @@
     root.innerHTML = markup(id, cfg);
 
     // Everything downstream works in per-day terms, so a month's worth of
-    // queries or data is divided back out here. Storage is a level rather than a
+    // data is divided back out here. Storage is a level rather than a
     // rate, so the scale never touches it.
     function read(scale) {
       var over = scale === "month" ? cfg.days : 1;
@@ -389,9 +344,6 @@
         var key = input.dataset.usage;
         var value = parseFloat(input.value);
         if (!isFinite(value) || value < 0) value = 0;
-
-        var unit = root.querySelector('.cc-unit[data-unit="' + key + '"]');
-        if (unit) value *= UNITS[unit.value] || 1;
 
         usage[key] = key === "storage" ? value : value / over;
       });
@@ -405,7 +357,7 @@
     }
 
     // Switching scale re-expresses what is already entered rather than changing
-    // it: 2,000 queries a day becomes 60,000 a month, and the estimate below
+    // it: 5 GB a day becomes 150 GB a month, and the estimate below
     // stays where it was.
     var showing = "day";
 
@@ -440,10 +392,6 @@
         el.textContent = scale === "month" ? "a month" : "a day";
       });
 
-      root.querySelector('.cc-sub[data-sub="queries"]').textContent =
-        scale === "month"
-          ? "About " + fmtCount(usage.queries) + " a day."
-          : "About " + fmtCount(usage.queries * days) + " a month.";
       root.querySelector('.cc-sub[data-sub="data"]').textContent =
         scale === "month"
           ? "About " + fmtSize(usage.data) + " a day."

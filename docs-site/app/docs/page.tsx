@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { learnPaths } from "@/app/lib/learnPaths";
+import { PHOSPHOR_PATHS, type PhosphorIconName } from "@/app/lib/phosphorIcons";
 
 type DocSection = {
   title: string;
   description: string;
   href: string;
-  icon: string;
+  icon: PhosphorIconName;
 };
 
 const GETTING_STARTED: DocSection[] = [
@@ -13,25 +14,25 @@ const GETTING_STARTED: DocSection[] = [
     title: "Your first query",
     description: "A real result in two minutes: in the browser, over OData, or in Python",
     href: "/docs/getting-started/first-query",
-    icon: "⚡",
+    icon: "lightning",
   },
   {
     title: "Logging in",
     description: "Set up your account and get access to the platform",
     href: "/docs/getting-started/registration",
-    icon: "🔐",
+    icon: "sign-in",
   },
   {
     title: "Site tour",
     description: "Learn your way around the interface and key features",
     href: "/docs/getting-started/quick-start",
-    icon: "🗺️",
+    icon: "map-trifold",
   },
   {
     title: "Load and query data",
     description: "Import data and run your first query",
     href: "/docs/getting-started/reading-data",
-    icon: "📊",
+    icon: "database",
   },
 ];
 
@@ -40,13 +41,13 @@ const CORE_CONCEPTS: DocSection[] = [
     title: "Access and permissions",
     description: "Understand how access control works",
     href: "/docs/core-concepts/access-and-permissions",
-    icon: "🔒",
+    icon: "lock",
   },
   {
     title: "Cost model",
     description: "Learn how costs are calculated",
     href: "/docs/core-concepts/cost-model",
-    icon: "💰",
+    icon: "coins",
   },
 ];
 
@@ -57,19 +58,19 @@ const GUARANTEES: DocSection[] = [
     title: "Compatibility",
     description: "Python versions, platforms and formats, verified against the current release",
     href: "/docs/roadmap-guarantees/compatibility",
-    icon: "✅",
+    icon: "check-circle",
   },
   {
     title: "Known limits",
     description: "The architectural gaps worth knowing before you commit",
     href: "/docs/roadmap-guarantees/known-limits",
-    icon: "🚧",
+    icon: "barricade",
   },
   {
     title: "SQL conformance",
     description: "Which parts of standard SQL are supported, and which aren't",
     href: "/docs/reference/sql/conformance",
-    icon: "📐",
+    icon: "ruler",
   },
 ];
 
@@ -78,19 +79,19 @@ const REFERENCE: DocSection[] = [
     title: "API Reference",
     description: "Complete API documentation and examples",
     href: "/docs/reference/api/authentication-api",
-    icon: "⚙️",
+    icon: "brackets-curly",
   },
   {
     title: "SQL Language Reference",
     description: "SQL functions, operators, and statements",
     href: "/docs/reference/sql-language-reference/data-types",
-    icon: "📝",
+    icon: "file-sql",
   },
   {
     title: "Python Integration",
     description: "Use Opteryx with Python and SQLAlchemy",
     href: "/docs/reference/python-integration/sqlalchemy",
-    icon: "🐍",
+    icon: "file-py",
   },
 ];
 
@@ -98,7 +99,19 @@ function DocCard({ section }: { section: DocSection }) {
   return (
     <Link href={section.href} className="post-card">
       <div className="post-card-art tone-teal">
-        <span className="art-glyph">{section.icon}</span>
+        <span className="art-glyph">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            style={{ display: "block" }}
+          >
+            <path d={PHOSPHOR_PATHS[section.icon]} />
+          </svg>
+        </span>
       </div>
       <div className="post-card-body">
         <h3>{section.title}</h3>

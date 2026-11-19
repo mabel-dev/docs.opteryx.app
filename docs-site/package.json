@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/build-last-updated.mjs",
+    "prebuild": "node scripts/check-emoji.mjs && node scripts/build-last-updated.mjs",
     "build": "next build && node scripts/build-search-index.mjs",
     "last-updated": "node scripts/build-last-updated.mjs",
     "start": "next start",
     "lint": "next lint",
-    "validate:docs": "node scripts/validate-docs.mjs",
+    "validate:docs": "node scripts/validate-docs.mjs && node scripts/check-emoji.mjs",
     "search-index": "node scripts/build-search-index.mjs",
     "postinstall": "next telemetry disable"
   },

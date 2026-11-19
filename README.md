@@ -42,6 +42,14 @@ npm run dev
 2. Edit reference pages in `docs-site/reference/`.
 3. Add/update `docs-site/nav.json` when navigation should change.
 
+### Icons
+
+Icons are [Phosphor](https://phosphoricons.com) (Regular weight, MIT), drawn as inline SVG. The path data lives in `docs-site/app/lib/phosphorIcons.ts`; to add an icon, copy its path's `d` attribute from `@phosphor-icons/core` into that file. No icon package is installed.
+
+- Don't use emoji as icons, in components, nav or markdown. `npm run build` and `make validate` fail if they find one (`docs-site/scripts/check-emoji.mjs`). Emoji inside code blocks and inline code are allowed.
+- Icons take `fill="currentColor"`, so set their colour on the parent and they follow light and dark mode. Never hard-code a colour in an icon.
+- Decorative icons get `aria-hidden="true"` and `focusable="false"`. An icon-only control puts its name on the control with `aria-label`.
+
 ## Build
 
 ```bash

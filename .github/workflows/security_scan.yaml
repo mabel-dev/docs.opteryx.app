@@ -1,0 +1,22 @@
+# SEC-04: Bandit, Semgrep and Grype through the fleet's reusable workflow.
+# This file owns only the triggers. The scan, the pull-request gate (fail on
+# new high/critical findings versus the base) and the "security-scan" artifact
+# are defined once in mabel-dev/.github.
+name: Security Scan
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # Minute is sha256("mabel-dev/docs.opteryx.app") mod 60, so the fleet does not all start at once.
+    - cron: '54 5 * * *'
+
+permissions: {}
+
+jobs:
+  security-scan:
+    permissions:
+      contents: read
+    uses: mabel-dev/.github/.github/workflows/security_scan.yaml@main
+    with:
+      python: true

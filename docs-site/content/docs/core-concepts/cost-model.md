@@ -13,7 +13,6 @@ off when you reach it.
 | | Without billing set up | With billing set up |
 |---|---|---|
 | Storage | 5 GB at any one time | 25 GB at any one time |
-| Queries | 100 a day | 500 a day |
 | Data queried | 1 GB a day (about 30 GB a month) | 5 GB a day (about 150 GB a month) |
 
 **Your allowance resets every day, and doesn't roll over.** A quiet day doesn't
@@ -37,8 +36,7 @@ Usage beyond your free allowance is charged at:
 | | Price |
 |---|---|
 | Storage | £0.00003 per GB per hour (about £0.02 per GB a month) |
-| Queries | £0.10 per 1,000 queries |
-| Data queried | £0.004 per GB (£4 per TB) |
+| Data queried | £0.004 per GB |
 
 Monthly figures on this page are rough guides based on a 30-day month. Billing
 is worked out day by day, so the length of a calendar month never changes what
@@ -55,13 +53,10 @@ the one in the tables above.
 <div class="cost-calc"
      data-days="30"
      data-price-storage="0.00003"
-     data-price-query="0.10"
      data-price-data="0.004"
      data-free-storage="5"
-     data-free-queries="100"
      data-free-data="1"
      data-paid-storage="25"
-     data-paid-queries="500"
      data-paid-data="5">
   <noscript>The calculator needs JavaScript. The prices and allowances it works
   from are in the tables above.</noscript>
@@ -83,9 +78,6 @@ If you're 1 GB over the allowance for three hours, you pay for 1 GB for those
 three hours and nothing for the other twenty-one. Your allowance isn't a pot you
 draw down over the day or the month; it's the level above which you're charged
 at each check.
-
-**Queries** — the number of queries you run. Queries that read no data still
-count, because they still use compute.
 
 **Data queried** — the total amount of data read from your datasets while
 running your queries.

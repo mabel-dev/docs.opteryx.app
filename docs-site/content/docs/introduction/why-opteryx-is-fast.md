@@ -127,7 +127,7 @@ Speed also means not having to wait before the first query.
 
 ## Reading Less Costs Less
 
-On the hosted service, the **data queried** part of the bill is the data a query actually reads ([Cost Model](/docs/core-concepts/cost-model)). Each technique under *Read Less* that skips a column, row group or page therefore lowers what that query costs as well as how long it takes. Studio shows the bytes scanned under each result, so you can see the effect query by query.
+On the hosted service, the **data queried** part of the bill is the data a query actually reads ([Cost Model](/docs/core-concepts/cost-model)). Each technique under *Read Less* that skips a column, row group or page therefore lowers the data processed you're billed for, as well as how long the query takes. Studio shows the bytes scanned under each result, so you can see the effect query by query.
 
 ## The Numbers
 

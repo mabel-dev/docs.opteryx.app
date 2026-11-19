@@ -44,9 +44,9 @@ Uranus       5
 ...
 ```
 
-### 3. See what it cost
+### 3. See how much data it read
 
-The status bar under the results shows the row count, how long the query took and the **bytes scanned**. Bytes scanned is what Opteryx meters, so you can see what each query costs as you go. See [Cost Model](/docs/core-concepts/cost-model).
+The status bar under the results shows the row count, how long the query took and the **bytes scanned**. Bytes scanned is the data processed that Opteryx meters, so you can see how much each query reads as you go. See [Cost Model](/docs/core-concepts/cost-model).
 
 ### 4. Share it
 

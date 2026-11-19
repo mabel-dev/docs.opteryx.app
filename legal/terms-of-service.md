@@ -107,8 +107,8 @@ parties for that purpose.
 plans. Current allowances and unit prices are published in the Documentation at
 `docs.opteryx.app` and form part of these Terms.
 
-6.2 **Usage-based charging.** Paid usage is metered by storage, query count and
-data processed, calculated per calendar month and consolidated to your Billing
+6.2 **Usage-based charging.** Paid usage is metered by data stored and data
+processed, calculated per calendar month and consolidated to your Billing
 Account. Units and charges are rounded as described in the published cost model.
 Our measurement records are the definitive record of usage, absent manifest
 error.
