@@ -660,13 +660,74 @@
         }
       }
     },
+    "/v1/accounts/{account_id}/setup-intents": {
+      "post": {
+        "tags": [
+          "Payment Methods"
+        ],
+        "summary": "Create Setup Intent",
+        "description": "Start saving a card: a SetupIntent for the browser to confirm with Stripe.js.",
+        "operationId": "create_setup_intent_v1_accounts__account_id__setup_intents_post",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Create Setup Intent V1 Accounts  Account Id  Setup Intents Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/accounts/{account_id}/payment-methods": {
       "post": {
         "tags": [
           "Payment Methods"
         ],
         "summary": "Attach Payment Method",
-        "description": "Attach a Stripe payment method, replacing whatever's already attached.\n\nVerifies the token against Stripe's API before trusting it, then - if a\ndifferent payment method was already attached - detaches the old one on\nStripe's side so it isn't left orphaned there.",
+        "description": "Record a card confirmed through a SetupIntent, replacing any previous card.\n\nThe card must already be attached to this account's Stripe Customer, which\nconfirming the SetupIntent does. A PaymentMethod that is not is refused: it\ncarries no consent to be charged later, and the first invoice would fail.",
         "operationId": "attach_payment_method_v1_accounts__account_id__payment_methods_post",
         "parameters": [
           {
@@ -735,7 +796,7 @@
           "Payment Methods"
         ],
         "summary": "Get Payment Method",
-        "description": "Return the single attached payment method, or `null` if none is attached.\n\nA bare `null` (rather than e.g. a 404) is used because \"no payment\nmethod attached\" is a normal, expected state for this resource - not an\nerror - matching how `billing_account: null` is treated as a normal\nfree-tier state elsewhere in this design.",
+        "description": "The attached card, or `null` - having none is the normal free-plan state, not an error.",
         "operationId": "get_payment_method_v1_accounts__account_id__payment_methods_get",
         "parameters": [
           {
@@ -801,7 +862,7 @@
           "Payment Methods"
         ],
         "summary": "Detach Payment Method",
-        "description": "Detach the account's payment method, if any. Idempotent - detaching\nwhen nothing is attached is a no-op 204, not an error.",
+        "description": "Remove the card. Idempotent.\n\nUsage already incurred while the card was on file is still invoiced at the\nend of the month; with no card that invoice fails and the account goes past\ndue like any other failed payment.",
         "operationId": "detach_payment_method_v1_accounts__account_id__payment_methods_delete",
         "parameters": [
           {
@@ -833,77 +894,6 @@
         "responses": {
           "204": {
             "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/accounts/{account_id}/payments": {
-      "post": {
-        "tags": [
-          "Payment Methods"
-        ],
-        "summary": "Create Payment",
-        "description": "Ad hoc charge against the account's attached payment method.\n\n400 if no payment method is attached. A real `PaymentIntent` is created\nand confirmed synchronously against the attached Stripe payment method\nid - this moves real money, so this deliberately does not fake a\nsuccessful response; a Stripe failure surfaces as 402.",
-        "operationId": "create_payment_v1_accounts__account_id__payments_post",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Account Id"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePaymentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Create Payment V1 Accounts  Account Id  Payments Post"
-                }
-              }
-            }
           },
           "422": {
             "description": "Validation Error",
@@ -1118,15 +1108,24 @@
         }
       }
     },
-    "/v1/invoices": {
+    "/v1/accounts/{account_id}/invoices": {
       "get": {
         "tags": [
           "Invoices"
         ],
         "summary": "List Invoices",
-        "description": "Placeholder: return an empty invoices list.",
-        "operationId": "list_invoices_v1_invoices_get",
+        "description": "Every invoice, newest first, without the per-day detail.",
+        "operationId": "list_invoices_v1_accounts__account_id__invoices_get",
         "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Account Id"
+            }
+          },
           {
             "name": "authorization",
             "in": "header",
@@ -1155,7 +1154,7 @@
                     "type": "object",
                     "additionalProperties": true
                   },
-                  "title": "Response List Invoices V1 Invoices Get"
+                  "title": "Response List Invoices V1 Accounts  Account Id  Invoices Get"
                 }
               }
             }
@@ -1173,22 +1172,31 @@
         }
       }
     },
-    "/v1/invoices/{invoice_id}": {
+    "/v1/accounts/{account_id}/invoices/{period}": {
       "get": {
         "tags": [
           "Invoices"
         ],
         "summary": "Get Invoice",
-        "description": "Placeholder: return a minimal invoice representation.",
-        "operationId": "get_invoice_v1_invoices__invoice_id__get",
+        "description": "One invoice with its per-day lines: the inputs to every charge on it.",
+        "operationId": "get_invoice_v1_accounts__account_id__invoices__period__get",
         "parameters": [
           {
-            "name": "invoice_id",
+            "name": "account_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Invoice Id"
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Period"
             }
           },
           {
@@ -1216,7 +1224,139 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": true,
-                  "title": "Response Get Invoice V1 Invoices  Invoice Id  Get"
+                  "title": "Response Get Invoice V1 Accounts  Account Id  Invoices  Period  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account_id}/spend": {
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Get Spend",
+        "description": "This month's billed spend against the cap, as of the last hourly check.",
+        "operationId": "get_spend_v1_accounts__account_id__spend_get",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Spend V1 Accounts  Account Id  Spend Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account_id}/spend-cap": {
+      "put": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Set Spend Cap",
+        "description": "Set, change or remove the monthly spending cap. Billing admins only.\n\nTakes effect against the spend already recorded this month: lowering the cap\nbelow it stops queries straight away, raising it above resumes them, and any\nalert the new cap puts back out of reach will be sent again.",
+        "operationId": "set_spend_cap_v1_accounts__account_id__spend_cap_put",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpendCapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Set Spend Cap V1 Accounts  Account Id  Spend Cap Put"
                 }
               }
             }
@@ -1311,7 +1451,7 @@
           "Workspaces"
         ],
         "summary": "List Account Workspaces",
-        "description": "Manage-workspaces listing. Caller must be an active member of the\naccount (any role).\n\nA genuine two-database read per workspace: this service's own\n`workspaces/{name}` doc for `billing_account`/`members`, plus the\n`catalogs` database's `$properties` doc (via an `OpteryxCatalog` handle)\nfor lock state and the two protection guards.\n\nDROP WORKSPACE removes the catalog's `$properties` doc outright - it has\nno reason to touch this service's own `workspaces/{name}` registration\ndoc (`billing_account`/`members` are this service's own concern, not the\ncatalog's) - so a row whose properties read comes back empty names a\nworkspace that no longer exists; it is skipped rather than listed.",
+        "description": "Manage-workspaces listing. Caller must be an active member of the\naccount (any role).\n\nDriven by the billing index in the catalogs database - one collection-group\nquery for the names (`workspaces_billed_to_account`), then that database's\n`$properties` doc per workspace for lock state, the two protection guards\nand the catalog binding. One database, where it used to be two: the names\ncame from this service's own `workspaces/{name}` records, which nothing\nkept in step with the workspaces themselves.\n\n`drop_workspace` deletes the index with the workspace, so a dropped one is\nnot in the query's answer. The empty-properties skip below is kept for the\nwindow between those two deletes, and for an index a backfill wrote for a\nnamespace that has since gone: a listing must not name a workspace that no\nlonger exists, whatever the index says.\n\nRows carry `name` and `billing_account` and nothing else from the billing\nside. `members` is gone deliberately: the array it came from was written\nonce at creation and never updated, so it was the membership as it stood\nthe day the workspace was made. Who can reach a workspace is the grants'\nanswer (`GET /v1/access`, `information_schema.grants`), not a listing's.",
         "operationId": "list_account_workspaces_v1_accounts__account_id__workspaces_get",
         "parameters": [
           {
@@ -1638,6 +1778,16 @@
             }
           },
           {
+            "name": "analyze",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Analyze"
+            }
+          },
+          {
             "name": "authorization",
             "in": "header",
             "required": false,
@@ -1789,6 +1939,179 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{name}/catalog/collections": {
+      "post": {
+        "tags": [
+          "Workspace Catalog"
+        ],
+        "summary": "List Firestore Collections",
+        "description": "Test UNSAVED settings for a Firestore-bound workspace and list its collections.\n\nWhat the editor's collection picker is filled from, and its Test button: the\nresult is the 2.4 object plus `collections`, every top-level collection id\nin the database the body names, unfiltered.\n\nOwner-only, and only on a workspace already bound to Firestore, because of\nwhat ambient means here: control's own identity listing a project the\ncaller names. On the open draft route that would hand every account member\nthe collection names of every database control can read, ours included.\nHere it is held by someone who could already point this workspace at that\nproject and query it, so it grants nothing new.\n\nThe credential: a secret in the body is used for this one probe and never\nstored. A stored-mode body with NO secret uses the saved one - an edit that\nis only changing the project or the collections must not need the key\npasted again just to see the list.",
+        "operationId": "list_firestore_collections_v1_workspaces__name__catalog_collections_post",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogTestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Firestore Collections V1 Workspaces  Name  Catalog Collections Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{name}/favourite": {
+      "put": {
+        "tags": [
+          "Favourites"
+        ],
+        "summary": "Star Workspace",
+        "description": "Star `name` for the caller. Idempotent: starring twice is one star.",
+        "operationId": "star_workspace_v1_workspaces__name__favourite_put",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Favourites"
+        ],
+        "summary": "Unstar Workspace",
+        "description": "Unstar `name` for the caller. Idempotent: unstarring something never\nstarred is still \"not starred\", and is 204.",
+        "operationId": "unstar_workspace_v1_workspaces__name__favourite_delete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -2463,77 +2786,6 @@
         }
       }
     },
-    "/v1/access/workspace/{workspace}/genesis": {
-      "post": {
-        "tags": [
-          "Access Control"
-        ],
-        "summary": "Bootstrap a new workspace's initial policies",
-        "description": "Create the initial set of access policies for a brand-new workspace, one policy per {identity, role} pair, each scoped to the whole workspace (pattern `{workspace}.*`). This is a trusted bootstrap operation for whatever creates the workspace record in the first place (e.g. billing.opteryx's workspace-create endpoint) to hand it an explicit member list at creation time, rather than every caller becoming sole owner. Refuses with 409 if the workspace already has any policy at all -- this can only be used once, to bootstrap a workspace that doesn't have policies yet, not to add owners to one that already does.",
-        "operationId": "create_genesis_policies_v1_access_workspace__workspace__genesis_post",
-        "parameters": [
-          {
-            "name": "workspace",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Workspace name",
-              "title": "Workspace"
-            },
-            "description": "Workspace name"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenesisGrantRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenesisGrantResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/notifications": {
       "get": {
         "tags": [
@@ -2759,6 +3011,274 @@
           }
         }
       }
+    },
+    "/v1/workspaces/{workspace}/notebooks": {
+      "get": {
+        "tags": [
+          "Notebooks"
+        ],
+        "summary": "List Notebooks",
+        "description": "The notebooks in `workspace`, by name. No definitions.",
+        "operationId": "list_notebooks_v1_workspaces__workspace__notebooks_get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Notebooks V1 Workspaces  Workspace  Notebooks Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{workspace}/notebooks/{name}": {
+      "get": {
+        "tags": [
+          "Notebooks"
+        ],
+        "summary": "Get Notebook",
+        "description": "One notebook's definition.",
+        "operationId": "get_notebook_v1_workspaces__workspace__notebooks__name__get",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Notebook V1 Workspaces  Workspace  Notebooks  Name  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Notebooks"
+        ],
+        "summary": "Put Notebook",
+        "description": "Create or replace a notebook.",
+        "operationId": "put_notebook_v1_workspaces__workspace__notebooks__name__put",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotebookBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Put Notebook V1 Workspaces  Workspace  Notebooks  Name  Put"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Notebooks"
+        ],
+        "summary": "Delete Notebook",
+        "description": "Delete a notebook. Idempotent.",
+        "operationId": "delete_notebook_v1_workspaces__workspace__notebooks__name__delete",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2870,22 +3390,34 @@
             "title": "Stripe Payment Method Id"
           },
           "brand": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Brand"
           },
           "last4": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Last4"
           }
         },
         "type": "object",
         "required": [
-          "stripe_payment_method_id",
-          "brand",
-          "last4"
+          "stripe_payment_method_id"
         ],
         "title": "AttachPaymentMethodRequest",
-        "description": "Body for POST /v1/accounts/{id}/payment-methods.\n\n`brand`/`last4` are display-only fields Stripe's API already returned to\nthe client when the PaymentMethod was created via Stripe.js/Elements -\npassed along here rather than this service re-deriving them, though the\nid itself is independently verified server-side (see attach_payment_method)."
+        "description": "Body for POST /v1/accounts/{id}/payment-methods.\n\nBrand and last four are read back from Stripe rather than taken from the\nbody. The two optional fields are accepted only so an older Studio build\ndoes not fail validation."
       },
       "CatalogAuthRequest": {
         "properties": {
@@ -2976,36 +3508,6 @@
         "title": "CatalogTestRequest",
         "description": "A draft binding to test. Carries the RAW secret for a stored-mode test,\nunder exactly the discipline the module docstring sets out: it exists in\nmemory for the length of one probe, is never persisted, and is never\nlogged - not in the audit line, not in an error, not in a result."
       },
-      "CreatePaymentRequest": {
-        "properties": {
-          "amount": {
-            "type": "integer",
-            "title": "Amount"
-          },
-          "currency": {
-            "type": "string",
-            "title": "Currency",
-            "default": "usd"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          }
-        },
-        "type": "object",
-        "required": [
-          "amount"
-        ],
-        "title": "CreatePaymentRequest",
-        "description": "Body for POST /v1/accounts/{id}/payments. `amount` is in the smallest\ncurrency unit (cents for USD), matching Stripe's own convention."
-      },
       "DomainClaimRequest": {
         "properties": {
           "domain": {
@@ -3018,75 +3520,6 @@
           "domain"
         ],
         "title": "DomainClaimRequest"
-      },
-      "GenesisGrant": {
-        "properties": {
-          "identity": {
-            "type": "string",
-            "title": "Identity",
-            "description": "User identity to grant access to"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "owner",
-              "writer",
-              "reader"
-            ],
-            "title": "Role",
-            "description": "Role to grant. See [Security & Permissions](/docs/core-concepts/access-and-permissions) for what each role can do."
-          }
-        },
-        "type": "object",
-        "required": [
-          "identity",
-          "role"
-        ],
-        "title": "GenesisGrant",
-        "description": "One identity/role pair to grant when bootstrapping a brand-new workspace."
-      },
-      "GenesisGrantRequest": {
-        "properties": {
-          "grants": {
-            "items": {
-              "$ref": "#/components/schemas/GenesisGrant"
-            },
-            "type": "array",
-            "minItems": 1,
-            "title": "Grants",
-            "description": "Identity/role pairs to grant over the whole workspace"
-          }
-        },
-        "type": "object",
-        "required": [
-          "grants"
-        ],
-        "title": "GenesisGrantRequest",
-        "description": "Request to create the initial set of policies for a brand-new workspace.\n\nThere is no single `pattern` on the request --\nevery grant is scoped to the whole workspace (`{workspace}.*`) by the route\nitself, since this is about establishing who owns/administers the workspace\nas a whole at creation time, not granting access to one resource within it."
-      },
-      "GenesisGrantResponse": {
-        "properties": {
-          "policies": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Policies",
-            "description": "IDs of the created policy documents, one per grant"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Success message"
-          }
-        },
-        "type": "object",
-        "required": [
-          "policies",
-          "message"
-        ],
-        "title": "GenesisGrantResponse",
-        "description": "Response after bootstrapping a new workspace's initial policies."
       },
       "GooglePolicy": {
         "properties": {
@@ -3248,6 +3681,114 @@
         },
         "type": "object",
         "title": "MicrosoftPolicy"
+      },
+      "NotebookBody": {
+        "properties": {
+          "document": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Document"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document"
+        ],
+        "title": "NotebookBody"
+      },
+      "NotificationCreate": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{3,63}$",
+            "title": "Client Id"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Body",
+            "default": ""
+          },
+          "target": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity",
+            "default": "info"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "kind",
+          "title"
+        ],
+        "title": "NotificationCreate",
+        "description": "One notification, addressed to one principal.\n\n`client_id` is explicit and singular: this route resolves no audiences. A\nproducer that wants to reach several people sends several requests, and a\nproducer that wants to reach \"the owners of X\" resolves that itself\n(design doc §9) - including the producers inside this service, which have\n`access` and `members` to hand."
+      },
+      "SpendCapRequest": {
+        "properties": {
+          "spend_cap": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spend Cap"
+          }
+        },
+        "type": "object",
+        "title": "SpendCapRequest",
+        "description": "`spend_cap` in pence; null removes the cap."
       },
       "UpdateMemberRoleRequest": {
         "properties": {

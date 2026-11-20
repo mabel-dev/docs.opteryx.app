@@ -20,10 +20,6 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
   </thead>
   <tbody>
     <tr>
-      <td><span class="ep-name">Bootstrap a new workspace&#x27;s initial policies</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>access/<wbr>workspace/<wbr>{workspace}/<wbr>genesis</code></td>
-      <td class="ep-doc"><a href="#bootstrap-a-new-workspaces-initial-policies">View</a></td>
-    </tr>
-    <tr>
       <td><span class="ep-name">List Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts</code></td>
       <td class="ep-doc"><a href="#list-accounts">View</a></td>
     </tr>
@@ -80,6 +76,14 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
       <td class="ep-doc"><a href="#preview-idp-policy">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">List Invoices</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>invoices</code></td>
+      <td class="ep-doc"><a href="#list-invoices">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get Invoice</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>invoices/<wbr>{period}</code></td>
+      <td class="ep-doc"><a href="#get-invoice">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">List Members</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code></td>
       <td class="ep-doc"><a href="#list-members">View</a></td>
     </tr>
@@ -112,10 +116,6 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
       <td class="ep-doc"><a href="#detach-payment-method">View</a></td>
     </tr>
     <tr>
-      <td><span class="ep-name">Create Payment</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payments</code></td>
-      <td class="ep-doc"><a href="#create-payment">View</a></td>
-    </tr>
-    <tr>
       <td><span class="ep-name">List Service Accounts</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>service-accounts</code></td>
       <td class="ep-doc"><a href="#list-service-accounts">View</a></td>
     </tr>
@@ -128,6 +128,18 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
       <td class="ep-doc"><a href="#remove-service-account">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">Create Setup Intent</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>setup-intents</code></td>
+      <td class="ep-doc"><a href="#create-setup-intent">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get Spend</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>spend</code></td>
+      <td class="ep-doc"><a href="#get-spend">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Set Spend Cap</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>spend-cap</code></td>
+      <td class="ep-doc"><a href="#set-spend-cap">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">List Account Workspaces</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>workspaces</code></td>
       <td class="ep-doc"><a href="#list-account-workspaces">View</a></td>
     </tr>
@@ -138,14 +150,6 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
     <tr>
       <td><span class="ep-name">Get Catalog Kinds</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>catalog-kinds</code></td>
       <td class="ep-doc"><a href="#get-catalog-kinds">View</a></td>
-    </tr>
-    <tr>
-      <td><span class="ep-name">List Invoices</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices</code></td>
-      <td class="ep-doc"><a href="#list-invoices">View</a></td>
-    </tr>
-    <tr>
-      <td><span class="ep-name">Get Invoice</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices/<wbr>{invoice_id}</code></td>
-      <td class="ep-doc"><a href="#get-invoice">View</a></td>
     </tr>
     <tr>
       <td><span class="ep-name">List notifications</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>notifications</code></td>
@@ -180,6 +184,10 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
       <td class="ep-doc"><a href="#delete-catalog-binding">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">List Firestore Collections</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>collections</code></td>
+      <td class="ep-doc"><a href="#list-firestore-collections">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">Sync Catalog Dataset List</span><span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>sync</code></td>
       <td class="ep-doc"><a href="#sync-catalog-dataset-list">View</a></td>
     </tr>
@@ -188,84 +196,35 @@ Billing accounts and membership, payment methods and invoices, workspace lifecyc
       <td class="ep-doc"><a href="#test-saved-catalog-connection">View</a></td>
     </tr>
     <tr>
+      <td><span class="ep-name">Star Workspace</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>favourite</code></td>
+      <td class="ep-doc"><a href="#star-workspace">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Unstar Workspace</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>favourite</code></td>
+      <td class="ep-doc"><a href="#unstar-workspace">View</a></td>
+    </tr>
+    <tr>
       <td><span class="ep-name">Get Workspace Guard Properties</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>properties</code></td>
       <td class="ep-doc"><a href="#get-workspace-guard-properties">View</a></td>
     </tr>
+    <tr>
+      <td><span class="ep-name">List Notebooks</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks</code></td>
+      <td class="ep-doc"><a href="#list-notebooks">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Get Notebook</span><span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code></td>
+      <td class="ep-doc"><a href="#get-notebook">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Put Notebook</span><span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code></td>
+      <td class="ep-doc"><a href="#put-notebook">View</a></td>
+    </tr>
+    <tr>
+      <td><span class="ep-name">Delete Notebook</span><span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code></td>
+      <td class="ep-doc"><a href="#delete-notebook">View</a></td>
+    </tr>
   </tbody>
 </table>
-
-## Bootstrap a new workspace's initial policies
-
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>access/<wbr>workspace/<wbr>{workspace}/<wbr>genesis</code>
-
-**Tags:** Access Control
-
-Create the initial set of access policies for a brand-new workspace, one policy per {identity, role} pair, each scoped to the whole workspace (pattern `{workspace}.*`). This is a trusted bootstrap operation for whatever creates the workspace record in the first place (e.g. billing.opteryx's workspace-create endpoint) to hand it an explicit member list at creation time, rather than every caller becoming sole owner. Refuses with 409 if the workspace already has any policy at all -- this can only be used once, to bootstrap a workspace that doesn't have policies yet, not to add owners to one that already does.
-
-### Path Parameters
-
-- **workspace** `string` [path; required]
-  Workspace name
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Request Body
-
-- **Content-Type:** `application/json`
-  Schema: `GenesisGrantRequest`
-  - **grants** `array<GenesisGrant>` [required]
-    Identity/role pairs to grant over the whole workspace
-
-### Responses
-
-- **201** — Successful Response (`application/json` `GenesisGrantResponse`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/access/workspace/{workspace}/genesis" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/access/workspace/{workspace}/genesis</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">workspace<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="workspace" placeholder="string">
-      </div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Request body <span class="t-opt">application/json · GenesisGrantRequest</span></div>
-      <textarea class="t-body" spellcheck="false">{
-  "grants": []
-}</textarea>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
 
 ## List Accounts
 
@@ -1275,6 +1234,127 @@ this on every change and blocks the save button on its result.
   </div>
 </details>
 
+## List Invoices
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>invoices</code>
+
+**Tags:** Invoices
+
+Every invoice, newest first, without the per-day detail.
+
+### Path Parameters
+
+- **account_id** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `array<object>`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/invoices" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/invoices</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">account_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="account_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Get Invoice
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>invoices/<wbr>{period}</code>
+
+**Tags:** Invoices
+
+One invoice with its per-day lines: the inputs to every charge on it.
+
+### Path Parameters
+
+- **account_id** `string` [path; required]
+- **period** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/invoices/{period}" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/invoices/{period}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">account_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="account_id" placeholder="string">
+        <div class="t-pname">period<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="period" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## List Members
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>members</code>
@@ -1635,12 +1715,7 @@ invite for this identity on this account.
 
 **Tags:** Payment Methods
 
-Return the single attached payment method, or `null` if none is attached.
-
-A bare `null` (rather than e.g. a 404) is used because "no payment
-method attached" is a normal, expected state for this resource - not an
-error - matching how `billing_account: null` is treated as a normal
-free-tier state elsewhere in this design.
+The attached card, or `null` - having none is the normal free-plan state, not an error.
 
 ### Path Parameters
 
@@ -1699,11 +1774,11 @@ free-tier state elsewhere in this design.
 
 **Tags:** Payment Methods
 
-Attach a Stripe payment method, replacing whatever's already attached.
+Record a card confirmed through a SetupIntent, replacing any previous card.
 
-Verifies the token against Stripe's API before trusting it, then - if a
-different payment method was already attached - detaches the old one on
-Stripe's side so it isn't left orphaned there.
+The card must already be attached to this account's Stripe Customer, which
+confirming the SetupIntent does. A PaymentMethod that is not is refused: it
+carries no consent to be charged later, and the first invoice would fail.
 
 ### Path Parameters
 
@@ -1718,8 +1793,8 @@ Stripe's side so it isn't left orphaned there.
 - **Content-Type:** `application/json`
   Schema: `AttachPaymentMethodRequest`
   - **stripe_payment_method_id** `string` [required]
-  - **brand** `string` [required]
-  - **last4** `string` [required]
+  - **brand** `string | null` [optional]
+  - **last4** `string | null` [optional]
 
 ### Responses
 
@@ -1778,8 +1853,11 @@ Stripe's side so it isn't left orphaned there.
 
 **Tags:** Payment Methods
 
-Detach the account's payment method, if any. Idempotent - detaching
-when nothing is attached is a no-op 204, not an error.
+Remove the card. Idempotent.
+
+Usage already incurred while the card was on file is still invoiced at the
+end of the month; with no card that invoice fails and the account goes past
+due like any other failed payment.
 
 ### Path Parameters
 
@@ -1814,87 +1892,6 @@ when nothing is attached is a no-op 204, not an error.
         <div class="t-pname">account_id<span>string · required</span></div>
         <input type="text" class="t-path" data-name="account_id" placeholder="string">
       </div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Create Payment
-
-**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>payments</code>
-
-**Tags:** Payment Methods
-
-Ad hoc charge against the account's attached payment method.
-
-400 if no payment method is attached. A real `PaymentIntent` is created
-and confirmed synchronously against the attached Stripe payment method
-id - this moves real money, so this deliberately does not fake a
-successful response; a Stripe failure surfaces as 402.
-
-### Path Parameters
-
-- **account_id** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Request Body
-
-- **Content-Type:** `application/json`
-  Schema: `CreatePaymentRequest`
-  - **amount** `integer` [required]
-  - **currency** `string` [optional]
-    Default: `usd`
-  - **description** `string | null` [optional]
-
-### Responses
-
-- **201** — Successful Response (`application/json` `object`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/payments" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--post">post</span>
-    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/payments</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">account_id<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="account_id" placeholder="string">
-      </div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Request body <span class="t-opt">application/json · CreatePaymentRequest</span></div>
-      <textarea class="t-body" spellcheck="false">{
-  "amount": 0,
-  "currency": "usd",
-  "description": ""
-}</textarea>
     </div>
     <div class="t-actions">
       <button type="button" class="t-btn t-send">Send request</button>
@@ -2129,6 +2126,199 @@ bill it runs up.
   </div>
 </details>
 
+## Create Setup Intent
+
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>setup-intents</code>
+
+**Tags:** Payment Methods
+
+Start saving a card: a SetupIntent for the browser to confirm with Stripe.js.
+
+### Path Parameters
+
+- **account_id** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **201** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/setup-intents" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/setup-intents</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">account_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="account_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Get Spend
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>spend</code>
+
+**Tags:** Invoices
+
+This month's billed spend against the cap, as of the last hourly check.
+
+### Path Parameters
+
+- **account_id** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/spend" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/spend</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">account_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="account_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Set Spend Cap
+
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>spend-cap</code>
+
+**Tags:** Invoices
+
+Set, change or remove the monthly spending cap. Billing admins only.
+
+Takes effect against the spend already recorded this month: lowering the cap
+below it stops queries straight away, raising it above resumes them, and any
+alert the new cap puts back out of reach will be sent again.
+
+### Path Parameters
+
+- **account_id** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `SpendCapRequest`
+  - **spend_cap** `integer | null` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="PUT" data-base="https://control.opteryx.app" data-path="/v1/accounts/{account_id}/spend-cap" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--put">put</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/accounts/{account_id}/spend-cap</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">account_id<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="account_id" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · SpendCapRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "spend_cap": 0
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## List Account Workspaces
 
 **Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>accounts/<wbr>{account_id}/<wbr>workspaces</code>
@@ -2138,16 +2328,24 @@ bill it runs up.
 Manage-workspaces listing. Caller must be an active member of the
 account (any role).
 
-A genuine two-database read per workspace: this service's own
-`workspaces/{name}` doc for `billing_account`/`members`, plus the
-`catalogs` database's `$properties` doc (via an `OpteryxCatalog` handle)
-for lock state and the two protection guards.
+Driven by the billing index in the catalogs database - one collection-group
+query for the names (`workspaces_billed_to_account`), then that database's
+`$properties` doc per workspace for lock state, the two protection guards
+and the catalog binding. One database, where it used to be two: the names
+came from this service's own `workspaces/{name}` records, which nothing
+kept in step with the workspaces themselves.
 
-DROP WORKSPACE removes the catalog's `$properties` doc outright - it has
-no reason to touch this service's own `workspaces/{name}` registration
-doc (`billing_account`/`members` are this service's own concern, not the
-catalog's) - so a row whose properties read comes back empty names a
-workspace that no longer exists; it is skipped rather than listed.
+`drop_workspace` deletes the index with the workspace, so a dropped one is
+not in the query's answer. The empty-properties skip below is kept for the
+window between those two deletes, and for an index a backfill wrote for a
+namespace that has since gone: a listing must not name a workspace that no
+longer exists, whatever the index says.
+
+Rows carry `name` and `billing_account` and nothing else from the billing
+side. `members` is gone deliberately: the array it came from was written
+once at creation and never updated, so it was the membership as it stood
+the day the workspace was made. Who can reach a workspace is the grants'
+answer (`GET /v1/access`, `information_schema.grants`), not a listing's.
 
 ### Path Parameters
 
@@ -2305,113 +2503,6 @@ a capability that flips does so on a deploy, not mid-session.
       <div class="t-label">Bearer token <span class="t-opt">required</span></div>
       <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
       <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## List Invoices
-
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices</code>
-
-**Tags:** Invoices
-
-Placeholder: return an empty invoices list.
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `array<object>`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/invoices" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/invoices</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-actions">
-      <button type="button" class="t-btn t-send">Send request</button>
-      <button type="button" class="t-btn t-curl">Copy as cURL</button>
-      <button type="button" class="t-btn t-python">Copy as Python</button>
-    </div>
-  </div>
-  <div class="t-resp">
-    <div class="t-resp__bar">
-      <span class="t-pill"></span>
-      <span class="t-meta"></span>
-      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
-    </div>
-    <pre class="t-pre"></pre>
-    <div class="t-note"></div>
-  </div>
-</details>
-
-## Get Invoice
-
-**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>invoices/<wbr>{invoice_id}</code>
-
-**Tags:** Invoices
-
-Placeholder: return a minimal invoice representation.
-
-### Path Parameters
-
-- **invoice_id** `string` [path; required]
-
-### Header Parameters
-
-- **authorization** `string | null` [header; optional]
-
-### Responses
-
-- **200** — Successful Response (`application/json` `object`)
-- **422** — Validation Error (`application/json` `HTTPValidationError`)
-
-### Try it live
-
-<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/invoices/{invoice_id}" data-auth-docs="/docs/reference/api/authentication-api">
-  <summary class="api-tryit__bar">
-    <span class="t-verb t-verb--get">get</span>
-    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/invoices/{invoice_id}</span>
-    <span class="t-open"></span>
-  </summary>
-  <div class="api-tryit__body">
-    <div class="t-field">
-      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
-      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
-      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
-    </div>
-    <div class="t-field">
-      <div class="t-label">Path parameters</div>
-      <div class="t-params">
-        <div class="t-pname">invoice_id<span>string · required</span></div>
-        <input type="text" class="t-path" data-name="invoice_id" placeholder="string">
-      </div>
     </div>
     <div class="t-actions">
       <button type="button" class="t-btn t-send">Send request</button>
@@ -2978,6 +3069,98 @@ Remove the binding, reverting the workspace to the native catalog.
   </div>
 </details>
 
+## List Firestore Collections
+
+**Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>collections</code>
+
+**Tags:** Workspace Catalog
+
+Test UNSAVED settings for a Firestore-bound workspace and list its collections.
+
+What the editor's collection picker is filled from, and its Test button: the
+result is the 2.4 object plus `collections`, every top-level collection id
+in the database the body names, unfiltered.
+
+Owner-only, and only on a workspace already bound to Firestore, because of
+what ambient means here: control's own identity listing a project the
+caller names. On the open draft route that would hand every account member
+the collection names of every database control can read, ours included.
+Here it is held by someone who could already point this workspace at that
+project and query it, so it grants nothing new.
+
+The credential: a secret in the body is used for this one probe and never
+stored. A stored-mode body with NO secret uses the saved one - an edit that
+is only changing the project or the collections must not need the key
+pasted again just to see the list.
+
+### Path Parameters
+
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `CatalogTestRequest`
+  - **kind** `string` [required]
+  - **config** `object` [optional]
+    Default: `{}`
+  - **auth** `CatalogAuthRequest` [optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="POST" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}/catalog/collections" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--post">post</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}/catalog/collections</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · CatalogTestRequest</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "kind": "",
+  "config": {},
+  "auth": {}
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
 ## Sync Catalog Dataset List
 
 **Request:** <span class="ep-verb ep-verb--post">post</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>catalog/<wbr>sync</code>
@@ -3008,6 +3191,11 @@ invisible to Excel and Power BI.
 
 - **name** `string` [path; required]
 
+### Query Parameters
+
+- **analyze** `boolean` [query; optional]
+  Default: `false`
+
 ### Header Parameters
 
 - **authorization** `string | null` [header; optional]
@@ -3036,6 +3224,13 @@ invisible to Excel and Power BI.
       <div class="t-params">
         <div class="t-pname">name<span>string · required</span></div>
         <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Query parameters</div>
+      <div class="t-params">
+        <div class="t-pname">analyze<span>boolean · optional</span></div>
+        <input type="text" class="t-query" data-name="analyze" value="false" placeholder="boolean">
       </div>
     </div>
     <div class="t-actions">
@@ -3086,6 +3281,125 @@ for the probe and never leaves this process.
   <summary class="api-tryit__bar">
     <span class="t-verb t-verb--post">post</span>
     <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}/catalog/test</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Star Workspace
+
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>favourite</code>
+
+**Tags:** Favourites
+
+Star `name` for the caller. Idempotent: starring twice is one star.
+
+### Path Parameters
+
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **204** — Successful Response
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="PUT" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}/favourite" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--put">put</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}/favourite</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Unstar Workspace
+
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{name}/<wbr>favourite</code>
+
+**Tags:** Favourites
+
+Unstar `name` for the caller. Idempotent: unstarring something never
+starred is still "not starred", and is 204.
+
+### Path Parameters
+
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **204** — Successful Response
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{name}/favourite" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--delete">delete</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{name}/favourite</span>
     <span class="t-open"></span>
   </summary>
   <div class="api-tryit__body">
@@ -3174,6 +3488,263 @@ either source without knowing which one answered.
     <div class="t-field">
       <div class="t-label">Path parameters</div>
       <div class="t-params">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## List Notebooks
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks</code>
+
+**Tags:** Notebooks
+
+The notebooks in `workspace`, by name. No definitions.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{workspace}/notebooks" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{workspace}/notebooks</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Get Notebook
+
+**Request:** <span class="ep-verb ep-verb--get">get</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code>
+
+**Tags:** Notebooks
+
+One notebook's definition.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="GET" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{workspace}/notebooks/{name}" data-auth-docs="/docs/reference/api/authentication-api">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--get">get</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{workspace}/notebooks/{name}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Put Notebook
+
+**Request:** <span class="ep-verb ep-verb--put">put</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code>
+
+**Tags:** Notebooks
+
+Create or replace a notebook.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Request Body
+
+- **Content-Type:** `application/json`
+  Schema: `NotebookBody`
+  - **document** `object` [required]
+
+### Responses
+
+- **200** — Successful Response (`application/json` `object`)
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="PUT" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{workspace}/notebooks/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--put">put</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{workspace}/notebooks/{name}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
+        <div class="t-pname">name<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="name" placeholder="string">
+      </div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Request body <span class="t-opt">application/json · NotebookBody</span></div>
+      <textarea class="t-body" spellcheck="false">{
+  "document": {}
+}</textarea>
+    </div>
+    <div class="t-actions">
+      <button type="button" class="t-btn t-send">Send request</button>
+      <button type="button" class="t-btn t-curl">Copy as cURL</button>
+      <button type="button" class="t-btn t-python">Copy as Python</button>
+    </div>
+  </div>
+  <div class="t-resp">
+    <div class="t-resp__bar">
+      <span class="t-pill"></span>
+      <span class="t-meta"></span>
+      <button type="button" class="t-btn t-copy-resp" hidden>Copy</button>
+    </div>
+    <pre class="t-pre"></pre>
+    <div class="t-note"></div>
+  </div>
+</details>
+
+## Delete Notebook
+
+**Request:** <span class="ep-verb ep-verb--delete">delete</span><code>/<wbr>v1/<wbr>workspaces/<wbr>{workspace}/<wbr>notebooks/<wbr>{name}</code>
+
+**Tags:** Notebooks
+
+Delete a notebook. Idempotent.
+
+### Path Parameters
+
+- **workspace** `string` [path; required]
+- **name** `string` [path; required]
+
+### Header Parameters
+
+- **authorization** `string | null` [header; optional]
+
+### Responses
+
+- **204** — Successful Response
+- **422** — Validation Error (`application/json` `HTTPValidationError`)
+
+### Try it live
+
+<details class="api-tryit" data-method="DELETE" data-base="https://control.opteryx.app" data-path="/v1/workspaces/{workspace}/notebooks/{name}" data-auth-docs="/docs/reference/api/authentication-api" data-destructive="1">
+  <summary class="api-tryit__bar">
+    <span class="t-verb t-verb--delete">delete</span>
+    <span class="t-url"><span class="t-host">https://control.opteryx.app</span>/v1/workspaces/{workspace}/notebooks/{name}</span>
+    <span class="t-open"></span>
+  </summary>
+  <div class="api-tryit__body">
+    <div class="t-field">
+      <div class="t-label">Bearer token <span class="t-opt">required</span></div>
+      <input type="password" class="t-token" autocomplete="off" placeholder="paste a token from the Authentication API">
+      <div class="t-hint">Held in this tab only — never stored or logged. See the <a href="/docs/reference/api/authentication-api">Authentication API</a> for how to get one.</div>
+    </div>
+    <div class="t-field">
+      <div class="t-label">Path parameters</div>
+      <div class="t-params">
+        <div class="t-pname">workspace<span>string · required</span></div>
+        <input type="text" class="t-path" data-name="workspace" placeholder="string">
         <div class="t-pname">name<span>string · required</span></div>
         <input type="text" class="t-path" data-name="name" placeholder="string">
       </div>
