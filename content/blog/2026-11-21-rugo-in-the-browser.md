@@ -17,6 +17,7 @@ tags:
 ## TL;DR
 
 * [Rugo](https://rugo.dev), the file engine inside [Opteryx](https://opteryx.app), is now on npm as [`@opteryx/rugo`](https://www.npmjs.com/package/@opteryx/rugo). It's the same C++ that ships in the Python wheel, compiled to WebAssembly, for the browser and Node.
+* **See it working at [rugo.dev/viewer](https://rugo.dev/viewer/).** Drop a Parquet file on the page and it shows the schema and row groups, read in your browser with nothing uploaded.
 * **Want to know what's in a Parquet file without downloading it?** Rugo reads the footer and nothing else. On a 1.37 GB file that's two requests and 2.35 MB, 0.17% of the file, and you have the schema and every row group's metadata in about 30 ms in Node.
 * **Want some of the values?** Name the columns and a row group. Rugo fetches exactly those column chunks, one request each, and hands back plain JavaScript arrays.
 * **ORC and Avro work too**, with one caveat: those two read the whole file into memory.
@@ -119,7 +120,7 @@ The package is built from the same tree as the Python wheel and released by the 
 ## Try it
 
 - **Read the guide:** [Using Rugo from JavaScript](/docs/guides/rugo-javascript) covers sources, every reader, the value types and the errors.
-- **See it run:** open a Parquet file in the [viewer on rugo.dev](https://rugo.dev/viewer/).
+- **See it working:** open a Parquet file at [rugo.dev/viewer](https://rugo.dev/viewer/).
 - **Install it:** `npm install @opteryx/rugo@alpha`.
 
 If you try it on a file it can't read, that's the most useful thing you can tell us. [Open an issue](https://github.com/mabel-dev/opteryx-core/issues) with the error message.
