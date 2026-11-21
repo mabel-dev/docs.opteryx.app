@@ -476,6 +476,10 @@ Confirm a proposed schema, echoing the fingerprint you were shown.
 
 Stream one file in. Answered with what it turned out to be, or refused.
 
+The body may be compressed. `detect_kind` sees through the codec suffix, so
+`part-0000.ndjson.zst` is NDJSON, and the spool decodes as it streams - the
+reader is handed the format it was promised rather than a zstd frame.
+
 ### Path Parameters
 
 - **contract_id** `string` [path; required]
@@ -484,6 +488,7 @@ Stream one file in. Answered with what it turned out to be, or refused.
 
 - **x-file-name** `string | null` [header; optional]
 - **content-type** `string | null` [header; optional]
+- **content-encoding** `string | null` [header; optional]
 - **authorization** `string | null` [header; optional]
 
 ### Responses

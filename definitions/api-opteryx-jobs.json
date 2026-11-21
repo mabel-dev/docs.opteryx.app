@@ -118,6 +118,75 @@
         }
       }
     },
+    "/api/v1/jobs/{identifier}/save": {
+      "post": {
+        "tags": [
+          "Jobs Management"
+        ],
+        "summary": "Save job results to a dataset",
+        "description": "Copy the results of a completed job into a new dataset, so they outlive the job's retention window. The dataset must not already exist.",
+        "operationId": "save_job_results_api_v1_jobs__identifier__save_post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveJobRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveJobResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/jobs/{identifier}/status": {
       "get": {
         "tags": [
@@ -183,8 +252,8 @@
           "Jobs Management"
         ],
         "summary": "Get job results",
-        "description": "Retrieve the results of a previously submitted job.",
-        "operationId": "get_job_results_api_v1_jobs__identifier__results_get",
+        "description": "Retrieve the results of a previously submitted job. While the job is still running the response is 202 with its status. Pass `wait` (seconds, up to 20) to have the request held until the job's status changes, so a client can poll this one endpoint instead of /status followed by /results. Pass `seen` (the status the client last saw) so a change that happened before the request arrived is answered at once rather than missed.",
+        "operationId": "get_job_results_route_api_v1_jobs__identifier__results_get",
         "parameters": [
           {
             "name": "identifier",
@@ -223,6 +292,32 @@
               "type": "boolean",
               "default": false,
               "title": "Verbose"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 0,
+              "title": "Wait"
+            }
+          },
+          {
+            "name": "seen",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seen"
             }
           },
           {
@@ -411,6 +506,122 @@
                     "$ref": "#/components/schemas/QueryJob"
                   },
                   "title": "Response Get Recent User Queries Api V1 Jobs Recent Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/fired": {
+      "get": {
+        "tags": [
+          "Jobs Management"
+        ],
+        "summary": "List trigger-fired runs for one step",
+        "description": "Run history for standing work. Lists the jobs a trigger has fired for one target object, or for one source dataset, most recent first. Ask by either `target` (the view or task the run works on) or `dataset` (the dataset carrying the trigger, optionally narrowed to one `trigger` name) - exactly one of the two. Visible to anyone who may READ the object, which is the same grant that shows the trigger in `information_schema.triggers`; a fired run's own `submitted_by` is the trigger's runs-as identity, so ownership is not the question here. `status` is the JOB's status - whether THIS RUN succeeded - which is a different thing from the trigger's `last_fired_status` (whether the fire happened) and from the target view's `LastRefreshStatus` (whether the latest work succeeded). A fire that was refused - suspended, egress-blocked, owner-missing - or deduplicated into another job never became a job and so never appears here: an empty list is not evidence that nothing happened. History reaches back at most `retention_days`, after which the documents are purged. `limit` is optional: omitted, the listing runs to the 1000-row ceiling, which within the retention window is usually the whole history.",
+        "operationId": "list_fired_runs_api_v1_jobs_fired_get",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Target"
+            }
+          },
+          {
+            "name": "dataset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Dataset"
+            }
+          },
+          {
+            "name": "trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Trigger"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Fired Runs Api V1 Jobs Fired Get"
                 }
               }
             }
@@ -656,6 +867,116 @@
           }
         }
       }
+    },
+    "/api/v1/estimate": {
+      "post": {
+        "tags": [
+          "Query Check"
+        ],
+        "summary": "Estimate how much data a SQL statement would process",
+        "description": "Plan one statement as the caller, without running it, and report the bytes processed it would be billed for - the same plan-time figure the run bills - with a rough duration and, for a payer with a daily allowance, how much of today's allowance it would use. Heavier than `/check`: planning reads manifests and statistics, so call it once a statement checks out and typing has paused, not on every keystroke. A statement that is wrong is a 200 with `ok: false`.",
+        "operationId": "estimate_statement_api_v1_estimate_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryCheckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryEstimateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usage": {
+      "get": {
+        "tags": [
+          "Usage"
+        ],
+        "summary": "Today's usage against the daily allowance",
+        "description": "The caller's billing account (or, without one, the caller), its effective plan, and - when that plan has a daily allowance - today's and this month's bytes processed, as counted for enforcement.",
+        "operationId": "get_usage_api_v1_usage_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -765,6 +1086,115 @@
         "title": "CheckedRelation",
         "description": "A relation in scope, under the name the statement refers to it by.\n\n`alias` is what qualifies a column here (`p` in `FROM $planets AS p`); `relation`\nis what it actually is. `columns` is the FULL column list, not just the ones the\nstatement referenced — completion needs the ones it did not."
       },
+      "CheckedRelationship": {
+        "properties": {
+          "constraint": {
+            "type": "string",
+            "title": "Constraint",
+            "description": "The handle `DROP CONSTRAINT` removes it by"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind",
+            "description": "Always `maps` today - the only kind that is a join",
+            "default": "maps"
+          },
+          "from": {
+            "$ref": "#/components/schemas/RelationshipEnd",
+            "description": "The referencing column"
+          },
+          "to": {
+            "$ref": "#/components/schemas/RelationshipEnd",
+            "description": "The referenced column"
+          },
+          "cardinality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cardinality",
+            "description": "`many_to_one`, `one_to_one` or `many_to_many`, as DECLARED"
+          },
+          "cardinality_observed": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cardinality Observed",
+            "description": "What verification last measured, which may contradict the declaration. A `many_to_one` that is really many-to-many is a fan-out that inflates every number computed through the join. None where it has not been measured"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "`asserted` - a person declared it - or `inferred`, a machine's proposal"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "`active` or `unverified`. `broken` rows are never sent"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At",
+            "description": "When the values were last checked against each other, UTC ISO-8601. None means never checked, which is a state rather than a default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "constraint",
+          "from",
+          "to"
+        ],
+        "title": "CheckedRelationship",
+        "description": "A declared correspondence between two columns, for the editor to offer as\na join predicate the reader edits before running.\n\nFlat, not nested under an entry in `relations`: a relationship is an object\nabout TWO datasets, so hanging it off one of them forces a choice about\nwhich, or duplicates it under both. The consumer's question - what connects\nthese two aliases - is a lookup over pairs.\n\nOriented as stored, referencing -> referenced, and each relationship appears\nonce. Orientation is information (it is what `m.planet_id = p.id` is read\noff) rather than something the reader has to normalise away.\n\nNOT ENFORCED, ever. Nothing validated this when it was declared and nothing\nvalidates it now; a row on either side with no match on the other is\nperfectly legal. This says someone wrote the correspondence down, never that\nthe data honours it."
+      },
+      "DailyAllowance": {
+        "properties": {
+          "bytes_processed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bytes Processed",
+            "description": "Bytes processed per UTC day (1 GB = 10^9 bytes); null if not capped"
+          }
+        },
+        "type": "object",
+        "title": "DailyAllowance"
+      },
       "ErrorPosition": {
         "properties": {
           "start_line": {
@@ -804,6 +1234,46 @@
         "title": "ErrorPosition",
         "description": "Where in the submitted SQL a failure is, for the editor to underline.\n\nA half-open range, in both conventions the editor might want, so the client does\nno arithmetic: 1-based `line`/`column` (what Monaco's IRange takes) and 0-based\n`offset` (what a plain string slice takes). They describe the same span.\n\nCoordinates index the SQL exactly as the caller submitted it — comments, line\nbreaks and all — not any normalised form of it."
       },
+      "EstimateAllowance": {
+        "properties": {
+          "bytes_allowance": {
+            "type": "integer",
+            "title": "Bytes Allowance",
+            "description": "Bytes processed allowed per UTC day"
+          },
+          "bytes_used": {
+            "type": "integer",
+            "title": "Bytes Used",
+            "description": "Bytes already settled against today's allowance"
+          },
+          "bytes_remaining": {
+            "type": "integer",
+            "title": "Bytes Remaining",
+            "description": "Allowance left before this statement, never negative"
+          },
+          "fits": {
+            "type": "boolean",
+            "title": "Fits",
+            "description": "Whether running this statement stays within what is left"
+          },
+          "resets_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Resets At",
+            "description": "When today's allowance resets (00:00 UTC)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bytes_allowance",
+          "bytes_used",
+          "bytes_remaining",
+          "fits",
+          "resets_at"
+        ],
+        "title": "EstimateAllowance",
+        "description": "Where this statement leaves a capped (free-plan) payer's data allowance today."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -817,12 +1287,37 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "JobCancelResponse": {
+        "properties": {
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id"
+          },
+          "cancelled": {
+            "type": "boolean",
+            "title": "Cancelled"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current state of the job"
+          }
+        },
+        "type": "object",
+        "required": [
+          "execution_id",
+          "cancelled",
+          "status"
+        ],
+        "title": "JobCancelResponse"
+      },
       "JobCreateRequest": {
         "properties": {
           "sql_text": {
             "type": "string",
             "title": "Sql Text",
-            "description": "SQL statement to execute"
+            "description": "SQL statement to execute. Required unless `throttled` is set - a throttled fire never built one to run.",
+            "default": ""
           },
           "client_info": {
             "anyOf": [
@@ -837,6 +1332,12 @@
             "title": "Client Info",
             "description": "Client information, e.g. application name/version"
           },
+          "throttled": {
+            "type": "boolean",
+            "title": "Throttled",
+            "description": "Records that a trigger reached this fire but was deliberately suppressed by its own minimum-interval floor, rather than submitting SQL for execution. No statement is parsed or run, no worker is dispatched, and nobody is billed: a job document is written directly with a terminal `THROTTLED` status, so the fire still has a row in the same run history a real firing would. `client_info.trigger` carries the provenance (workspace, target, trigger name) in place of the statement jobs would otherwise have derived it from. Only the platform's own trigger-firing identity may set this, on the same terms as unattended trigger provenance generally.",
+            "default": false
+          },
           "parameters": {
             "anyOf": [
               {
@@ -848,13 +1349,10 @@
               }
             ],
             "title": "Parameters",
-            "description": "Values for any `:name` placeholders in sql_text, as key-value pairs. Values passed here always take priority. Any placeholder the query references that isn't included here is automatically resolved from the caller's saved variables (see the Variables API) - this is what lets a shared query stay generic (e.g. `WHERE department = :department`) while each caller's own saved value fills in without them passing it explicitly. A placeholder that's neither passed nor saved is left unresolved, and the job fails at execution with a parameter-not-defined error."
+            "description": "Values for any `:name` placeholders in sql_text, as key-value pairs. Values passed here always take priority. Any placeholder the query references that isn't included here is automatically resolved from the caller's saved variables (see the Variables API) - this is what lets a shared query stay generic (e.g. `WHERE department = :department`) while each caller's own saved value fills in without them passing it explicitly. A placeholder that's neither passed nor saved is left unresolved, and the job fails at execution with a parameter-not-defined error. Each value is typed: `{\"type\": \"<canonical type>\", \"value\": ...}`, e.g. `{\"type\": \"DATE\", \"value\": \"2026-01-01\"}` or `{\"type\": \"INT64\", \"value\": 42}`. The engine binds it as `CAST(value AS type)`, so `type` is a canonical type name (VARCHAR, INT64, FLOAT64, DECIMAL(p,s), BOOL, DATE, TIMESTAMP, ...) and `value` is a string, number, boolean or null. A bare value is refused."
           }
         },
         "type": "object",
-        "required": [
-          "sql_text"
-        ],
         "title": "JobCreateRequest",
         "example": {
           "client_info": {
@@ -867,7 +1365,14 @@
       "JobCreateResponse": {
         "properties": {
           "execution_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Execution Id"
           },
           "status": {
@@ -899,7 +1404,6 @@
         },
         "type": "object",
         "required": [
-          "execution_id",
           "status",
           "created_at"
         ],
@@ -988,6 +1492,13 @@
             },
             "type": "object",
             "title": "Engine Timings"
+          },
+          "worker_timings": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Worker Timings"
           },
           "io_scan_diagnostics": {
             "items": {
@@ -1191,7 +1702,7 @@
               }
             ],
             "title": "Parameters",
-            "description": "Values for the statement's `:name` placeholders. Anything not passed is resolved from the caller's saved variables, exactly as job submission resolves them - see the Variables API."
+            "description": "Values for the statement's `:name` placeholders. Anything not passed is resolved from the caller's saved variables, exactly as job submission resolves them - see the Variables API. Each value is typed: `{\"type\": \"<canonical type>\", \"value\": ...}`, e.g. `{\"type\": \"DATE\", \"value\": \"2026-01-01\"}` or `{\"type\": \"INT64\", \"value\": 42}`. The engine binds it as `CAST(value AS type)`, so `type` is a canonical type name (VARCHAR, INT64, FLOAT64, DECIMAL(p,s), BOOL, DATE, TIMESTAMP, ...) and `value` is a string, number, boolean or null. A bare value is refused."
           }
         },
         "type": "object",
@@ -1241,6 +1752,14 @@
             "title": "Identities",
             "description": "Every name the statement makes available. Also survives a failed bind, partially"
           },
+          "relationships": {
+            "items": {
+              "$ref": "#/components/schemas/CheckedRelationship"
+            },
+            "type": "array",
+            "title": "Relationships",
+            "description": "Declared relationships with at least one end among the relations resolved, for offering a join predicate. Both ends of every entry are readable by the caller. Includes edges whose far end is NOT in the statement yet - that is how the editor knows about a table one keystroke before it binds"
+          },
           "query_type": {
             "anyOf": [
               {
@@ -1260,6 +1779,14 @@
             "type": "array",
             "title": "Tables",
             "description": "Every relation named, sorted"
+          },
+          "writes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Writes",
+            "description": "The subset of `tables` whose contents the statement writes, sorted"
           },
           "parameters": {
             "items": {
@@ -1321,6 +1848,110 @@
           "type"
         ],
         "title": "QueryColumn"
+      },
+      "QueryEstimateResponse": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok",
+            "description": "The statement planned. `error` is set exactly when false"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QueryCheckError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "estimated": {
+            "type": "boolean",
+            "title": "Estimated",
+            "description": "Whether a figure was produced. False for a statement that did not plan, and for DDL, which is not planned here"
+          },
+          "query_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query Type",
+            "description": "`Query`, `Insert`, `Drop`, ..."
+          },
+          "billing_bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Billing Bytes",
+            "description": "Bytes processed this statement will be billed for if run now - the same plan-time figure the run bills, not an approximation of it. Can change if a relation it reads is committed to before it runs"
+          },
+          "estimated_time_bin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Time Bin",
+            "description": "Rough duration: `<1s`, `1-5s`, `5-15s` or `>15s`. Read as 'at least this slow'"
+          },
+          "time_planning_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Planning Ms",
+            "description": "How long planning took here"
+          },
+          "relations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relations",
+            "description": "Relations the figure covers"
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached",
+            "description": "Served from a recent identical estimate",
+            "default": false
+          },
+          "allowance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EstimateAllowance"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Only for a free-plan payer with a daily data allowance, and omitted if usage could not be read - an estimate is still useful without it"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ok",
+          "estimated"
+        ],
+        "title": "QueryEstimateResponse",
+        "description": "The bytes running a statement now would process. A wrong statement is a 200 with `ok: false`."
       },
       "QueryJob": {
         "properties": {
@@ -1521,6 +2152,232 @@
         "type": "object",
         "title": "QueryStatistics"
       },
+      "RelationshipEnd": {
+        "properties": {
+          "workspace": {
+            "type": "string",
+            "title": "Workspace"
+          },
+          "collection": {
+            "type": "string",
+            "title": "Collection"
+          },
+          "dataset": {
+            "type": "string",
+            "title": "Dataset"
+          },
+          "column": {
+            "type": "string",
+            "title": "Column"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workspace",
+          "collection",
+          "dataset",
+          "column"
+        ],
+        "title": "RelationshipEnd",
+        "description": "One end of a relationship, as split parts.\n\nNever a dotted string: a dataset name may contain dots, so a consumer handed\n`\"public.astronomy.moons\"` has to decide where the boundaries are, and the\nconsumers that already do it disagree with each other. Split once, here."
+      },
+      "SaveJobRequest": {
+        "properties": {
+          "dataset": {
+            "type": "string",
+            "title": "Dataset",
+            "description": "Name of the dataset to create"
+          },
+          "workspace": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workspace",
+            "description": "Workspace to create the dataset in. Defaults to `personal`, which is where a caller always has rights to their own collection."
+          },
+          "collection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collection",
+            "description": "Collection within the workspace. Defaults to the caller's own username, giving `personal.{username}.{dataset}` - the one target that needs no granted policy."
+          }
+        },
+        "type": "object",
+        "required": [
+          "dataset"
+        ],
+        "title": "SaveJobRequest",
+        "description": "Where to save a completed job's results.\n\nThe source job is NOT here: it is the `{identifier}` path segment, so it is\nauthorised by the same code that guards `/results` and `/download` rather\nthan arriving as a body field that a caller can point anywhere.",
+        "example": {
+          "dataset": "q3_refunds"
+        }
+      },
+      "SaveJobResponse": {
+        "properties": {
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Id of the SAVE job, not of the source job"
+          },
+          "source_execution_id": {
+            "type": "string",
+            "title": "Source Execution Id",
+            "description": "The job whose results are being saved"
+          },
+          "target": {
+            "type": "string",
+            "title": "Target",
+            "description": "Fully-qualified `workspace.collection.dataset`"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current state of the save job"
+          },
+          "status_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "execution_id",
+          "source_execution_id",
+          "target",
+          "status"
+        ],
+        "title": "SaveJobResponse"
+      },
+      "UsageAmounts": {
+        "properties": {
+          "bytes_processed": {
+            "type": "integer",
+            "title": "Bytes Processed",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "UsageAmounts"
+      },
+      "UsageDay": {
+        "properties": {
+          "bytes_processed": {
+            "type": "integer",
+            "title": "Bytes Processed",
+            "default": 0
+          },
+          "day": {
+            "type": "string",
+            "title": "Day",
+            "description": "UTC day, YYYYMMDD"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day"
+        ],
+        "title": "UsageDay"
+      },
+      "UsageResponse": {
+        "properties": {
+          "billing_account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Billing Account"
+          },
+          "plan": {
+            "type": "string",
+            "title": "Plan",
+            "description": "The effective plan: free, prepaid, payg or house"
+          },
+          "metered": {
+            "type": "boolean",
+            "title": "Metered",
+            "description": "Whether this account has a daily allowance that blocks when used"
+          },
+          "allowance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DailyAllowance"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "today": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageDay"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "month": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageAmounts"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/UsageDay"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "resets_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resets At",
+            "description": "When today's allowance resets (00:00 UTC)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "billing_account",
+          "plan",
+          "metered"
+        ],
+        "title": "UsageResponse"
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -1631,11 +2488,11 @@
           "type": {
             "type": "string",
             "title": "Type",
-            "description": "One of 'string', 'number', or 'boolean'"
+            "description": "A canonical type name, e.g. VARCHAR, INT64, FLOAT64, BOOL, DATE"
           },
           "value": {
             "title": "Value",
-            "description": "The variable's value; its JSON type must match `type`"
+            "description": "The variable's value; it must CAST to `type` exactly as a typed parameter would"
           }
         },
         "type": "object",

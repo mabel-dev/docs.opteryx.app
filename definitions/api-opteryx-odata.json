@@ -190,10 +190,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Limit result rows (0-100000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.",
+              "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated.",
               "title": "$Top"
             },
-            "description": "Limit result rows (0-100000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated."
+            "description": "Limit result rows (0-25000, default 100). Value 0 with $count=true returns count only. Returns @odata.nextLink if result is truncated."
           },
           {
             "name": "$skip",
@@ -317,11 +317,11 @@
                   "type": "null"
                 }
               ],
-              "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N)).",
-              "x-docs-summary": "Server-side aggregation, e.g. `groupby((vendor), aggregate(amount with sum as Total, $count as Count))`. Aggregates are `$count as Alias` or `col with <method> as Alias`, where `<method>` is `sum`, `average`, `min` or `max`. Chain steps with `/`, e.g. `filter(price gt 1)/groupby((vendor), aggregate($count as N))`. See [Aggregating with `$apply`](/docs/guides/querying-via-odata#aggregating-with-apply).",
+              "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N)). groupby takes column names only; to group by a derived value, compute it first: compute(year(created_at) as Year)/groupby((Year), aggregate($count as Count)).",
+              "x-docs-summary": "Server-side aggregation, e.g. `groupby((vendor), aggregate(amount with sum as Total, $count as Count))`. Aggregates are `$count as Alias` or `col with <method> as Alias`, where `<method>` is `sum`, `average`, `min` or `max`. Chain steps with `/`, e.g. `filter(price gt 1)/groupby((vendor), aggregate($count as N))`. To group by a derived value, `compute` it first: `compute(year(created_at) as Year)/groupby((Year), aggregate($count as Count))`. See [Aggregating with `$apply`](/docs/guides/querying-via-odata#aggregating-with-apply).",
               "title": "$Apply"
             },
-            "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N))."
+            "description": "Data aggregation: groupby((col), aggregate(amount with sum as Total, $count as Count)). Aggregates are written as '$count as Alias' or 'col with <method> as Alias', where <method> is one of sum, average, min, max -- that list is exhaustive, and function-call forms such as sum(amount) are not accepted. Transformations chain with '/', e.g. filter(x gt 1)/groupby((col), aggregate($count as Count)); a groupby with no aggregate deduplicates, so a distinct count is groupby((a,b))/groupby((a), aggregate($count as N)). groupby takes column names only; to group by a derived value, compute it first: compute(year(created_at) as Year)/groupby((Year), aggregate($count as Count))."
           },
           {
             "name": "authorization",
@@ -352,7 +352,7 @@
             }
           },
           "400": {
-            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-100000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector"
+            "description": "Invalid query: malformed $filter, unsupported $top value (not 0-25000), negative $skip, $skip without $orderby, invalid $count value, invalid $apply expression, invalid $compute expression, $compute combined with $apply, OData-MaxVersion below 4.0, or a malformed @{label} version selector"
           },
           "401": {
             "description": "Missing or invalid authentication (no bearer token or basic auth)"

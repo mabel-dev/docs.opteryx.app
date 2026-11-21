@@ -303,13 +303,100 @@
         }
       }
     },
+    "/clients/{client_id}/federated-credentials": {
+      "post": {
+        "tags": [
+          "credentials"
+        ],
+        "summary": "Register Federated Credential",
+        "description": "Register a workload as a credential-less credential.\n\nA GitHub Actions workflow, or a GCP service account, can then exchange the\nOIDC token its platform mints for it for an Opteryx access token at\n`/token`, with no stored client secret anywhere in the loop. The token it\nreceives is the one the `client_credentials` grant issues for this same\n`client_id` - same policies, same lifetime - so nothing downstream needs\nto change.\n\nThe workload must request the audience this service expects. A GitHub\nworkflow additionally needs `permissions: id-token: write`.\n\nCallers may register bindings for their own client_id (authenticated via\nbearer token) or, with an admin token, for any client_id.\n\nArgs:\n    client_id: Client the workload authenticates as\n    request: Binding parameters\n\nReturns:\n    The registered binding (there is no secret to return)",
+        "operationId": "register_federated_credential_clients__client_id__federated_credentials_post",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Client identifier",
+              "title": "Client Id"
+            },
+            "description": "Client identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterFederatedCredentialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterFederatedCredentialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/clients/{client_id}/credentials/{credential_id}": {
       "delete": {
         "tags": [
           "credentials"
         ],
         "summary": "Revoke Credential",
-        "description": "Revoke a credential by deleting it.\n\nArgs:\n    client_id: Client identifier\n    credential_id: Credential ID to revoke\n\nReturns:\n    Success message",
+        "description": "Revoke a credential by deleting it.\n\nCovers both PATs and federated bindings - they are the same kind of record\non the same client, so one revocation path serves both.\n\nArgs:\n    client_id: Client identifier\n    credential_id: Credential ID to revoke\n\nReturns:\n    Success message",
         "operationId": "revoke_credential_clients__client_id__credentials__credential_id__delete",
         "parameters": [
           {
@@ -389,8 +476,412 @@
         }
       }
     },
+    "/service-accounts": {
+      "post": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "Create a service account",
+        "description": "Creates a machine principal on the caller's billing account. Requires an active billing account; the service account is billed to it, belongs to it, and stays visible to its members after the creator leaves. The caller becomes the initial contact.",
+        "operationId": "create_service_account_service_accounts_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateServiceAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccountResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "List service accounts",
+        "description": "Lists every service account on the caller's billing account - not just the ones the caller created. A service account belongs to the account that pays for it, so it stays visible and manageable when the person who made it moves on.",
+        "operationId": "list_service_accounts_service_accounts_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServiceAccountResponse"
+                  },
+                  "title": "Response List Service Accounts Service Accounts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service-accounts.csv": {
+      "get": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "Export service accounts",
+        "description": "CSV of every service account on the billing account and every credential attached to it - one row per credential, so an account with three tokens appears on three rows and one with none appears on a single row with the credential columns empty. For managing machine identities off-platform: rotation reviews, access reviews, and finding the bots nobody owns. billing_admin only.",
+        "operationId": "export_service_accounts_service_accounts_csv_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV export of service accounts and their credentials.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service-accounts/{client_id}": {
+      "patch": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "Update a service account",
+        "description": "Update the description and/or contact. Open to any member of the billing account: neither field grants anything or changes what can authenticate, and requiring an admin to keep a contact current is how contacts go stale. A contact must be an active member of the same billing account.",
+        "operationId": "update_service_account_service_accounts__client_id__patch",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Service account identifier",
+              "title": "Client Id"
+            },
+            "description": "Service account identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateServiceAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccountResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "Get Service Account",
+        "description": "Fetch one service account the caller owns.",
+        "operationId": "get_service_account_service_accounts__client_id__get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Service account identifier",
+              "title": "Client Id"
+            },
+            "description": "Service account identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccountResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "service accounts"
+        ],
+        "summary": "Delete Service Account",
+        "description": "Delete a service account and every credential attached to it.\n\nIts grants in the policy store are not touched - they are policy.opteryx's\nrecords, written against a principal string, and this service does not get\nto delete another service's data. Deleting the account does stop anything\nauthenticating as it, so the leftover grants apply to nobody; releasing the\nname lets someone else take it, and a new account with the same name would\ninherit them. Revoke the grants first if that matters.",
+        "operationId": "delete_service_account_service_accounts__client_id__delete",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Service account identifier",
+              "title": "Client Id"
+            },
+            "description": "Service account identifier"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "summary": "Get current user",
         "description": "Validates the bearer token and returns the caller identity, billing account and token scope details.",
         "operationId": "get_current_user_me_get",
@@ -437,6 +928,175 @@
   },
   "components": {
     "schemas": {
+      "Body_admin_reset_v1_admin_reset_post": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "new_secret": {
+            "type": "string",
+            "title": "New Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "new_secret"
+        ],
+        "title": "Body_admin_reset_v1_admin_reset_post"
+      },
+      "Body_admin_set_status_v1_admin_clients__client_id__status_patch": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "Body_admin_set_status_v1_admin_clients__client_id__status_patch"
+      },
+      "Body_introspect_oauth_introspect_post": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_type_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token Type Hint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "Body_introspect_oauth_introspect_post"
+      },
+      "Body_oauth_token_oauth_token_post": {
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "title": "Grant Type"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "redirect_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redirect Uri"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          },
+          "refresh_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Refresh Token"
+          },
+          "code_verifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code Verifier"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          }
+        },
+        "type": "object",
+        "required": [
+          "grant_type"
+        ],
+        "title": "Body_oauth_token_oauth_token_post"
+      },
+      "Body_revoke_oauth_revoke_post": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_type_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token Type Hint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "Body_revoke_oauth_revoke_post"
+      },
       "Body_token_endpoint_token_post": {
         "properties": {
           "grant_type": {
@@ -455,6 +1115,15 @@
           "refresh_token": {
             "type": "string",
             "title": "Refresh Token"
+          },
+          "subject_token": {
+            "type": "string",
+            "title": "Subject Token"
+          },
+          "subject_token_type": {
+            "type": "string",
+            "title": "Subject Token Type",
+            "default": "urn:ietf:params:oauth:token-type:jwt"
           }
         },
         "type": "object",
@@ -550,6 +1219,36 @@
         ],
         "title": "CreateCredentialResponse"
       },
+      "CreateServiceAccountRequest": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id",
+            "description": "The name, which becomes the principal string policies are written against. Shares one namespace with every other account, so it is first-come and case-insensitive: 4-64 characters, starting with a letter, then letters, digits or underscores. Stored lowercase."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Free text, for your own benefit. Not used for anything."
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id"
+        ],
+        "title": "CreateServiceAccountRequest",
+        "example": {
+          "client_id": "scanbot",
+          "description": "SAST/SCA scan uploads"
+        }
+      },
       "CredentialMetadata": {
         "properties": {
           "credential_id": {
@@ -585,6 +1284,53 @@
               }
             ],
             "title": "Last Used At"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "constraints": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Constraints"
           }
         },
         "type": "object",
@@ -610,6 +1356,254 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "RegisterFederatedCredentialRequest": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "The OIDC provider the workload authenticates with: 'github' or 'google'.",
+            "default": "github"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject",
+            "description": "The provider's immutable identifier for the workload. For 'github', the numeric repository id (the `repository_id` claim) - not `owner/name`. For 'google', the service account's numeric unique id (its `sub` claim) - not its email. Names are recycled after a rename, transfer, or a delete and recreate; these ids are not."
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label",
+            "description": "The readable name this id belongs to - `owner/name`, or the service account email. Recorded so a human reading the credential list can tell what it is; never used for matching."
+          },
+          "constraints": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Constraints",
+            "description": "Claims to pin exactly, narrowing the binding further. For 'github': `job_workflow_ref` (one workflow file on one ref), `ref`, `environment`. For 'google': `email`. Pinning a claim the provider does not issue is rejected rather than silently never matching."
+          },
+          "audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience",
+            "description": "Optional audience this binding additionally requires, for a deployment that accepts more than one."
+          },
+          "expires_in_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires In Days",
+            "description": "Lifetime of the binding in days (max 365). Defaults to null - no secret is stored, so there is nothing to rotate."
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes",
+            "description": "Scopes to grant the binding. Empty grants the caller's default scopes."
+          },
+          "permissions": {
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Permissions",
+            "description": "Resource grants as [pattern, role] pairs, e.g. [['analytics.*', 'reader']]. Roles are 'owner', 'admin', 'writer' or 'reader'."
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject"
+        ],
+        "title": "RegisterFederatedCredentialRequest",
+        "example": {
+          "constraints": {
+            "job_workflow_ref": "mabel-dev/opteryx-core/.github/workflows/scan.yaml@refs/heads/main"
+          },
+          "label": "mabel-dev/opteryx-core",
+          "permissions": [
+            [
+              "security.*",
+              "writer"
+            ]
+          ],
+          "provider": "github",
+          "scopes": [],
+          "subject": "123456789"
+        }
+      },
+      "RegisterFederatedCredentialResponse": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "credential_id": {
+            "type": "string",
+            "title": "Credential Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "constraints": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Constraints"
+          },
+          "audience": {
+            "type": "string",
+            "title": "Audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "credential_id",
+          "provider",
+          "subject",
+          "label",
+          "constraints",
+          "audience"
+        ],
+        "title": "RegisterFederatedCredentialResponse"
+      },
+      "ServiceAccountResponse": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By"
+          },
+          "contact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact"
+          },
+          "contact_stale": {
+            "type": "boolean",
+            "title": "Contact Stale",
+            "default": false
+          },
+          "contact_fallback": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Contact Fallback",
+            "default": []
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "active"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id"
+        ],
+        "title": "ServiceAccountResponse"
       },
       "TokenResponse": {
         "properties": {
@@ -644,6 +1638,40 @@
           "expires_in"
         ],
         "title": "TokenResponse"
+      },
+      "UpdateServiceAccountRequest": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Free text. Send null to clear it."
+          },
+          "contact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact",
+            "description": "The identity to hold as contact. Must be an active member of the same billing account. Omit to leave unchanged."
+          }
+        },
+        "type": "object",
+        "title": "UpdateServiceAccountRequest",
+        "example": {
+          "contact": "dana",
+          "description": "SAST/SCA scan uploads"
+        }
       },
       "ValidationError": {
         "properties": {

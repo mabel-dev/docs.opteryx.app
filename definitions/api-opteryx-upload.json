@@ -352,7 +352,7 @@
           "contracts"
         ],
         "summary": "Write a File",
-        "description": "Stream one file in. Answered with what it turned out to be, or refused.",
+        "description": "Stream one file in. Answered with what it turned out to be, or refused.\n\nThe body may be compressed. `detect_kind` sees through the codec suffix, so\n`part-0000.ndjson.zst` is NDJSON, and the spool decodes as it streams - the\nreader is handed the format it was promised rather than a zstd frame.",
         "operationId": "write_data_v2_contracts__contract_id__data_post",
         "parameters": [
           {
@@ -394,6 +394,22 @@
                 }
               ],
               "title": "Content-Type"
+            }
+          },
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Content-Encoding"
             }
           },
           {
