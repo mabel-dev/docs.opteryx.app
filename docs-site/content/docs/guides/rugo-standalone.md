@@ -140,6 +140,7 @@ The standalone `rugo` wheel is **local-filesystem only**. Opteryx's copy of Rugo
 ## Related
 
 - [The Rugo Command Line](/docs/guides/rugo-cli)
+- [Using Rugo from JavaScript](/docs/guides/rugo-javascript)
 - [Rugo — the file engine](/docs/reference/internals/rugo)
 - [Querying Local Data](/docs/guides/querying-local-data)
 - [What is Opteryx](/docs/introduction/what-is-opteryx)

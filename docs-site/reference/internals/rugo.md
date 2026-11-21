@@ -4,6 +4,8 @@
 
 Rugo is also published on its own. The same source that ships inside Opteryx is packaged as a standalone `rugo` wheel — a fast, dependency-free file engine for people who want Parquet/CSV/JSONL/Avro/ORC I/O without the SQL engine on top. Both packagings bundle [Draken](draken), the columnar vector library Rugo emits into.
 
+The Parquet, ORC and Avro readers are also compiled to WebAssembly and published to npm as `@opteryx/rugo`, for the browser and Node. See [Using Rugo from JavaScript](/docs/guides/rugo-javascript).
+
 ---
 
 ## Where Rugo sits

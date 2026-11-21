@@ -240,5 +240,6 @@ The standalone `rugo` wheel reads and writes the local filesystem and nothing el
 - [Convert CSV to Parquet](/docs/guides/convert-csv-to-parquet)
 - [Combine and split Parquet files](/docs/guides/combine-and-split-parquet-files)
 - [Using Rugo Standalone](/docs/guides/rugo-standalone)
+- [Using Rugo from JavaScript](/docs/guides/rugo-javascript)
 - [The Opteryx Command Line](/docs/guides/opteryx-cli)
 - [Rugo — the file engine](/docs/reference/internals/rugo)

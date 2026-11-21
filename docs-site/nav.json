@@ -126,6 +126,9 @@
           },
           {
             "Using Rugo standalone": "guides/rugo-standalone.md"
+          },
+          {
+            "Using Rugo from JavaScript": "guides/rugo-javascript.md"
           }
         ]
       },
