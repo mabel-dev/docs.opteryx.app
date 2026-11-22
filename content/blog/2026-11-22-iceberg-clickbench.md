@@ -17,7 +17,7 @@ tags:
 ## TL;DR
 
 * ClickBench has a new storage filter, Iceberg. Each engine creates an [Apache Iceberg](https://iceberg.apache.org/) table through a REST catalog, writes the 100-million-row dataset into it with one `INSERT ... SELECT` on default settings, then runs the 43 queries against the table it wrote.
-* On ClickBench's reference machine, [`c6a.4xlarge`](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t|ae-|ca2|6ax|cgle|gel|6ale|3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu|j&metric=hot&best=no&queries=-), [Opteryx](https://opteryx.app) is **first of ten on hot runs** (×1.24, ahead of ClickHouse at ×1.58), second on combined and third on cold (22 November 2026).
+* On ClickBench's reference machine, [`c6a.4xlarge`](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t%7Cae-%7Cca2%7C6ax%7Ccgle%7Cgel%7C6ale%7C3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu%7Cj&metric=hot&best=no&queries=-), [Opteryx](https://opteryx.app) is **first of ten on hot runs** (×1.24, ahead of ClickHouse at ×1.58), second on combined and third on cold (22 November 2026).
 * Opteryx wrote every file of that table: the Parquet data files, and the Avro manifests and manifest lists. [Rugo](https://rugo.dev) did all of it. PyIceberg is only the REST client.
 * Cold runs are our weak spot. Every cold query pays a floor of about 0.65 seconds, even `SELECT COUNT(*)`, which ClickHouse answers cold in 26 ms. We'd like those 0.65 seconds back.
 
@@ -71,9 +71,9 @@ All ten entries run on `c6a.4xlarge` (16 vCPU, 32 GB). Here's the full picture:
 
 | Metric | Opteryx | Position | Ahead of us |
 | --- | --- | --- | --- |
-| [Hot](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t|ae-|ca2|6ax|cgle|gel|6ale|3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu|j&metric=hot&best=no&queries=-) | ×1.24 | **1st** of 10 | none |
-| [Combined](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t|ae-|ca2|6ax|cgle|gel|6ale|3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu|j&metric=combined&best=no&queries=-) | ×1.57 | 2nd | ClickHouse ×1.43 |
-| [Cold](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t|ae-|ca2|6ax|cgle|gel|6ale|3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu|j&metric=cold&best=no&queries=-) | ×2.53 | 3rd | ClickHouse ×1.31, DuckDB ×1.95 |
+| [Hot](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t%7Cae-%7Cca2%7C6ax%7Ccgle%7Cgel%7C6ale%7C3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu%7Cj&metric=hot&best=no&queries=-) | ×1.24 | **1st** of 10 | none |
+| [Combined](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t%7Cae-%7Cca2%7C6ax%7Ccgle%7Cgel%7C6ale%7C3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu%7Cj&metric=combined&best=no&queries=-) | ×1.57 | 2nd | ClickHouse ×1.43 |
+| [Cold](https://benchmark.clickhouse.com/#system=-&type=-&machine=-6t%7Cae-%7Cca2%7C6ax%7Ccgle%7Cgel%7C6ale%7C3al&cluster_size=-&opensource=-&hardware=+c&tuned=+n&storage=+ee&category=-nu%7Cj&metric=cold&best=no&queries=-) | ×2.53 | 3rd | ClickHouse ×1.31, DuckDB ×1.95 |
 | Load time | 228 s | 7th | DataFusion 75 s, DuckDB 85 s, ClickHouse 90 s, and three more |
 | Table size | 12.18 GB | 7th | DataFusion 9.89 GB is the smallest |
 
