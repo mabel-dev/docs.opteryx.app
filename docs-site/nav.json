@@ -66,6 +66,9 @@
             "Tasks and triggers": "guides/tasks-and-triggers.md"
           },
           {
+            "Querying graphs": "guides/querying-graphs.md"
+          },
+          {
             "Branching your data": "guides/branching-your-data.md"
           },
           {
@@ -278,6 +281,9 @@
               "CREATE MATERIALIZED VIEW": "reference/sql/statements/create-materialized-view.md"
             },
             {
+              "CREATE PROPERTY GRAPH": "reference/sql/statements/create-property-graph.md"
+            },
+            {
               "CREATE SECRET": "reference/sql/statements/create-secret.md"
             },
             {
@@ -308,6 +314,9 @@
               "DROP MATERIALIZED VIEW": "reference/sql/statements/drop-materialized-view.md"
             },
             {
+              "DROP PROPERTY GRAPH": "reference/sql/statements/drop-property-graph.md"
+            },
+            {
               "DROP SECRET": "reference/sql/statements/drop-secret.md"
             },
             {
@@ -336,6 +345,9 @@
             },
             {
               "GRANT": "reference/sql/statements/grant.md"
+            },
+            {
+              "GRAPH_TABLE": "reference/sql/statements/graph-table.md"
             },
             {
               "GROUP BY": "reference/sql/statements/group-by.md"
@@ -983,6 +995,9 @@
           },
           {
             "SQL compatibility notes": "reference/sql/advanced/adv-sql-compatibility.md"
+          },
+          {
+            "GQL (graph queries)": "reference/sql/advanced/adv-gql.md"
           },
           {
             "Time travel queries": "reference/sql/advanced/adv-time-travel.md"
