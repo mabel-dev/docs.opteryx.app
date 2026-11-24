@@ -53,8 +53,23 @@ SHOW CREATE VIEW workspace.collection.active_customers;
 ~~~
 
 ### A Property Graph's Definition
+`public.geopolitics.borders` is in the public workspace, so you can run this as it is:
 ~~~sql
-SHOW CREATE PROPERTY GRAPH acme.hr.org;
+SHOW CREATE PROPERTY GRAPH public.geopolitics.borders;
+~~~
+
+~~~sql
+CREATE PROPERTY GRAPH public.geopolitics.borders
+  VERTEX TABLES (
+    public.geopolitics.countries AS countries KEY (iso_alpha3)
+      LABEL Country PROPERTIES (iso_alpha3, country_name_common AS name, capital, region, subregion, area_km2)
+  )
+  EDGE TABLES (
+    public.geopolitics.country_borders AS borders KEY (country, neighbour)
+      SOURCE KEY (country) REFERENCES countries (iso_alpha3)
+      DESTINATION KEY (neighbour) REFERENCES countries (iso_alpha3)
+      LABEL BORDERS NO PROPERTIES
+  );
 ~~~
 
 ### A Table's Shape, Reconstructed

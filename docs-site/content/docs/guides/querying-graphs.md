@@ -94,6 +94,22 @@ What gets stored is the definition with everything written out: `PROPERTIES ALL 
 SHOW CREATE PROPERTY GRAPH public.geopolitics.borders;
 ~~~
 
+~~~sql
+CREATE PROPERTY GRAPH public.geopolitics.borders
+  VERTEX TABLES (
+    public.geopolitics.countries AS countries KEY (iso_alpha3)
+      LABEL Country PROPERTIES (iso_alpha3, country_name_common AS name, capital, region, subregion, area_km2)
+  )
+  EDGE TABLES (
+    public.geopolitics.country_borders AS borders KEY (country, neighbour)
+      SOURCE KEY (country) REFERENCES countries (iso_alpha3)
+      DESTINATION KEY (neighbour) REFERENCES countries (iso_alpha3)
+      LABEL BORDERS NO PROPERTIES
+  );
+~~~
+
+You only need `READ` on a graph to see its definition. It's how you find the labels and properties to write patterns with.
+
 A graph's name shares the namespace with tables and views. You can't create a graph called `public.geopolitics.countries` while that table exists, and you can't create a table or view with a graph's name.
 
 See [CREATE PROPERTY GRAPH](/docs/reference/sql/statements/create-property-graph) for the full syntax and every rule.
