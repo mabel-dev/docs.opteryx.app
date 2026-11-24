@@ -178,7 +178,7 @@ GROUP BY manager;
 
 ## Querying with GQL
 
-`GRAPH_TABLE` puts a graph pattern inside SQL. You can also write the whole query in **GQL** (ISO/IEC 39075), the ISO graph query language. GQL is not GraphQL, and it is not Cypher, although its patterns look like Cypher's.
+`GRAPH_TABLE` puts a graph pattern inside SQL. You can also write the whole query in **GQL** ([ISO/IEC 39075](https://www.iso.org/standard/76120.html)), the ISO graph query language. GQL is not GraphQL, and it is not Cypher, although its patterns look like Cypher's.
 
 ~~~
 USE acme.hr.org

@@ -5,7 +5,7 @@ description: The parts of GQL (ISO/IEC 39075), the ISO graph query language, tha
 
 # GQL
 
-GQL (ISO/IEC 39075) is the ISO standard language for querying property graphs. Opteryx
+GQL ([ISO/IEC 39075](https://www.iso.org/standard/76120.html)) is the ISO standard language for querying property graphs. Opteryx
 runs GQL queries over the [property graphs](../statements/create-property-graph) defined
 in a workspace.
 
