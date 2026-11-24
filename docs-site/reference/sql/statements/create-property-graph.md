@@ -80,6 +80,30 @@ And `<edge_table>` is:
 
 ## Examples
 
+### An Edge Table from a View
+This is the graph the [GRAPH_TABLE](graph-table) and [GQL](../advanced/adv-gql) examples
+use. It already exists in the public workspace. `countries` lists each country's
+neighbours as a comma-separated string in its `borders` column, so a view splits that
+into one row per border, and the view is the edge table:
+~~~sql
+CREATE VIEW public.geopolitics.country_borders AS
+SELECT iso_alpha3 AS country, neighbour
+FROM public.geopolitics.countries
+CROSS JOIN UNNEST(SPLIT(borders, ',')) AS neighbour;
+
+CREATE PROPERTY GRAPH public.geopolitics.borders
+  VERTEX TABLES (
+    public.geopolitics.countries AS countries KEY (iso_alpha3) LABEL Country
+      PROPERTIES (iso_alpha3, country_name_common AS name, capital, region, subregion, area_km2)
+  )
+  EDGE TABLES (
+    public.geopolitics.country_borders AS borders KEY (country, neighbour)
+      SOURCE      KEY (country)   REFERENCES countries (iso_alpha3)
+      DESTINATION KEY (neighbour) REFERENCES countries (iso_alpha3)
+      LABEL BORDERS NO PROPERTIES
+  );
+~~~
+
 ### Vertices and Edges from Separate Tables
 ~~~sql
 CREATE PROPERTY GRAPH acme.hr.org

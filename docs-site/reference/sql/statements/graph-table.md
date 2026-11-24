@@ -52,82 +52,203 @@ An edge can point either way: `-[...]->` follows the edge from source to destina
 
 ## Examples
 
-The examples use this graph: `Person` vertices, `Team` vertices, `MANAGES` edges between
-people, and `MEMBER_OF` edges from a person to a team. See
+The examples use `public.geopolitics.borders`, a graph of the world's land borders in the
+public workspace, so you can run them as they are. It has `Country` vertices, with
+properties `iso_alpha3`, `name`, `capital`, `region`, `subregion` and `area_km2`, and
+`BORDERS` edges from each country to each of its neighbours. See
 [CREATE PROPERTY GRAPH](create-property-graph) for its definition.
 
 ### Match One Edge
 ~~~sql
 SELECT *
-FROM GRAPH_TABLE (acme.hr.org
-       MATCH (m:Person)-[:MANAGES]->(r:Person)
-       COLUMNS (m.name AS manager, r.name AS report));
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country)-[:BORDERS]->(b:Country)
+       WHERE a.name = 'France'
+       COLUMNS (b.name AS neighbour))
+ORDER BY neighbour;
 ~~~
+
+| neighbour |
+|---|
+| Andorra |
+| Belgium |
+| Germany |
+| Italy |
+| Luxembourg |
+| Monaco |
+| Spain |
+| Switzerland |
 
 ### Aggregate the Matches
 ~~~sql
-SELECT g.manager, COUNT(*) AS reports
-FROM GRAPH_TABLE (acme.hr.org
-       MATCH (m:Person)-[:MANAGES]->(r:Person)
-       COLUMNS (m.name AS manager, r.id AS report_id)) AS g
-GROUP BY g.manager
-ORDER BY reports DESC;
+SELECT g.country, COUNT(*) AS neighbours
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country)-[:BORDERS]->(b:Country)
+       COLUMNS (a.name AS country, b.iso_alpha3 AS neighbour)) AS g
+GROUP BY g.country
+ORDER BY neighbours DESC, g.country
+LIMIT 5;
 ~~~
 
-### Follow Two Edges, with a Filter
+| country | neighbours |
+|---|---|
+| China | 16 |
+| Russia | 14 |
+| Brazil | 10 |
+| DR Congo | 9 |
+| Germany | 9 |
+
+### Filter Inside the Pattern
+A `WHERE` inside a vertex's brackets filters that vertex. These are the borders between
+Europe and Asia:
 ~~~sql
 SELECT *
-FROM GRAPH_TABLE (acme.hr.org
-       MATCH (m:Person)-[:MANAGES]->(r:Person)-[:MEMBER_OF]->(t:Team WHERE t.name = 'Platform')
-       COLUMNS (m.name AS manager, r.name AS report));
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country WHERE a.region = 'Europe')-[:BORDERS]->(b:Country WHERE b.region = 'Asia')
+       COLUMNS (a.name AS european, b.name AS asian))
+ORDER BY european, asian;
 ~~~
+
+| european | asian |
+|---|---|
+| Bulgaria | Türkiye |
+| Greece | Türkiye |
+| Russia | Azerbaijan |
+| Russia | China |
+| Russia | Georgia |
+| Russia | Kazakhstan |
+| Russia | Mongolia |
+| Russia | North Korea |
+
+### Follow Two Edges
+~~~sql
+SELECT *
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country WHERE a.name = 'Portugal')-[:BORDERS]->(via:Country)-[:BORDERS]->(b:Country WHERE b.region = 'Africa')
+       COLUMNS (via.name AS through, b.name AS reached));
+~~~
+
+| through | reached |
+|---|---|
+| Spain | Morocco |
 
 ### Follow an Edge Backwards
+`<-[...]-` follows an edge from its destination to its source. This finds the countries
+that list India as a neighbour:
 ~~~sql
 SELECT *
-FROM GRAPH_TABLE (acme.hr.org
-       MATCH (r:Person)<-[:MANAGES]-(m:Person)
-       WHERE r.name = 'Ada'
-       COLUMNS (m.name AS manager));
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country)<-[:BORDERS]-(b:Country)
+       WHERE a.name = 'India'
+       COLUMNS (b.name AS lists_india))
+ORDER BY lists_india;
 ~~~
+
+| lists_india |
+|---|
+| Bangladesh |
+| Bhutan |
+| China |
+| Myanmar |
+| Nepal |
+| Pakistan |
+| Sri Lanka |
+
+Written forwards, as India's own neighbours, the same query returns six rows: Sri Lanka
+lists India, but India doesn't list Sri Lanka. Patterns follow edges the way they're
+stored.
 
 ### Join to a Table
 ~~~sql
-SELECT t.name, COUNT(*) AS members
-FROM acme.hr.teams AS t
-JOIN GRAPH_TABLE (acme.hr.org
-       MATCH (p:Person)-[:MEMBER_OF]->(team:Team)
-       COLUMNS (team.id AS team_id)) AS g
-  ON g.team_id = t.id
-GROUP BY t.name;
+SELECT c.country_name_common AS country, COUNT(*) AS neighbours
+FROM public.geopolitics.countries AS c
+JOIN GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country)-[:BORDERS]->(b:Country)
+       COLUMNS (a.iso_alpha3 AS code)) AS g
+  ON g.code = c.iso_alpha3
+WHERE c.landlocked = TRUE
+GROUP BY c.country_name_common
+ORDER BY neighbours DESC, country
+LIMIT 5;
 ~~~
+
+| country | neighbours |
+|---|---|
+| Austria | 8 |
+| Serbia | 8 |
+| Zambia | 8 |
+| Hungary | 7 |
+| Mali | 7 |
+
+### Exactly Two Hops
+~~~sql
+SELECT DISTINCT reached
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country WHERE a.name = 'Portugal')-[:BORDERS]->{2}(b:Country)
+       COLUMNS (b.name AS reached))
+ORDER BY reached;
+~~~
+
+| reached |
+|---|
+| Andorra |
+| France |
+| Gibraltar |
+| Morocco |
+| Portugal |
+
+Portugal is in the list because Portugal to Spain and back is a two-hop walk.
 
 ### Up to Three Hops
 ~~~sql
-SELECT manager, COUNT(DISTINCT below) AS people
-FROM GRAPH_TABLE (acme.hr.org
-       MATCH (m:Person)-[:MANAGES]->{1,3}(r:Person)
-       COLUMNS (m.name AS manager, r.id AS below))
-GROUP BY manager;
+SELECT COUNT(*) AS walks, COUNT(DISTINCT reached) AS countries
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (a:Country WHERE a.name = 'Germany')-[:BORDERS]->{1,3}(b:Country)
+       COLUMNS (b.name AS reached));
 ~~~
+
+| walks | countries |
+|---|---|
+| 303 | 41 |
 
 ### Aggregate Inside COLUMNS
 ~~~sql
-SELECT a.people, b.teams
-FROM GRAPH_TABLE (acme.hr.org MATCH (p:Person) COLUMNS (COUNT(*) AS people)) AS a
-CROSS JOIN GRAPH_TABLE (acme.hr.org MATCH (t:Team) COLUMNS (COUNT(*) AS teams)) AS b;
+SELECT a.countries, b.borders
+FROM GRAPH_TABLE (public.geopolitics.borders
+       MATCH (c:Country) COLUMNS (COUNT(*) AS countries)) AS a
+CROSS JOIN GRAPH_TABLE (public.geopolitics.borders
+       MATCH (x:Country)-[:BORDERS]->(y:Country) COLUMNS (COUNT(*) AS borders)) AS b;
 ~~~
+
+| countries | borders |
+|---|---|
+| 250 | 649 |
 
 ### In a CTE
 ~~~sql
-WITH pairs AS (
+WITH crossings AS (
   SELECT *
-  FROM GRAPH_TABLE (acme.hr.org
-         MATCH (m:Person)-[:MANAGES]->(r:Person)
-         COLUMNS (m.name AS manager, r.name AS report))
+  FROM GRAPH_TABLE (public.geopolitics.borders
+         MATCH (a:Country)-[:BORDERS]->(b:Country)
+         WHERE a.region <> b.region
+         COLUMNS (a.region AS from_region, b.region AS to_region))
 )
-SELECT COUNT(*) FROM pairs;
+SELECT from_region, to_region, COUNT(*) AS borders
+FROM crossings
+GROUP BY from_region, to_region
+ORDER BY borders DESC, from_region, to_region;
 ~~~
+
+| from_region | to_region | borders |
+|---|---|---|
+| Asia | Europe | 8 |
+| Europe | Asia | 8 |
+| Africa | Asia | 2 |
+| Asia | Africa | 2 |
+| Africa | Europe | 1 |
+| Asia | Oceania | 1 |
+| Europe | Africa | 1 |
+| Oceania | Asia | 1 |
 
 ## Notes
 

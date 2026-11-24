@@ -10,13 +10,26 @@ runs GQL queries over the [property graphs](../statements/create-property-graph)
 in a workspace.
 
 ~~~
-USE acme.hr.org
-MATCH (m:Person)-[:MANAGES]->(r:Person)
-RETURN m.name AS manager, COUNT(*) AS reports
-GROUP BY manager
-ORDER BY reports DESC
-LIMIT 10
+USE public.geopolitics.borders
+MATCH (a:Country)-[:BORDERS]->(b:Country)
+WHERE a.region = 'Africa'
+RETURN a.name AS country, COUNT(*) AS neighbours
+GROUP BY country
+ORDER BY neighbours DESC, country
+LIMIT 5
 ~~~
+
+`public.geopolitics.borders` is a graph of the world's land borders in the public
+workspace, so you can run this as it is. It returns the African countries with the most
+neighbours:
+
+| country | neighbours |
+|---|---|
+| DR Congo | 9 |
+| Tanzania | 8 |
+| Zambia | 8 |
+| Algeria | 7 |
+| Mali | 7 |
 
 GQL is not GraphQL. Its patterns look like Cypher's, but it is a different language, and
 Cypher-only syntax is refused.
